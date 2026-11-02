@@ -29,6 +29,8 @@ jobs:
             git -C source apply --check "$patch"
             git -C source apply "$patch"
           done
+      - name: Record packaged source provenance
+        run: python3 scripts/write-build-manifest.py source
       - uses: lukka/get-cmake@latest
         with:
           cmakeVersion: '~4.3.0'

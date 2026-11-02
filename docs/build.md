@@ -13,6 +13,7 @@ the GitHub workflow provides a separate build machine.
 git clone https://github.com/chevydan6/OrcaSlicer-QIDI.git
 cd OrcaSlicer-QIDI
 python3 scripts/prepare-source.py
+python3 scripts/write-build-manifest.py build/source
 cd build/source
 ./build_linux.sh -u
 ./build_linux.sh -drlL -j 2
@@ -25,6 +26,8 @@ python3 scripts/orca_profile_tool.py check
 Use Ubuntu 24.04 with adequate disk and RAM; `-u` installs OS packages and needs
 sudo. The source preparation script refuses an existing destination. Source
 commits are pinned in `sources.json`, and numbered patches apply in order.
+The packaged `resources/qidi-port-build.json` records those source commits, the
+integration commit and every patch checksum.
 Upstream dependency recipes govern third-party downloads; the runner image,
 package repositories and some build utilities are not bit-for-bit pinned.
 Install `ccache` and `xvfb` with the build prerequisites. The upstream unit-test
