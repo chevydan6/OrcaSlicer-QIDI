@@ -1,0 +1,1 @@
+PASS: isolated production protocol helper compilation and offline assertions. Full app compilation, GUI, HTTP and hardware are NOT covered.

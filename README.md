@@ -9,8 +9,9 @@ will make the resulting build reproducible without duplicating upstream history.
 
 ## Scope and acceptance checklist
 
-- [ ] Pin and inventory both source baselines and licenses.
-- [ ] Compare printer/material/process profiles and inherited settings.
+- [x] Pin both source baselines and inventory their licenses.
+- [x] Inventory printer/material/process profiles and inherited differences.
+- [ ] Review remaining tuning and workflow differences.
 - [ ] Port missing machine settings, chamber and Box controls.
 - [ ] Port filament selection, persistent slot mapping and Box operations.
 - [ ] Integrate start/end/change G-code and placeholder compatibility.

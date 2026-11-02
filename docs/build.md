@@ -47,5 +47,6 @@ does not launch the application or contact a printer. The AppImage path also
 gives it a distinct single-instance identity in Orca's Linux implementation.
 
 GUI coexistence and persistence must still be verified with the compiled build.
-Automatic application/profile updates require review so official updates do not
-replace downstream features or profiles; this is not yet disabled in code.
+The upstream default for automatic preset bundle updates is off. Keep it off for
+this fork until a downstream update process is available. Official application
+updates do not contain these patches; use this integration workflow for updates.

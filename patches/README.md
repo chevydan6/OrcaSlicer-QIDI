@@ -1,14 +1,19 @@
-# Patch series
+# Downstream patch series and attribution
 
-Apply numbered patches in lexical order to the Orca commit in `sources.json`.
+Apply patches in lexical order to the Orca revision in `sources.json`.
+The application remains AGPL-3.0; retain both projects' licenses and source notices.
+QIDI reference revision: `403b619d56147160bb883e94f95a7951245bc6d0`.
 
-`0001-max4-height-guards.patch`: ports QIDI Studio's MAX4 maximum-Z guards for
-filament changes, timelapse lifts and end G-code. Keeps Orca's same-tool-change
-guard and existing profile identities. Other nozzle sizes inherit the 0.4 mm
-machine profile. Increments the Qidi bundle version.
+| Patch | Change | QIDI source reference |
+| --- | --- | --- |
+| 0001 | MAX4 height guards; preserve Orca same-tool guard | X 4 Series machine 0.4 mm profile |
+| 0002 | Box temperature settings, UI, G-code and persistence/slicing tests | PrintConfig, Preset, Tab, GCode |
+| 0003 | Thirteen missing MAX4 filament files with Orca IDs/inheritance | X 4 Series filament profiles |
+| 0004 | Explicit Box/external submission mode; sparse logical indices | SelectMachine local submission |
+| 0005 | Chamber control/telemetry and RFID command translation | PrinterTaskDispatcher, QDSDeviceManager |
+| 0006 | Native RFID and load/unload UI wiring with physical slot selection | PrinterTaskDispatcher local Box macros |
 
-Source: QIDITECH/QIDIStudio at `403b619d56147160bb883e94f95a7951245bc6d0`,
-`resources/profiles/X 4 Series/machine/Qidi X-Max 4 0.4 nozzle.json`.
-This derived profile content retains the upstream AGPL-3.0 licensing; see the
-source repository's LICENSE and attribution. The numbered patch is not yet a
-validated general feature port and does not claim to fix starting-filament selection.
+Profile content and protocol behavior are adapted from QIDI Studio. Core changes
+integrate that behavior into current Orca's existing architecture. Tests and Linux
+integration tooling are downstream additions. The checklist records validation
+separately from implementation; a patch's presence does not certify hardware use.

@@ -1,38 +1,61 @@
-# Initial investigation
+# Source inventory and validation status
 
-## Environment
+Both official repositories are cloned. Exact revisions and URLs are pinned in
+`sources.json`; this integration repository stores the ordered patches and build
+workflow. Both projects use AGPL-3.0; their licenses and existing notices remain
+in the source trees. The root LICENSE is copied from QIDI Studio.
 
-Host: Fedora 44 x86_64, approximately 3.7 GiB RAM and 17 GiB available disk at start.
-Git, GitHub CLI, CMake, Ninja and GCC are present. Several GUI/build development
-packages are missing; noninteractive sudo is unavailable. Assess a GitHub Actions
-Linux build before requiring privileged host package installation.
+## Existing Orca support
 
-## Sources
+The pinned Orca already has MAX4 machine profiles for 0.2/0.4/0.6/0.8 mm nozzles,
+all 16 MAX4 process profiles, 234 of the 247 QIDI MAX4 filament files, the QIDI
+printer agent, Moonraker LAN upload/monitoring, 3MF plate selection and Box slot
+synchronization. The port extends those paths rather than replacing Orca networking.
 
-- https://github.com/OrcaSlicer/OrcaSlicer — main; clone in progress.
-- https://github.com/QIDITECH/QIDIStudio — main, observed HEAD
-  `403b619d56147160bb883e94f95a7951245bc6d0`; clone in progress.
+`validation/max4-profile-inventory.json` compares inherited source values after
+porting the 13 missing filament files: 268 model/machine/process/filament entries,
+no missing counterparts or unresolved inheritance. Differences include deliberate
+Orca schema adaptations and tuning. This report does not evaluate engine defaults
+or certify equal print quality. Fan, speed, cooling and prime tower differences
+still require review; wholesale replacement would change existing Orca behavior.
 
-## Findings requiring further verification
+## Initial-filament path
 
-QIDI's MAX4 is named `X-Max 4` in its profiles, under `resources/profiles/X 4 Series`.
-The 0.4 mm profile has explicit Box support, chamber control, MQTT/3MF capability,
-multi-box, polar cooler and timelapse flags. Its start G-code invokes
-`BOX_PRINT_START EXTRUDER=[initial_no_support_extruder]` and later `T[initial_tool]`.
-These placeholders must be traced through the slicing engine before conversion.
+Both engines export logical filament indices through `initial_tool` and
+`initial_no_support_extruder`. The MAX4 start macro uses those indices, while
+submission saves `value_tN = 'slotM'` to translate logical N to physical M.
+Unused indices must stay in place: `[-1,-1,5]` means logical filament 2 uses slot 5.
 
-`src/slic3r/GUI/Jobs/PrintJob.cpp` passes `ams_mapping`, `ams_mapping2`,
-`ams_mapping_info`, nozzle mapping and `enable_multi_box` into QIDI print parameters.
-Thus the physical slot may depend on submission metadata as well as G-code.
-No root cause or fix for the user's starting-filament bug is established yet.
+QIDI Studio explicitly sets `enable_box` before saving mappings. Upstream Orca
+omits that mode selection. The port adds it and distinguishes external-spool jobs.
+This is a candidate contributor to the reported failure, not a hardware-confirmed
+root cause. Complete slicing/submission regression coverage is pending.
 
-`src/slic3r/Utils/NetworkAgent.cpp` dynamically loads `libqidi_networking.so` on
-Linux and resolves `qidi_network_*` functions. Its implementation, distribution
-terms, ABI availability and alternatives need investigation before shipping a
-network-enabled port. Preserve Orca's existing network backends.
+The public MAX4 firmware reference at QIDITECH/QIDI_MAX4 revision
+`47fc14cefe064dbd30b90582429fe650883ae900` shows that a local
+`/printer/print/start` request does not consume the cloud-only `consumable` field.
+Local mappings therefore remain explicit SAVE_VARIABLE commands, ordered before
+print start. Firmware source inspection is not evidence of the installed version.
 
-## Validation status
+## Network dependencies
 
-Only source inspection and build-environment inspection have occurred. No
-compilation, profile loading, persistence, slicing, protocol mock, or physical
-printer tests have passed yet. No printer has been contacted.
+QIDI Studio dynamically loads `libqidi_networking.so` for its proprietary network
+API. Its public source also implements LAN operations directly via Moonraker.
+This port uses the existing Orca HTTP/WebSocket backend and those local protocols;
+it does not bundle the QIDI network binary. QIDI account/cloud printing and its
+MQTT/tunnel stack are not implemented. Existing Orca backends remain available.
+
+## Software validation to date
+
+- All-vendor profile structural check: 72 bundles, zero errors/warnings.
+- Qidi profile version check: passed, bundle 02.05.00.20 to 02.05.00.22.
+- Six numbered patches reproduce the local downstream Git tree exactly.
+- Production protocol helper bodies compile in isolation with C++17 and warnings
+  treated as errors; sparse mappings, Box mode, chamber, RFID and load/unload
+  assertions pass. This harness does not compile the full application.
+- Full baseline and patched Linux builds are running on GitHub Actions. No full
+  compilation, CTest, GUI profile loading/persistence or actual slicing success
+  is recorded yet. HTTP integration tests and packaging validation are pending.
+
+No printer has been contacted. Physical slot selection, filament motion, heating,
+printing and firmware compatibility remain unverified and require authorization.
