@@ -64,7 +64,7 @@ report = {'binary': str(binary), 'binary_sha256': hashlib.sha256(binary.read_byt
           'hardware_contacted': False, 'cases': []}
 
 
-def check_case(tag, model_path, options, expected_temperature):
+def check_case(tag, model_path, options, expected_temperature, expected_tool=0):
     directory = output / tag
     directory.mkdir()
     datadir = directory / 'datadir'
@@ -81,8 +81,9 @@ def check_case(tag, model_path, options, expected_temperature):
         with zipfile.ZipFile(directory / 'out.3mf') as archive:
             gcode = archive.read('Metadata/plate_1.gcode').decode()
             config = json.loads(archive.read('Metadata/project_settings.config'))
-        required = [r'^BOX_PRINT_START EXTRUDER=0\b', r'^T0\s*$',
-                    rf'^BOX_TEMP_SET VT0={expected_temperature}\s*$', r'^PRINT_END\s*$']
+        temperatures = expected_temperature if isinstance(expected_temperature, list) else [expected_temperature]
+        required = [rf'^BOX_PRINT_START EXTRUDER={expected_tool}\b', rf'^T{expected_tool}\s*$',
+                    rf'^BOX_TEMP_SET VT{expected_tool}={temperatures[expected_tool]}\s*$', r'^PRINT_END\s*$']
         for pattern in required:
             if not re.search(pattern, gcode, re.M):
                 entry['errors'].append(f'Missing G-code: {pattern}')
@@ -91,7 +92,7 @@ def check_case(tag, model_path, options, expected_temperature):
         if re.search(r'\[(?:initial_tool|initial_no_support_extruder)\]', '\n'.join(line for line in gcode.splitlines() if not line.lstrip().startswith(';'))):
             entry['errors'].append('Unexpanded initial-tool placeholder')
         stored = config.get('box_temperature')
-        if stored not in ([str(expected_temperature)], [expected_temperature]):
+        if stored not in ([str(value) for value in temperatures], temperatures):
             entry['errors'].append(f'Box temperature did not persist: {stored!r}')
     except (OSError, RuntimeError, KeyError, ValueError, zipfile.BadZipFile, subprocess.TimeoutExpired) as error:
         entry['errors'].append(str(error))
@@ -125,6 +126,29 @@ project = check_case('persist-write', model, ['--load-settings',
     '--load-filaments', str(custom)], 45)
 if project:
     check_case('persist-reload', project, [], 45)
+
+# Logical filament 2 must remain tool 2 when the first two entries are unused.
+# Physical Box slots are a separate submission choice; no slot is baked into this slice.
+process_values = resolved(catalog[('process', processes['0.4'])])
+for key in ['inherits', 'include', 'setting_id']:
+    process_values.pop(key, None)
+process_values.update(name='Offline QIDI unused leading filaments', **{'from':'User'})
+for key in ['sparse_infill_filament_id', 'internal_solid_filament_id', 'top_surface_filament_id',
+            'bottom_surface_filament_id', 'outer_wall_filament_id', 'inner_wall_filament_id']:
+    process_values[key] = '3'
+process_values.update(skirt_loops='0', brim_type='no_brim', enable_prime_tower='0')
+process_path = output / 'unused-leading-process.json'
+process_path.write_text(json.dumps(process_values, indent=2) + '\n')
+materials = []
+for index, temperature in enumerate([35, 40, 45]):
+    values['name'] = f'Offline QIDI logical filament {index}'
+    values['box_temperature'] = [str(temperature)]
+    path = output / f'logical-filament-{index}.json'
+    path.write_text(json.dumps(values, indent=2) + '\n')
+    materials.append(str(path))
+check_case('unused-leading-filaments', model, ['--load-settings',
+    f'{profiles}/machine/Qidi X-Max 4 0.4 nozzle.json;{process_path}',
+    '--load-filaments', ';'.join(materials)], [35, 40, 45], expected_tool=2)
 failures = sum(not case['passed'] for case in report['cases'])
 print(f'{len(report["cases"])} offline slicing cases, {failures} failed. No printer was contacted.')
 raise SystemExit(bool(failures))

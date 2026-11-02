@@ -17,7 +17,8 @@ cd build/source
 ./build_linux.sh -u
 ./build_linux.sh -drlL -j 2
 ./build_linux.sh -sitrlL -j 2
-xvfb-run -a ctest --test-dir build -C Release --output-on-failure --timeout 300
+CTEST_PARALLEL_LEVEL=2 xvfb-run -a ./scripts/run_unit_tests.sh build/tests Release
+xvfb-run -a ctest --test-dir build/tests -C Release -L RequiresApp --no-tests=error --output-on-failure --timeout 300
 python3 scripts/orca_profile_tool.py check
 ```
 
@@ -26,6 +27,9 @@ sudo. The source preparation script refuses an existing destination. Source
 commits are pinned in `sources.json`, and numbered patches apply in order.
 Upstream dependency recipes govern third-party downloads; the runner image,
 package repositories and some build utilities are not bit-for-bit pinned.
+Install `ccache` and `xvfb` with the build prerequisites. The upstream unit-test
+runner installs its pinned NumPy into the bundled test interpreter and excludes
+tests already labelled NotWorking. CLI regression tests run separately.
 
 The equivalent GitHub Actions job is **Linux integration build**, triggered
 manually. It uploads the AppImage and available test/configuration logs. A run
