@@ -66,6 +66,10 @@ jobs:
         run: |
           set -o pipefail
           ./build_linux.sh -sitrlL -j 2 2>&1 | tee ../compile.log
+          shopt -s nullglob
+          images=(build/*.AppImage)
+          test "${#images[@]}" -eq 1
+          test -s "${images[0]}"
       - name: Unit tests
         working-directory: source
         run: timeout 45m xvfb-run -a ./scripts/run_unit_tests.sh build/tests Release
