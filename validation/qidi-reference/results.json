@@ -1,0 +1,67 @@
+{
+  "reference_release": "QIDIStudio v2.07.02.73 Ubuntu24 x86_64",
+  "asset_sha256": "b0f39d5f11a3ccae0d353c19ce17e4822c7e18beb4c0432a6994737c18a276f8",
+  "source_profiles_commit": "403b619d56147160bb883e94f95a7951245bc6d0",
+  "runtime": "org.gnome.Platform/x86_64/50",
+  "network": "disabled with flatpak --unshare=network",
+  "hardware_verified": false,
+  "cases": [
+    {
+      "case": "single",
+      "exit_code": 0,
+      "output_sha256": "ed53cd12162ac69893180d55fbe3e6af8699a9c1cb3b8c8c29ca729892b5979a"
+    },
+    {
+      "case": "unused-leading",
+      "exit_code": 0,
+      "output_sha256": "58982e0739ca6a58d91cade3cc097cd87b05d1e4d67ff3a6f3162c04c369c171",
+      "input": "sparse-project.3mf",
+      "input_sha256": "35e23d6208bcfad4866912d3fa2c9d76c91303a628a9258c02bd5909fcc1acd6",
+      "tool_trace": [
+        "BOX_TEMP_SET VT2=45",
+        "BOX_PRINT_START EXTRUDER=2 HOTENDTEMP=240",
+        "M109 S220",
+        "M104 S140",
+        "M109 S220",
+        "T2",
+        "M104 S220",
+        "M104 S210 ; set nozzle temperature",
+        "M104 S0"
+      ]
+    },
+    {
+      "case": "support-first",
+      "exit_code": 0,
+      "output_sha256": "9afda431a3af681fdb1c60c6eeca538dcdf5b08c9b7befeddac544e98fb817e1",
+      "input": "support-first-project.3mf",
+      "input_sha256": "d0afa9c2c7fa964be6fe68efc0db17c900216077dca86ef3be3d224f3f259267",
+      "tool_trace": [
+        "BOX_TEMP_SET VT0=35 VT2=45",
+        "BOX_PRINT_START EXTRUDER=2 HOTENDTEMP=240",
+        "M109 S200",
+        "M104 S140",
+        "M109 S200",
+        "T0",
+        "M104 S200",
+        "M104 S200",
+        "T0",
+        "M104 S240",
+        "M104 S190",
+        "M104 S200",
+        "M104 S210 ; set nozzle temperature",
+        "M104 S200",
+        "T2",
+        "M104 S240",
+        "M104 S200",
+        "M104 S210",
+        "M104 S0"
+      ]
+    }
+  ],
+  "limits": [
+    "CLI slicing and G-code only; no printer connection",
+    "Thumbnail rendering failed in the runtime; not claimed validated",
+    "Reference G-code parser logged Invalid T command for TIMELAPSE_TAKE_FRAME; slice still exited 0",
+    "Raw multifilament CLI preset loading failed; saved 3MF workflow passed"
+  ]
+}
