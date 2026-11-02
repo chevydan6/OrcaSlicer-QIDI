@@ -1,0 +1,108 @@
+diff --git a/src/libslic3r/Preset.cpp b/src/libslic3r/Preset.cpp
+index 8f4dc288..2bb368cd 100644
+--- a/src/libslic3r/Preset.cpp
++++ b/src/libslic3r/Preset.cpp
+@@ -1618,7 +1618,7 @@ static std::vector<std::string> s_Preset_printer_options {
+     "nozzle_height", "master_extruder_id",
+     "default_print_profile", "inherits",
+     "scan_first_layer", "enable_power_loss_recovery", "wrapping_detection_layers", "wrapping_exclude_area", "machine_load_filament_time", "machine_unload_filament_time", "machine_tool_change_time", "time_cost", "machine_pause_gcode", "template_custom_gcode",
+-    "nozzle_type", "nozzle_hrc","auxiliary_fan", "fan_direction", "nozzle_volume","upward_compatible_machine", "z_hop_types", "travel_slope", "retract_lift_enforce","support_chamber_temp_control","support_box_temp_control","support_air_filtration","support_cooling_filter","cooling_filter_enabled","printer_structure","farthest_point_timelapse",
++    "nozzle_type", "nozzle_hrc","auxiliary_fan", "fan_direction", "nozzle_volume","upward_compatible_machine", "z_hop_types", "travel_slope", "retract_lift_enforce","support_chamber_temp_control","support_box_temp_control","is_support_multi_box","support_air_filtration","support_cooling_filter","cooling_filter_enabled","printer_structure","farthest_point_timelapse",
+     "best_object_pos", "head_wrap_detect_zone",
+     "host_type", "print_host", "printhost_apikey", "flashforge_serial_number", "bbl_use_printhost", "printer_agent",
+     "print_host_webui",
+diff --git a/src/libslic3r/PrintConfig.cpp b/src/libslic3r/PrintConfig.cpp
+index 9b203d36..5a86745f 100644
+--- a/src/libslic3r/PrintConfig.cpp
++++ b/src/libslic3r/PrintConfig.cpp
+@@ -8024,6 +8024,12 @@ void PrintConfigDef::init_fff_params()
+     def->set_default_value(new ConfigOptionBools{false});
+ 
+     // QIDI Studio Box heating settings. Disabled unless the printer declares support.
++    def = this->add("is_support_multi_box", coBool);
++    def->label = L("QIDI Box support");
++    def->tooltip = L("Enable QIDI Box selection and slot mapping when submitting a print.");
++    def->mode = comAdvanced;
++    def->set_default_value(new ConfigOptionBool(false));
++
+     def = this->add("support_box_temp_control", coBool);
+     def->label = L("Support QIDI Box temperature control");
+     def->tooltip = L("Enable QIDI Box temperature commands in generated G-code.");
+diff --git a/src/slic3r/GUI/Tab.cpp b/src/slic3r/GUI/Tab.cpp
+index 8bd82815..7bbefba9 100644
+--- a/src/slic3r/GUI/Tab.cpp
++++ b/src/slic3r/GUI/Tab.cpp
+@@ -5659,6 +5659,7 @@ void TabPrinter::build_fff()
+         optgroup->append_single_option_line("auxiliary_fan", "printer_basic_information_accessory#auxiliary-part-cooling-fan");
+         optgroup->append_single_option_line("fan_direction");
+         optgroup->append_single_option_line("support_chamber_temp_control", "printer_basic_information_accessory#support-controlling-chamber-temperature");
++        optgroup->append_single_option_line("is_support_multi_box");
+         optgroup->append_single_option_line("support_box_temp_control");
+         optgroup->append_single_option_line("support_air_filtration", "printer_basic_information_accessory#support-air-filtration");
+         optgroup->append_single_option_line("cooling_filter_enabled");
+diff --git a/src/slic3r/Utils/QidiPrinterAgent.cpp b/src/slic3r/Utils/QidiPrinterAgent.cpp
+index 528c11c1..e9235aa7 100644
+--- a/src/slic3r/Utils/QidiPrinterAgent.cpp
++++ b/src/slic3r/Utils/QidiPrinterAgent.cpp
+@@ -120,9 +120,24 @@ std::string QidiPrinterAgent::build_tool_slot_script(const std::string& ams_mapp
+     return script;
+ }
+ 
++std::string QidiPrinterAgent::build_box_selection_script(const PrintParams& params)
++{
++    if (!params.task_use_ams)
++        return "SAVE_VARIABLE VARIABLE=enable_box VALUE=0";
++    const std::string mapping = build_tool_slot_script(params.ams_mapping);
++    if (mapping.empty())
++        return {};
++    return "SAVE_VARIABLE VARIABLE=enable_box VALUE=1\n" + mapping;
++}
++
+ bool QidiPrinterAgent::print_uploaded_file(const PrintParams& params, const std::string& filename)
+ {
+-    const std::string script = build_tool_slot_script(params.ams_mapping);
++    const auto* bundle = GUI::wxGetApp().preset_bundle;
++    const auto* support = bundle ? bundle->printers.get_edited_preset().config.option<ConfigOptionBool>("is_support_multi_box") : nullptr;
++    const bool has_box_support = support && support->value;
++    const std::string script = has_box_support ? build_box_selection_script(params) : build_tool_slot_script(params.ams_mapping);
++    if (has_box_support && params.task_use_ams && script.empty())
++        return false;
+     if (!script.empty() && !send_gcode_sync(device_info.dev_id, script)) {
+         return false;
+     }
+diff --git a/src/slic3r/Utils/QidiPrinterAgent.hpp b/src/slic3r/Utils/QidiPrinterAgent.hpp
+index 67fb683e..6dab5d43 100644
+--- a/src/slic3r/Utils/QidiPrinterAgent.hpp
++++ b/src/slic3r/Utils/QidiPrinterAgent.hpp
+@@ -27,6 +27,8 @@ public:
+ 
+     // Builds the SAVE_VARIABLE lines that make each T<n> macro load the Box slot picked for filament n
+     static std::string build_tool_slot_script(const std::string& ams_mapping);
++    // QIDI Studio explicitly selects Box/external mode before starting a job.
++    static std::string build_box_selection_script(const PrintParams& params);
+     // Builds the body of Moonraker's print start for an uploaded file, naming the plate to print when it is a 3MF
+     static nlohmann::json print_start_request(const PrintParams& params, const std::string& filename);
+ 
+diff --git a/tests/slic3rutils/test_qidi_printer_agent.cpp b/tests/slic3rutils/test_qidi_printer_agent.cpp
+index ab7b24dd..8f6df66e 100644
+--- a/tests/slic3rutils/test_qidi_printer_agent.cpp
++++ b/tests/slic3rutils/test_qidi_printer_agent.cpp
+@@ -59,3 +59,18 @@ TEST_CASE("The print start of a 3MF names the plate to print", "[QidiPrinterAgen
+           nlohmann::json{{"filename", "Cube.gcode.3mf"}, {"plateindex", "2"}});
+     CHECK(QidiPrinterAgent::print_start_request(params, "Cube.gcode") == nlohmann::json{{"filename", "Cube.gcode"}});
+ }
++
++TEST_CASE("QIDI print submission selects Box mode and preserves sparse filament mappings", "[QidiPrinterAgent]")
++{
++    PrintParams params{};
++    params.task_use_ams = true;
++    params.ams_mapping = "[-1, -1, 5]";
++    CHECK(QidiPrinterAgent::build_box_selection_script(params) ==
++          "SAVE_VARIABLE VARIABLE=enable_box VALUE=1\n"
++          "SAVE_VARIABLE VARIABLE=value_t2 VALUE=\"'slot5'\"");
++    params.task_use_ams = false;
++    CHECK(QidiPrinterAgent::build_box_selection_script(params) == "SAVE_VARIABLE VARIABLE=enable_box VALUE=0");
++    params.task_use_ams = true;
++    params.ams_mapping = "[]";
++    CHECK(QidiPrinterAgent::build_box_selection_script(params).empty());
++}
