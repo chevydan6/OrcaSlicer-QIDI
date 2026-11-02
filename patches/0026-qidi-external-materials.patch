@@ -1,0 +1,235 @@
+From d72215252138e9db6d8de4d340ce07826af84943 Mon Sep 17 00:00:00 2001
+From: chevydan6 <339888127+chevydan6@users.noreply.github.com>
+Date: Tue, 3 Nov 2026 08:18:43 +0900
+Subject: [PATCH] Port external spool telemetry and preserve composite material
+ types
+
+---
+ src/slic3r/GUI/DeviceCore/DevFilaSystem.cpp   | 31 ++++++------
+ src/slic3r/GUI/DeviceCore/DevFilaSystem.h     |  2 +
+ src/slic3r/GUI/DeviceManager.cpp              |  9 ++++
+ src/slic3r/Utils/QidiPrinterAgent.cpp         | 49 ++++++++++++++-----
+ tests/slic3rutils/test_qidi_printer_agent.cpp | 11 +++++
+ 5 files changed, 75 insertions(+), 27 deletions(-)
+
+diff --git a/src/slic3r/GUI/DeviceCore/DevFilaSystem.cpp b/src/slic3r/GUI/DeviceCore/DevFilaSystem.cpp
+index 83a4c8c1..5d068468 100644
+--- a/src/slic3r/GUI/DeviceCore/DevFilaSystem.cpp
++++ b/src/slic3r/GUI/DeviceCore/DevFilaSystem.cpp
+@@ -388,6 +388,22 @@ bool DevFilaSystem::IsBBL_Filament(std::string tag_uid)
+     return false;
+ }
+ 
++std::string DevFilaSystemParser::ResolveQidiFilament(const nlohmann::json& update, const PresetCollection& filaments)
++{
++    if (!update.contains("filament_type") || !update["filament_type"].is_string()) return {};
++    const auto type = update["filament_type"].get<std::string>();
++    const auto name = update.value("filament_str", std::string());
++    std::string resolved_id;
++    for (const auto& preset : filaments.get_presets()) {
++        if (!preset.is_visible || !preset.is_compatible) continue;
++        const auto* types = preset.config.option<ConfigOptionStrings>("filament_type");
++        if (!types || types->values.empty() || types->values.front() != type) continue;
++        if (resolved_id.empty()) resolved_id = preset.filament_id;
++        if (!name.empty() && (preset.alias == name || preset.name == name)) return preset.filament_id;
++    }
++    return resolved_id;
++}
++
+ void DevFilaSystemParser::UpdateQidiTray(DevAmsTray& tray, const nlohmann::json& update,
+                                          const std::string& resolved_filament_id)
+ {
+@@ -695,20 +711,7 @@ void DevFilaSystemParser::ParseV1_0(const json& jj, MachineObject* obj, DevFilaS
+                             }
+                             std::string resolved_id;
+                             auto* bundle = GUI::wxGetApp().preset_bundle;
+-                            if (bundle && update.contains("filament_type") && update["filament_type"].is_string()) {
+-                                const auto type = update["filament_type"].get<std::string>();
+-                                const auto name = update.value("filament_str", std::string());
+-                                for (const auto& preset : bundle->filaments.get_presets()) {
+-                                    if (!preset.is_visible || !preset.is_compatible) continue;
+-                                    const auto* types = preset.config.option<ConfigOptionStrings>("filament_type");
+-                                    if (!types || types->values.empty() || types->values.front() != type) continue;
+-                                    if (resolved_id.empty()) resolved_id = preset.filament_id;
+-                                    if (!name.empty() && (preset.alias == name || preset.name == name)) {
+-                                        resolved_id = preset.filament_id;
+-                                        break;
+-                                    }
+-                                }
+-                            }
++                            if (bundle) resolved_id = ResolveQidiFilament(update, bundle->filaments);
+                             UpdateQidiTray(*tray, update, resolved_id);
+                             const auto bit = 1UL << ((ams_id[0] - '0') * 4 + (id[0] - '0'));
+                             if (tray->is_exists) obj->tray_exist_bits |= bit;
+diff --git a/src/slic3r/GUI/DeviceCore/DevFilaSystem.h b/src/slic3r/GUI/DeviceCore/DevFilaSystem.h
+index 3615fc8f..144458e3 100644
+--- a/src/slic3r/GUI/DeviceCore/DevFilaSystem.h
++++ b/src/slic3r/GUI/DeviceCore/DevFilaSystem.h
+@@ -23,6 +23,7 @@
+ namespace Slic3r
+ {
+ class MachineObject;
++class PresetCollection;
+ struct DevFilamentDryingPreset;
+ 
+ /**
+@@ -419,6 +420,7 @@ public:
+     static void ParseV1_0(const nlohmann::json& print_json, MachineObject* obj, DevFilaSystem* system, bool key_field_only);
+ 
+     // QIDI sends partial slot updates, unlike Bambu's complete tray arrays.
++    static std::string ResolveQidiFilament(const nlohmann::json& update, const PresetCollection& filaments);
+     static void UpdateQidiTray(DevAmsTray& tray, const nlohmann::json& update, const std::string& resolved_filament_id);
+     static void ParseAgentFilament(const nlohmann::json& data, MachineObject* obj, DevFilaSystem* system);
+ };
+diff --git a/src/slic3r/GUI/DeviceManager.cpp b/src/slic3r/GUI/DeviceManager.cpp
+index f82c7586..dfcb3196 100644
+--- a/src/slic3r/GUI/DeviceManager.cpp
++++ b/src/slic3r/GUI/DeviceManager.cpp
+@@ -4205,6 +4205,15 @@ int MachineObject::parse_json(std::string tunnel, std::string payload, bool key_
+                         }
+                     }
+ 
++                    if (!key_field_only && printer_agent_id == "qidi" && jj.contains("qidi_external_slot") && jj["qidi_external_slot"].is_object()) {
++                        if (vt_slot.empty()) vt_slot.emplace_back(std::to_string(VIRTUAL_TRAY_MAIN_ID));
++                        const auto* bundle = GUI::wxGetApp().preset_bundle;
++                        const auto& update = jj["qidi_external_slot"];
++                        DevFilaSystemParser::UpdateQidiTray(vt_slot[0], update,
++                            bundle ? DevFilaSystemParser::ResolveQidiFilament(update, bundle->filaments) : std::string());
++                        ams_support_virtual_tray = true;
++                    }
++
+                     /*parse new print data*/
+                     try {
+                         parse_new_info(jj);
+diff --git a/src/slic3r/Utils/QidiPrinterAgent.cpp b/src/slic3r/Utils/QidiPrinterAgent.cpp
+index 75165ebf..0745171c 100644
+--- a/src/slic3r/Utils/QidiPrinterAgent.cpp
++++ b/src/slic3r/Utils/QidiPrinterAgent.cpp
+@@ -5,6 +5,7 @@
+ #include "bambu_networking.hpp"
+ #include "libslic3r/PresetBundle.hpp"
+ #include "slic3r/GUI/GUI_App.hpp"
++#include "slic3r/GUI/DeviceCore/DevFilaSystem.h"
+ 
+ #include "nlohmann/json.hpp"
+ #include <boost/algorithm/string.hpp>
+@@ -349,25 +350,35 @@ std::optional<int> QidiPrinterAgent::reported_box_count(const nlohmann::json& st
+ nlohmann::json QidiPrinterAgent::decoded_box_slot(const nlohmann::json& status, int slot)
+ {
+     nlohmann::json result = nlohmann::json::object();
+-    if (slot < 0 || slot >= 16)
++    if (slot < 0 || slot > 16)
+         return result;
+     const auto controller = status.find("multi_color_controller");
+     if (controller == status.end() || !controller->is_object())
+         return result;
+     const auto nested = controller->find("box");
+     const auto& box = nested != controller->end() && nested->is_object() ? *nested : *controller;
+-    const auto prefix = "box" + std::to_string(slot / 4) + "_";
+-    const auto index = std::to_string(slot % 4);
+-    const auto inserted = box.find(prefix + "box_inserted_" + index);
+-    if (inserted != box.end() && (inserted->is_boolean() || inserted->is_number_integer()))
+-        result["present"] = inserted->is_boolean() ? inserted->get<bool>() : *inserted != 0;
++    const nlohmann::json* fields = &box;
++    std::string prefix;
++    if (slot == 16) {
++        const nlohmann::json::json_pointer external("/extra/filament_info");
++        if (!controller->contains(external) || !(*controller)[external].is_object()) return result;
++        fields = &(*controller)[external];
++        result["present"] = true; // QIDI Studio's external entry is always available.
++    } else {
++        const auto box_prefix = "box" + std::to_string(slot / 4) + "_";
++        const auto index = std::to_string(slot % 4);
++        const auto inserted = box.find(box_prefix + "box_inserted_" + index);
++        if (inserted != box.end() && (inserted->is_boolean() || inserted->is_number_integer()))
++            result["present"] = inserted->is_boolean() ? inserted->get<bool>() : *inserted != 0;
++        prefix = box_prefix + "filament_info_" + index + "_";
++    }
+     for (const char* key : {"filament_type", "filament_str", "vendor_str"}) {
+-        const auto value = box.find(prefix + "filament_info_" + index + "_" + key);
+-        if (value != box.end() && value->is_string())
++        const auto value = fields->find(prefix + key);
++        if (value != fields->end() && value->is_string())
+             result[key] = *value;
+     }
+-    const auto colors = box.find(prefix + "filament_info_" + index + "_color_rgb_str");
+-    if (colors != box.end() && colors->is_array() && !colors->empty() && (*colors)[0].is_string())
++    const auto colors = fields->find(prefix + "color_rgb_str");
++    if (colors != fields->end() && colors->is_array() && !colors->empty() && (*colors)[0].is_string())
+         result["color"] = (*colors)[0];
+     return result;
+ }
+@@ -390,6 +401,8 @@ void QidiPrinterAgent::append_box_status(const nlohmann::json& status, nlohmann:
+                 break;
+             }
+     }
++    const auto external = decoded_box_slot(status, 16);
++    if (!external.empty()) payload["print"]["qidi_external_slot"] = external;
+     const auto count = reported_box_count(status);
+     // The AMS parser treats this as a complete unit list, so never infer count
+     // from a partial temperature update and accidentally remove other Boxes.
+@@ -726,14 +739,16 @@ bool QidiPrinterAgent::fetch_slot_info(const std::string&        base_url,
+ 
+         if (tray.has_filament) {
+             // Look up filament type name from dictionary
+-            std::string filament_name = "PLA";
++            std::string filament_name;
+             auto filament_it = dict.filaments.find(filament_type);
+             if (filament_it != dict.filaments.end()) {
+                 filament_name = filament_it->second;
+             }
+             if (decoded.contains("filament_type") && !decoded["filament_type"].get_ref<const std::string&>().empty())
+                 filament_name = decoded["filament_type"].get<std::string>();
+-            tray.tray_type = normalize_filament_type(filament_name);
++            // Modern decoded types are canonical, including PA6-CF / ASA-CF.
++            // Do not collapse them to the unreinforced base polymer.
++            tray.tray_type = decoded.contains("filament_type") ? filament_name : normalize_filament_type(filament_name);
+ 
+             // Try Qidi-specific setting ID first; fall back to visible preset by type
+             std::string setting_id = build_setting_id(filament_type, vendor_type, tray.tray_type);
+@@ -743,7 +758,9 @@ bool QidiPrinterAgent::fetch_slot_info(const std::string&        base_url,
+             } else if (!setting_id.empty() && has_visible_base_preset(bundle->filaments, setting_id)) {
+                 tray.tray_info_idx = setting_id;
+             } else {
+-                tray.tray_info_idx = bundle->filaments.filament_id_by_type(tray.tray_type);
++                auto material = decoded;
++                material["filament_type"] = tray.tray_type;
++                tray.tray_info_idx = DevFilaSystemParser::ResolveQidiFilament(material, bundle->filaments);
+             }
+ 
+             // Look up color from dictionary
+@@ -941,6 +958,12 @@ std::string QidiPrinterAgent::normalize_filament_type(const std::string& filamen
+ {
+     const std::string upper = trim_and_upper(filament_type);
+ 
++    // Legacy dictionaries also contain distinct composite/support material types.
++    // An unrecognized compound should remain a placeholder, never become plain PLA/PA.
++    if (upper.find('-') != std::string::npos)
++        return upper;
++    if (upper == "ULTRAPA")
++        return "UltraPA";
+     if (upper.find("PLA") != std::string::npos)
+         return "PLA";
+     if (upper.find("ABS") != std::string::npos)
+diff --git a/tests/slic3rutils/test_qidi_printer_agent.cpp b/tests/slic3rutils/test_qidi_printer_agent.cpp
+index 6e2f8b16..957e43aa 100644
+--- a/tests/slic3rutils/test_qidi_printer_agent.cpp
++++ b/tests/slic3rutils/test_qidi_printer_agent.cpp
+@@ -501,3 +501,14 @@ TEST_CASE("QIDI excludes objects by firmware name and rejects command injection"
+         {"excluded_objects", {"tower"}}}}}, payload);
+     CHECK(payload["print"]["qidi_print_objects"] == nlohmann::json::array({"cube"}));
+ }
++
++TEST_CASE("QIDI external spool metadata is independent of Box count", "[QidiPrinterAgent]")
++{
++    nlohmann::json payload;
++    QidiPrinterAgent::append_box_status({{"multi_color_controller", {{"extra", {{"filament_info", {
++        {"filament_type", "PLA"}, {"filament_str", "QIDI PLA Rapido"}, {"color_rgb_str", {"112233"}}}}}}}}}, payload);
++    CHECK(payload["print"]["qidi_external_slot"]["present"] == true);
++    CHECK(payload["print"]["qidi_external_slot"]["filament_type"] == "PLA");
++    CHECK(payload["print"]["qidi_external_slot"]["color"] == "112233");
++    CHECK_FALSE(payload["print"].contains("ams"));
++}
+-- 
+2.56.0
+

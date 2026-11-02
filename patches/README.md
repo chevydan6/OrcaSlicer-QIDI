@@ -45,3 +45,5 @@ separately from implementation; a patch's presence does not certify hardware use
 24. `0024-qidi-mapping-validation.patch` snapshots used logical filament IDs with the job and validates every active mapping before HTTP submission. Invalid types/ranges/unsigned overflow reject the entire mapping; unused holes retain logical positions. Box/external mixing and multiple-material external change assist are rejected because no QIDI equivalent is implemented.
 
 25. `0025-qidi-object-exclusion.patch` ports PrinterTaskDispatcher's EXCLUDE_OBJECT operation using firmware-reported names. Native Print Options offers a named-object chooser during printing; already excluded names are omitted. Command strings are validated before dispatch. This avoids assuming Bambu numeric object IDs match Klipper object names.
+
+26. `0026-qidi-external-materials.patch` ports multi_color_controller.extra.filament_info to the native external spool, independent of Box count. Box/external resolution shares exact compatible type/name matching. Modern composite types are preserved; unknown materials no longer silently fall back to the first visible material.

@@ -73,6 +73,11 @@ start=gui_source.index('void DevFilaSystemParser::UpdateQidiTray')
 code += gui_source[start:gui_source.index('void DevFilaSystemParser::ParseV1_0',start)]
 code += r'''
 int main() {
+ nlohmann::json external;
+ QidiPrinterAgent::append_box_status({{"multi_color_controller",{{"extra",{{"filament_info",{{"filament_type","PLA"},{"color_rgb_str",{"112233"}}}}}}}}},external);
+ assert(external["print"]["qidi_external_slot"]["color"]=="112233");
+ assert(!external["print"].contains("ams"));
+
  assert(QidiPrinterAgent::control_script({{"command","qidi_exclude_objects"},{"objects",{"cube_id_5_copy_0"}}})=="EXCLUDE_OBJECT NAME=cube_id_5_copy_0");
  nlohmann::json object_status;
  QidiPrinterAgent::append_accessory_status({{"exclude_object",{{"objects",{{{"name","cube"}},{{"name","tower"}}}},{"excluded_objects",{"tower"}}}}},object_status);

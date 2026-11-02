@@ -13,6 +13,7 @@ The full integrated build and dedicated validation phase remain open.
 | Chamber heat | Profile temperatures and start macros | Native command translation, heater capability and live current/target telemetry | Isolated protocol checks pass; GUI and hardware pending |
 | Box temperature during printing | JSON values ignored by core | Persistent settings/UI; logical VT indices in generated code | CTests added; full slicing execution pending |
 | Box/external selection | Physical-slot mapping exists | Explicit enable_box; active-tool snapshot; reject missing/malformed mappings | Recording-transport submission order and stop-on-failure pass |
+| External spool monitoring | Generic virtual-tray interface | QIDI external material/color report and exact type resolution | Isolated decoder/partial-update checks pass; GUI/hardware pending |
 | Initial filament | Logical tool placeholders and mapping exist | Preserve sparse indices | Dedicated slicing/submission regression and physical check pending |
 | Load/unload | Native UI lacks QIDI translation | QIDI macros, selected physical slot | Isolated command checks pass; GUI/hardware pending |
 | Eject | Missing | QIDI-only control; hidden for box_v2 identity | Command checks pass; GUI/hardware pending |
