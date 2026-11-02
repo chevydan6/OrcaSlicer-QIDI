@@ -1,0 +1,177 @@
+diff --git a/src/slic3r/Utils/QidiPrinterAgent.hpp b/src/slic3r/Utils/QidiPrinterAgent.hpp
+index a2a579b3..a90e3d5c 100644
+--- a/src/slic3r/Utils/QidiPrinterAgent.hpp
++++ b/src/slic3r/Utils/QidiPrinterAgent.hpp
+@@ -61,6 +61,8 @@ protected:
+     std::string ams_unit_info() const override { return "0003"; }
+ 
+ private:
++    // Loopback transport tests configure an endpoint without opening a GUI session.
++    friend struct QidiPrinterAgentTestAccess;
+     bool set_timelapse_enabled(bool enabled) const;
+ 
+     struct QidiFilamentDict
+diff --git a/tests/slic3rutils/test_qidi_printer_agent.cpp b/tests/slic3rutils/test_qidi_printer_agent.cpp
+index 788e1622..90850487 100644
+--- a/tests/slic3rutils/test_qidi_printer_agent.cpp
++++ b/tests/slic3rutils/test_qidi_printer_agent.cpp
+@@ -3,6 +3,24 @@
+ #include <catch2/generators/catch_generators.hpp>
+ 
+ #include <string>
++#include <memory>
++#include <mutex>
++#include <thread>
++#include <utility>
++#include <vector>
++#include <cstddef>
++#include <boost/asio/io_context.hpp>
++#include <boost/asio/ip/address.hpp>
++#include <boost/asio/ip/tcp.hpp>
++#include <boost/beast/core/error.hpp>
++#include <boost/beast/core/flat_buffer.hpp>
++#include <boost/beast/http/message.hpp>
++#include <boost/beast/http/read.hpp>
++#include <boost/beast/http/status.hpp>
++#include <boost/beast/http/string_body.hpp>
++#include <boost/beast/http/write.hpp>
++#include <boost/filesystem/fstream.hpp>
++#include "test_utils.hpp"
+ 
+ #include <nlohmann/json.hpp>
+ 
+@@ -11,6 +29,134 @@
+ 
+ using namespace Slic3r;
+ 
++namespace Slic3r {
++struct QidiPrinterAgentTestAccess
++{
++    static void endpoint(QidiPrinterAgent& agent, const std::string& url)
++    {
++        agent.device_info.base_url = url;
++        agent.device_info.dev_id = "offline-fixture";
++        agent.device_info.api_key = "fixture-key";
++    }
++    static bool submit(QidiPrinterAgent& agent, const PrintParams& params)
++    { return agent.print_uploaded_file(params, "two plates.gcode.3mf"); }
++    static bool upload(QidiPrinterAgent& agent, const std::string& path)
++    { return agent.upload_gcode(path, "offline cube.gcode", agent.device_info.base_url, agent.device_info.api_key, {}, {}); }
++};
++}
++
++namespace {
++namespace net = boost::asio;
++namespace http = boost::beast::http;
++using tcp = net::ip::tcp;
++
++// Async loopback-only HTTP server: no real printer discovery, connection or commands.
++class QidiHttpFixture
++{
++public:
++    struct Request { std::string path, body, api_key; };
++    explicit QidiHttpFixture(std::size_t fail_at) : m_fail_at(fail_at)
++    {
++        accept();
++        m_thread = std::thread([this] { m_io.run(); });
++    }
++    ~QidiHttpFixture() { m_io.stop(); m_thread.join(); }
++    std::string url() const { return "http://127.0.0.1:" + std::to_string(m_acceptor.local_endpoint().port()); }
++    std::vector<Request> requests() { std::lock_guard<std::mutex> lock(m_mutex); return m_requests; }
++private:
++    struct Session {
++        explicit Session(tcp::socket stream) : socket(std::move(stream)) {}
++        tcp::socket socket;
++        boost::beast::flat_buffer buffer;
++        http::request<http::string_body> request;
++        http::response<http::string_body> response;
++    };
++    void accept()
++    {
++        m_acceptor.async_accept([this](boost::beast::error_code error, tcp::socket socket) {
++            if (error) return;
++            auto session = std::make_shared<Session>(std::move(socket));
++            http::async_read(session->socket, session->buffer, session->request,
++                [this, session](boost::beast::error_code error, std::size_t) {
++                    if (error) return;
++                    bool fail;
++                    {
++                        std::lock_guard<std::mutex> lock(m_mutex);
++                        m_requests.push_back({std::string(session->request.target()), session->request.body(),
++                                              std::string(session->request["X-Api-Key"])});
++                        fail = m_requests.size() == m_fail_at;
++                    }
++                    session->response = {fail ? http::status::internal_server_error : http::status::ok, 11};
++                    session->response.body() = fail ? "{\"error\":\"fixture failure\"}" : "{\"result\":\"ok\"}";
++                    session->response.prepare_payload();
++                    http::async_write(session->socket, session->response,
++                        [session](boost::beast::error_code, std::size_t) {});
++                });
++            accept();
++        });
++    }
++    net::io_context m_io;
++    tcp::acceptor m_acceptor{m_io, {net::ip::make_address("127.0.0.1"), 0}};
++    std::size_t m_fail_at;
++    std::mutex m_mutex;
++    std::vector<Request> m_requests;
++    std::thread m_thread;
++};
++}
++
++TEST_CASE("QIDI HTTP submission orders setup before the selected plate and stops on errors", "[QidiPrinterAgent][Http]")
++{
++    const std::size_t fail_at = GENERATE(0U, 1U, 2U, 3U, 4U, 5U);
++    QidiHttpFixture printer(fail_at);
++    QidiPrinterAgent agent("");
++    QidiPrinterAgentTestAccess::endpoint(agent, printer.url());
++    PrintParams params{};
++    params.plate_index = 2;
++    params.task_use_ams = true;
++    params.ams_mapping = "[-1,-1,5]";
++    params.task_bed_leveling = true;
++    params.task_record_timelapse = true;
++    params.extra_options = R"({"qidi":{"is_support_multi_box":true,"qidi_preprint_bed_leveling":true,"is_support_timelapse":true,"polar_cooler":false}})";
++    CHECK(QidiPrinterAgentTestAccess::submit(agent, params) == (fail_at == 0));
++    const auto requests = printer.requests();
++    REQUIRE(requests.size() == (fail_at == 0 ? 5 : fail_at));
++    for (const auto& request : requests)
++        CHECK(request.api_key == "fixture-key");
++    CHECK(requests[0].path == "/printer/gcode/script");
++    CHECK(nlohmann::json::parse(requests[0].body)["script"] ==
++          "SAVE_VARIABLE VARIABLE=enable_box VALUE=1\nSAVE_VARIABLE VARIABLE=value_t2 VALUE=\"'slot5'\"");
++    if (requests.size() > 1)
++        CHECK(nlohmann::json::parse(requests[1].body)["script"] == "G31");
++    if (requests.size() > 2)
++        CHECK(requests[2].path == "/machine/timelapse/settings?enabled=true");
++    if (requests.size() > 3)
++        CHECK(nlohmann::json::parse(requests[3].body)["script"] == "SAVE_VARIABLE VARIABLE=enable_polar_cooler VALUE=0");
++    if (requests.size() > 4) {
++        CHECK(requests[4].path == "/printer/print/start");
++        CHECK(nlohmann::json::parse(requests[4].body) == nlohmann::json{{"filename", "two plates.gcode.3mf"}, {"plateindex", "2"}});
++    }
++}
++
++TEST_CASE("QIDI HTTP upload stages the file without requesting an automatic print", "[QidiPrinterAgent][Http]")
++{
++    const std::size_t fail_at = GENERATE(0U, 1U);
++    QidiHttpFixture printer(fail_at);
++    QidiPrinterAgent agent("");
++    QidiPrinterAgentTestAccess::endpoint(agent, printer.url());
++    ScopedTemporaryFile file(".gcode");
++    {
++        boost::filesystem::ofstream stream(file.path());
++        stream << "; offline transport fixture\n";
++    }
++    CHECK(QidiPrinterAgentTestAccess::upload(agent, file.string()) == (fail_at == 0));
++    const auto requests = printer.requests();
++    REQUIRE(requests.size() == 1);
++    CHECK(requests[0].path == "/server/files/upload");
++    CHECK(requests[0].api_key == "fixture-key");
++    CHECK(requests[0].body.find("name=\"print\"\r\n\r\nfalse") != std::string::npos);
++    CHECK(requests[0].body.find("; offline transport fixture") != std::string::npos);
++}
++
+ TEST_CASE("A filament mapped to a Box slot saves that slot in its tool variable", "[QidiPrinterAgent]")
+ {
+     // Filament 2 is mapped to slot 5; filaments 0 and 1 have no slot.

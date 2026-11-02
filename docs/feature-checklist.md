@@ -21,7 +21,7 @@ The full integrated build and dedicated validation phase remain open.
 | Slot material/color editing | Native editor lacks QIDI translation | RGB/vendor/product command, guarded string literals | Isolated checks pass; re-sync/GUI pending |
 | Box monitoring | Filament sync only | Temperature/humidity; preserve tray metadata | Nested/flat firmware formats checked in isolation |
 | Start/end/change G-code | MAX4 macros present | Height guards and Box thermal preamble | Engine-generated G-code tests pending |
-| LAN printing | Moonraker upload, 3MF selected plate | Ordered Box mode/mapping/options before start | Full HTTP integration pending; no printer contacted |
+| LAN printing | Moonraker upload, 3MF selected plate | Ordered Box mode/mapping/options before start | Loopback HTTP tests added; execution pending; no printer contacted |
 | Bed leveling option | QIDI option ineffective/hidden | MAX4 G31/G32 selection | Recording-transport check passes |
 | Timelapse option | UI and frame macros exist | QIDI Moonraker settings request | Recording-transport check passes; actual HTTP pending |
 | Detection settings | Existing spaghetti/FOD controls | QIDI variable commands, sensitivity and reported settings | Isolated command checks pass; full GUI/hardware pending |

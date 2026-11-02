@@ -31,3 +31,5 @@ separately from implementation; a patch's presence does not certify hardware use
 
 17. `0017-qidi-chamber-capabilities.patch` exposes a reported QIDI chamber heater to native monitor display/edit controls, with a 0–65°C range and without the unrelated Bambu air-duct prompt.
 18. `0018-qidi-manual-cooler.patch` adds the QIDI Studio output-pin control and reported state to Print Options. It appears only when both installed-accessory and output-pin telemetry are available.
+
+19. `0019-qidi-http-validation.patch` adds a loopback HTTP fixture for the actual upload and submission transports, API-key headers, selected 3MF plate, ordered setup and stop-on-error. These full-library tests require the integrated build; the isolated helper harness is not evidence that they ran.
