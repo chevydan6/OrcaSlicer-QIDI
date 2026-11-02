@@ -26,3 +26,5 @@ Profile content and protocol behavior are adapted from QIDI Studio. Core changes
 integrate that behavior into current Orca's existing architecture. Tests and Linux
 integration tooling are downstream additions. The checklist records validation
 separately from implementation; a patch's presence does not certify hardware use.
+
+16. `0016-qidi-detection-controls.patch` connects existing spaghetti and foreign-object detection controls to QIDI Studio's `SetPrintOptions` LAN commands and saved-variable telemetry. Sensitivity converts between Orca lowercase and firmware uppercase.

@@ -56,6 +56,8 @@ for start,end in functions:
  code += source[source.index(start):source.index(end,source.index(start))]
 code += r'''
 int main() {
+ assert(QidiPrinterAgent::control_script({{"command","xcam_control_set"},{"module_name","fod_check"},{"control",true}}) == "SAVE_VARIABLE VARIABLE=enable_pre_print_model_check VALUE=1");
+ assert(QidiPrinterAgent::control_script({{"command","xcam_control_set"},{"module_name","spaghetti_detector"},{"control",false},{"halt_print_sensitivity","high"}}) == "SAVE_VARIABLE VARIABLE=enable_noodle_detection VALUE=0\nSAVE_VARIABLE VARIABLE=noodle_sensitivity_level VALUE=\"'HIGH'\"");
  assert(QidiPrinterAgent::build_tool_slot_script("[-1,-1,5]") == "SAVE_VARIABLE VARIABLE=value_t2 VALUE=\"'slot5'\"");
  assert(QidiPrinterAgent::build_tool_slot_script("[3,-1,0]") == "SAVE_VARIABLE VARIABLE=value_t0 VALUE=\"'slot3'\"\nSAVE_VARIABLE VARIABLE=value_t2 VALUE=\"'slot0'\"");
  assert(QidiPrinterAgent::build_tool_slot_script("[16]").empty());

@@ -1,0 +1,131 @@
+diff --git a/src/slic3r/GUI/DeviceCore/DevPrintOptions.cpp b/src/slic3r/GUI/DeviceCore/DevPrintOptions.cpp
+index c80597e2..e9c71873 100644
+--- a/src/slic3r/GUI/DeviceCore/DevPrintOptions.cpp
++++ b/src/slic3r/GUI/DeviceCore/DevPrintOptions.cpp
+@@ -39,6 +39,14 @@ void DevPrintOptionsParser::Parse(DevPrintOptions* opts, const nlohmann::json& p
+ {
+     try
+     {
++        if (opts->m_obj->printer_agent_id == "qidi" && print_json.contains("qidi_detection") && print_json["qidi_detection"].is_object()) {
++            const auto enabled = print_json["qidi_detection"].find("enable_pre_print_model_check");
++            if (enabled != print_json["qidi_detection"].end() && enabled->is_boolean()) {
++                opts->m_fod_check_detection.is_support_detect = true;
++                if (time(nullptr) - opts->m_fod_check_detection.detect_hold_start > HOLD_TIME_3SEC)
++                    opts->m_fod_check_detection.current_detect_value = enabled->get<bool>() ? 1 : 0;
++            }
++        }
+         if (print_json.contains("spd_lvl"))
+         {
+             opts->m_speed_level = static_cast<DevPrintingSpeedLevel>(print_json["spd_lvl"].get<int>());
+diff --git a/src/slic3r/GUI/DeviceManager.cpp b/src/slic3r/GUI/DeviceManager.cpp
+index dc301b14..806616b5 100644
+--- a/src/slic3r/GUI/DeviceManager.cpp
++++ b/src/slic3r/GUI/DeviceManager.cpp
+@@ -3277,6 +3277,18 @@ int MachineObject::parse_json(std::string tunnel, std::string payload, bool key_
+ 
+                 if (printer_agent_id == "qidi" && jj.contains("qidi_polar_cooler_available") && jj["qidi_polar_cooler_available"].is_boolean())
+                     qidi_polar_cooler_available = jj["qidi_polar_cooler_available"].get<bool>();
++                if (printer_agent_id == "qidi" && jj.contains("qidi_detection") && jj["qidi_detection"].is_object()) {
++                    const auto& detection = jj["qidi_detection"];
++                    const auto enabled = detection.find("enable_noodle_detection");
++                    if (enabled != detection.end() && enabled->is_boolean()) {
++                        is_support_spaghetti_detection = true;
++                        if (time(nullptr) - xcam_ai_monitoring_hold_start > HOLD_TIME_3SEC) {
++                            xcam_spaghetti_detection = enabled->get<bool>();
++                            if (detection.contains("sensitivity") && detection["sensitivity"].is_string())
++                                xcam_spaghetti_detection_sensitivity = detection["sensitivity"].get<std::string>();
++                        }
++                    }
++                }
+                 if (jj.contains("support_filament_backup")) {
+                     if (jj["support_filament_backup"].is_boolean()) {
+                         is_support_filament_backup = jj["support_filament_backup"].get<bool>();
+diff --git a/src/slic3r/Utils/QidiPrinterAgent.cpp b/src/slic3r/Utils/QidiPrinterAgent.cpp
+index fc967b6a..3b2060ca 100644
+--- a/src/slic3r/Utils/QidiPrinterAgent.cpp
++++ b/src/slic3r/Utils/QidiPrinterAgent.cpp
+@@ -61,6 +61,23 @@ std::optional<std::string> QidiPrinterAgent::control_script(const nlohmann::json
+     };
+     const std::string name = command["command"].get<std::string>();
+     // Commands from QIDI Studio's PrinterTaskDispatcher::build_local_task.
++    if (name == "xcam_control_set") {
++        const std::string module = command.value("module_name", std::string());
++        if (module != "spaghetti_detector" && module != "fod_check")
++            return std::nullopt;
++        const auto enabled = command.find("control");
++        if (enabled == command.end() || !enabled->is_boolean())
++            throw std::invalid_argument("Invalid QIDI detection setting");
++        const std::string value = enabled->get<bool>() ? "1" : "0";
++        if (module == "fod_check")
++            return "SAVE_VARIABLE VARIABLE=enable_pre_print_model_check VALUE=" + value;
++        const std::string level = command.value("halt_print_sensitivity", std::string());
++        if (level != "low" && level != "medium" && level != "high")
++            throw std::invalid_argument("Invalid QIDI detection sensitivity");
++        const std::string firmware_level = level == "low" ? "LOW" : level == "medium" ? "MEDIUM" : "HIGH";
++        return "SAVE_VARIABLE VARIABLE=enable_noodle_detection VALUE=" + value +
++            "\nSAVE_VARIABLE VARIABLE=noodle_sensitivity_level VALUE=\"'" + firmware_level + "'\"";
++    }
+     if (name == "qidi_set_fan") {
+         const int index = integer("fan_index", 3);
+         if (index == 0)
+@@ -144,13 +161,14 @@ int QidiPrinterAgent::command_ams_refresh_rfid(std::string dev_id, int ams_id, i
+ int QidiPrinterAgent::send_message(std::string dev_id, std::string json_str, int qos, int flag)
+ {
+     auto request = nlohmann::json::parse(json_str, nullptr, false);
+-    for (const char* section : {"print", "system"}) {
++    for (const char* section : {"print", "system", "xcam"}) {
+         if (!request.is_object() || !request.contains(section))
+             continue;
+         try {
+             if (auto script = control_script(request[section])) {
+                 request["print"] = request[section];
+                 request.erase("system");
++                request.erase("xcam");
+                 request["print"]["command"] = "gcode_line";
+                 request["print"]["param"] = *script;
+                 return MoonrakerPrinterAgent::send_message(std::move(dev_id), request.dump(), qos, flag);
+@@ -185,6 +203,19 @@ AgentInfo QidiPrinterAgent::get_agent_info_static()
+ 
+ void QidiPrinterAgent::append_accessory_status(const nlohmann::json& status, nlohmann::json& payload)
+ {
++    const auto saved = status.find("save_variables");
++    if (saved != status.end() && saved->is_object()) {
++        const auto nested = saved->find("variables");
++        const auto& variables = nested != saved->end() && nested->is_object() ? *nested : *saved;
++        for (const char* key : {"enable_noodle_detection", "enable_pre_print_model_check"}) {
++            const auto flag = variables.find(key);
++            if (flag != variables.end() && (flag->is_boolean() || (flag->is_number_integer() && (*flag == 0 || *flag == 1))))
++                payload["print"]["qidi_detection"][key] = flag->is_boolean() ? flag->get<bool>() : flag->get<int>() == 1;
++        }
++        const auto level = variables.find("noodle_sensitivity_level");
++        if (level != variables.end() && level->is_string() && (*level == "LOW" || *level == "MEDIUM" || *level == "HIGH"))
++            payload["print"]["qidi_detection"]["sensitivity"] = *level == "LOW" ? "low" : *level == "MEDIUM" ? "medium" : "high";
++    }
+     const auto movement = status.find("gcode_move");
+     if (movement != status.end() && movement->is_object() && movement->contains("speed_factor") && (*movement)["speed_factor"].is_number()) {
+         const auto& factor = (*movement)["speed_factor"];
+diff --git a/tests/slic3rutils/test_qidi_printer_agent.cpp b/tests/slic3rutils/test_qidi_printer_agent.cpp
+index ceb957e2..35ceaeb5 100644
+--- a/tests/slic3rutils/test_qidi_printer_agent.cpp
++++ b/tests/slic3rutils/test_qidi_printer_agent.cpp
+@@ -208,3 +208,20 @@ TEST_CASE("QIDI snapshots use the web proxy rather than the direct Moonraker por
+     CHECK(QidiPrinterAgent::camera_url_for_host("https://[::1]:8443") == "https://[::1]:8443/webcam/?action=snapshot");
+     CHECK(QidiPrinterAgent::camera_url_for_host("").empty());
+ }
++
++TEST_CASE("QIDI detection settings use firmware variables and uppercase sensitivity", "[QidiPrinterAgent]")
++{
++    CHECK(QidiPrinterAgent::control_script({{"command", "xcam_control_set"}, {"module_name", "spaghetti_detector"},
++        {"control", true}, {"halt_print_sensitivity", "high"}}) ==
++        "SAVE_VARIABLE VARIABLE=enable_noodle_detection VALUE=1\nSAVE_VARIABLE VARIABLE=noodle_sensitivity_level VALUE=\"'HIGH'\"");
++    CHECK(QidiPrinterAgent::control_script({{"command", "xcam_control_set"}, {"module_name", "fod_check"}, {"control", false}}) ==
++        "SAVE_VARIABLE VARIABLE=enable_pre_print_model_check VALUE=0");
++    CHECK_THROWS(QidiPrinterAgent::control_script({{"command", "xcam_control_set"}, {"module_name", "spaghetti_detector"},
++        {"control", true}, {"halt_print_sensitivity", "invalid"}}));
++    nlohmann::json payload;
++    QidiPrinterAgent::append_accessory_status({{"save_variables", {{"variables", {{"enable_noodle_detection", 0},
++        {"enable_pre_print_model_check", true}, {"noodle_sensitivity_level", "MEDIUM"}}}}}}, payload);
++    CHECK(payload["print"]["qidi_detection"]["enable_noodle_detection"] == false);
++    CHECK(payload["print"]["qidi_detection"]["enable_pre_print_model_check"] == true);
++    CHECK(payload["print"]["qidi_detection"]["sensitivity"] == "medium");
++}
