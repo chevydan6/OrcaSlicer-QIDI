@@ -1,0 +1,173 @@
+diff --git a/src/slic3r/Utils/MoonrakerPrinterAgent.cpp b/src/slic3r/Utils/MoonrakerPrinterAgent.cpp
+index 69e60f6f..4a9eef48 100644
+--- a/src/slic3r/Utils/MoonrakerPrinterAgent.cpp
++++ b/src/slic3r/Utils/MoonrakerPrinterAgent.cpp
+@@ -1859,6 +1859,11 @@ void MoonrakerPrinterAgent::run_status_stream(std::string dev_id, std::string ba
+                     subscribe_objects.insert("fan");
+                 }
+ 
++                for (const auto& name : additional_status_objects()) {
++                    if (this->available_objects.count(name) != 0)
++                        subscribe_objects.insert(name);
++                }
++
+                 // Add toolhead for homing status
+                 if (this->available_objects.count("toolhead") != 0) {
+                     subscribe_objects.insert("toolhead");
+@@ -2251,6 +2256,7 @@ nlohmann::json MoonrakerPrinterAgent::build_print_payload_locked() const
+             payload["print"]["fan_gear"] = pwm;
+         }
+     }
++    append_status_payload(status_cache, payload);
+     // If "fan" object doesn't exist, don't include fan_gear in payload
+ 
+     if (status_cache.contains("print_stats") && status_cache["print_stats"].contains("filename") &&
+diff --git a/src/slic3r/Utils/MoonrakerPrinterAgent.hpp b/src/slic3r/Utils/MoonrakerPrinterAgent.hpp
+index 75ea6c6a..f1c7636e 100644
+--- a/src/slic3r/Utils/MoonrakerPrinterAgent.hpp
++++ b/src/slic3r/Utils/MoonrakerPrinterAgent.hpp
+@@ -122,6 +122,8 @@ protected:
+     void build_ams_payload(int ams_count, int max_lane_index, const std::vector<AmsTrayData>& trays);
+     // Name shown for a filament unit, or empty for the AMS Lite name
+     virtual std::string ams_unit_name(int /*ams_id*/) const { return {}; }
++    virtual std::vector<std::string> additional_status_objects() const { return {}; }
++    virtual void append_status_payload(const nlohmann::json&, nlohmann::json&) const {}
+ 
+     // Methods that derived classes may need to override or access
+     virtual bool init_device_info(const std::string& dev_id, const std::string& dev_ip, const std::string& username, const std::string& password, bool use_ssl, const std::string& port);
+diff --git a/src/slic3r/Utils/QidiPrinterAgent.cpp b/src/slic3r/Utils/QidiPrinterAgent.cpp
+index e9235aa7..075ccde1 100644
+--- a/src/slic3r/Utils/QidiPrinterAgent.cpp
++++ b/src/slic3r/Utils/QidiPrinterAgent.cpp
+@@ -16,6 +16,8 @@
+ #include "libslic3r/Preset.hpp"
+ #include <map>
+ #include <sstream>
++#include <stdexcept>
++#include <optional>
+ #include <string>
+ #include <utility>
+ #include <vector>
+@@ -44,6 +46,58 @@ QidiPrinterAgent::QidiPrinterAgent(std::string log_dir) : MoonrakerPrinterAgent(
+ {
+ }
+ 
++std::optional<std::string> QidiPrinterAgent::control_script(const nlohmann::json& command)
++{
++    if (!command.is_object() || !command.contains("command") || !command["command"].is_string())
++        return std::nullopt;
++    const auto integer = [&](const char* key, int maximum) {
++        const auto it = command.find(key);
++        if (it == command.end() || !it->is_number_integer() || *it < 0 || *it > maximum)
++            throw std::invalid_argument("Invalid QIDI control parameter");
++        return it->get<int>();
++    };
++    const std::string name = command["command"].get<std::string>();
++    // Commands from QIDI Studio's PrinterTaskDispatcher::build_local_task.
++    if (name == "set_ctt")
++        return "SET_HEATER_TEMPERATURE HEATER=chamber TARGET=" + std::to_string(integer("ctt_val", 65));
++    if (name == "ams_get_rfid")
++        return "READ_RFID SLOT=" + std::to_string(integer("ams_id", 3) * 4 + integer("slot_id", 3));
++    return std::nullopt;
++}
++
++int QidiPrinterAgent::send_message(std::string dev_id, std::string json_str, int qos, int flag)
++{
++    auto request = nlohmann::json::parse(json_str, nullptr, false);
++    if (request.is_object() && request.contains("print")) {
++        try {
++            if (auto script = control_script(request["print"])) {
++                request["print"]["command"] = "gcode_line";
++                request["print"]["param"] = *script;
++                return MoonrakerPrinterAgent::send_message(std::move(dev_id), request.dump(), qos, flag);
++            }
++        } catch (const std::exception&) {
++            return BAMBU_NETWORK_ERR_INVALID_RESULT;
++        }
++    }
++    return MoonrakerPrinterAgent::send_message(std::move(dev_id), std::move(json_str), qos, flag);
++}
++
++int QidiPrinterAgent::send_message_to_printer(std::string dev_id, std::string json_str, int qos, int flag)
++{
++    return send_message(std::move(dev_id), std::move(json_str), qos, flag);
++}
++
++void QidiPrinterAgent::append_chamber_status(const nlohmann::json& status, nlohmann::json& payload)
++{
++    const auto chamber = status.find("heater_generic chamber");
++    if (chamber == status.end() || !chamber->is_object())
++        return;
++    if (chamber->contains("temperature") && (*chamber)["temperature"].is_number())
++        payload["print"]["chamber_temper"] = (*chamber)["temperature"];
++    if (chamber->contains("target") && (*chamber)["target"].is_number())
++        payload["print"]["ctt"] = (*chamber)["target"];
++}
++
+ AgentInfo QidiPrinterAgent::get_agent_info_static()
+ {
+     return AgentInfo{"qidi", "Qidi", QidiPrinterAgent_VERSION, "Qidi printer agent"};
+diff --git a/src/slic3r/Utils/QidiPrinterAgent.hpp b/src/slic3r/Utils/QidiPrinterAgent.hpp
+index 6dab5d43..548fd83e 100644
+--- a/src/slic3r/Utils/QidiPrinterAgent.hpp
++++ b/src/slic3r/Utils/QidiPrinterAgent.hpp
+@@ -6,6 +6,7 @@
+ #include "bambu_networking.hpp"
+ 
+ #include <map>
++#include <optional>
+ #include <string>
+ #include <vector>
+ 
+@@ -19,6 +20,10 @@ public:
+     explicit QidiPrinterAgent(std::string log_dir);
+     ~QidiPrinterAgent() override = default;
+ 
++    int send_message(std::string dev_id, std::string json_str, int qos, int flag) override;
++    int send_message_to_printer(std::string dev_id, std::string json_str, int qos, int flag) override;
++    static std::optional<std::string> control_script(const nlohmann::json& command);
++    static void append_chamber_status(const nlohmann::json& status, nlohmann::json& payload);
+     static AgentInfo get_agent_info_static();
+     AgentInfo        get_agent_info() override { return get_agent_info_static(); }
+ 
+@@ -33,6 +38,9 @@ public:
+     static nlohmann::json print_start_request(const PrintParams& params, const std::string& filename);
+ 
+ protected:
++    std::vector<std::string> additional_status_objects() const override { return {"heater_generic chamber"}; }
++    void append_status_payload(const nlohmann::json& status, nlohmann::json& payload) const override
++    { append_chamber_status(status, payload); }
+     // Saves the Box slot picked for each filament in the print dialog, then starts the print through Moonraker
+     bool print_uploaded_file(const PrintParams& params, const std::string& filename) override;
+     std::string ams_unit_name(int ams_id) const override { return "Qidi Box " + std::to_string(ams_id + 1); }
+diff --git a/tests/slic3rutils/test_qidi_printer_agent.cpp b/tests/slic3rutils/test_qidi_printer_agent.cpp
+index 8f6df66e..16a7af64 100644
+--- a/tests/slic3rutils/test_qidi_printer_agent.cpp
++++ b/tests/slic3rutils/test_qidi_printer_agent.cpp
+@@ -74,3 +74,26 @@ TEST_CASE("QIDI print submission selects Box mode and preserves sparse filament
+     params.ams_mapping = "[]";
+     CHECK(QidiPrinterAgent::build_box_selection_script(params).empty());
+ }
++
++TEST_CASE("QIDI chamber and RFID controls use the local printer protocol", "[QidiPrinterAgent]")
++{
++    CHECK(QidiPrinterAgent::control_script({{"command", "set_ctt"}, {"ctt_val", 45}}) ==
++          "SET_HEATER_TEMPERATURE HEATER=chamber TARGET=45");
++    CHECK(QidiPrinterAgent::control_script({{"command", "ams_get_rfid"}, {"ams_id", 1}, {"slot_id", 2}}) ==
++          "READ_RFID SLOT=6");
++    CHECK_THROWS(QidiPrinterAgent::control_script({{"command", "set_ctt"}, {"ctt_val", 66}}));
++    CHECK_THROWS(QidiPrinterAgent::control_script({{"command", "set_ctt"}, {"ctt_val", "45\nG28"}}));
++    CHECK_THROWS(QidiPrinterAgent::control_script({{"command", "ams_get_rfid"}, {"ams_id", 4}, {"slot_id", 0}}));
++    CHECK_FALSE(QidiPrinterAgent::control_script({{"command", "pause"}}).has_value());
++}
++
++TEST_CASE("QIDI chamber telemetry carries measured and requested temperatures", "[QidiPrinterAgent]")
++{
++    nlohmann::json payload;
++    QidiPrinterAgent::append_chamber_status({{"heater_generic chamber", {{"temperature", 42.5}, {"target", 55}}}}, payload);
++    CHECK(payload["print"]["chamber_temper"] == 42.5);
++    CHECK(payload["print"]["ctt"] == 55);
++    payload = nlohmann::json::object();
++    QidiPrinterAgent::append_chamber_status({{"heater_generic chamber", {{"temperature", "bad"}, {"target", nullptr}}}}, payload);
++    CHECK(payload.empty());
++}

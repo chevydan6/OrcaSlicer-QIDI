@@ -1,0 +1,93 @@
+diff --git a/src/slic3r/GUI/DeviceManager.cpp b/src/slic3r/GUI/DeviceManager.cpp
+index 2bc91ff5..71240cd3 100644
+--- a/src/slic3r/GUI/DeviceManager.cpp
++++ b/src/slic3r/GUI/DeviceManager.cpp
+@@ -1752,7 +1752,8 @@ int MachineObject::command_ams_change_filament(bool load, std::string ams_id, st
+ 
+         if (!load) {
+             j["print"]["target"]  = 255;
+-            j["print"]["slot_id"] = 255; // the new protocol to mark unload
++            // QIDI's local unload macro needs the selected physical slot.
++            j["print"]["slot_id"] = printer_agent_id == "qidi" ? std::stoi(slot_id) : 255;
+ 
+         } else {
+             if (tray_id == 0) {
+diff --git a/src/slic3r/GUI/StatusPanel.cpp b/src/slic3r/GUI/StatusPanel.cpp
+index 51f67d5d..2df810f4 100644
+--- a/src/slic3r/GUI/StatusPanel.cpp
++++ b/src/slic3r/GUI/StatusPanel.cpp
+@@ -4567,11 +4567,11 @@ void StatusPanel::on_ams_unload(SimpleEvent &event)
+         if (obj->is_enable_np) {
+             try {
+                 for (auto ext : obj->GetExtderSystem()->GetExtruders()) {
+-                    if (ext.GetSlotNow().ams_id == curr_ams_id && ext.GetSlotNow().slot_id == curr_can_id) { obj->command_ams_change_filament(false, curr_ams_id, "255"); }
++                    if (ext.GetSlotNow().ams_id == curr_ams_id && ext.GetSlotNow().slot_id == curr_can_id) { obj->command_ams_change_filament(false, curr_ams_id, obj->printer_agent_id == "qidi" ? curr_can_id : "255"); }
+                 }
+             } catch (...) {}
+         } else {
+-            obj->command_ams_change_filament(false, curr_ams_id, "255");
++            obj->command_ams_change_filament(false, curr_ams_id, obj->printer_agent_id == "qidi" ? curr_can_id : "255");
+         }
+     }
+ }
+diff --git a/src/slic3r/Utils/QidiPrinterAgent.cpp b/src/slic3r/Utils/QidiPrinterAgent.cpp
+index 075ccde1..823b8bed 100644
+--- a/src/slic3r/Utils/QidiPrinterAgent.cpp
++++ b/src/slic3r/Utils/QidiPrinterAgent.cpp
+@@ -60,11 +60,28 @@ std::optional<std::string> QidiPrinterAgent::control_script(const nlohmann::json
+     // Commands from QIDI Studio's PrinterTaskDispatcher::build_local_task.
+     if (name == "set_ctt")
+         return "SET_HEATER_TEMPERATURE HEATER=chamber TARGET=" + std::to_string(integer("ctt_val", 65));
++    if (name == "ams_change_filament") {
++        const int slot = integer("ams_id", 3) * 4 + integer("slot_id", 3);
++        const bool unload = integer("target", 255) == 255;
++        return std::string(unload ? "UNLOAD_FILAMENT_CONTROL SLOT=" : "LOAD_FILAMENT_CONTROL SLOT=") + std::to_string(slot);
++    }
+     if (name == "ams_get_rfid")
+         return "READ_RFID SLOT=" + std::to_string(integer("ams_id", 3) * 4 + integer("slot_id", 3));
+     return std::nullopt;
+ }
+ 
++int QidiPrinterAgent::command_ams_refresh_rfid(std::string dev_id, int ams_id, int slot_id, int sequence_id, bool /*lan_mode*/)
++{
++    // The older UI passes a flat slot with ams_id == -1.
++    if (ams_id == -1 && slot_id >= 0 && slot_id < 16) {
++        ams_id = slot_id / 4;
++        slot_id %= 4;
++    }
++    nlohmann::json request{{"print", {{"command", "ams_get_rfid"}, {"ams_id", ams_id},
++                                     {"slot_id", slot_id}, {"sequence_id", std::to_string(sequence_id)}}}};
++    return send_message(std::move(dev_id), request.dump(), 0, 0);
++}
++
+ int QidiPrinterAgent::send_message(std::string dev_id, std::string json_str, int qos, int flag)
+ {
+     auto request = nlohmann::json::parse(json_str, nullptr, false);
+diff --git a/src/slic3r/Utils/QidiPrinterAgent.hpp b/src/slic3r/Utils/QidiPrinterAgent.hpp
+index 548fd83e..8e9e899b 100644
+--- a/src/slic3r/Utils/QidiPrinterAgent.hpp
++++ b/src/slic3r/Utils/QidiPrinterAgent.hpp
+@@ -20,6 +20,7 @@ public:
+     explicit QidiPrinterAgent(std::string log_dir);
+     ~QidiPrinterAgent() override = default;
+ 
++    int command_ams_refresh_rfid(std::string dev_id, int ams_id, int slot_id, int sequence_id, bool lan_mode) override;
+     int send_message(std::string dev_id, std::string json_str, int qos, int flag) override;
+     int send_message_to_printer(std::string dev_id, std::string json_str, int qos, int flag) override;
+     static std::optional<std::string> control_script(const nlohmann::json& command);
+diff --git a/tests/slic3rutils/test_qidi_printer_agent.cpp b/tests/slic3rutils/test_qidi_printer_agent.cpp
+index 16a7af64..9c5dd774 100644
+--- a/tests/slic3rutils/test_qidi_printer_agent.cpp
++++ b/tests/slic3rutils/test_qidi_printer_agent.cpp
+@@ -97,3 +97,11 @@ TEST_CASE("QIDI chamber telemetry carries measured and requested temperatures",
+     QidiPrinterAgent::append_chamber_status({{"heater_generic chamber", {{"temperature", "bad"}, {"target", nullptr}}}}, payload);
+     CHECK(payload.empty());
+ }
++
++TEST_CASE("QIDI load and unload address the selected physical slot", "[QidiPrinterAgent]")
++{
++    const int target = GENERATE(6, 255);
++    const auto script = QidiPrinterAgent::control_script({{"command", "ams_change_filament"}, {"ams_id", 1}, {"slot_id", 2}, {"target", target}});
++    CHECK(script == (target == 255 ? "UNLOAD_FILAMENT_CONTROL SLOT=6" : "LOAD_FILAMENT_CONTROL SLOT=6"));
++    CHECK_THROWS(QidiPrinterAgent::control_script({{"command", "ams_change_filament"}, {"ams_id", 1}, {"slot_id", 255}, {"target", 255}}));
++}
