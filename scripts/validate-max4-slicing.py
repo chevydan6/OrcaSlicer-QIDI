@@ -64,7 +64,7 @@ report = {'binary': str(binary), 'binary_sha256': hashlib.sha256(binary.read_byt
           'hardware_contacted': False, 'cases': []}
 
 
-def check_case(tag, model_path, options, expected_temperature, expected_tool=0):
+def check_case(tag, model_path, options, expected_temperature, expected_tool=0, box_tools=None, first_tool=None):
     directory = output / tag
     directory.mkdir()
     datadir = directory / 'datadir'
@@ -82,8 +82,17 @@ def check_case(tag, model_path, options, expected_temperature, expected_tool=0):
             gcode = archive.read('Metadata/plate_1.gcode').decode()
             config = json.loads(archive.read('Metadata/project_settings.config'))
         temperatures = expected_temperature if isinstance(expected_temperature, list) else [expected_temperature]
+        box_tools = box_tools if box_tools is not None else [expected_tool]
+        first_tool = expected_tool if first_tool is None else first_tool
+        thermal_command = 'BOX_TEMP_SET ' + ' '.join(f'VT{tool}={temperatures[tool]}' for tool in box_tools)
         required = [rf'^BOX_PRINT_START EXTRUDER={expected_tool}\b', rf'^T{expected_tool}\s*$',
-                    rf'^BOX_TEMP_SET VT{expected_tool}={temperatures[expected_tool]}\s*$', r'^PRINT_END\s*$']
+                    '^' + re.escape(thermal_command) + r'\s*$', r'^PRINT_END\s*$']
+        tool_commands = re.findall(r'^T(\d+)\s*$', gcode, re.M)
+        if not tool_commands or int(tool_commands[0]) != first_tool:
+            entry['errors'].append(f'First tool is {tool_commands[:1]}, expected {first_tool}')
+        entry['gcode_sha256'] = hashlib.sha256(gcode.encode()).hexdigest()
+        entry['startup_trace'] = [line for line in gcode.splitlines()
+            if re.match(r'^(BOX_TEMP_SET |BOX_PRINT_START |T\d+\s*$|M10[49]\s)', line)][:20]
         for pattern in required:
             if not re.search(pattern, gcode, re.M):
                 entry['errors'].append(f'Missing G-code: {pattern}')
@@ -148,7 +157,15 @@ for index, temperature in enumerate([35, 40, 45]):
     materials.append(str(path))
 check_case('unused-leading-filaments', model, ['--load-settings',
     f'{profiles}/machine/Qidi X-Max 4 0.4 nozzle.json;{process_path}',
-    '--load-filaments', ';'.join(materials)], [35, 40, 45], expected_tool=2)
+    '--load-filaments', ';'.join(materials), '--load-filament-ids', '3'], [35, 40, 45], expected_tool=2)
+# Reslice the exact saved projects already exercised in the official QIDI release.
+# Override only the machine so start/change macros come from the downstream Orca
+# profile; retain reference object/support assignments and per-filament temperatures.
+reference = root / 'validation/qidi-reference'
+for name, tools, first in [('sparse-project', [2], 2), ('support-first-project', [0, 2], 0)]:
+    check_case('qidi-reference-' + name, reference / (name + '.3mf'),
+               ['--load-settings', str(profiles / 'machine/Qidi X-Max 4 0.4 nozzle.json')],
+               [35, 40, 45], expected_tool=2, box_tools=tools, first_tool=first)
 failures = sum(not case['passed'] for case in report['cases'])
 print(f'{len(report["cases"])} offline slicing cases, {failures} failed. No printer was contacted.')
 raise SystemExit(bool(failures))
