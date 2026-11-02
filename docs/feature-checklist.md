@@ -10,7 +10,7 @@ The full integrated build and dedicated validation phase remain open.
 | Process profiles | All 16 source files have counterparts | Preserve current Orca tuning | Compare resolved differences and actual slicing |
 | Fan and speed controls | QIDI part-fan number mismatch; speed selection ignored | Named fan commands; speed commands/telemetry | Offline command checks pass; hardware pending |
 | Camera | No QIDI native stream mode | Local web-proxy snapshot endpoint | URL cases checked; actual video, authentication and custom proxy behavior pending |
-| Chamber heat | Profile temperatures and start macros | Native command translation and live current/target telemetry | Isolated protocol checks pass; GUI and hardware pending |
+| Chamber heat | Profile temperatures and start macros | Native command translation, heater capability and live current/target telemetry | Isolated protocol checks pass; GUI and hardware pending |
 | Box temperature during printing | JSON values ignored by core | Persistent settings/UI; logical VT indices in generated code | CTests added; full slicing execution pending |
 | Box/external selection | Physical-slot mapping exists | Explicit enable_box before job; abort on empty Box map | Recording-transport submission order and stop-on-failure pass |
 | Initial filament | Logical tool placeholders and mapping exist | Preserve sparse indices | Dedicated slicing/submission regression and physical check pending |
@@ -25,7 +25,7 @@ The full integrated build and dedicated validation phase remain open.
 | Bed leveling option | QIDI option ineffective/hidden | MAX4 G31/G32 selection | Recording-transport check passes |
 | Timelapse option | UI and frame macros exist | QIDI Moonraker settings request | Recording-transport check passes; actual HTTP pending |
 | Detection settings | Existing spaghetti/FOD controls | QIDI variable commands, sensitivity and reported settings | Isolated command checks pass; full GUI/hardware pending |
-| Polar cooler | QIDI flag not recognized | Firmware-gated print option and job snapshot | Offline dispatch checks pass; manual status-page toggle still pending |
+| Polar cooler | QIDI flag not recognized | Firmware-gated print option and job snapshot | Offline dispatch checks pass; manual toggle in Print Options; actual GUI and hardware pending |
 | Auto refill | Native Bambu UI only | Incompatible dialog hidden | QIDI local dispatcher has an ambiguous command spelling; verify before porting |
 | Manual drying | Shared upstream Bambu classes | Not enabled for QIDI | Active QIDI source path and firmware protocol need verification |
 | QIDI cloud/MQTT | Different network architecture | Not implemented | Proprietary QIDI networking library/auth integration not bundled |

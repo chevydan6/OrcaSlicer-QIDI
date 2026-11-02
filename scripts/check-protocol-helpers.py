@@ -56,6 +56,12 @@ for start,end in functions:
  code += source[source.index(start):source.index(end,source.index(start))]
 code += r'''
 int main() {
+ assert(QidiPrinterAgent::control_script({{"command","qidi_polar_cooler"},{"enabled",false}}) == "SET_PIN PIN=polar_cooler VALUE=0");
+ nlohmann::json detector_payload;
+ QidiPrinterAgent::append_accessory_status({{"save_variables",{{"variables",{{"enable_noodle_detection",1},{"enable_pre_print_model_check",false},{"noodle_sensitivity_level","MEDIUM"}}}}},{"output_pin polar_cooler",{{"value",1}}}},detector_payload);
+ assert(detector_payload["print"]["qidi_detection"]["enable_noodle_detection"] == true);
+ assert(detector_payload["print"]["qidi_detection"]["sensitivity"] == "medium");
+ assert(detector_payload["print"]["qidi_polar_cooler_on"] == true);
  assert(QidiPrinterAgent::control_script({{"command","xcam_control_set"},{"module_name","fod_check"},{"control",true}}) == "SAVE_VARIABLE VARIABLE=enable_pre_print_model_check VALUE=1");
  assert(QidiPrinterAgent::control_script({{"command","xcam_control_set"},{"module_name","spaghetti_detector"},{"control",false},{"halt_print_sensitivity","high"}}) == "SAVE_VARIABLE VARIABLE=enable_noodle_detection VALUE=0\nSAVE_VARIABLE VARIABLE=noodle_sensitivity_level VALUE=\"'HIGH'\"");
  assert(QidiPrinterAgent::build_tool_slot_script("[-1,-1,5]") == "SAVE_VARIABLE VARIABLE=value_t2 VALUE=\"'slot5'\"");

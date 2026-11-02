@@ -1,0 +1,163 @@
+diff --git a/src/slic3r/GUI/DeviceManager.cpp b/src/slic3r/GUI/DeviceManager.cpp
+index 806616b5..59c143bf 100644
+--- a/src/slic3r/GUI/DeviceManager.cpp
++++ b/src/slic3r/GUI/DeviceManager.cpp
+@@ -3277,6 +3277,8 @@ int MachineObject::parse_json(std::string tunnel, std::string payload, bool key_
+ 
+                 if (printer_agent_id == "qidi" && jj.contains("qidi_polar_cooler_available") && jj["qidi_polar_cooler_available"].is_boolean())
+                     qidi_polar_cooler_available = jj["qidi_polar_cooler_available"].get<bool>();
++                if (printer_agent_id == "qidi" && jj.contains("qidi_polar_cooler_on") && jj["qidi_polar_cooler_on"].is_boolean())
++                    qidi_polar_cooler_on = jj["qidi_polar_cooler_on"].get<bool>();
+                 if (printer_agent_id == "qidi" && jj.contains("qidi_detection") && jj["qidi_detection"].is_object()) {
+                     const auto& detection = jj["qidi_detection"];
+                     const auto enabled = detection.find("enable_noodle_detection");
+diff --git a/src/slic3r/GUI/DeviceManager.hpp b/src/slic3r/GUI/DeviceManager.hpp
+index ebd1abae..395f029d 100644
+--- a/src/slic3r/GUI/DeviceManager.hpp
++++ b/src/slic3r/GUI/DeviceManager.hpp
+@@ -651,6 +651,7 @@ public:
+     bool is_support_filament_setting_inprinting{false};
+     bool is_support_internal_timelapse { false };// fun[28], support timelapse without SD card
+     bool qidi_polar_cooler_available { false };
++    std::optional<bool> qidi_polar_cooler_on;
+     bool m_support_mqtt_homing { false };// fun[32]
+     bool is_support_brtc{false};                 // fun[31], support tcp and upload protocol
+     bool is_support_ext_change_assist{false};
+diff --git a/src/slic3r/GUI/PrintOptionsDialog.cpp b/src/slic3r/GUI/PrintOptionsDialog.cpp
+index 571ec011..a9e87ed0 100644
+--- a/src/slic3r/GUI/PrintOptionsDialog.cpp
++++ b/src/slic3r/GUI/PrintOptionsDialog.cpp
+@@ -4,6 +4,9 @@
+ #include <ctime>
+ #include <cassert>
+ #include <initializer_list>
++#include <nlohmann/json.hpp>
++#include "Widgets/CheckBox.hpp"
++#include "Widgets/Label.hpp"
+ #include <wx/colour.h>
+ #include "slic3r/GUI/Widgets/StateColor.hpp"
+ #include <utility>
+@@ -79,6 +82,16 @@ PrintOptionsDialog::PrintOptionsDialog(wxWindow* parent)
+     mainSizer->Fit(this);
+     //this->Fit();
+ 
++    m_cb_qidi_polar_cooler->Bind(wxEVT_TOGGLEBUTTON, [this](wxCommandEvent& evt) {
++        if (obj && obj->printer_agent_id == "qidi" && obj->qidi_polar_cooler_available && obj->qidi_polar_cooler_on.has_value()) {
++            const nlohmann::json request{{"print", {{"command", "qidi_polar_cooler"},
++                {"enabled", m_cb_qidi_polar_cooler->GetValue()},
++                {"sequence_id", std::to_string(MachineObject::m_sequence_id++)}}}};
++            obj->publish_json(request);
++        }
++        evt.Skip();
++    });
++
+      m_cb_ai_monitoring->Bind(wxEVT_TOGGLEBUTTON, [this](wxCommandEvent &evt) {
+         if (obj) {
+             int         level = ai_monitoring_level_list->GetSelection();
+@@ -368,6 +381,11 @@ void PrintOptionsDialog::update_options(MachineObject* obj_)
+ {
+     if (!obj_) return;
+ 
++    const bool show_cooler = obj_->printer_agent_id == "qidi" && obj_->qidi_polar_cooler_available && obj_->qidi_polar_cooler_on.has_value();
++    m_qidi_polar_cooler_sizer->Show(show_cooler);
++    if (show_cooler)
++        m_cb_qidi_polar_cooler->SetValue(*obj_->qidi_polar_cooler_on);
++
+     if (obj_->is_support_spaghetti_detection || obj_->is_support_purgechutepileup_detection || obj_->is_support_nozzleclumping_detection || obj_->is_support_airprinting_detection) {
+         ai_refine_panel->Show();
+         text_ai_detections->Show();
+@@ -819,6 +837,16 @@ wxBoxSizer* PrintOptionsDialog::create_settings_group(wxWindow* parent)
+     wxBoxSizer* sizer = new wxBoxSizer(wxVERTICAL);
+     wxBoxSizer* line_sizer = new wxBoxSizer(wxHORIZONTAL);
+ 
++    m_qidi_polar_cooler_sizer = new wxBoxSizer(wxHORIZONTAL);
++    m_cb_qidi_polar_cooler = new CheckBox(parent);
++    auto* cooler_label = new Label(parent, _L("Polar Cooler"));
++    cooler_label->SetFont(Label::Body_14);
++    m_cb_qidi_polar_cooler->SetToolTip(_L("Turn the extruder cooler on or off."));
++    m_qidi_polar_cooler_sizer->Add(m_cb_qidi_polar_cooler, 0, wxALL | wxALIGN_CENTER_VERTICAL, FromDIP(5));
++    m_qidi_polar_cooler_sizer->Add(cooler_label, 1, wxALL | wxALIGN_CENTER_VERTICAL, FromDIP(5));
++    sizer->Add(m_qidi_polar_cooler_sizer, 0, wxEXPAND | wxLEFT | wxRIGHT, FromDIP(18));
++    m_qidi_polar_cooler_sizer->Show(false);
++
+   /*  auto m_line = new wxPanel(this, wxID_ANY, wxDefaultPosition, wxSize(-1, 1), wxTAB_TRAVERSAL);
+     m_line->SetBackgroundColour(wxColour(166, 169, 170));
+     sizer->Add(m_line, 0, wxEXPAND, 0);*/
+diff --git a/src/slic3r/GUI/PrintOptionsDialog.hpp b/src/slic3r/GUI/PrintOptionsDialog.hpp
+index 6e49e196..771919a8 100644
+--- a/src/slic3r/GUI/PrintOptionsDialog.hpp
++++ b/src/slic3r/GUI/PrintOptionsDialog.hpp
+@@ -84,6 +84,8 @@ protected:
+     // settings
+     wxScrolledWindow* m_scrollwindow;
+     CheckBox* m_cb_first_layer;
++    CheckBox* m_cb_qidi_polar_cooler{nullptr};
++    wxBoxSizer* m_qidi_polar_cooler_sizer{nullptr};
+     CheckBox *        m_cb_ai_monitoring;
+     CheckBox* m_cb_spaghetti_detection;
+     CheckBox* m_cb_purgechutepileup_detection;
+diff --git a/src/slic3r/Utils/QidiPrinterAgent.cpp b/src/slic3r/Utils/QidiPrinterAgent.cpp
+index 246abf4e..d32c4668 100644
+--- a/src/slic3r/Utils/QidiPrinterAgent.cpp
++++ b/src/slic3r/Utils/QidiPrinterAgent.cpp
+@@ -61,6 +61,12 @@ std::optional<std::string> QidiPrinterAgent::control_script(const nlohmann::json
+     };
+     const std::string name = command["command"].get<std::string>();
+     // Commands from QIDI Studio's PrinterTaskDispatcher::build_local_task.
++    if (name == "qidi_polar_cooler") {
++        const auto enabled = command.find("enabled");
++        if (enabled == command.end() || !enabled->is_boolean())
++            throw std::invalid_argument("Invalid QIDI Polar Cooler setting");
++        return std::string("SET_PIN PIN=polar_cooler VALUE=") + (enabled->get<bool>() ? "1" : "0");
++    }
+     if (name == "xcam_control_set") {
+         const std::string module = command.value("module_name", std::string());
+         if (module != "spaghetti_detector" && module != "fod_check")
+@@ -209,6 +215,12 @@ AgentInfo QidiPrinterAgent::get_agent_info_static()
+ 
+ void QidiPrinterAgent::append_accessory_status(const nlohmann::json& status, nlohmann::json& payload)
+ {
++    const auto cooler = status.find("output_pin polar_cooler");
++    if (cooler != status.end() && cooler->is_object() && cooler->contains("value")) {
++        const auto& value = (*cooler)["value"];
++        if (value.is_boolean() || (value.is_number() && value >= 0 && value <= 1))
++            payload["print"]["qidi_polar_cooler_on"] = value.is_boolean() ? value.get<bool>() : value.get<double>() > 0;
++    }
+     const auto saved = status.find("save_variables");
+     if (saved != status.end() && saved->is_object()) {
+         const auto nested = saved->find("variables");
+diff --git a/src/slic3r/Utils/QidiPrinterAgent.hpp b/src/slic3r/Utils/QidiPrinterAgent.hpp
+index 21cf025d..a2a579b3 100644
+--- a/src/slic3r/Utils/QidiPrinterAgent.hpp
++++ b/src/slic3r/Utils/QidiPrinterAgent.hpp
+@@ -47,7 +47,8 @@ public:
+ protected:
+     std::vector<std::string> additional_status_objects() const override
+     { return {"heater_generic chamber", "multi_color_controller", "save_variables", "output_pin caselight",
+-              "fan_generic cooling_fan", "fan_generic auxiliary_cooling_fan", "fan_generic chamber_circulation_fan", "gcode_move"}; }
++              "fan_generic cooling_fan", "fan_generic auxiliary_cooling_fan", "fan_generic chamber_circulation_fan", "gcode_move",
++              "output_pin polar_cooler"}; }
+     void append_status_payload(const nlohmann::json& status, nlohmann::json& payload) const override
+     { append_chamber_status(status, payload); append_box_status(status, payload); append_accessory_status(status, payload); }
+     nlohmann::json additional_notification_status(const nlohmann::json& notification) const override
+diff --git a/tests/slic3rutils/test_qidi_printer_agent.cpp b/tests/slic3rutils/test_qidi_printer_agent.cpp
+index b47c976d..788e1622 100644
+--- a/tests/slic3rutils/test_qidi_printer_agent.cpp
++++ b/tests/slic3rutils/test_qidi_printer_agent.cpp
+@@ -187,6 +187,16 @@ TEST_CASE("QIDI Polar Cooler availability follows the firmware configuration rep
+     CHECK(QidiPrinterAgent::configuration_notification({{"method", "notify_status_update"}}).empty());
+ }
+ 
++TEST_CASE("QIDI manual Polar Cooler control uses the reported output pin", "[QidiPrinterAgent]")
++{
++    CHECK(QidiPrinterAgent::control_script({{"command", "qidi_polar_cooler"}, {"enabled", true}}) ==
++          "SET_PIN PIN=polar_cooler VALUE=1");
++    CHECK_THROWS(QidiPrinterAgent::control_script({{"command", "qidi_polar_cooler"}, {"enabled", "1"}}));
++    nlohmann::json payload;
++    QidiPrinterAgent::append_accessory_status({{"output_pin polar_cooler", {{"value", 0}}}}, payload);
++    CHECK(payload["print"]["qidi_polar_cooler_on"] == false);
++}
++
+ TEST_CASE("QIDI fan controls address named fans instead of the incompatible part fan number", "[QidiPrinterAgent]")
+ {
+     CHECK(QidiPrinterAgent::control_script({{"command", "qidi_set_fan"}, {"fan_index", 1}, {"speed", 255}}) ==

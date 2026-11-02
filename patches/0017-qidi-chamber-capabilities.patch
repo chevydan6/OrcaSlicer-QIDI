@@ -1,0 +1,60 @@
+diff --git a/src/slic3r/GUI/StatusPanel.cpp b/src/slic3r/GUI/StatusPanel.cpp
+index 30f1865e..90181a5a 100644
+--- a/src/slic3r/GUI/StatusPanel.cpp
++++ b/src/slic3r/GUI/StatusPanel.cpp
+@@ -3279,7 +3279,8 @@ void StatusPanel::update_temp_ctrl(MachineObject *obj)
+     }
+ 
+     // support current temp for chamber
+-    if (obj->get_printer_series() == PrinterSeries::SERIES_X1)
++    if (obj->get_printer_series() == PrinterSeries::SERIES_X1 ||
++        (obj->printer_agent_id == "qidi" && obj->GetConfig()->SupportChamberTempDisplay()))
+     {
+         m_tempCtrl_chamber->SetCurrTemp(obj->chamber_temp);
+     }
+@@ -4378,7 +4379,7 @@ void StatusPanel::on_set_chamber_temp()
+                 champer_switch_head_dlg.ShowModal();
+                 return;
+             }
+-            else if (!obj->GetFan()->is_at_heating_mode() && chamber_temp >= obj->GetConfig()->GetChamberTempSwitchHeat())
++            else if (obj->printer_agent_id != "qidi" && !obj->GetFan()->is_at_heating_mode() && chamber_temp >= obj->GetConfig()->GetChamberTempSwitchHeat())
+             {
+ #ifndef __APPLE__
+                 MessageDialog champer_switch_head_dlg(this, _L("If the chamber temperature exceeds 40\u2103, the system will automatically switch to heating mode. "
+diff --git a/src/slic3r/Utils/QidiPrinterAgent.cpp b/src/slic3r/Utils/QidiPrinterAgent.cpp
+index 3b2060ca..246abf4e 100644
+--- a/src/slic3r/Utils/QidiPrinterAgent.cpp
++++ b/src/slic3r/Utils/QidiPrinterAgent.cpp
+@@ -190,10 +190,16 @@ void QidiPrinterAgent::append_chamber_status(const nlohmann::json& status, nlohm
+     const auto chamber = status.find("heater_generic chamber");
+     if (chamber == status.end() || !chamber->is_object())
+         return;
+-    if (chamber->contains("temperature") && (*chamber)["temperature"].is_number())
++    if (chamber->contains("temperature") && (*chamber)["temperature"].is_number()) {
++        payload["print"]["support_chamber"] = true;
++        payload["print"]["support_chamber_temp_display"] = true;
+         payload["print"]["chamber_temper"] = (*chamber)["temperature"];
+-    if (chamber->contains("target") && (*chamber)["target"].is_number())
++    }
++    if (chamber->contains("target") && (*chamber)["target"].is_number()) {
++        payload["print"]["support_chamber_temp_edit"] = true;
++        payload["print"]["support_chamber_temp_edit_range"] = {0, 65};
+         payload["print"]["ctt"] = (*chamber)["target"];
++    }
+ }
+ 
+ AgentInfo QidiPrinterAgent::get_agent_info_static()
+diff --git a/tests/slic3rutils/test_qidi_printer_agent.cpp b/tests/slic3rutils/test_qidi_printer_agent.cpp
+index 35ceaeb5..b47c976d 100644
+--- a/tests/slic3rutils/test_qidi_printer_agent.cpp
++++ b/tests/slic3rutils/test_qidi_printer_agent.cpp
+@@ -93,6 +93,9 @@ TEST_CASE("QIDI chamber telemetry carries measured and requested temperatures",
+     QidiPrinterAgent::append_chamber_status({{"heater_generic chamber", {{"temperature", 42.5}, {"target", 55}}}}, payload);
+     CHECK(payload["print"]["chamber_temper"] == 42.5);
+     CHECK(payload["print"]["ctt"] == 55);
++    CHECK(payload["print"]["support_chamber_temp_display"] == true);
++    CHECK(payload["print"]["support_chamber_temp_edit"] == true);
++    CHECK(payload["print"]["support_chamber_temp_edit_range"] == nlohmann::json::array({0, 65}));
+     payload = nlohmann::json::object();
+     QidiPrinterAgent::append_chamber_status({{"heater_generic chamber", {{"temperature", "bad"}, {"target", nullptr}}}}, payload);
+     CHECK(payload.empty());

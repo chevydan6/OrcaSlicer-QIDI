@@ -28,3 +28,6 @@ integration tooling are downstream additions. The checklist records validation
 separately from implementation; a patch's presence does not certify hardware use.
 
 16. `0016-qidi-detection-controls.patch` connects existing spaghetti and foreign-object detection controls to QIDI Studio's `SetPrintOptions` LAN commands and saved-variable telemetry. Sensitivity converts between Orca lowercase and firmware uppercase.
+
+17. `0017-qidi-chamber-capabilities.patch` exposes a reported QIDI chamber heater to native monitor display/edit controls, with a 0–65°C range and without the unrelated Bambu air-duct prompt.
+18. `0018-qidi-manual-cooler.patch` adds the QIDI Studio output-pin control and reported state to Print Options. It appears only when both installed-accessory and output-pin telemetry are available.
