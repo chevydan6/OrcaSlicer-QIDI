@@ -19,6 +19,10 @@ Orca schema adaptations and tuning. This report does not evaluate engine default
 or certify equal print quality. Fan, speed, cooling and prime tower differences
 still require review; wholesale replacement would change existing Orca behavior.
 
+Official QIDI Studio reference slices and their release checksum are recorded in
+`validation/qidi-reference/`. The unused-leading and support-first saved projects
+slice successfully in that release; comparison with the custom Orca binary is pending.
+
 ## Initial-filament path
 
 Both engines export logical filament indices through `initial_tool` and
@@ -54,7 +58,7 @@ MQTT/tunnel stack are not implemented. Existing Orca backends remain available.
   treated as errors; sparse mappings, Box mode, chamber, RFID and load/unload
   assertions pass. This harness does not compile the full application.
 - Full baseline and patched Linux builds are running on GitHub Actions. No full
-  compilation, CTest, GUI profile loading/persistence or actual slicing success
+  compilation, CTest, GUI profile loading/persistence or custom-build slicing success
   is recorded yet. HTTP integration tests and packaging validation are pending.
 
 No printer has been contacted. Physical slot selection, filament motion, heating,
