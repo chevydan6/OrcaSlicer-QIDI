@@ -1,0 +1,56 @@
+diff --git a/resources/profiles/Qidi.json b/resources/profiles/Qidi.json
+index 5404db83..6aa0ee5a 100644
+--- a/resources/profiles/Qidi.json
++++ b/resources/profiles/Qidi.json
+@@ -1,6 +1,6 @@
+ {
+ 	"name": "Qidi",
+-	"version": "02.04.00.24",
++	"version": "02.04.00.25",
+ 	"force_update": "0",
+ 	"description": "Qidi configurations",
+ 	"machine_model_list": [
+diff --git a/resources/profiles/Qidi/machine/Qidi X-Max 4.json b/resources/profiles/Qidi/machine/Qidi X-Max 4.json
+index 8547483b..55f870f8 100644
+--- a/resources/profiles/Qidi/machine/Qidi X-Max 4.json	
++++ b/resources/profiles/Qidi/machine/Qidi X-Max 4.json	
+@@ -8,5 +8,6 @@
+ 	"bed_model": "qidi_xmax4_buildplate_model.stl",
+ 	"bed_texture": "qidi_xmax4_buildplate_texture.svg",
+ 	"hotend_model": "qidi_xseries_gen3_hotend.stl",
+-	"default_materials": "Generic ABS @Qidi X-Max 4 0.4 nozzle;Generic PLA @Qidi X-Max 4 0.4 nozzle;QIDI ABS Odorless @Qidi X-Max 4 0.4 nozzle;QIDI ABS Rapido @Qidi X-Max 4 0.4 nozzle;QIDI PLA Rapido @Qidi X-Max 4 0.4 nozzle;QIDI PLA Rapido Matte @Qidi X-Max 4 0.4 nozzle;QIDI PLA-CF @Qidi X-Max 4 0.4 nozzle;Generic PLA Silk @Qidi X-Max 4 0.4 nozzle;QIDI PLA Rapido Silk @Qidi X-Max 4 0.4 nozzle;QIDI ASA @Qidi X-Max 4 0.4 nozzle;QIDI PETG Basic @Qidi X-Max 4 0.4 nozzle;QIDI PETG Rapido @Qidi X-Max 4 0.4 nozzle;QIDI PETG Tough @Qidi X-Max 4 0.4 nozzle;QIDI PETG Translucent @Qidi X-Max 4 0.4 nozzle;QIDI PLA Basic @Qidi X-Max 4 0.4 nozzle;QIDI PLA Matte Basic @Qidi X-Max 4 0.4 nozzle;Generic PETG @Qidi X-Max 4 0.4 nozzle;Generic PLA @Qidi X-Max 4 0.2 nozzle;Generic PLA @Qidi X-Max 4 0.6 nozzle;Generic PLA @Qidi X-Max 4 0.8 nozzle;Polymaker PLA-HT @Qidi X-Max 4 0.2 nozzle;Polymaker PLA-HT @Qidi X-Max 4 0.4 nozzle;Polymaker PLA-HT @Qidi X-Max 4 0.6 nozzle;Polymaker PLA-HT @Qidi X-Max 4 0.8 nozzle;QIDI ASA-CF20 Core @Qidi X-Max 4 0.4 nozzle;QIDI ASA-CF20 Core @Qidi X-Max 4 0.6 nozzle;QIDI ASA-CF20 Core @Qidi X-Max 4 0.8 nozzle;QIDI PA6-CF @Qidi X-Max 4 0.4 nozzle;QIDI PA6-CF @Qidi X-Max 4 0.6 nozzle;QIDI PA6-CF @Qidi X-Max 4 0.8 nozzle"
++	"default_materials": "Generic ABS @Qidi X-Max 4 0.4 nozzle;Generic PLA @Qidi X-Max 4 0.4 nozzle;QIDI ABS Odorless @Qidi X-Max 4 0.4 nozzle;QIDI ABS Rapido @Qidi X-Max 4 0.4 nozzle;QIDI PLA Rapido @Qidi X-Max 4 0.4 nozzle;QIDI PLA Rapido Matte @Qidi X-Max 4 0.4 nozzle;QIDI PLA-CF @Qidi X-Max 4 0.4 nozzle;Generic PLA Silk @Qidi X-Max 4 0.4 nozzle;QIDI PLA Rapido Silk @Qidi X-Max 4 0.4 nozzle;QIDI ASA @Qidi X-Max 4 0.4 nozzle;QIDI PETG Basic @Qidi X-Max 4 0.4 nozzle;QIDI PETG Rapido @Qidi X-Max 4 0.4 nozzle;QIDI PETG Tough @Qidi X-Max 4 0.4 nozzle;QIDI PETG Translucent @Qidi X-Max 4 0.4 nozzle;QIDI PLA Basic @Qidi X-Max 4 0.4 nozzle;QIDI PLA Matte Basic @Qidi X-Max 4 0.4 nozzle;Generic PETG @Qidi X-Max 4 0.4 nozzle;Generic PLA @Qidi X-Max 4 0.2 nozzle;Generic PLA @Qidi X-Max 4 0.6 nozzle;Generic PLA @Qidi X-Max 4 0.8 nozzle;Polymaker PLA-HT @Qidi X-Max 4 0.2 nozzle;Polymaker PLA-HT @Qidi X-Max 4 0.4 nozzle;Polymaker PLA-HT @Qidi X-Max 4 0.6 nozzle;Polymaker PLA-HT @Qidi X-Max 4 0.8 nozzle;QIDI ASA-CF20 Core @Qidi X-Max 4 0.4 nozzle;QIDI ASA-CF20 Core @Qidi X-Max 4 0.6 nozzle;QIDI ASA-CF20 Core @Qidi X-Max 4 0.8 nozzle;QIDI PA6-CF @Qidi X-Max 4 0.4 nozzle;QIDI PA6-CF @Qidi X-Max 4 0.6 nozzle;QIDI PA6-CF @Qidi X-Max 4 0.8 nozzle",
++	"not_support_bed_type": "Engineering Plate;Supertack Plate"
+ }
+diff --git a/src/slic3r/GUI/PlateSettingsDialog.cpp b/src/slic3r/GUI/PlateSettingsDialog.cpp
+index 31b83677..8fd87954 100644
+--- a/src/slic3r/GUI/PlateSettingsDialog.cpp
++++ b/src/slic3r/GUI/PlateSettingsDialog.cpp
+@@ -418,7 +418,10 @@ PlateSettingsDialog::PlateSettingsDialog(wxWindow* parent, const wxString& title
+         int                    index        = 0;
+         for (auto item : bed_type_def->enum_labels) {
+             index++;
+-            bool find = std::find(pm->not_support_bed_types.begin(), pm->not_support_bed_types.end(), item) != pm->not_support_bed_types.end();
++            // QIDI stores canonical enum values; retain support for older label-based profiles.
++            const auto& value = bed_type_def->enum_values[index - 1];
++            bool find = std::find(pm->not_support_bed_types.begin(), pm->not_support_bed_types.end(), value) != pm->not_support_bed_types.end() ||
++                        std::find(pm->not_support_bed_types.begin(), pm->not_support_bed_types.end(), item) != pm->not_support_bed_types.end();
+             if (!find) {
+                 m_bed_type_choice->AppendString(_L(item));
+                 m_cur_combox_bed_types.emplace_back(BedType(index));
+diff --git a/src/slic3r/GUI/Plater.cpp b/src/slic3r/GUI/Plater.cpp
+index acf372a9..df855d49 100644
+--- a/src/slic3r/GUI/Plater.cpp
++++ b/src/slic3r/GUI/Plater.cpp
+@@ -4261,7 +4261,10 @@ bool Sidebar::reset_bed_type_combox_choices(bool is_sidebar_init)
+         int index = 0;
+         for (auto item : bed_type_def->enum_labels) {
+             index++;
+-            bool find = std::find(pm->not_support_bed_types.begin(), pm->not_support_bed_types.end(), item) != pm->not_support_bed_types.end();
++            // QIDI stores canonical enum values; retain support for older label-based profiles.
++            const auto& value = bed_type_def->enum_values[index - 1];
++            bool find = std::find(pm->not_support_bed_types.begin(), pm->not_support_bed_types.end(), value) != pm->not_support_bed_types.end() ||
++                        std::find(pm->not_support_bed_types.begin(), pm->not_support_bed_types.end(), item) != pm->not_support_bed_types.end();
+             if (find) {
+                 continue;
+             }

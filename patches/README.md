@@ -33,3 +33,5 @@ separately from implementation; a patch's presence does not certify hardware use
 18. `0018-qidi-manual-cooler.patch` adds the QIDI Studio output-pin control and reported state to Print Options. It appears only when both installed-accessory and output-pin telemetry are available.
 
 19. `0019-qidi-http-validation.patch` adds a loopback HTTP fixture for the actual upload and submission transports, API-key headers, selected 3MF plate, ordered setup and stop-on-error. These full-library tests require the integrated build; the isolated helper harness is not evidence that they ran.
+
+20. `0020-max4-bed-types.patch` imports QIDI's unsupported-plate metadata and canonical enum matching for plate selectors while retaining older label-based profile compatibility. Qidi bundle version becomes 02.04.00.25.

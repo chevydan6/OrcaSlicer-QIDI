@@ -48,7 +48,7 @@ MQTT/tunnel stack are not implemented. Existing Orca backends remain available.
 ## Software validation to date
 
 - All-vendor profile structural check: 72 bundles, zero errors/warnings.
-- Qidi profile version check: passed, bundle 02.04.00.20 to 02.04.00.24.
+- Qidi profile version check: passed, bundle 02.04.00.20 to 02.04.00.25.
 - The numbered patches reproduce the local downstream Git tree exactly.
 - Production protocol helper bodies compile in isolation with C++17 and warnings
   treated as errors; sparse mappings, Box mode, chamber, RFID and load/unload

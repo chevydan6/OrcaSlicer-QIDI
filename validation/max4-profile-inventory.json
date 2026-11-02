@@ -43126,10 +43126,6 @@
         "model_id": {
           "orca": "Qidi-XMax-4",
           "qidi": "QD_MAX4"
-        },
-        "not_support_bed_type": {
-          "orca": null,
-          "qidi": "Engineering Plate;Supertack Plate"
         }
       }
     }
@@ -43272,7 +43268,6 @@
     "default_bed_type": 1,
     "hotend_model": 1,
     "image_bed_type": 1,
-    "model_id": 1,
-    "not_support_bed_type": 1
+    "model_id": 1
   }
 }
