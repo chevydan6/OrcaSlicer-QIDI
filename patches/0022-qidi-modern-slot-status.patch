@@ -1,0 +1,237 @@
+From 91fd36098e9ad6daa7bee485c25e32066c0bea15 Mon Sep 17 00:00:00 2001
+From: chevydan6 <339888127+chevydan6@users.noreply.github.com>
+Date: Tue, 3 Nov 2026 08:05:40 +0900
+Subject: [PATCH] Support modern QIDI Box slot reports and loaded physical slot
+
+---
+ src/slic3r/Utils/QidiPrinterAgent.cpp         | 106 +++++++++++++-----
+ src/slic3r/Utils/QidiPrinterAgent.hpp         |   2 +
+ tests/slic3rutils/test_qidi_printer_agent.cpp |  38 +++++++
+ 3 files changed, 115 insertions(+), 31 deletions(-)
+
+diff --git a/src/slic3r/Utils/QidiPrinterAgent.cpp b/src/slic3r/Utils/QidiPrinterAgent.cpp
+index d32c4668..b701a1e8 100644
+--- a/src/slic3r/Utils/QidiPrinterAgent.cpp
++++ b/src/slic3r/Utils/QidiPrinterAgent.cpp
+@@ -298,6 +298,50 @@ nlohmann::json QidiPrinterAgent::configuration_notification(const nlohmann::json
+     return status;
+ }
+ 
++std::optional<int> QidiPrinterAgent::reported_box_count(const nlohmann::json& status, bool legacy_default)
++{
++    const nlohmann::json::json_pointer paths[] = {
++        nlohmann::json::json_pointer("/multi_color_controller/box_count"),
++        nlohmann::json::json_pointer("/multi_color_controller/box/box_count"),
++        nlohmann::json::json_pointer("/save_variables/variables/box_count")};
++    for (const auto& path : paths) {
++        if (!status.contains(path))
++            continue;
++        const auto& count = status[path];
++        // Check before narrowing: a malicious or corrupt unsigned count must not wrap.
++        if (!count.is_number_integer() || count < 0 || count > 4)
++            return std::nullopt;
++        return count.get<int>();
++    }
++    return legacy_default ? std::optional<int>(1) : std::nullopt;
++}
++
++nlohmann::json QidiPrinterAgent::decoded_box_slot(const nlohmann::json& status, int slot)
++{
++    nlohmann::json result = nlohmann::json::object();
++    if (slot < 0 || slot >= 16)
++        return result;
++    const auto controller = status.find("multi_color_controller");
++    if (controller == status.end() || !controller->is_object())
++        return result;
++    const auto nested = controller->find("box");
++    const auto& box = nested != controller->end() && nested->is_object() ? *nested : *controller;
++    const auto prefix = "box" + std::to_string(slot / 4) + "_";
++    const auto index = std::to_string(slot % 4);
++    const auto inserted = box.find(prefix + "box_inserted_" + index);
++    if (inserted != box.end() && (inserted->is_boolean() || inserted->is_number_integer()))
++        result["present"] = inserted->is_boolean() ? inserted->get<bool>() : *inserted != 0;
++    for (const char* key : {"filament_type", "filament_str", "vendor_str"}) {
++        const auto value = box.find(prefix + "filament_info_" + index + "_" + key);
++        if (value != box.end() && value->is_string())
++            result[key] = *value;
++    }
++    const auto colors = box.find(prefix + "filament_info_" + index + "_color_rgb_str");
++    if (colors != box.end() && colors->is_array() && !colors->empty() && (*colors)[0].is_string())
++        result["color"] = (*colors)[0];
++    return result;
++}
++
+ void QidiPrinterAgent::append_box_status(const nlohmann::json& status, nlohmann::json& payload)
+ {
+     const auto controller = status.find("multi_color_controller");
+@@ -305,20 +349,18 @@ void QidiPrinterAgent::append_box_status(const nlohmann::json& status, nlohmann:
+         return;
+     const auto nested = controller->find("box");
+     const auto& box = nested != controller->end() && nested->is_object() ? *nested : *controller;
+-    const auto count_in = [](const nlohmann::json& object) -> std::optional<int> {
+-        const auto count = object.find("box_count");
+-        if (count == object.end() || !count->is_number_integer() || *count < 0 || *count > 4)
+-            return std::nullopt;
+-        return count->get<int>();
+-    };
+-    auto count = count_in(*controller);
+-    if (!count)
+-        count = count_in(box);
+-    if (!count && status.contains("save_variables") && status["save_variables"].is_object()) {
+-        const auto variables = status["save_variables"].find("variables");
+-        if (variables != status["save_variables"].end() && variables->is_object())
+-            count = count_in(*variables);
++    const auto& loaded_owner = controller->contains("last_load_slot") ? *controller : box;
++    const auto loaded = loaded_owner.find("last_load_slot");
++    if (loaded != loaded_owner.end() && loaded->is_string()) {
++        const auto name = loaded->get<std::string>();
++        // Firmware uses physical slot names; Orca reserves 254 for the external spool.
++        for (int slot = 0; slot <= 16; ++slot)
++            if (name == "slot" + std::to_string(slot)) {
++                payload["print"]["ams"]["tray_now"] = std::to_string(slot == 16 ? 254 : slot);
++                break;
++            }
+     }
++    const auto count = reported_box_count(status);
+     // The AMS parser treats this as a complete unit list, so never infer count
+     // from a partial temperature update and accidentally remove other Boxes.
+     if (!count)
+@@ -528,7 +570,7 @@ bool QidiPrinterAgent::fetch_slot_info(const std::string&        base_url,
+                                        int&                      box_count,
+                                        std::string&              error)
+ {
+-    std::string url = join_url(base_url, "/printer/objects/query?save_variables=variables&multi_color_controller=box");
++    std::string url = join_url(base_url, "/printer/objects/query?save_variables=variables&multi_color_controller");
+     for (int i = 0; i < 16; ++i) {
+         url += "&box_stepper%20slot" + std::to_string(i) + "=runout_button";
+     }
+@@ -570,19 +612,20 @@ bool QidiPrinterAgent::fetch_slot_info(const std::string&        base_url,
+         return false;
+     }
+ 
+-    if (!json.contains("result") || !json["result"].contains("status") || !json["result"]["status"].contains("save_variables") ||
+-        !json["result"]["status"]["save_variables"].contains("variables")) {
++    if (!json.contains("result") || !json["result"].contains("status") || !json["result"]["status"].is_object()) {
+         error = "Unexpected JSON structure";
+         return false;
+     }
+-
+-    auto& variables = json["result"]["status"]["save_variables"]["variables"];
+-    auto& status    = json["result"]["status"];
+-
+-    box_count = variables.value("box_count", 1);
+-    if (box_count < 0) {
+-        box_count = 0;
++    const auto& status = json["result"]["status"];
++    const nlohmann::json::json_pointer variables_path("/save_variables/variables");
++    const auto variables = status.contains(variables_path) && status[variables_path].is_object()
++        ? status[variables_path] : nlohmann::json::object();
++    const auto count = reported_box_count(status, true);
++    if (!count) {
++        error = "Invalid QIDI Box count (expected 0 through 4)";
++        return false;
+     }
++    box_count = *count;
+ 
+     const int max_slots = box_count * 4;
+     trays.clear();
+@@ -620,6 +663,10 @@ bool QidiPrinterAgent::fetch_slot_info(const std::string&        base_url,
+             }
+         }
+ 
++        const auto decoded = decoded_box_slot(status, i);
++        if (decoded.contains("present"))
++            tray.has_filament = decoded["present"].get<bool>();
++
+         if (tray.has_filament) {
+             // Look up filament type name from dictionary
+             std::string filament_name = "PLA";
+@@ -627,13 +674,8 @@ bool QidiPrinterAgent::fetch_slot_info(const std::string&        base_url,
+             if (filament_it != dict.filaments.end()) {
+                 filament_name = filament_it->second;
+             }
+-            if (filament_value.is_string()) {
+-                const nlohmann::json::json_pointer decoded_type("/multi_color_controller/box/box" + std::to_string(i / 4) +
+-                                                                "_filament_info_" + std::to_string(i % 4) + "_filament_type");
+-                if (status.contains(decoded_type) && status[decoded_type].is_string()) {
+-                    filament_name = status[decoded_type].get<std::string>();
+-                }
+-            }
++            if (decoded.contains("filament_type") && !decoded["filament_type"].get_ref<const std::string&>().empty())
++                filament_name = decoded["filament_type"].get<std::string>();
+             tray.tray_type = normalize_filament_type(filament_name);
+ 
+             // Try Qidi-specific setting ID first; fall back to visible preset by type
+@@ -649,7 +691,9 @@ bool QidiPrinterAgent::fetch_slot_info(const std::string&        base_url,
+ 
+             // Look up color from dictionary
+             auto color_it = dict.colors.find(color_index);
+-            if (color_value.is_array() && !color_value.empty() && color_value[0].is_string()) {
++            if (decoded.contains("color")) {
++                tray.tray_color = decoded["color"].get<std::string>();
++            } else if (color_value.is_array() && !color_value.empty() && color_value[0].is_string()) {
+                 tray.tray_color = color_value[0].get<std::string>();
+             } else if (color_it != dict.colors.end()) {
+                 tray.tray_color = color_it->second;
+diff --git a/src/slic3r/Utils/QidiPrinterAgent.hpp b/src/slic3r/Utils/QidiPrinterAgent.hpp
+index a90e3d5c..5d550d87 100644
+--- a/src/slic3r/Utils/QidiPrinterAgent.hpp
++++ b/src/slic3r/Utils/QidiPrinterAgent.hpp
+@@ -26,6 +26,8 @@ public:
+     static std::optional<std::string> control_script(const nlohmann::json& command);
+     static void append_chamber_status(const nlohmann::json& status, nlohmann::json& payload);
+     static void append_box_status(const nlohmann::json& status, nlohmann::json& payload);
++    static std::optional<int> reported_box_count(const nlohmann::json& status, bool legacy_default = false);
++    static nlohmann::json decoded_box_slot(const nlohmann::json& status, int slot);
+     static void append_accessory_status(const nlohmann::json& status, nlohmann::json& payload);
+     static nlohmann::json configuration_notification(const nlohmann::json& notification);
+     static AgentInfo get_agent_info_static();
+diff --git a/tests/slic3rutils/test_qidi_printer_agent.cpp b/tests/slic3rutils/test_qidi_printer_agent.cpp
+index 90850487..4c0027ce 100644
+--- a/tests/slic3rutils/test_qidi_printer_agent.cpp
++++ b/tests/slic3rutils/test_qidi_printer_agent.cpp
+@@ -384,3 +384,41 @@ TEST_CASE("QIDI detection settings use firmware variables and uppercase sensitiv
+     CHECK(payload["print"]["qidi_detection"]["enable_pre_print_model_check"] == true);
+     CHECK(payload["print"]["qidi_detection"]["sensitivity"] == "medium");
+ }
++
++TEST_CASE("QIDI Box count rejects invalid values before integer conversion", "[QidiPrinterAgent]")
++{
++    CHECK(QidiPrinterAgent::reported_box_count({}, true) == 1);
++    CHECK_FALSE(QidiPrinterAgent::reported_box_count({}));
++    CHECK(QidiPrinterAgent::reported_box_count({{"multi_color_controller", {{"box", {{"box_count", 4}}}}}}) == 4);
++    CHECK_FALSE(QidiPrinterAgent::reported_box_count({{"multi_color_controller", {{"box_count", 4294967296ULL}}}}, true));
++    CHECK_FALSE(QidiPrinterAgent::reported_box_count({{"save_variables", {{"variables", {{"box_count", -1}}}}}}, true));
++}
++
++TEST_CASE("QIDI modern slot data keeps physical slot identity in nested and flat reports", "[QidiPrinterAgent]")
++{
++    const bool nested = GENERATE(false, true);
++    const nlohmann::json box{{"box1_box_inserted_2", 1}, {"box1_filament_info_2_filament_type", "PETG"},
++        {"box1_filament_info_2_color_rgb_str", {"AABBCC", "DDEEFF"}}, {"last_load_slot", "slot6"}};
++    const nlohmann::json status{{"multi_color_controller", nested ? nlohmann::json{{"box", box}} : box}};
++    const auto slot = QidiPrinterAgent::decoded_box_slot(status, 6);
++    CHECK(slot["present"] == true);
++    CHECK(slot["filament_type"] == "PETG");
++    CHECK(slot["color"] == "AABBCC");
++    CHECK(QidiPrinterAgent::decoded_box_slot(status, 5).empty());
++    CHECK(QidiPrinterAgent::decoded_box_slot(status, 16).empty());
++    nlohmann::json payload;
++    QidiPrinterAgent::append_box_status(status, payload);
++    CHECK(payload["print"]["ams"]["tray_now"] == "6");
++    CHECK_FALSE(payload["print"]["ams"].contains("ams"));
++}
++
++TEST_CASE("QIDI loaded slot does not interpret malformed firmware names", "[QidiPrinterAgent]")
++{
++    const std::string name = GENERATE(std::string("slot16"), std::string("slot17"), std::string("slot01"), std::string("tool2"));
++    nlohmann::json payload;
++    QidiPrinterAgent::append_box_status({{"multi_color_controller", {{"last_load_slot", name}}}}, payload);
++    if (name == "slot16")
++        CHECK(payload["print"]["ams"]["tray_now"] == "254");
++    else
++        CHECK(payload.empty());
++}
+-- 
+2.56.0
+

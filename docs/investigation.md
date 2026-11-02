@@ -105,3 +105,5 @@ reported QIDI saved variables enable their controls; commands translate to
 `noodle_sensitivity_level`. The manual Polar Cooler toggle is in Print Options,
 using the same output pin as QIDI Studio; its job-start preference remains a
 separate setting, as in QIDI Studio.
+
+Modern slot synchronization now queries the complete multi_color_controller object and consumes QIDI Studio's box_inserted and decoded filament/color fields before legacy variables. Count validation prevents corrupt firmware values allocating unbounded slots. Live loaded-slot telemetry uses physical slot names, independent of logical tool numbers. Automatic RFID-driven material refresh remains a separate integration item; explicit Sync refreshes materials.

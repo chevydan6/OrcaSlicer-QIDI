@@ -46,6 +46,8 @@ struct QidiPrinterAgent {
  static std::string camera_url_for_host(std::string);
  static nlohmann::json configuration_notification(const nlohmann::json&);
  static void append_accessory_status(const nlohmann::json&, nlohmann::json&);
+ static std::optional<int> reported_box_count(const nlohmann::json&, bool legacy_default = false);
+ static nlohmann::json decoded_box_slot(const nlohmann::json&, int);
  static void append_box_status(const nlohmann::json&, nlohmann::json&);
  static void append_chamber_status(const nlohmann::json&, nlohmann::json&);
  static std::string build_tool_slot_script(const std::string&);
@@ -56,6 +58,13 @@ for start,end in functions:
  code += source[source.index(start):source.index(end,source.index(start))]
 code += r'''
 int main() {
+ assert(QidiPrinterAgent::reported_box_count({},true)==1);
+ assert(!QidiPrinterAgent::reported_box_count({{"multi_color_controller",{{"box_count",4294967296ULL}}}},true));
+ assert(QidiPrinterAgent::decoded_box_slot({{"multi_color_controller",{{"box1_box_inserted_2",1},{"box1_filament_info_2_filament_type","PETG"},{"box1_filament_info_2_color_rgb_str",{"AABBCC","DDEEFF"}}}}},6)["color"]=="AABBCC");
+ nlohmann::json loaded;
+ QidiPrinterAgent::append_box_status({{"multi_color_controller",{{"last_load_slot","slot15"}}}},loaded);
+ assert(loaded["print"]["ams"]["tray_now"]=="15");
+
  assert(QidiPrinterAgent::control_script({{"command","qidi_polar_cooler"},{"enabled",false}}) == "SET_PIN PIN=polar_cooler VALUE=0");
  nlohmann::json detector_payload;
  QidiPrinterAgent::append_accessory_status({{"save_variables",{{"variables",{{"enable_noodle_detection",1},{"enable_pre_print_model_check",false},{"noodle_sensitivity_level","MEDIUM"}}}}},{"output_pin polar_cooler",{{"value",1}}}},detector_payload);
