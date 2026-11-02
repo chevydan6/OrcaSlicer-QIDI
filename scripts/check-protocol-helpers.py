@@ -56,6 +56,22 @@ struct QidiPrinterAgent {
 '''
 for start,end in functions:
  code += source[source.index(start):source.index(end,source.index(start))]
+cache_source = (root/'OrcaSlicer/src/slic3r/Utils/MoonrakerPrinterAgent.cpp').read_text()
+qidi_header = (root/'OrcaSlicer/src/slic3r/Utils/QidiPrinterAgent.hpp').read_text()
+code += """
+#include <mutex>
+struct MoonrakerCacheHarness {
+ std::recursive_mutex payload_mutex;
+ nlohmann::json status_cache;
+ virtual bool merge_status_object_recursively(const std::string&) const { return false; }
+ void update_status_cache(const nlohmann::json&);
+};
+struct QidiCacheHarness : MoonrakerCacheHarness {
+"""
+start=qidi_header.index('    bool merge_status_object_recursively')
+code += qidi_header[start:qidi_header.index('    void append_status_payload',start)] + '};\n'
+start=cache_source.index('void MoonrakerPrinterAgent::update_status_cache')
+code += cache_source[start:cache_source.index('nlohmann::json MoonrakerPrinterAgent::build_print_payload_locked',start)].replace('MoonrakerPrinterAgent::','MoonrakerCacheHarness::')
 gui_source = (root/'OrcaSlicer/src/slic3r/GUI/DeviceCore/DevFilaSystem.cpp').read_text()
 code += """
 struct DevAmsTray {
@@ -73,6 +89,16 @@ start=gui_source.index('void DevFilaSystemParser::UpdateQidiTray')
 code += gui_source[start:gui_source.index('void DevFilaSystemParser::ParseV1_0',start)]
 code += r'''
 int main() {
+ const nlohmann::json first{{"multi_color_controller",{{"box",{{"box_count",2},{"box1_filament_info_2_filament_type","PETG"}}}}}};
+ const nlohmann::json second{{"multi_color_controller",{{"box",{{"box1_aht20_temp",32.5}}}}}};
+ QidiCacheHarness cache;
+ cache.update_status_cache(first);cache.update_status_cache(second);
+ assert(QidiPrinterAgent::reported_box_count(cache.status_cache)==2);
+ assert(QidiPrinterAgent::decoded_box_slot(cache.status_cache,6)["filament_type"]=="PETG");
+ MoonrakerCacheHarness ordinary_cache;
+ ordinary_cache.update_status_cache(first);ordinary_cache.update_status_cache(second);
+ assert(!ordinary_cache.status_cache["multi_color_controller"]["box"].contains("box_count"));
+
  assert(QidiPrinterAgent::camera_url_for_host("http://127.0.0.1:7125/")=="http://127.0.0.1/webcam/?action=snapshot");
 
  nlohmann::json external;

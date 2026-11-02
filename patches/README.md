@@ -49,3 +49,5 @@ separately from implementation; a patch's presence does not certify hardware use
 26. `0026-qidi-external-materials.patch` ports multi_color_controller.extra.filament_info to the native external spool, independent of Box count. Box/external resolution shares exact compatible type/name matching. Modern composite types are preserved; unknown materials no longer silently fall back to the first visible material.
 
 27. `0027-qidi-native-wiring.patch` makes reported QIDI capabilities expose the Print Options entry point, makes the submitted slot selection determine Box mode, rejects conflicting physical-slot/external-mode requests, and normalizes trailing slashes before removing the Moonraker camera port.
+
+28. `0028-qidi-nested-status-cache.patch` adds an opt-in cache merge policy for QIDI multi_color_controller only. Nested partial temperature updates retain the reported Box count and material fields; other Moonraker agents keep their existing field replacement semantics. Production cache-body isolation checks and full-library regression cases cover both policies.

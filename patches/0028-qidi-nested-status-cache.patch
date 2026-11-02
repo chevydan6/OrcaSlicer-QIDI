@@ -1,0 +1,102 @@
+From ba030a07f5bf0a011052bf7ae37314a7f9c88ce3 Mon Sep 17 00:00:00 2001
+From: chevydan6 <339888127+chevydan6@users.noreply.github.com>
+Date: Tue, 3 Nov 2026 08:33:33 +0900
+Subject: [PATCH] Preserve nested QIDI controller fields across partial status
+ updates
+
+---
+ src/slic3r/Utils/MoonrakerPrinterAgent.cpp    |  4 ++++
+ src/slic3r/Utils/MoonrakerPrinterAgent.hpp    |  2 ++
+ src/slic3r/Utils/QidiPrinterAgent.hpp         |  2 ++
+ tests/slic3rutils/test_qidi_printer_agent.cpp | 23 +++++++++++++++++++
+ 4 files changed, 31 insertions(+)
+
+diff --git a/src/slic3r/Utils/MoonrakerPrinterAgent.cpp b/src/slic3r/Utils/MoonrakerPrinterAgent.cpp
+index c3dec286..70082f8d 100644
+--- a/src/slic3r/Utils/MoonrakerPrinterAgent.cpp
++++ b/src/slic3r/Utils/MoonrakerPrinterAgent.cpp
+@@ -2136,6 +2136,10 @@ void MoonrakerPrinterAgent::update_status_cache(const nlohmann::json& updates)
+             if (!target.is_object()) {
+                 target = nlohmann::json::object();
+             }
++            if (merge_status_object_recursively(item.key())) {
++                target.update(item.value(), true);
++                continue;
++            }
+             for (const auto& field : item.value().items()) {
+                 target[field.key()] = field.value();
+             }
+diff --git a/src/slic3r/Utils/MoonrakerPrinterAgent.hpp b/src/slic3r/Utils/MoonrakerPrinterAgent.hpp
+index d0d95f6f..8a178209 100644
+--- a/src/slic3r/Utils/MoonrakerPrinterAgent.hpp
++++ b/src/slic3r/Utils/MoonrakerPrinterAgent.hpp
+@@ -124,6 +124,7 @@ protected:
+     virtual std::string ams_unit_name(int /*ams_id*/) const { return {}; }
+     virtual std::string ams_unit_info() const { return "0002"; }
+     virtual std::vector<std::string> additional_status_objects() const { return {}; }
++    virtual bool merge_status_object_recursively(const std::string&) const { return false; }
+     virtual void append_status_payload(const nlohmann::json&, nlohmann::json&) const {}
+     virtual nlohmann::json additional_notification_status(const nlohmann::json&) const { return nlohmann::json::object(); }
+ 
+@@ -162,6 +163,7 @@ protected:
+     static std::string map_filament_type_to_generic_id(const std::string& filament_type);
+ 
+ private:
++    friend struct QidiPrinterAgentTestAccess; // Offline cache/transport regression fixture.
+     int handle_request(const std::string& dev_id, const std::string& json_str);
+     int send_version_info(const std::string& dev_id);
+     int send_access_code(const std::string& dev_id);
+diff --git a/src/slic3r/Utils/QidiPrinterAgent.hpp b/src/slic3r/Utils/QidiPrinterAgent.hpp
+index 4ae57286..e232587d 100644
+--- a/src/slic3r/Utils/QidiPrinterAgent.hpp
++++ b/src/slic3r/Utils/QidiPrinterAgent.hpp
+@@ -51,6 +51,8 @@ protected:
+     { return {"heater_generic chamber", "multi_color_controller", "save_variables", "output_pin caselight",
+               "fan_generic cooling_fan", "fan_generic auxiliary_cooling_fan", "fan_generic chamber_circulation_fan", "gcode_move",
+               "output_pin polar_cooler", "exclude_object"}; }
++    bool merge_status_object_recursively(const std::string& name) const override
++    { return name == "multi_color_controller"; }
+     void append_status_payload(const nlohmann::json& status, nlohmann::json& payload) const override
+     { append_chamber_status(status, payload); append_box_status(status, payload); append_accessory_status(status, payload); }
+     nlohmann::json additional_notification_status(const nlohmann::json& notification) const override
+diff --git a/tests/slic3rutils/test_qidi_printer_agent.cpp b/tests/slic3rutils/test_qidi_printer_agent.cpp
+index 4a8773b3..94ecf89f 100644
+--- a/tests/slic3rutils/test_qidi_printer_agent.cpp
++++ b/tests/slic3rutils/test_qidi_printer_agent.cpp
+@@ -39,6 +39,12 @@ struct QidiPrinterAgentTestAccess
+         agent.device_info.dev_id = "offline-fixture";
+         agent.device_info.api_key = "fixture-key";
+     }
++    static nlohmann::json merge(MoonrakerPrinterAgent& agent, const nlohmann::json& first, const nlohmann::json& second)
++    {
++        agent.update_status_cache(first);
++        agent.update_status_cache(second);
++        return agent.status_cache;
++    }
+     static bool submit(QidiPrinterAgent& agent, const PrintParams& params)
+     { return agent.print_uploaded_file(params, "two plates.gcode.3mf"); }
+     static bool upload(QidiPrinterAgent& agent, const std::string& path)
+@@ -516,3 +522,20 @@ TEST_CASE("QIDI external spool metadata is independent of Box count", "[QidiPrin
+     CHECK(payload["print"]["qidi_external_slot"]["color"] == "112233");
+     CHECK_FALSE(payload["print"].contains("ams"));
+ }
++
++TEST_CASE("QIDI nested telemetry preserves Box count and material across partial updates", "[QidiPrinterAgent]")
++{
++    const nlohmann::json first{{"multi_color_controller", {{"box", {{"box_count", 2},
++        {"box1_box_inserted_2", 1}, {"box1_filament_info_2_filament_type", "PETG"}}}}}};
++    const nlohmann::json second{{"multi_color_controller", {{"box", {{"box1_aht20_temp", 32.5}}}}}};
++    QidiPrinterAgent qidi("");
++    const auto status = QidiPrinterAgentTestAccess::merge(qidi, first, second);
++    CHECK(QidiPrinterAgent::reported_box_count(status) == 2);
++    CHECK(QidiPrinterAgent::decoded_box_slot(status, 6)["filament_type"] == "PETG");
++    nlohmann::json payload;
++    QidiPrinterAgent::append_box_status(status, payload);
++    CHECK(payload["print"]["ams"]["ams"][1]["temp"] == "32.5");
++    // The optional QIDI policy must not change other Moonraker agents' field replacement.
++    MoonrakerPrinterAgent moonraker("");
++    CHECK_FALSE(QidiPrinterAgentTestAccess::merge(moonraker, first, second)["multi_color_controller"]["box"].contains("box_count"));
++}
+-- 
+2.56.0
+

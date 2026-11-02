@@ -1,1 +1,0 @@
-PASS: isolated production protocol helper compilation and offline assertions. Submission ordering and stop-on-failure use recording transports. Full app compilation, GUI, real HTTP and hardware are NOT covered.
