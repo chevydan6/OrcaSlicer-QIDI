@@ -1,0 +1,126 @@
+From 6668ab1d0bda560f4f187302e134ca3608001d45 Mon Sep 17 00:00:00 2001
+From: chevydan6 <339888127+chevydan6@users.noreply.github.com>
+Date: Tue, 3 Nov 2026 08:29:01 +0900
+Subject: [PATCH] Expose QIDI print options and keep submitted slot selection
+ authoritative
+
+---
+ src/slic3r/GUI/SelectMachine.cpp              |  3 +++
+ src/slic3r/GUI/StatusPanel.cpp                |  7 ++++++-
+ src/slic3r/Utils/QidiPrinterAgent.cpp         | 18 ++++++++++++++----
+ tests/slic3rutils/test_qidi_printer_agent.cpp |  4 ++++
+ 4 files changed, 27 insertions(+), 5 deletions(-)
+
+diff --git a/src/slic3r/GUI/SelectMachine.cpp b/src/slic3r/GUI/SelectMachine.cpp
+index 3f69718e..31369812 100644
+--- a/src/slic3r/GUI/SelectMachine.cpp
++++ b/src/slic3r/GUI/SelectMachine.cpp
+@@ -3822,6 +3822,9 @@ void SelectMachineDialog::on_send_print()
+             options["qidi"]["used_filaments"].push_back(filament.id);
+         m_print_job->task_extra_options = options.dump();
+         if (options["qidi"]["is_support_multi_box"] == true) {
++            // The submitted slot selection is authoritative. A transient Box
++            // status change must not silently convert a selected Box job to external mode.
++            m_print_job->task_use_ams = _HasAms(m_ams_mapping_result);
+             PrintParams validation{};
+             validation.task_use_ams = m_print_job->task_use_ams;
+             validation.ams_mapping = m_print_job->task_ams_mapping;
+diff --git a/src/slic3r/GUI/StatusPanel.cpp b/src/slic3r/GUI/StatusPanel.cpp
+index 90181a5a..b19186fa 100644
+--- a/src/slic3r/GUI/StatusPanel.cpp
++++ b/src/slic3r/GUI/StatusPanel.cpp
+@@ -117,6 +117,7 @@
+ 
+ 
+ #include "PrintOptionsDialog.hpp"
++#include "DeviceCore/DevPrintOptions.h"
+ #include "SafetyOptionsDialog.hpp"
+ 
+ #include "ThermalPreconditioningDialog.hpp"
+@@ -3010,7 +3011,11 @@ void StatusPanel::update(MachineObject *obj)
+ 
+         DevConfig* config = obj->GetConfig();
+ 
+-        if (config->SupportFirstLayerInspect() || config->SupportAIMonitor() || obj->is_support_build_plate_marker_detect || obj->is_support_auto_recovery_step_loss) {
++        const auto* qidi_fod = obj->GetPrintOptions()->GetDetectionOption(PrintOptionEnum::FOD_Check_Detection);
++        const bool qidi_options = obj->printer_agent_id == "qidi" &&
++            (obj->is_support_spaghetti_detection || (qidi_fod && qidi_fod->is_support_detect) ||
++             (obj->qidi_polar_cooler_available && obj->qidi_polar_cooler_on.has_value()) || !obj->qidi_print_objects.empty());
++        if (config->SupportFirstLayerInspect() || config->SupportAIMonitor() || obj->is_support_build_plate_marker_detect || obj->is_support_auto_recovery_step_loss || qidi_options) {
+             m_options_btn->Show();
+             if (print_options_dlg) {
+                 print_options_dlg->update_machine_obj(obj);
+diff --git a/src/slic3r/Utils/QidiPrinterAgent.cpp b/src/slic3r/Utils/QidiPrinterAgent.cpp
+index 0745171c..3ae8208e 100644
+--- a/src/slic3r/Utils/QidiPrinterAgent.cpp
++++ b/src/slic3r/Utils/QidiPrinterAgent.cpp
+@@ -14,6 +14,7 @@
+ #include <boost/algorithm/string/case_conv.hpp>
+ #include <boost/log/trivial.hpp>
+ #include <cctype>
++#include <cstddef>
+ #include <algorithm>
+ #include <ios>
+ #include "libslic3r/Preset.hpp"
+@@ -453,14 +454,14 @@ void QidiPrinterAgent::append_box_status(const nlohmann::json& status, nlohmann:
+ 
+ std::string QidiPrinterAgent::camera_url_for_host(std::string base_url)
+ {
++    while (!base_url.empty() && base_url.back() == '/')
++        base_url.pop_back();
+     if (base_url.empty())
+         return {};
+     // QIDI Studio uses the printer's web proxy snapshot endpoint. Moonraker's
+     // direct API port does not serve it; custom web-proxy ports are preserved.
+     if (base_url.size() > 5 && base_url.compare(base_url.size() - 5, 5, ":7125") == 0)
+         base_url.resize(base_url.size() - 5);
+-    if (base_url.back() == '/')
+-        base_url.pop_back();
+     return base_url + "/webcam/?action=snapshot";
+ }
+ 
+@@ -556,8 +557,17 @@ std::string QidiPrinterAgent::build_box_selection_script(const PrintParams& para
+             return {};
+     // QIDI Studio treats the external spool as one material. Orca's Bambu
+     // external-spool change assist does not implement a QIDI manual-change flow.
+-    if (!params.task_use_ams)
+-        return used.size() == 1 ? "SAVE_VARIABLE VARIABLE=enable_box VALUE=0" : std::string();
++    if (!params.task_use_ams) {
++        if (used.size() != 1) return {};
++        if (!params.ams_mapping.empty()) {
++            const auto slots = nlohmann::json::parse(params.ams_mapping, nullptr, false);
++            if (!slots.is_array()) return {};
++            const auto index = used[0].get<std::size_t>();
++            // Normal projects encode the external slot as -1, saved-plate jobs as 254.
++            if (index < slots.size() && slots[index] != -1 && slots[index] != 254) return {};
++        }
++        return "SAVE_VARIABLE VARIABLE=enable_box VALUE=0";
++    }
+     const std::string mapping = build_tool_slot_script(params.ams_mapping);
+     if (mapping.empty())
+         return {};
+diff --git a/tests/slic3rutils/test_qidi_printer_agent.cpp b/tests/slic3rutils/test_qidi_printer_agent.cpp
+index 957e43aa..4a8773b3 100644
+--- a/tests/slic3rutils/test_qidi_printer_agent.cpp
++++ b/tests/slic3rutils/test_qidi_printer_agent.cpp
+@@ -217,6 +217,8 @@ TEST_CASE("QIDI print submission selects Box mode and preserves sparse filament
+           "SAVE_VARIABLE VARIABLE=enable_box VALUE=1\n"
+           "SAVE_VARIABLE VARIABLE=value_t2 VALUE=\"'slot5'\"");
+     params.task_use_ams = false;
++    CHECK(QidiPrinterAgent::build_box_selection_script(params).empty());
++    params.ams_mapping = "[-1,-1,-1]";
+     CHECK(QidiPrinterAgent::build_box_selection_script(params) == "SAVE_VARIABLE VARIABLE=enable_box VALUE=0");
+     params.task_use_ams = true;
+     params.ams_mapping = "[]";
+@@ -368,6 +370,8 @@ TEST_CASE("QIDI snapshots use the web proxy rather than the direct Moonraker por
+     CHECK(QidiPrinterAgent::camera_url_for_host("http://127.0.0.1:7125") == "http://127.0.0.1/webcam/?action=snapshot");
+     CHECK(QidiPrinterAgent::camera_url_for_host("https://[::1]:8443") == "https://[::1]:8443/webcam/?action=snapshot");
+     CHECK(QidiPrinterAgent::camera_url_for_host("").empty());
++    CHECK(QidiPrinterAgent::camera_url_for_host("/").empty());
++    CHECK(QidiPrinterAgent::camera_url_for_host("http://127.0.0.1:7125/") == "http://127.0.0.1/webcam/?action=snapshot");
+ }
+ 
+ TEST_CASE("QIDI detection settings use firmware variables and uppercase sensitivity", "[QidiPrinterAgent]")
+-- 
+2.56.0
+

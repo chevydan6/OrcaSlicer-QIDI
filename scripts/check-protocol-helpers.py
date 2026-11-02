@@ -73,6 +73,8 @@ start=gui_source.index('void DevFilaSystemParser::UpdateQidiTray')
 code += gui_source[start:gui_source.index('void DevFilaSystemParser::ParseV1_0',start)]
 code += r'''
 int main() {
+ assert(QidiPrinterAgent::camera_url_for_host("http://127.0.0.1:7125/")=="http://127.0.0.1/webcam/?action=snapshot");
+
  nlohmann::json external;
  QidiPrinterAgent::append_box_status({{"multi_color_controller",{{"extra",{{"filament_info",{{"filament_type","PLA"},{"color_rgb_str",{"112233"}}}}}}}}},external);
  assert(external["print"]["qidi_external_slot"]["color"]=="112233");
@@ -128,7 +130,7 @@ int main() {
  assert(QidiPrinterAgent::build_tool_slot_script("[-1,-1,5]") == "SAVE_VARIABLE VARIABLE=value_t2 VALUE=\"'slot5'\"");
  assert(QidiPrinterAgent::build_tool_slot_script("[3,-1,0]") == "SAVE_VARIABLE VARIABLE=value_t0 VALUE=\"'slot3'\"\nSAVE_VARIABLE VARIABLE=value_t2 VALUE=\"'slot0'\"");
  assert(QidiPrinterAgent::build_tool_slot_script("[16]").empty());
- assert(QidiPrinterAgent::build_box_selection_script({false,"[3]",false,false,R"({"qidi":{"used_filaments":[0]}})"}) == "SAVE_VARIABLE VARIABLE=enable_box VALUE=0");
+ assert(QidiPrinterAgent::build_box_selection_script({false,"[-1]",false,false,R"({"qidi":{"used_filaments":[0]}})"}) == "SAVE_VARIABLE VARIABLE=enable_box VALUE=0");
  assert(QidiPrinterAgent::build_box_selection_script({true,"[]",false,false,{}}).empty());
  assert(QidiPrinterAgent::control_script({{"command","set_ctt"},{"ctt_val",45}}) == "SET_HEATER_TEMPERATURE HEATER=chamber TARGET=45");
  assert(QidiPrinterAgent::control_script({{"command","ams_get_rfid"},{"ams_id",3},{"slot_id",3}}) == "READ_RFID SLOT=15");

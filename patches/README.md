@@ -47,3 +47,5 @@ separately from implementation; a patch's presence does not certify hardware use
 25. `0025-qidi-object-exclusion.patch` ports PrinterTaskDispatcher's EXCLUDE_OBJECT operation using firmware-reported names. Native Print Options offers a named-object chooser during printing; already excluded names are omitted. Command strings are validated before dispatch. This avoids assuming Bambu numeric object IDs match Klipper object names.
 
 26. `0026-qidi-external-materials.patch` ports multi_color_controller.extra.filament_info to the native external spool, independent of Box count. Box/external resolution shares exact compatible type/name matching. Modern composite types are preserved; unknown materials no longer silently fall back to the first visible material.
+
+27. `0027-qidi-native-wiring.patch` makes reported QIDI capabilities expose the Print Options entry point, makes the submitted slot selection determine Box mode, rejects conflicting physical-slot/external-mode requests, and normalizes trailing slashes before removing the Moonraker camera port.
