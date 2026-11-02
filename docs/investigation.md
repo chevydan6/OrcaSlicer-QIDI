@@ -77,3 +77,31 @@ Auto-refill remains unimplemented: the public QIDI dispatcher spells its command
 in printer HELP output, but the corresponding official firmware implementation
 is not available in the inspected tree. The native Bambu replacement-material
 dialog is hidden on QIDI instead of offering an ineffective operation.
+
+## Profile differences retained deliberately
+
+The resolved MAX4 0.4 mm machine start sequence matches QIDI Studio apart from
+Orca's `chamber_temperature` spelling and QIDI's two forced `SET_INPUT_SHAPER`
+MZV assignments. The port retains Orca's choice not to force a shaping algorithm.
+End G-code and height guards match; filament-change G-code retains Orca's
+same-logical-tool guard. Machine limit arrays keep Orca's existing second mode.
+These are source comparisons, not generated-G-code or physical validation.
+
+Many differences in the inventory are inherited values absent from Orca preset
+JSON, even though Orca already defines the corresponding setting. In particular,
+additional-fan layer controls, cooling before the tower, tower interface extrusion,
+and fast-flush temperatures have Orca implementations. They are not missing
+features merely because the source JSON report contains `null` on one side.
+Orca intentionally treats `internal_bridge_support_thickness`,
+`overhang_totally_speed`, `smooth_coefficient` and `silent_mode` as obsolete import
+keys. The general port does not reintroduce those obsolete algorithms or replace
+Orca's engine. MAX4 process speeds/accelerations, prime-tower sizing and some
+material tuning still differ between the two slicers and require print-quality
+comparison; no tuning-equivalence claim is made.
+
+Detection controls reuse the existing native spaghetti/FOD interface. Only
+reported QIDI saved variables enable their controls; commands translate to
+`enable_noodle_detection`, `enable_pre_print_model_check` and uppercase
+`noodle_sensitivity_level`. The manual Polar Cooler toggle is in Print Options,
+using the same output pin as QIDI Studio; its job-start preference remains a
+separate setting, as in QIDI Studio.
