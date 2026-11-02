@@ -73,6 +73,19 @@ start=gui_source.index('void DevFilaSystemParser::UpdateQidiTray')
 code += gui_source[start:gui_source.index('void DevFilaSystemParser::ParseV1_0',start)]
 code += r'''
 int main() {
+ assert(QidiPrinterAgent::build_tool_slot_script("[3,4294967296]").empty());
+ assert(QidiPrinterAgent::build_tool_slot_script("[3,16]").empty());
+ assert(QidiPrinterAgent::build_tool_slot_script("[3,true]").empty());
+ PrintParams incomplete;
+ incomplete.task_use_ams=true;incomplete.ams_mapping="[3,-1,-1]";
+ incomplete.extra_options=R"({"qidi":{"is_support_multi_box":true,"used_filaments":[0,2]}})";
+ QidiPrinterAgent stopped;
+ assert(!stopped.print_uploaded_file(incomplete,"do-not-start.gcode") && stopped.calls.empty());
+ incomplete.ams_mapping="[15,-1,4]";
+ assert(QidiPrinterAgent::build_box_selection_script(incomplete)=="SAVE_VARIABLE VARIABLE=enable_box VALUE=1\nSAVE_VARIABLE VARIABLE=value_t0 VALUE=\"'slot15'\"\nSAVE_VARIABLE VARIABLE=value_t2 VALUE=\"'slot4'\"");
+ incomplete.task_use_ams=false;
+ assert(QidiPrinterAgent::build_box_selection_script(incomplete).empty());
+
  DevAmsTray tray;
  tray.setting_id="specific-PLA";tray.m_fila_type="PLA";tray.color="112233FF";tray.is_exists=true;
  DevFilaSystemParser::UpdateQidiTray(tray,{{"filament_type","PLA"},{"present",true}},"generic-PLA");
@@ -105,7 +118,7 @@ int main() {
  assert(QidiPrinterAgent::build_tool_slot_script("[-1,-1,5]") == "SAVE_VARIABLE VARIABLE=value_t2 VALUE=\"'slot5'\"");
  assert(QidiPrinterAgent::build_tool_slot_script("[3,-1,0]") == "SAVE_VARIABLE VARIABLE=value_t0 VALUE=\"'slot3'\"\nSAVE_VARIABLE VARIABLE=value_t2 VALUE=\"'slot0'\"");
  assert(QidiPrinterAgent::build_tool_slot_script("[16]").empty());
- assert(QidiPrinterAgent::build_box_selection_script({false,"[3]",false,false,{}}) == "SAVE_VARIABLE VARIABLE=enable_box VALUE=0");
+ assert(QidiPrinterAgent::build_box_selection_script({false,"[3]",false,false,R"({"qidi":{"used_filaments":[0]}})"}) == "SAVE_VARIABLE VARIABLE=enable_box VALUE=0");
  assert(QidiPrinterAgent::build_box_selection_script({true,"[]",false,false,{}}).empty());
  assert(QidiPrinterAgent::control_script({{"command","set_ctt"},{"ctt_val",45}}) == "SET_HEATER_TEMPERATURE HEATER=chamber TARGET=45");
  assert(QidiPrinterAgent::control_script({{"command","ams_get_rfid"},{"ams_id",3},{"slot_id",3}}) == "READ_RFID SLOT=15");
@@ -145,7 +158,7 @@ int main() {
  params.ams_mapping = "[-1,-1,5]";
  params.task_bed_leveling = true;
  params.task_record_timelapse = true;
- params.extra_options = R"({"qidi":{"is_support_multi_box":true,"qidi_preprint_bed_leveling":true,"is_support_timelapse":true}})";
+ params.extra_options = R"({"qidi":{"is_support_multi_box":true,"used_filaments":[2],"qidi_preprint_bed_leveling":true,"is_support_timelapse":true}})";
  QidiPrinterAgent agent;
  assert(agent.print_uploaded_file(params,"chosen.gcode.3mf"));
  assert(agent.calls.size() == 4);

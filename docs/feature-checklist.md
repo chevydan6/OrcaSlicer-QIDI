@@ -12,7 +12,7 @@ The full integrated build and dedicated validation phase remain open.
 | Camera | No QIDI native stream mode | Local web-proxy snapshot endpoint | URL cases checked; actual video, authentication and custom proxy behavior pending |
 | Chamber heat | Profile temperatures and start macros | Native command translation, heater capability and live current/target telemetry | Isolated protocol checks pass; GUI and hardware pending |
 | Box temperature during printing | JSON values ignored by core | Persistent settings/UI; logical VT indices in generated code | CTests added; full slicing execution pending |
-| Box/external selection | Physical-slot mapping exists | Explicit enable_box before job; abort on empty Box map | Recording-transport submission order and stop-on-failure pass |
+| Box/external selection | Physical-slot mapping exists | Explicit enable_box; active-tool snapshot; reject missing/malformed mappings | Recording-transport submission order and stop-on-failure pass |
 | Initial filament | Logical tool placeholders and mapping exist | Preserve sparse indices | Dedicated slicing/submission regression and physical check pending |
 | Load/unload | Native UI lacks QIDI translation | QIDI macros, selected physical slot | Isolated command checks pass; GUI/hardware pending |
 | Eject | Missing | QIDI-only control; hidden for box_v2 identity | Command checks pass; GUI/hardware pending |
@@ -43,7 +43,7 @@ The full integrated build and dedicated validation phase remain open.
 3. Trace each logical initial tool through BOX_PRINT_START, T commands and the
    print dialog's physical slot map. Check first-layer and change temperatures.
 4. Reject malformed/out-of-range mappings instead of silently using stale mappings.
-   Investigate numeric overflow and partial mapping validation in the inherited code.
+   Source guards and isolated checks now cover numeric overflow and partial mappings; integrated transport/GUI validation remains required.
 5. Use localhost HTTP/WebSocket fixtures for upload, mapping, pre-print options,
    selected 3MF plate, failure handling and telemetry updates. Do not use a real
    printer in automated software tests.

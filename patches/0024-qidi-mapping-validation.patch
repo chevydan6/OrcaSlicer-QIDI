@@ -1,0 +1,197 @@
+From 93539133ebf838608416c666f892f4324f24778a Mon Sep 17 00:00:00 2001
+From: chevydan6 <339888127+chevydan6@users.noreply.github.com>
+Date: Tue, 3 Nov 2026 08:12:15 +0900
+Subject: [PATCH] Validate every used QIDI tool mapping before submission
+
+---
+ src/slic3r/GUI/SelectMachine.cpp              | 17 +++++++
+ src/slic3r/Utils/QidiPrinterAgent.cpp         | 37 +++++++++++----
+ tests/slic3rutils/test_qidi_printer_agent.cpp | 46 +++++++++++++++++--
+ 3 files changed, 88 insertions(+), 12 deletions(-)
+
+diff --git a/src/slic3r/GUI/SelectMachine.cpp b/src/slic3r/GUI/SelectMachine.cpp
+index 48072b0c..3f69718e 100644
+--- a/src/slic3r/GUI/SelectMachine.cpp
++++ b/src/slic3r/GUI/SelectMachine.cpp
+@@ -1,4 +1,6 @@
+ #include "SelectMachine.hpp"
++#include "slic3r/Utils/QidiPrinterAgent.hpp"
++#include "slic3r/Utils/bambu_networking.hpp"
+ #include "I18N.hpp"
+ 
+ #include "libslic3r/Utils.hpp"
+@@ -3815,7 +3817,22 @@ void SelectMachineDialog::on_send_print()
+         }
+         if (m_checkbox_list["qidi_polar_cooler"]->IsShown() && obj_->qidi_polar_cooler_available)
+             options["qidi"]["polar_cooler"] = m_checkbox_list["qidi_polar_cooler"]->getValue() == "on";
++        options["qidi"]["used_filaments"] = nlohmann::json::array();
++        for (const auto& filament : m_filaments)
++            options["qidi"]["used_filaments"].push_back(filament.id);
+         m_print_job->task_extra_options = options.dump();
++        if (options["qidi"]["is_support_multi_box"] == true) {
++            PrintParams validation{};
++            validation.task_use_ams = m_print_job->task_use_ams;
++            validation.ams_mapping = m_print_job->task_ams_mapping;
++            validation.extra_options = m_print_job->task_extra_options;
++            if (QidiPrinterAgent::build_box_selection_script(validation).empty()) {
++                prepare_mode(true);
++                show_status(PrintDialogStatus::PrintStatusAmsMappingInvalid,
++                    {_L("Select a QIDI Box slot for every used filament, or use one filament with the external spool.")});
++                return;
++            }
++        }
+     }
+ 
+     m_print_job->on_success([this]() { finish_mode(); });
+diff --git a/src/slic3r/Utils/QidiPrinterAgent.cpp b/src/slic3r/Utils/QidiPrinterAgent.cpp
+index 9d09d5e4..f6d5a76a 100644
+--- a/src/slic3r/Utils/QidiPrinterAgent.cpp
++++ b/src/slic3r/Utils/QidiPrinterAgent.cpp
+@@ -481,14 +481,17 @@ std::string QidiPrinterAgent::build_tool_slot_script(const std::string& ams_mapp
+     if (!mapping.is_array()) {
+         return script;
+     }
+-    for (int filament = 0; filament < int(mapping.size()) && filament < slot_count; ++filament) {
+-        if (!mapping[filament].is_number_integer()) {
++    for (std::size_t filament = 0; filament < mapping.size(); ++filament) {
++        const auto& value = mapping[filament];
++        // Reject the whole mapping before sending any command, including unsigned
++        // values that would wrap if narrowed first. Only -1 means an unused entry.
++        if (!value.is_number_integer() || value < -1 || value >= slot_count)
++            return {};
++        const int slot = value.get<int>();
++        if (slot == -1)
+             continue;
+-        }
+-        const int slot = mapping[filament].get<int>();
+-        if (slot < 0 || slot >= slot_count) {
+-            continue;
+-        }
++        if (filament >= slot_count)
++            return {};
+         if (!script.empty()) {
+             script += '\n';
+         }
+@@ -500,11 +503,27 @@ std::string QidiPrinterAgent::build_tool_slot_script(const std::string& ams_mapp
+ 
+ std::string QidiPrinterAgent::build_box_selection_script(const PrintParams& params)
+ {
++    const auto options = nlohmann::json::parse(params.extra_options, nullptr, false);
++    const nlohmann::json::json_pointer used_path("/qidi/used_filaments");
++    if (!options.contains(used_path) || !options[used_path].is_array() || options[used_path].empty())
++        return {};
++    const auto& used = options[used_path];
++    for (const auto& tool : used)
++        if (!tool.is_number_integer() || tool < 0 || tool >= 16)
++            return {};
++    // QIDI Studio treats the external spool as one material. Orca's Bambu
++    // external-spool change assist does not implement a QIDI manual-change flow.
+     if (!params.task_use_ams)
+-        return "SAVE_VARIABLE VARIABLE=enable_box VALUE=0";
++        return used.size() == 1 ? "SAVE_VARIABLE VARIABLE=enable_box VALUE=0" : std::string();
+     const std::string mapping = build_tool_slot_script(params.ams_mapping);
+     if (mapping.empty())
+         return {};
++    const auto slots = nlohmann::json::parse(params.ams_mapping);
++    for (const auto& tool : used) {
++        const auto index = tool.get<std::size_t>();
++        if (index >= slots.size() || slots[index] < 0)
++            return {};
++    }
+     return "SAVE_VARIABLE VARIABLE=enable_box VALUE=1\n" + mapping;
+ }
+ 
+@@ -519,7 +538,7 @@ bool QidiPrinterAgent::print_uploaded_file(const PrintParams& params, const std:
+     };
+     const bool has_box_support = supported("is_support_multi_box");
+     const std::string script = has_box_support ? build_box_selection_script(params) : build_tool_slot_script(params.ams_mapping);
+-    if (has_box_support && params.task_use_ams && script.empty())
++    if ((has_box_support || params.task_use_ams) && script.empty())
+         return false;
+     if (!script.empty() && !send_gcode_sync(device_info.dev_id, script)) {
+         return false;
+diff --git a/tests/slic3rutils/test_qidi_printer_agent.cpp b/tests/slic3rutils/test_qidi_printer_agent.cpp
+index c8e502e3..145bf57a 100644
+--- a/tests/slic3rutils/test_qidi_printer_agent.cpp
++++ b/tests/slic3rutils/test_qidi_printer_agent.cpp
+@@ -117,7 +117,7 @@ TEST_CASE("QIDI HTTP submission orders setup before the selected plate and stops
+     params.ams_mapping = "[-1,-1,5]";
+     params.task_bed_leveling = true;
+     params.task_record_timelapse = true;
+-    params.extra_options = R"({"qidi":{"is_support_multi_box":true,"qidi_preprint_bed_leveling":true,"is_support_timelapse":true,"polar_cooler":false}})";
++    params.extra_options = R"({"qidi":{"is_support_multi_box":true,"used_filaments":[2],"qidi_preprint_bed_leveling":true,"is_support_timelapse":true,"polar_cooler":false}})";
+     CHECK(QidiPrinterAgentTestAccess::submit(agent, params) == (fail_at == 0));
+     const auto requests = printer.requests();
+     REQUIRE(requests.size() == (fail_at == 0 ? 5 : fail_at));
+@@ -186,7 +186,7 @@ TEST_CASE("A mapping without a usable Box slot saves nothing", "[QidiPrinterAgen
+     CHECK(QidiPrinterAgent::build_tool_slot_script(mapping).empty());
+ }
+ 
+-TEST_CASE("Filaments past the firmware's last tool variable are skipped", "[QidiPrinterAgent]")
++TEST_CASE("Mapped filaments past the firmware's last tool variable are rejected", "[QidiPrinterAgent]")
+ {
+     // The firmware has value_t0 to value_t15: filament 15 maps to slot 1, filament 16 to slot 4.
+     std::string mapping = "[";
+@@ -194,7 +194,7 @@ TEST_CASE("Filaments past the firmware's last tool variable are skipped", "[Qidi
+         mapping += "-1, ";
+     mapping += "1, 4]";
+ 
+-    CHECK(QidiPrinterAgent::build_tool_slot_script(mapping) == "SAVE_VARIABLE VARIABLE=value_t15 VALUE=\"'slot1'\"");
++    CHECK(QidiPrinterAgent::build_tool_slot_script(mapping).empty());
+ }
+ 
+ TEST_CASE("The print start of a 3MF names the plate to print", "[QidiPrinterAgent]")
+@@ -212,6 +212,7 @@ TEST_CASE("QIDI print submission selects Box mode and preserves sparse filament
+     PrintParams params{};
+     params.task_use_ams = true;
+     params.ams_mapping = "[-1, -1, 5]";
++    params.extra_options = R"({"qidi":{"used_filaments":[2]}})";
+     CHECK(QidiPrinterAgent::build_box_selection_script(params) ==
+           "SAVE_VARIABLE VARIABLE=enable_box VALUE=1\n"
+           "SAVE_VARIABLE VARIABLE=value_t2 VALUE=\"'slot5'\"");
+@@ -450,3 +451,42 @@ TEST_CASE("QIDI partial slot updates preserve synchronized material identity", "
+     CHECK(tray.is_slot_placeholder);
+     CHECK(tray.setting_id.empty());
+ }
++
++TEST_CASE("QIDI submission rejects missing active mappings before HTTP requests", "[QidiPrinterAgent][Http]")
++{
++    QidiHttpFixture printer(0);
++    QidiPrinterAgent agent("");
++    QidiPrinterAgentTestAccess::endpoint(agent, printer.url());
++    PrintParams params{};
++    params.task_use_ams = true;
++    params.ams_mapping = "[3,-1,-1]";
++    params.extra_options = R"({"qidi":{"is_support_multi_box":true,"used_filaments":[0,2]}})";
++    CHECK_FALSE(QidiPrinterAgentTestAccess::submit(agent, params));
++    CHECK(printer.requests().empty());
++}
++
++TEST_CASE("QIDI rejects malformed mappings atomically without renumbering sparse tools", "[QidiPrinterAgent]")
++{
++    const std::string mapping = GENERATE(as<std::string>{}, "[3,4294967296]", "[3,16]", "[3,-2]", "[3,true]", "[3,null]", "[3,1.5]");
++    CHECK(QidiPrinterAgent::build_tool_slot_script(mapping).empty());
++}
++
++TEST_CASE("QIDI validates all used tools including support-first and external mode", "[QidiPrinterAgent]")
++{
++    PrintParams params{};
++    params.task_use_ams = true;
++    params.ams_mapping = "[15,-1,4]";
++    params.extra_options = R"({"qidi":{"used_filaments":[0,2]}})";
++    CHECK(QidiPrinterAgent::build_box_selection_script(params) ==
++        "SAVE_VARIABLE VARIABLE=enable_box VALUE=1\nSAVE_VARIABLE VARIABLE=value_t0 VALUE=\"'slot15'\"\nSAVE_VARIABLE VARIABLE=value_t2 VALUE=\"'slot4'\"");
++    params.ams_mapping = "[15,-1,-1]";
++    CHECK(QidiPrinterAgent::build_box_selection_script(params).empty());
++    params.ams_mapping = "[15]";
++    CHECK(QidiPrinterAgent::build_box_selection_script(params).empty());
++    params.task_use_ams = false;
++    CHECK(QidiPrinterAgent::build_box_selection_script(params).empty());
++    params.extra_options = R"({"qidi":{"used_filaments":[2]}})";
++    CHECK(QidiPrinterAgent::build_box_selection_script(params) == "SAVE_VARIABLE VARIABLE=enable_box VALUE=0");
++    params.extra_options = R"({"qidi":{"used_filaments":[4294967296]}})";
++    CHECK(QidiPrinterAgent::build_box_selection_script(params).empty());
++}
+-- 
+2.56.0
+
