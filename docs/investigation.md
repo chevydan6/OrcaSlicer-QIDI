@@ -61,7 +61,8 @@ MQTT/tunnel stack are not implemented. Existing Orca backends remain available.
   compilation, CTest, GUI profile loading/persistence or custom-build slicing success
   is recorded yet. HTTP integration tests and packaging validation are pending.
 
-No printer has been contacted. Physical slot selection, filament motion, heating,
+The user confirmed that no MAX4 is currently connected. No printer has been contacted.
+Physical slot selection, filament motion, heating,
 printing and firmware compatibility remain unverified and require authorization.
 
 Additional general-port patches connect MAX4 bed leveling and QIDI timelapse

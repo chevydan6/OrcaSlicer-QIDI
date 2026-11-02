@@ -2,6 +2,8 @@
 
 Status describes source implementation, not completion or printer certification.
 The full integrated build and dedicated validation phase remain open.
+No MAX4 is connected during this work; communication tests use local fixtures,
+and printer-specific protocol/physical verification remains pending.
 
 | Workflow | Existing Orca | Downstream implementation | Validation / remaining work |
 | --- | --- | --- | --- |
