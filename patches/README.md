@@ -35,3 +35,5 @@ separately from implementation; a patch's presence does not certify hardware use
 19. `0019-qidi-http-validation.patch` adds a loopback HTTP fixture for the actual upload and submission transports, API-key headers, selected 3MF plate, ordered setup and stop-on-error. These full-library tests require the integrated build; the isolated helper harness is not evidence that they ran.
 
 20. `0020-max4-bed-types.patch` imports QIDI's unsupported-plate metadata and canonical enum matching for plate selectors while retaining older label-based profile compatibility. Qidi bundle version becomes 02.04.00.25.
+
+21. `0021-qidi-desktop-integration.patch` namespaces optional Linux desktop/icon/protocol entry filenames with `-qidi`; installation continues to use the dedicated wrapper and does not register file associations.

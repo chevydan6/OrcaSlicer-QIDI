@@ -1,0 +1,26 @@
+diff --git a/src/slic3r/GUI/DesktopIntegrationDialog.cpp b/src/slic3r/GUI/DesktopIntegrationDialog.cpp
+index c073ecc5..3bced533 100644
+--- a/src/slic3r/GUI/DesktopIntegrationDialog.cpp
++++ b/src/slic3r/GUI/DesktopIntegrationDialog.cpp
+@@ -294,6 +294,10 @@ void DesktopIntegrationDialog::perform_desktop_integration()
+         name_suffix = " - beta";
+     }
+ 
++    // Keep optional desktop integration separate from the official Orca installation.
++    version_suffix += "-qidi";
++    name_suffix += " QIDI";
++
+     // theme path to icon destination    
+     std::string icon_theme_path;
+     std::string icon_theme_dirs;
+@@ -534,6 +538,10 @@ void DesktopIntegrationDialog::perform_downloader_desktop_integration(std::strin
+         name_suffix = " - beta";
+     }
+ 
++    // Keep optional desktop integration separate from the official Orca installation.
++    version_suffix += "-qidi";
++    name_suffix += " QIDI";
++
+     // theme path to icon destination    
+     std::string icon_theme_path;
+     std::string icon_theme_dirs;

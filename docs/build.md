@@ -51,6 +51,22 @@ does not launch the application or contact a printer. The AppImage path also
 gives it a distinct single-instance identity in Orca's Linux implementation.
 
 GUI coexistence and persistence must still be verified with the compiled build.
+On hosts without FUSE, add `--extract` to install an AppDir. On this Fedora host,
+WebKitGTK is supplied by the existing GNOME runtime used by the installed slicers:
+
+```sh
+python3 scripts/install-linux.py /path/to/custom.AppImage --flatpak-runtime org.gnome.Platform//50
+```
+
+This mode verifies that the runtime is installed, extracts the AppImage once and
+creates a launcher for it. It does not launch either the custom app or an existing
+slicer. The wrapper grants home-directory access, graphics/display access and
+network access for ordinary slicer use, and passes the isolated `--datadir`.
+Software validation launches the runtime separately with networking disabled.
+Use the installer-created menu entry; upstream's optional desktop integration
+does not reconstruct this runtime wrapper. Its desktop filenames are nevertheless
+namespaced with `-qidi` to avoid overwriting the official Orca entries.
+
 The upstream default for automatic preset bundle updates is off. Keep it off for
 this fork until a downstream update process is available. Official application
 updates do not contain these patches; use this integration workflow for updates.
