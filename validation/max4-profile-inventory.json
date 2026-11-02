@@ -42435,10 +42435,6 @@
           "orca": null,
           "qidi": "0"
         },
-        "is_support_polar_cooler": {
-          "orca": null,
-          "qidi": "1"
-        },
         "machine_bed_mass_Y": {
           "orca": null,
           "qidi": "0"
@@ -42610,10 +42606,6 @@
         "is_support_bed_leveling_force": {
           "orca": null,
           "qidi": "0"
-        },
-        "is_support_polar_cooler": {
-          "orca": null,
-          "qidi": "1"
         },
         "machine_bed_mass_Y": {
           "orca": null,
@@ -42787,10 +42779,6 @@
           "orca": null,
           "qidi": "0"
         },
-        "is_support_polar_cooler": {
-          "orca": null,
-          "qidi": "1"
-        },
         "machine_bed_mass_Y": {
           "orca": null,
           "qidi": "0"
@@ -42962,10 +42950,6 @@
         "is_support_bed_leveling_force": {
           "orca": null,
           "qidi": "0"
-        },
-        "is_support_polar_cooler": {
-          "orca": null,
-          "qidi": "1"
         },
         "machine_bed_mass_Y": {
           "orca": null,
@@ -43251,7 +43235,6 @@
     "extruder_clearance_radius": 4,
     "is_support_air_condition": 4,
     "is_support_bed_leveling_force": 4,
-    "is_support_polar_cooler": 4,
     "machine_bed_mass_Y": 4,
     "machine_max_acceleration_x": 4,
     "machine_max_acceleration_y": 4,

@@ -48,8 +48,8 @@ MQTT/tunnel stack are not implemented. Existing Orca backends remain available.
 ## Software validation to date
 
 - All-vendor profile structural check: 72 bundles, zero errors/warnings.
-- Qidi profile version check: passed, bundle 02.04.00.20 to 02.04.00.23.
-- The first six numbered patches reproduce the local downstream Git tree exactly.
+- Qidi profile version check: passed, bundle 02.04.00.20 to 02.04.00.24.
+- The numbered patches reproduce the local downstream Git tree exactly.
 - Production protocol helper bodies compile in isolation with C++17 and warnings
   treated as errors; sparse mappings, Box mode, chamber, RFID and load/unload
   assertions pass. This harness does not compile the full application.
@@ -65,3 +65,15 @@ submission options, and show Box temperature/humidity in the native enclosure
 display. The latter reuses QIDI Studio's enclosed four-slot UI classification;
 remote drying is not enabled by that classification. These patches are not yet
 in the running six-patch build.
+
+Case-light commands, three named fan channels and the Polar Cooler submission
+option are now implemented. Polar Cooler availability follows the firmware's
+`notify_proc_stat_update.config_items["printing.polar_cooler"]` field. The public
+MAX4 proc_stats implementation confirms that notification; its GET endpoint does
+not include those configuration items, so it is not used as a substitute.
+
+Auto-refill remains unimplemented: the public QIDI dispatcher spells its command
+`SET_ENABLE_AUTO RELOAD`. A community report describes `SET_ENABLE_AUTO_RELOAD`
+in printer HELP output, but the corresponding official firmware implementation
+is not available in the inspected tree. The native Bambu replacement-material
+dialog is hidden on QIDI instead of offering an ineffective operation.

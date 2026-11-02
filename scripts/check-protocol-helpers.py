@@ -7,6 +7,8 @@ source = (root/'OrcaSlicer/src/slic3r/Utils/QidiPrinterAgent.cpp').read_text()
 functions = [
  ('std::optional<std::string> QidiPrinterAgent::control_script', 'int QidiPrinterAgent::command_ams_refresh_rfid'),
  ('void QidiPrinterAgent::append_chamber_status', 'AgentInfo QidiPrinterAgent::get_agent_info_static'),
+ ('void QidiPrinterAgent::append_accessory_status', 'nlohmann::json QidiPrinterAgent::configuration_notification'),
+ ('nlohmann::json QidiPrinterAgent::configuration_notification', 'void QidiPrinterAgent::append_box_status'),
  ('void QidiPrinterAgent::append_box_status', 'bool QidiPrinterAgent::fetch_filament_info'),
  ('std::string QidiPrinterAgent::build_tool_slot_script', 'std::string QidiPrinterAgent::build_box_selection_script'),
  ('std::string QidiPrinterAgent::build_box_selection_script', 'bool QidiPrinterAgent::print_uploaded_file'),
@@ -40,6 +42,8 @@ struct QidiPrinterAgent {
  { return record("start:" + request["filename"].get<std::string>()); }
  bool print_uploaded_file(const PrintParams&, const std::string&);
  static std::optional<std::string> control_script(const nlohmann::json&);
+ static nlohmann::json configuration_notification(const nlohmann::json&);
+ static void append_accessory_status(const nlohmann::json&, nlohmann::json&);
  static void append_box_status(const nlohmann::json&, nlohmann::json&);
  static void append_chamber_status(const nlohmann::json&, nlohmann::json&);
  static std::string build_tool_slot_script(const std::string&);
@@ -77,6 +81,13 @@ int main() {
  payload = nlohmann::json::object();
  QidiPrinterAgent::append_box_status({{"multi_color_controller",{{"box_count",4294967296ULL}}}},payload);
  assert(payload.empty());
+ payload = {{"print", {{"fan_gear",64}}}};
+ QidiPrinterAgent::append_accessory_status({{"output_pin caselight",{{"value",1}}},{"fan_generic auxiliary_cooling_fan",{{"speed",0.5}}},{"fan_generic chamber_circulation_fan",{{"speed",1.0}}}},payload);
+ assert(payload["print"]["fan_gear"] == (64U | (128U << 8) | (255U << 16)));
+ assert(payload["print"]["lights_report"][0]["mode"] == "on");
+ assert(QidiPrinterAgent::control_script({{"command","ledctrl"},{"led_node","chamber_light"},{"led_mode","on"}}) == "SET_PIN PIN=caselight VALUE=1");
+ const auto config = QidiPrinterAgent::configuration_notification({{"method","notify_proc_stat_update"},{"params",nlohmann::json::array({{{"config_items",{{"printing.polar_cooler","1"}}}}})}});
+ assert(config["qidi_config"]["polar_cooler_available"] == true);
  PrintParams params;
  params.task_use_ams = true;
  params.ams_mapping = "[-1,-1,5]";
@@ -96,7 +107,15 @@ int main() {
    assert(agent.calls.size() == failure);
    for (const auto& call : agent.calls) assert(call.find("start:") != 0);
  }
- agent.calls.clear(); agent.fail_at = 0; params.ams_mapping = "[]";
+ agent.calls.clear(); agent.fail_at = 0;
+ auto extras = nlohmann::json::parse(params.extra_options);
+ extras["qidi"]["polar_cooler"] = true;
+ params.extra_options = extras.dump();
+ assert(agent.print_uploaded_file(params,"cooler.gcode"));
+ assert(agent.calls.size() == 5);
+ assert(agent.calls[3] == "SAVE_VARIABLE VARIABLE=enable_polar_cooler VALUE=1");
+ assert(agent.calls[4] == "start:cooler.gcode");
+ agent.calls.clear(); params.ams_mapping = "[]";
  assert(!agent.print_uploaded_file(params,"must-not-start.gcode"));
  assert(agent.calls.empty());
 }

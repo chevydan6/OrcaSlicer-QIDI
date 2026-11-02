@@ -1,0 +1,15 @@
+diff --git a/src/slic3r/GUI/StatusPanel.cpp b/src/slic3r/GUI/StatusPanel.cpp
+index 19989c89..30f1865e 100644
+--- a/src/slic3r/GUI/StatusPanel.cpp
++++ b/src/slic3r/GUI/StatusPanel.cpp
+@@ -3513,7 +3513,9 @@ void StatusPanel::update_ams(MachineObject *obj)
+         show_ams_group(true);
+         //show_filament_load_group(true);
+ 
+-        if (obj->GetFilaSystem()->GetAmsList().empty() || obj->ams_exist_bits == 0) {
++        // QIDI auto-refill has a different firmware protocol; do not offer the
++        // Bambu-only replacement-material dialog for it.
++        if (obj->printer_agent_id == "qidi" || obj->GetFilaSystem()->GetAmsList().empty() || obj->ams_exist_bits == 0) {
+             m_ams_control->show_auto_refill(false);
+         } else {
+             m_ams_control->show_auto_refill(true);

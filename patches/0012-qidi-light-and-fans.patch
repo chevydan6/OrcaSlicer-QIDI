@@ -1,0 +1,127 @@
+diff --git a/src/slic3r/Utils/QidiPrinterAgent.cpp b/src/slic3r/Utils/QidiPrinterAgent.cpp
+index d70d5787..b04002d7 100644
+--- a/src/slic3r/Utils/QidiPrinterAgent.cpp
++++ b/src/slic3r/Utils/QidiPrinterAgent.cpp
+@@ -60,6 +60,12 @@ std::optional<std::string> QidiPrinterAgent::control_script(const nlohmann::json
+     };
+     const std::string name = command["command"].get<std::string>();
+     // Commands from QIDI Studio's PrinterTaskDispatcher::build_local_task.
++    if (name == "ledctrl" && command.value("led_node", std::string()) == "chamber_light") {
++        const auto mode = command.find("led_mode");
++        if (mode == command.end() || !mode->is_string() || (*mode != "on" && *mode != "off"))
++            throw std::invalid_argument("Invalid QIDI case light mode");
++        return std::string("SET_PIN PIN=caselight VALUE=") + (*mode == "on" ? "1" : "0");
++    }
+     if (name == "set_ctt")
+         return "SET_HEATER_TEMPERATURE HEATER=chamber TARGET=" + std::to_string(integer("ctt_val", 65));
+     if (name == "ams_change_filament") {
+@@ -120,9 +126,13 @@ int QidiPrinterAgent::command_ams_refresh_rfid(std::string dev_id, int ams_id, i
+ int QidiPrinterAgent::send_message(std::string dev_id, std::string json_str, int qos, int flag)
+ {
+     auto request = nlohmann::json::parse(json_str, nullptr, false);
+-    if (request.is_object() && request.contains("print")) {
++    for (const char* section : {"print", "system"}) {
++        if (!request.is_object() || !request.contains(section))
++            continue;
+         try {
+-            if (auto script = control_script(request["print"])) {
++            if (auto script = control_script(request[section])) {
++                request["print"] = request[section];
++                request.erase("system");
+                 request["print"]["command"] = "gcode_line";
+                 request["print"]["param"] = *script;
+                 return MoonrakerPrinterAgent::send_message(std::move(dev_id), request.dump(), qos, flag);
+@@ -155,6 +165,41 @@ AgentInfo QidiPrinterAgent::get_agent_info_static()
+     return AgentInfo{"qidi", "Qidi", QidiPrinterAgent_VERSION, "Qidi printer agent"};
+ }
+ 
++void QidiPrinterAgent::append_accessory_status(const nlohmann::json& status, nlohmann::json& payload)
++{
++    const auto light = status.find("output_pin caselight");
++    if (light != status.end() && light->is_object() && light->contains("value")) {
++        const auto& value = (*light)["value"];
++        if (value.is_boolean() || (value.is_number() && value >= 0 && value <= 1)) {
++            const bool on = value.is_boolean() ? value.get<bool>() : value.get<double>() > 0;
++            payload["print"]["lights_report"] = nlohmann::json::array({{{"node", "chamber_light"}, {"mode", on ? "on" : "off"}}});
++        }
++    }
++    const char* names[] = {"fan_generic cooling_fan", "fan_generic auxiliary_cooling_fan", "fan_generic chamber_circulation_fan"};
++    unsigned gear = 0;
++    bool reported = false;
++    if (payload.contains("print") && payload["print"].contains("fan_gear") && payload["print"]["fan_gear"].is_number_integer() &&
++        payload["print"]["fan_gear"] >= 0 && payload["print"]["fan_gear"] <= 0xffffff)
++        gear = payload["print"]["fan_gear"].get<unsigned>();
++    for (unsigned i = 0; i < 3; ++i) {
++        const auto fan = status.find(names[i]);
++        if (fan == status.end() || !fan->is_object() || !fan->contains("speed"))
++            continue;
++        const auto& speed = (*fan)["speed"];
++        if (!speed.is_number() || speed < 0 || speed > 1)
++            continue;
++        const unsigned pwm = static_cast<unsigned>(speed.get<double>() * 255.0 + 0.5);
++        gear = (gear & ~(0xffU << (8 * i))) | (pwm << (8 * i));
++        reported = true;
++        if (i == 1)
++            payload["print"]["support_aux_fan"] = true;
++        else if (i == 2)
++            payload["print"]["support_chamber_fan"] = true;
++    }
++    if (reported)
++        payload["print"]["fan_gear"] = gear;
++}
++
+ void QidiPrinterAgent::append_box_status(const nlohmann::json& status, nlohmann::json& payload)
+ {
+     const auto controller = status.find("multi_color_controller");
+diff --git a/src/slic3r/Utils/QidiPrinterAgent.hpp b/src/slic3r/Utils/QidiPrinterAgent.hpp
+index 06b3ae61..cd05ed0d 100644
+--- a/src/slic3r/Utils/QidiPrinterAgent.hpp
++++ b/src/slic3r/Utils/QidiPrinterAgent.hpp
+@@ -26,6 +26,7 @@ public:
+     static std::optional<std::string> control_script(const nlohmann::json& command);
+     static void append_chamber_status(const nlohmann::json& status, nlohmann::json& payload);
+     static void append_box_status(const nlohmann::json& status, nlohmann::json& payload);
++    static void append_accessory_status(const nlohmann::json& status, nlohmann::json& payload);
+     static AgentInfo get_agent_info_static();
+     AgentInfo        get_agent_info() override { return get_agent_info_static(); }
+ 
+@@ -41,9 +42,10 @@ public:
+ 
+ protected:
+     std::vector<std::string> additional_status_objects() const override
+-    { return {"heater_generic chamber", "multi_color_controller", "save_variables"}; }
++    { return {"heater_generic chamber", "multi_color_controller", "save_variables", "output_pin caselight",
++              "fan_generic cooling_fan", "fan_generic auxiliary_cooling_fan", "fan_generic chamber_circulation_fan"}; }
+     void append_status_payload(const nlohmann::json& status, nlohmann::json& payload) const override
+-    { append_chamber_status(status, payload); append_box_status(status, payload); }
++    { append_chamber_status(status, payload); append_box_status(status, payload); append_accessory_status(status, payload); }
+     // Saves the Box slot picked for each filament in the print dialog, then starts the print through Moonraker
+     bool print_uploaded_file(const PrintParams& params, const std::string& filename) override;
+     std::string ams_unit_name(int ams_id) const override { return "Qidi Box " + std::to_string(ams_id + 1); }
+diff --git a/tests/slic3rutils/test_qidi_printer_agent.cpp b/tests/slic3rutils/test_qidi_printer_agent.cpp
+index 054c15d1..fcf0afe4 100644
+--- a/tests/slic3rutils/test_qidi_printer_agent.cpp
++++ b/tests/slic3rutils/test_qidi_printer_agent.cpp
+@@ -152,3 +152,22 @@ TEST_CASE("QIDI Box RFID preferences and eject controls use local macros", "[Qid
+           "EJECT_FILAMENT_CONTROL SLOT=8");
+     CHECK_THROWS(QidiPrinterAgent::control_script({{"command", "ams_user_setting"}, {"tray_read_option", "1"}, {"startup_read_option", false}}));
+ }
++
++TEST_CASE("QIDI case light commands use its named output pin", "[QidiPrinterAgent]")
++{
++    CHECK(QidiPrinterAgent::control_script({{"command", "ledctrl"}, {"led_node", "chamber_light"}, {"led_mode", "on"}}) ==
++          "SET_PIN PIN=caselight VALUE=1");
++    CHECK_THROWS(QidiPrinterAgent::control_script({{"command", "ledctrl"}, {"led_node", "chamber_light"}, {"led_mode", "flashing"}}));
++}
++
++TEST_CASE("QIDI fan telemetry keeps the three named fan channels separate", "[QidiPrinterAgent]")
++{
++    nlohmann::json payload{{"print", {{"fan_gear", 64}}}};
++    QidiPrinterAgent::append_accessory_status({{"output_pin caselight", {{"value", 1}}},
++        {"fan_generic auxiliary_cooling_fan", {{"speed", 0.5}}},
++        {"fan_generic chamber_circulation_fan", {{"speed", 1.0}}}}, payload);
++    CHECK(payload["print"]["fan_gear"] == (64U | (128U << 8) | (255U << 16)));
++    CHECK(payload["print"]["lights_report"][0]["mode"] == "on");
++    CHECK(payload["print"]["support_aux_fan"] == true);
++    CHECK(payload["print"]["support_chamber_fan"] == true);
++}

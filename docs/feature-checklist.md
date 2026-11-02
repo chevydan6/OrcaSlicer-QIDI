@@ -22,12 +22,12 @@ The full integrated build and dedicated validation phase remain open.
 | LAN printing | Moonraker upload, 3MF selected plate | Ordered Box mode/mapping/options before start | Full HTTP integration pending; no printer contacted |
 | Bed leveling option | QIDI option ineffective/hidden | MAX4 G31/G32 selection | Recording-transport check passes |
 | Timelapse option | UI and frame macros exist | QIDI Moonraker settings request | Recording-transport check passes; actual HTTP pending |
-| Polar cooler | QIDI flag not recognized | Pending | Device-availability reporting and controls need integration |
-| Auto refill | Native Bambu UI only | Pending | QIDI local dispatcher has an ambiguous command spelling; verify before porting |
+| Polar cooler | QIDI flag not recognized | Firmware-gated print option and job snapshot | Offline dispatch checks pass; manual status-page toggle still pending |
+| Auto refill | Native Bambu UI only | Incompatible dialog hidden | QIDI local dispatcher has an ambiguous command spelling; verify before porting |
 | Manual drying | Shared upstream Bambu classes | Not enabled for QIDI | Active QIDI source path and firmware protocol need verification |
 | QIDI cloud/MQTT | Different network architecture | Not implemented | Proprietary QIDI networking library/auth integration not bundled |
 | Coexistence | Upstream application identity | Linux default datadir, wrapper and desktop entry isolated | Compiled GUI coexistence test pending |
-| Reproducible source | Official commits pinned | Ordered patches; temporary-index tree verification | Ten-patch check passed; rerun after later changes |
+| Reproducible source | Official commits pinned | Ordered patches; temporary-index tree verification | Patch tree verification passes; rerun after changes |
 | Installable Linux artifact | Build infrastructure available | AppImage CI and per-user installer | Builds running; no successful artifact yet |
 
 ## Acceptance cases for the dedicated validation phase

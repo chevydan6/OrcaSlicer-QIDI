@@ -1,0 +1,283 @@
+diff --git a/resources/profiles/Qidi.json b/resources/profiles/Qidi.json
+index 1d4bb4aa..5404db83 100644
+--- a/resources/profiles/Qidi.json
++++ b/resources/profiles/Qidi.json
+@@ -1,6 +1,6 @@
+ {
+ 	"name": "Qidi",
+-	"version": "02.04.00.23",
++	"version": "02.04.00.24",
+ 	"force_update": "0",
+ 	"description": "Qidi configurations",
+ 	"machine_model_list": [
+diff --git a/resources/profiles/Qidi/machine/Qidi X-Max 4 0.4 nozzle.json b/resources/profiles/Qidi/machine/Qidi X-Max 4 0.4 nozzle.json
+index fb50c98c..5af14721 100644
+--- a/resources/profiles/Qidi/machine/Qidi X-Max 4 0.4 nozzle.json	
++++ b/resources/profiles/Qidi/machine/Qidi X-Max 4 0.4 nozzle.json	
+@@ -26,6 +26,7 @@
+ 	"is_support_3mf": "1",
+ 	"is_support_mqtt": "1",
+ 	"is_support_timelapse": "1",
++	"is_support_polar_cooler": "1",
+ 	"qidi_preprint_bed_leveling": "1",
+ 	"is_support_multi_box": "1",
+ 	"layer_change_gcode": "{if timelapse_type == 1} ; timelapse with wipe tower\nG92 E0\nG1 E-[retraction_length] F1800\n{if layer_z + 0.4 > max_print_height}\nG2 Z{max_print_height} I0.86 J0.86 P1 F20000 ; spiral lift a little\n{else}\nG2 Z{layer_z + 0.4} I0.86 J0.86 P1 F20000 ; spiral lift a little\n{endif}\nMOVE_TO_TRASH\n{if layer_z <=25}\nG1 Z25\n{endif}\nG92 E0\nM400\nTIMELAPSE_TAKE_FRAME\nG1 E[retraction_length] F300\nG1 X180 F8000\nG1 Y380\n{if layer_z <=25}\nG1 Z[layer_z]\n{endif}\n{elsif timelapse_type == 0} ; timelapse without wipe tower\nTIMELAPSE_TAKE_FRAME\n{endif}\nG92 E0\nSET_PRINT_STATS_INFO CURRENT_LAYER={layer_num + 1}",
+diff --git a/src/libslic3r/Preset.cpp b/src/libslic3r/Preset.cpp
+index e9d873b8..4a4d8515 100644
+--- a/src/libslic3r/Preset.cpp
++++ b/src/libslic3r/Preset.cpp
+@@ -1618,7 +1618,7 @@ static std::vector<std::string> s_Preset_printer_options {
+     "nozzle_height", "master_extruder_id",
+     "default_print_profile", "inherits",
+     "scan_first_layer", "enable_power_loss_recovery", "wrapping_detection_layers", "wrapping_exclude_area", "machine_load_filament_time", "machine_unload_filament_time", "machine_tool_change_time", "time_cost", "machine_pause_gcode", "template_custom_gcode",
+-    "nozzle_type", "nozzle_hrc","auxiliary_fan", "fan_direction", "nozzle_volume","upward_compatible_machine", "z_hop_types", "travel_slope", "retract_lift_enforce","support_chamber_temp_control","support_box_temp_control","is_support_multi_box","qidi_preprint_bed_leveling","is_support_timelapse","support_air_filtration","support_cooling_filter","cooling_filter_enabled","printer_structure","farthest_point_timelapse",
++    "nozzle_type", "nozzle_hrc","auxiliary_fan", "fan_direction", "nozzle_volume","upward_compatible_machine", "z_hop_types", "travel_slope", "retract_lift_enforce","support_chamber_temp_control","support_box_temp_control","is_support_multi_box","qidi_preprint_bed_leveling","is_support_timelapse","is_support_polar_cooler","support_air_filtration","support_cooling_filter","cooling_filter_enabled","printer_structure","farthest_point_timelapse",
+     "best_object_pos", "head_wrap_detect_zone",
+     "host_type", "print_host", "printhost_apikey", "flashforge_serial_number", "bbl_use_printhost", "printer_agent",
+     "print_host_webui",
+diff --git a/src/libslic3r/PrintConfig.cpp b/src/libslic3r/PrintConfig.cpp
+index 449d96c4..5ba22fc0 100644
+--- a/src/libslic3r/PrintConfig.cpp
++++ b/src/libslic3r/PrintConfig.cpp
+@@ -8042,6 +8042,12 @@ void PrintConfigDef::init_fff_params()
+     def->mode = comAdvanced;
+     def->set_default_value(new ConfigOptionBool(false));
+ 
++    def = this->add("is_support_polar_cooler", coBool);
++    def->label = L("QIDI Polar Cooler support");
++    def->tooltip = L("Show the Polar Cooler print option when the QIDI printer reports that the accessory is installed.");
++    def->mode = comAdvanced;
++    def->set_default_value(new ConfigOptionBool(false));
++
+     def = this->add("support_box_temp_control", coBool);
+     def->label = L("Support QIDI Box temperature control");
+     def->tooltip = L("Enable QIDI Box temperature commands in generated G-code.");
+diff --git a/src/slic3r/GUI/DeviceManager.cpp b/src/slic3r/GUI/DeviceManager.cpp
+index 69f1de74..dc301b14 100644
+--- a/src/slic3r/GUI/DeviceManager.cpp
++++ b/src/slic3r/GUI/DeviceManager.cpp
+@@ -3275,6 +3275,8 @@ int MachineObject::parse_json(std::string tunnel, std::string payload, bool key_
+               m_fan->ParseV2_0(jj);
+                 m_fila_switch->ParseFilaSwitchInfo(jj);
+ 
++                if (printer_agent_id == "qidi" && jj.contains("qidi_polar_cooler_available") && jj["qidi_polar_cooler_available"].is_boolean())
++                    qidi_polar_cooler_available = jj["qidi_polar_cooler_available"].get<bool>();
+                 if (jj.contains("support_filament_backup")) {
+                     if (jj["support_filament_backup"].is_boolean()) {
+                         is_support_filament_backup = jj["support_filament_backup"].get<bool>();
+diff --git a/src/slic3r/GUI/DeviceManager.hpp b/src/slic3r/GUI/DeviceManager.hpp
+index 455d37fe..ebd1abae 100644
+--- a/src/slic3r/GUI/DeviceManager.hpp
++++ b/src/slic3r/GUI/DeviceManager.hpp
+@@ -650,6 +650,7 @@ public:
+     bool is_support_upgrade_kit{false};
+     bool is_support_filament_setting_inprinting{false};
+     bool is_support_internal_timelapse { false };// fun[28], support timelapse without SD card
++    bool qidi_polar_cooler_available { false };
+     bool m_support_mqtt_homing { false };// fun[32]
+     bool is_support_brtc{false};                 // fun[31], support tcp and upload protocol
+     bool is_support_ext_change_assist{false};
+diff --git a/src/slic3r/GUI/SelectMachine.cpp b/src/slic3r/GUI/SelectMachine.cpp
+index 2acc866a..48072b0c 100644
+--- a/src/slic3r/GUI/SelectMachine.cpp
++++ b/src/slic3r/GUI/SelectMachine.cpp
+@@ -669,6 +669,8 @@ SelectMachineDialog::SelectMachineDialog(Plater *plater)
+     m_options_other->SetBackgroundColour(*wxWHITE);
+ 
+     auto option_timelapse = new PrintOption(m_options_other, _L("Timelapse"), wxEmptyString, ops_no_auto, "timelapse");
++    auto option_polar_cooler = new PrintOption(m_options_other, _L("Polar Cooler"),
++        _L("Cool the extruder to help prevent filament softening and clogging."), ops_no_auto, "qidi_polar_cooler");
+ 
+     // timelapse storage location folder button (shown only when is_support_internal_timelapse)
+     m_timelapse_folder_btn = new ScalableButton(m_options_other, wxID_ANY, "folder-closed", wxEmptyString,
+@@ -726,6 +728,7 @@ SelectMachineDialog::SelectMachineDialog(Plater *plater)
+     m_sizer_options->Add(option_nozzle_offset_cali_cali, 0, wxEXPAND);
+ 
+     m_checkbox_list_order.push_back(option_timelapse);
++    m_checkbox_list_order.push_back(option_polar_cooler);
+     m_checkbox_list_order.push_back(option_auto_bed_level);
+     m_checkbox_list_order.push_back(option_flow_dynamics_cali);
+     m_checkbox_list_order.push_back(option_nozzle_offset_cali_cali);
+@@ -736,6 +739,7 @@ SelectMachineDialog::SelectMachineDialog(Plater *plater)
+     m_options_other->Fit();
+ 
+     m_checkbox_list["timelapse"]     = option_timelapse;
++    m_checkbox_list["qidi_polar_cooler"] = option_polar_cooler;
+     m_checkbox_list["bed_leveling"]  = option_auto_bed_level;
+     m_checkbox_list["flow_cali"]     = option_flow_dynamics_cali;
+     m_checkbox_list["nozzle_offset_cali"] = option_nozzle_offset_cali_cali;
+@@ -750,6 +754,7 @@ SelectMachineDialog::SelectMachineDialog(Plater *plater)
+     }
+ 
+     option_auto_bed_level->Hide();
++    option_polar_cooler->Hide();
+     option_flow_dynamics_cali->Hide();
+     option_nozzle_offset_cali_cali->Hide();
+     option_pa_value->Hide();
+@@ -3127,6 +3132,7 @@ void SelectMachineDialog::update_option_opts(MachineObject *obj)
+     };
+ 
+     /*timelapse*/
++    m_checkbox_list["qidi_polar_cooler"]->Show(qidi_supports("is_support_polar_cooler") && obj->qidi_polar_cooler_available);
+     m_checkbox_list["timelapse"]->Show(obj->printer_agent_id != "qidi" || qidi_supports("is_support_timelapse"));
+     if (obj->is_support_internal_timelapse) {
+         m_timelapse_folder_btn->Show();
+@@ -3807,6 +3813,8 @@ void SelectMachineDialog::on_send_print()
+             const auto* value = config.option<ConfigOptionBool>(key);
+             options["qidi"][key] = value && value->value;
+         }
++        if (m_checkbox_list["qidi_polar_cooler"]->IsShown() && obj_->qidi_polar_cooler_available)
++            options["qidi"]["polar_cooler"] = m_checkbox_list["qidi_polar_cooler"]->getValue() == "on";
+         m_print_job->task_extra_options = options.dump();
+     }
+ 
+diff --git a/src/slic3r/GUI/Tab.cpp b/src/slic3r/GUI/Tab.cpp
+index 1ea9016c..46918f9c 100644
+--- a/src/slic3r/GUI/Tab.cpp
++++ b/src/slic3r/GUI/Tab.cpp
+@@ -5662,6 +5662,7 @@ void TabPrinter::build_fff()
+         optgroup->append_single_option_line("is_support_multi_box");
+         optgroup->append_single_option_line("qidi_preprint_bed_leveling");
+         optgroup->append_single_option_line("is_support_timelapse");
++        optgroup->append_single_option_line("is_support_polar_cooler");
+         optgroup->append_single_option_line("support_box_temp_control");
+         optgroup->append_single_option_line("support_air_filtration", "printer_basic_information_accessory#support-air-filtration");
+         optgroup->append_single_option_line("cooling_filter_enabled");
+diff --git a/src/slic3r/Utils/MoonrakerPrinterAgent.cpp b/src/slic3r/Utils/MoonrakerPrinterAgent.cpp
+index c51ab2fc..c3dec286 100644
+--- a/src/slic3r/Utils/MoonrakerPrinterAgent.cpp
++++ b/src/slic3r/Utils/MoonrakerPrinterAgent.cpp
+@@ -1999,6 +1999,11 @@ void MoonrakerPrinterAgent::handle_ws_message(const std::string& dev_id, const s
+ 
+     bool updated     = false;
+     bool is_critical = false; // Track if this is a critical update that bypasses throttle
++    const auto additional = additional_notification_status(json);
++    if (additional.is_object() && !additional.empty()) {
++        update_status_cache(additional);
++        updated = true;
++    }
+ 
+     // Check for subscription response (has "result.status") - initial subscription is critical
+     if (json.contains("result") && json["result"].contains("status") && json["result"]["status"].is_object()) {
+diff --git a/src/slic3r/Utils/MoonrakerPrinterAgent.hpp b/src/slic3r/Utils/MoonrakerPrinterAgent.hpp
+index 639dd6e5..d0d95f6f 100644
+--- a/src/slic3r/Utils/MoonrakerPrinterAgent.hpp
++++ b/src/slic3r/Utils/MoonrakerPrinterAgent.hpp
+@@ -125,6 +125,7 @@ protected:
+     virtual std::string ams_unit_info() const { return "0002"; }
+     virtual std::vector<std::string> additional_status_objects() const { return {}; }
+     virtual void append_status_payload(const nlohmann::json&, nlohmann::json&) const {}
++    virtual nlohmann::json additional_notification_status(const nlohmann::json&) const { return nlohmann::json::object(); }
+ 
+     // Methods that derived classes may need to override or access
+     virtual bool init_device_info(const std::string& dev_id, const std::string& dev_ip, const std::string& username, const std::string& password, bool use_ssl, const std::string& port);
+diff --git a/src/slic3r/Utils/QidiPrinterAgent.cpp b/src/slic3r/Utils/QidiPrinterAgent.cpp
+index b04002d7..4a4e28ba 100644
+--- a/src/slic3r/Utils/QidiPrinterAgent.cpp
++++ b/src/slic3r/Utils/QidiPrinterAgent.cpp
+@@ -167,6 +167,9 @@ AgentInfo QidiPrinterAgent::get_agent_info_static()
+ 
+ void QidiPrinterAgent::append_accessory_status(const nlohmann::json& status, nlohmann::json& payload)
+ {
++    if (status.contains("qidi_config") && status["qidi_config"].is_object() &&
++        status["qidi_config"].contains("polar_cooler_available"))
++        payload["print"]["qidi_polar_cooler_available"] = status["qidi_config"]["polar_cooler_available"];
+     const auto light = status.find("output_pin caselight");
+     if (light != status.end() && light->is_object() && light->contains("value")) {
+         const auto& value = (*light)["value"];
+@@ -200,6 +203,21 @@ void QidiPrinterAgent::append_accessory_status(const nlohmann::json& status, nlo
+         payload["print"]["fan_gear"] = gear;
+ }
+ 
++nlohmann::json QidiPrinterAgent::configuration_notification(const nlohmann::json& notification)
++{
++    nlohmann::json status = nlohmann::json::object();
++    if (!notification.is_object() || !notification.contains("method") || notification["method"] != "notify_proc_stat_update" ||
++        !notification.contains("params") || !notification["params"].is_array() || notification["params"].empty())
++        return status;
++    const auto& data = notification["params"][0];
++    if (!data.is_object() || !data.contains("config_items") || !data["config_items"].is_object())
++        return status;
++    const auto value = data["config_items"].find("printing.polar_cooler");
++    if (value != data["config_items"].end() && value->is_string() && (*value == "0" || *value == "1"))
++        status["qidi_config"]["polar_cooler_available"] = *value == "1";
++    return status;
++}
++
+ void QidiPrinterAgent::append_box_status(const nlohmann::json& status, nlohmann::json& payload)
+ {
+     const auto controller = status.find("multi_color_controller");
+@@ -363,6 +381,12 @@ bool QidiPrinterAgent::print_uploaded_file(const PrintParams& params, const std:
+         return false;
+     if (supported("is_support_timelapse") && !set_timelapse_enabled(params.task_record_timelapse))
+         return false;
++    if (options.is_object() && options.contains("qidi") && options["qidi"].is_object() && options["qidi"].contains("polar_cooler")) {
++        const auto& value = options["qidi"]["polar_cooler"];
++        if (!value.is_boolean() || !send_gcode_sync(device_info.dev_id,
++            std::string("SAVE_VARIABLE VARIABLE=enable_polar_cooler VALUE=") + (value.get<bool>() ? "1" : "0")))
++            return false;
++    }
+ 
+     // On the X-Max 4 and Q2, Klipper only opens the copy Moonraker's print start makes, so SDCARD_PRINT_FILE can't find the upload
+     std::string response;
+diff --git a/src/slic3r/Utils/QidiPrinterAgent.hpp b/src/slic3r/Utils/QidiPrinterAgent.hpp
+index cd05ed0d..64120845 100644
+--- a/src/slic3r/Utils/QidiPrinterAgent.hpp
++++ b/src/slic3r/Utils/QidiPrinterAgent.hpp
+@@ -27,6 +27,7 @@ public:
+     static void append_chamber_status(const nlohmann::json& status, nlohmann::json& payload);
+     static void append_box_status(const nlohmann::json& status, nlohmann::json& payload);
+     static void append_accessory_status(const nlohmann::json& status, nlohmann::json& payload);
++    static nlohmann::json configuration_notification(const nlohmann::json& notification);
+     static AgentInfo get_agent_info_static();
+     AgentInfo        get_agent_info() override { return get_agent_info_static(); }
+ 
+@@ -46,6 +47,8 @@ protected:
+               "fan_generic cooling_fan", "fan_generic auxiliary_cooling_fan", "fan_generic chamber_circulation_fan"}; }
+     void append_status_payload(const nlohmann::json& status, nlohmann::json& payload) const override
+     { append_chamber_status(status, payload); append_box_status(status, payload); append_accessory_status(status, payload); }
++    nlohmann::json additional_notification_status(const nlohmann::json& notification) const override
++    { return configuration_notification(notification); }
+     // Saves the Box slot picked for each filament in the print dialog, then starts the print through Moonraker
+     bool print_uploaded_file(const PrintParams& params, const std::string& filename) override;
+     std::string ams_unit_name(int ams_id) const override { return "Qidi Box " + std::to_string(ams_id + 1); }
+diff --git a/tests/libslic3r/test_config.cpp b/tests/libslic3r/test_config.cpp
+index 50adffbd..7f2b6285 100644
+--- a/tests/libslic3r/test_config.cpp
++++ b/tests/libslic3r/test_config.cpp
+@@ -1942,6 +1942,7 @@ TEST_CASE("QIDI Box settings survive a preset save and reload", "[Config][QidiBo
+         {"is_support_multi_box", true},
+         {"qidi_preprint_bed_leveling", true},
+         {"is_support_timelapse", true},
++        {"is_support_polar_cooler", true},
+         {"box_temperature", "0,45"},
+         {"box_temperature_range_low", "0,35"},
+         {"box_temperature_range_high", "35,55"},
+@@ -1957,6 +1958,7 @@ TEST_CASE("QIDI Box settings survive a preset save and reload", "[Config][QidiBo
+     CHECK(loaded.opt_bool("is_support_multi_box"));
+     CHECK(loaded.opt_bool("qidi_preprint_bed_leveling"));
+     CHECK(loaded.opt_bool("is_support_timelapse"));
++    CHECK(loaded.opt_bool("is_support_polar_cooler"));
+     CHECK(loaded.option<ConfigOptionInts>("box_temperature")->values == std::vector<int>{0, 45});
+     CHECK(loaded.option<ConfigOptionInts>("box_temperature_range_low")->values == std::vector<int>{0, 35});
+     CHECK(loaded.option<ConfigOptionInts>("box_temperature_range_high")->values == std::vector<int>{35, 55});
+diff --git a/tests/slic3rutils/test_qidi_printer_agent.cpp b/tests/slic3rutils/test_qidi_printer_agent.cpp
+index fcf0afe4..06ea7eeb 100644
+--- a/tests/slic3rutils/test_qidi_printer_agent.cpp
++++ b/tests/slic3rutils/test_qidi_printer_agent.cpp
+@@ -171,3 +171,15 @@ TEST_CASE("QIDI fan telemetry keeps the three named fan channels separate", "[Qi
+     CHECK(payload["print"]["support_aux_fan"] == true);
+     CHECK(payload["print"]["support_chamber_fan"] == true);
+ }
++
++TEST_CASE("QIDI Polar Cooler availability follows the firmware configuration report", "[QidiPrinterAgent]")
++{
++    const std::string installed = GENERATE(std::string("0"), std::string("1"));
++    const nlohmann::json notification{{"method", "notify_proc_stat_update"},
++        {"params", nlohmann::json::array({{{"config_items", {{"printing.polar_cooler", installed}}}}})}};
++    const auto status = QidiPrinterAgent::configuration_notification(notification);
++    nlohmann::json payload;
++    QidiPrinterAgent::append_accessory_status(status, payload);
++    CHECK(payload["print"]["qidi_polar_cooler_available"] == (installed == "1"));
++    CHECK(QidiPrinterAgent::configuration_notification({{"method", "notify_status_update"}}).empty());
++}
