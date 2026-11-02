@@ -24,6 +24,7 @@ The full integrated build and dedicated validation phase remain open.
 | LAN printing | Moonraker upload, 3MF selected plate | Ordered Box mode/mapping/options before start | Loopback HTTP tests added; execution pending; no printer contacted |
 | Bed leveling option | QIDI option ineffective/hidden | MAX4 G31/G32 selection | Recording-transport check passes |
 | Timelapse option | UI and frame macros exist | QIDI Moonraker settings request | Recording-transport check passes; actual HTTP pending |
+| Object skipping | Bambu numeric-ID interface only | QIDI named-object chooser and EXCLUDE_OBJECT translation | Isolated name/telemetry checks pass; GUI/hardware pending |
 | Detection settings | Existing spaghetti/FOD controls | QIDI variable commands, sensitivity and reported settings | Isolated command checks pass; full GUI/hardware pending |
 | Polar cooler | QIDI flag not recognized | Firmware-gated print option and job snapshot | Offline dispatch checks pass; manual toggle in Print Options; actual GUI and hardware pending |
 | Auto refill | Native Bambu UI only | Incompatible dialog hidden | QIDI local dispatcher has an ambiguous command spelling; verify before porting |

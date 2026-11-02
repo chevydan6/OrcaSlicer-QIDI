@@ -43,3 +43,5 @@ separately from implementation; a patch's presence does not certify hardware use
 23. `0023-qidi-live-materials.patch` applies QIDI Studio decoded Box material/presence reports to native slots as partial updates, preserving explicit-sync identities when the material stays the same. Type resolution requires a compatible visible type; unknown materials remain placeholders. RFID changes can update the monitor without deleting other trays.
 
 24. `0024-qidi-mapping-validation.patch` snapshots used logical filament IDs with the job and validates every active mapping before HTTP submission. Invalid types/ranges/unsigned overflow reject the entire mapping; unused holes retain logical positions. Box/external mixing and multiple-material external change assist are rejected because no QIDI equivalent is implemented.
+
+25. `0025-qidi-object-exclusion.patch` ports PrinterTaskDispatcher's EXCLUDE_OBJECT operation using firmware-reported names. Native Print Options offers a named-object chooser during printing; already excluded names are omitted. Command strings are validated before dispatch. This avoids assuming Bambu numeric object IDs match Klipper object names.

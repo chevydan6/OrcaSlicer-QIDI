@@ -1,0 +1,195 @@
+From 05bb906053d02497fe6d3679d1c7f837bcf4ed18 Mon Sep 17 00:00:00 2001
+From: chevydan6 <339888127+chevydan6@users.noreply.github.com>
+Date: Tue, 3 Nov 2026 08:16:40 +0900
+Subject: [PATCH] Port QIDI named object exclusion to native print options
+
+---
+ src/slic3r/GUI/DeviceManager.cpp              |  5 ++++
+ src/slic3r/GUI/DeviceManager.hpp              |  1 +
+ src/slic3r/GUI/PrintOptionsDialog.cpp         | 25 ++++++++++++++++
+ src/slic3r/GUI/PrintOptionsDialog.hpp         |  1 +
+ src/slic3r/Utils/QidiPrinterAgent.cpp         | 30 +++++++++++++++++++
+ src/slic3r/Utils/QidiPrinterAgent.hpp         |  2 +-
+ tests/slic3rutils/test_qidi_printer_agent.cpp | 11 +++++++
+ 7 files changed, 74 insertions(+), 1 deletion(-)
+
+diff --git a/src/slic3r/GUI/DeviceManager.cpp b/src/slic3r/GUI/DeviceManager.cpp
+index 59c143bf..f82c7586 100644
+--- a/src/slic3r/GUI/DeviceManager.cpp
++++ b/src/slic3r/GUI/DeviceManager.cpp
+@@ -3275,6 +3275,11 @@ int MachineObject::parse_json(std::string tunnel, std::string payload, bool key_
+               m_fan->ParseV2_0(jj);
+                 m_fila_switch->ParseFilaSwitchInfo(jj);
+ 
++                if (printer_agent_id == "qidi" && jj.contains("qidi_print_objects") && jj["qidi_print_objects"].is_array()) {
++                    qidi_print_objects.clear();
++                    for (const auto& name : jj["qidi_print_objects"])
++                        if (name.is_string()) qidi_print_objects.push_back(name.get<std::string>());
++                }
+                 if (printer_agent_id == "qidi" && jj.contains("qidi_polar_cooler_available") && jj["qidi_polar_cooler_available"].is_boolean())
+                     qidi_polar_cooler_available = jj["qidi_polar_cooler_available"].get<bool>();
+                 if (printer_agent_id == "qidi" && jj.contains("qidi_polar_cooler_on") && jj["qidi_polar_cooler_on"].is_boolean())
+diff --git a/src/slic3r/GUI/DeviceManager.hpp b/src/slic3r/GUI/DeviceManager.hpp
+index 395f029d..e99c8e81 100644
+--- a/src/slic3r/GUI/DeviceManager.hpp
++++ b/src/slic3r/GUI/DeviceManager.hpp
+@@ -650,6 +650,7 @@ public:
+     bool is_support_upgrade_kit{false};
+     bool is_support_filament_setting_inprinting{false};
+     bool is_support_internal_timelapse { false };// fun[28], support timelapse without SD card
++    std::vector<std::string> qidi_print_objects;
+     bool qidi_polar_cooler_available { false };
+     std::optional<bool> qidi_polar_cooler_on;
+     bool m_support_mqtt_homing { false };// fun[32]
+diff --git a/src/slic3r/GUI/PrintOptionsDialog.cpp b/src/slic3r/GUI/PrintOptionsDialog.cpp
+index a9e87ed0..97c13ac4 100644
+--- a/src/slic3r/GUI/PrintOptionsDialog.cpp
++++ b/src/slic3r/GUI/PrintOptionsDialog.cpp
+@@ -28,6 +28,8 @@
+ #include "slic3r/GUI/DeviceCore/DevDefs.h"
+ #include <wx/utils.h>
+ #include <wx/msgdlg.h>
++#include <wx/choicdlg.h>
++#include <wx/arrstr.h>
+ #include "I18N.hpp"
+ #include "GUI_App.hpp"
+ #include "libslic3r/Utils.hpp"
+@@ -82,6 +84,23 @@ PrintOptionsDialog::PrintOptionsDialog(wxWindow* parent)
+     mainSizer->Fit(this);
+     //this->Fit();
+ 
++    m_qidi_skip_objects->Bind(wxEVT_BUTTON, [this](wxCommandEvent&) {
++        if (!obj || obj->printer_agent_id != "qidi" || !obj->is_in_printing() || obj->qidi_print_objects.empty()) return;
++        auto* target = obj;
++        const auto job = obj->subtask_name;
++        const auto names = obj->qidi_print_objects;
++        wxArrayString choices;
++        for (const auto& name : names) choices.Add(wxString::FromUTF8(name));
++        wxMultiChoiceDialog dialog(this, _L("Select objects to stop printing for the rest of this job."), _L("Skip objects"), choices);
++        if (dialog.ShowModal() != wxID_OK || obj != target || obj->subtask_name != job || !obj->is_in_printing()) return;
++        auto selected = nlohmann::json::array();
++        for (int index : dialog.GetSelections())
++            if (index >= 0 && static_cast<std::size_t>(index) < names.size()) selected.push_back(names[index]);
++        if (!selected.empty())
++            obj->publish_json({{"print", {{"command", "qidi_exclude_objects"}, {"objects", selected},
++                {"sequence_id", std::to_string(MachineObject::m_sequence_id++)}}}});
++    });
++
+     m_cb_qidi_polar_cooler->Bind(wxEVT_TOGGLEBUTTON, [this](wxCommandEvent& evt) {
+         if (obj && obj->printer_agent_id == "qidi" && obj->qidi_polar_cooler_available && obj->qidi_polar_cooler_on.has_value()) {
+             const nlohmann::json request{{"print", {{"command", "qidi_polar_cooler"},
+@@ -381,6 +400,8 @@ void PrintOptionsDialog::update_options(MachineObject* obj_)
+ {
+     if (!obj_) return;
+ 
++    m_qidi_skip_objects->Show(obj_->printer_agent_id == "qidi" && !obj_->qidi_print_objects.empty());
++    m_qidi_skip_objects->Enable(obj_->is_in_printing());
+     const bool show_cooler = obj_->printer_agent_id == "qidi" && obj_->qidi_polar_cooler_available && obj_->qidi_polar_cooler_on.has_value();
+     m_qidi_polar_cooler_sizer->Show(show_cooler);
+     if (show_cooler)
+@@ -837,6 +858,10 @@ wxBoxSizer* PrintOptionsDialog::create_settings_group(wxWindow* parent)
+     wxBoxSizer* sizer = new wxBoxSizer(wxVERTICAL);
+     wxBoxSizer* line_sizer = new wxBoxSizer(wxHORIZONTAL);
+ 
++    m_qidi_skip_objects = new Button(parent, _L("Skip objects..."));
++    sizer->Add(m_qidi_skip_objects, 0, wxLEFT | wxRIGHT | wxBOTTOM, FromDIP(18));
++    m_qidi_skip_objects->Hide();
++
+     m_qidi_polar_cooler_sizer = new wxBoxSizer(wxHORIZONTAL);
+     m_cb_qidi_polar_cooler = new CheckBox(parent);
+     auto* cooler_label = new Label(parent, _L("Polar Cooler"));
+diff --git a/src/slic3r/GUI/PrintOptionsDialog.hpp b/src/slic3r/GUI/PrintOptionsDialog.hpp
+index 771919a8..60b6fb6b 100644
+--- a/src/slic3r/GUI/PrintOptionsDialog.hpp
++++ b/src/slic3r/GUI/PrintOptionsDialog.hpp
+@@ -84,6 +84,7 @@ protected:
+     // settings
+     wxScrolledWindow* m_scrollwindow;
+     CheckBox* m_cb_first_layer;
++    Button* m_qidi_skip_objects{nullptr};
+     CheckBox* m_cb_qidi_polar_cooler{nullptr};
+     wxBoxSizer* m_qidi_polar_cooler_sizer{nullptr};
+     CheckBox *        m_cb_ai_monitoring;
+diff --git a/src/slic3r/Utils/QidiPrinterAgent.cpp b/src/slic3r/Utils/QidiPrinterAgent.cpp
+index f6d5a76a..75165ebf 100644
+--- a/src/slic3r/Utils/QidiPrinterAgent.cpp
++++ b/src/slic3r/Utils/QidiPrinterAgent.cpp
+@@ -61,6 +61,23 @@ std::optional<std::string> QidiPrinterAgent::control_script(const nlohmann::json
+     };
+     const std::string name = command["command"].get<std::string>();
+     // Commands from QIDI Studio's PrinterTaskDispatcher::build_local_task.
++    if (name == "qidi_exclude_objects") {
++        const auto objects = command.find("objects");
++        if (objects == command.end() || !objects->is_array() || objects->empty())
++            throw std::invalid_argument("No QIDI objects selected");
++        std::string script;
++        for (const auto& object : *objects) {
++            if (!object.is_string())
++                throw std::invalid_argument("Invalid QIDI object name");
++            const auto value = object.get<std::string>();
++            if (value.empty() || value.size() > 512 || value.find_first_of(" \t\r\n'\"\\;=#") != std::string::npos ||
++                std::any_of(value.begin(), value.end(), [](unsigned char c) { return c < 32 || c == 127; }))
++                throw std::invalid_argument("Invalid QIDI object name");
++            if (!script.empty()) script += '\n';
++            script += "EXCLUDE_OBJECT NAME=" + value;
++        }
++        return script;
++    }
+     if (name == "qidi_polar_cooler") {
+         const auto enabled = command.find("enabled");
+         if (enabled == command.end() || !enabled->is_boolean())
+@@ -215,6 +232,19 @@ AgentInfo QidiPrinterAgent::get_agent_info_static()
+ 
+ void QidiPrinterAgent::append_accessory_status(const nlohmann::json& status, nlohmann::json& payload)
+ {
++    const auto exclusion = status.find("exclude_object");
++    if (exclusion != status.end() && exclusion->is_object() && exclusion->contains("objects") && (*exclusion)["objects"].is_array()) {
++        auto names = nlohmann::json::array();
++        const auto excluded = exclusion->find("excluded_objects");
++        for (const auto& object : (*exclusion)["objects"]) {
++            if (!object.is_object() || !object.contains("name") || !object["name"].is_string()) continue;
++            const auto& name = object["name"];
++            if (excluded != exclusion->end() && excluded->is_array() && std::find(excluded->begin(), excluded->end(), name) != excluded->end())
++                continue;
++            names.push_back(name);
++        }
++        payload["print"]["qidi_print_objects"] = std::move(names);
++    }
+     const auto cooler = status.find("output_pin polar_cooler");
+     if (cooler != status.end() && cooler->is_object() && cooler->contains("value")) {
+         const auto& value = (*cooler)["value"];
+diff --git a/src/slic3r/Utils/QidiPrinterAgent.hpp b/src/slic3r/Utils/QidiPrinterAgent.hpp
+index 5d550d87..4ae57286 100644
+--- a/src/slic3r/Utils/QidiPrinterAgent.hpp
++++ b/src/slic3r/Utils/QidiPrinterAgent.hpp
+@@ -50,7 +50,7 @@ protected:
+     std::vector<std::string> additional_status_objects() const override
+     { return {"heater_generic chamber", "multi_color_controller", "save_variables", "output_pin caselight",
+               "fan_generic cooling_fan", "fan_generic auxiliary_cooling_fan", "fan_generic chamber_circulation_fan", "gcode_move",
+-              "output_pin polar_cooler"}; }
++              "output_pin polar_cooler", "exclude_object"}; }
+     void append_status_payload(const nlohmann::json& status, nlohmann::json& payload) const override
+     { append_chamber_status(status, payload); append_box_status(status, payload); append_accessory_status(status, payload); }
+     nlohmann::json additional_notification_status(const nlohmann::json& notification) const override
+diff --git a/tests/slic3rutils/test_qidi_printer_agent.cpp b/tests/slic3rutils/test_qidi_printer_agent.cpp
+index 145bf57a..6e2f8b16 100644
+--- a/tests/slic3rutils/test_qidi_printer_agent.cpp
++++ b/tests/slic3rutils/test_qidi_printer_agent.cpp
+@@ -490,3 +490,14 @@ TEST_CASE("QIDI validates all used tools including support-first and external mo
+     params.extra_options = R"({"qidi":{"used_filaments":[4294967296]}})";
+     CHECK(QidiPrinterAgent::build_box_selection_script(params).empty());
+ }
++
++TEST_CASE("QIDI excludes objects by firmware name and rejects command injection", "[QidiPrinterAgent]")
++{
++    CHECK(QidiPrinterAgent::control_script({{"command", "qidi_exclude_objects"}, {"objects", {"cube_id_5_copy_0", "cube_id_5_copy_1"}}}) ==
++        "EXCLUDE_OBJECT NAME=cube_id_5_copy_0\nEXCLUDE_OBJECT NAME=cube_id_5_copy_1");
++    CHECK_THROWS(QidiPrinterAgent::control_script({{"command", "qidi_exclude_objects"}, {"objects", {"cube", "bad\nG28"}}}));
++    nlohmann::json payload;
++    QidiPrinterAgent::append_accessory_status({{"exclude_object", {{"objects", {{{"name", "cube"}}, {{"name", "tower"}}}},
++        {"excluded_objects", {"tower"}}}}}, payload);
++    CHECK(payload["print"]["qidi_print_objects"] == nlohmann::json::array({"cube"}));
++}
+-- 
+2.56.0
+

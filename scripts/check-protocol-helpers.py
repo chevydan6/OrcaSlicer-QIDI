@@ -73,6 +73,11 @@ start=gui_source.index('void DevFilaSystemParser::UpdateQidiTray')
 code += gui_source[start:gui_source.index('void DevFilaSystemParser::ParseV1_0',start)]
 code += r'''
 int main() {
+ assert(QidiPrinterAgent::control_script({{"command","qidi_exclude_objects"},{"objects",{"cube_id_5_copy_0"}}})=="EXCLUDE_OBJECT NAME=cube_id_5_copy_0");
+ nlohmann::json object_status;
+ QidiPrinterAgent::append_accessory_status({{"exclude_object",{{"objects",{{{"name","cube"}},{{"name","tower"}}}},{"excluded_objects",{"tower"}}}}},object_status);
+ assert(object_status["print"]["qidi_print_objects"]==nlohmann::json::array({"cube"}));
+
  assert(QidiPrinterAgent::build_tool_slot_script("[3,4294967296]").empty());
  assert(QidiPrinterAgent::build_tool_slot_script("[3,16]").empty());
  assert(QidiPrinterAgent::build_tool_slot_script("[3,true]").empty());
