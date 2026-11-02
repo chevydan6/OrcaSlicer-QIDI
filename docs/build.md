@@ -50,3 +50,19 @@ GUI coexistence and persistence must still be verified with the compiled build.
 The upstream default for automatic preset bundle updates is off. Keep it off for
 this fork until a downstream update process is available. Official application
 updates do not contain these patches; use this integration workflow for updates.
+
+## MAX4 runtime validation
+
+After building, run `python3 scripts/validate-max4-slicing.py --source build/source`
+from the integration repository (use `xvfb-run -a` on a headless machine). It uses
+an isolated datadir, generates a cube locally, slices all MAX4 nozzle sizes and
+newly imported materials, checks emitted macros, and saves/reloads a custom Box
+temperature through 3MF. It never uploads files or sends printer commands.
+Use `--binary PATH` for another executable layout and `--output NEW_DIRECTORY`
+for subsequent runs. The output directory must not already exist.
+
+The isolated protocol harness is `python3 scripts/check-protocol-helpers.py` with
+the development checkout at `OrcaSlicer/`. It compiles actual helper/dispatch
+method bodies with a recording transport, not the complete slicer or its HTTP
+implementation. `python3 scripts/verify-patches.py` verifies source reproduction
+without modifying the developer checkout's index or working tree.

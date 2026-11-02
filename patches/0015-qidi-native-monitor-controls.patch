@@ -1,0 +1,153 @@
+diff --git a/src/slic3r/GUI/DeviceCore/DevFan.cpp b/src/slic3r/GUI/DeviceCore/DevFan.cpp
+index c4fc8011..2cb47b4c 100644
+--- a/src/slic3r/GUI/DeviceCore/DevFan.cpp
++++ b/src/slic3r/GUI/DeviceCore/DevFan.cpp
+@@ -52,6 +52,10 @@ void Slic3r::DevFan::converse_to_duct(bool is_suppt_part_fun, bool is_suppt_aux_
+ // Old protocol
+ int Slic3r::DevFan::command_control_fan(int fan_type, int val)
+ {
++    if (m_owner->printer_agent_id == "qidi") {
++        json request{{"print", {{"command", "qidi_set_fan"}, {"fan_index", fan_type}, {"speed", val}}}};
++        return m_owner->publish_json(request);
++    }
+     // Orca: strip analytics telemetry
+     std::string gcode = (boost::format("M106 P%1% S%2% \n") % (int) fan_type % (val)).str();
+     return m_owner->publish_gcode(gcode);
+diff --git a/src/slic3r/Utils/QidiPrinterAgent.cpp b/src/slic3r/Utils/QidiPrinterAgent.cpp
+index 4a4e28ba..fc967b6a 100644
+--- a/src/slic3r/Utils/QidiPrinterAgent.cpp
++++ b/src/slic3r/Utils/QidiPrinterAgent.cpp
+@@ -17,6 +17,7 @@
+ #include <ios>
+ #include "libslic3r/Preset.hpp"
+ #include <map>
++#include <mutex>
+ #include <sstream>
+ #include <stdexcept>
+ #include <optional>
+@@ -60,6 +61,23 @@ std::optional<std::string> QidiPrinterAgent::control_script(const nlohmann::json
+     };
+     const std::string name = command["command"].get<std::string>();
+     // Commands from QIDI Studio's PrinterTaskDispatcher::build_local_task.
++    if (name == "qidi_set_fan") {
++        const int index = integer("fan_index", 3);
++        if (index == 0)
++            throw std::invalid_argument("Unsupported QIDI fan");
++        const char* fans[] = {"cooling_fan", "auxiliary_cooling_fan", "chamber_circulation_fan"};
++        return std::string("SET_FAN_SPEED FAN=") + fans[index - 1] + " SPEED=" + nlohmann::json(integer("speed", 255) / 255.0).dump();
++    }
++    if (name == "print_speed") {
++        const auto level = command.find("param");
++        if (level == command.end() || !level->is_string())
++            throw std::invalid_argument("Invalid QIDI speed level");
++        const std::string value = level->get<std::string>();
++        if (value.size() != 1 || value[0] < '1' || value[0] > '4')
++            throw std::invalid_argument("Invalid QIDI speed level");
++        const int speeds[] = {50, 100, 124, 166};
++        return "M220 S" + std::to_string(speeds[value[0] - '1']);
++    }
+     if (name == "ledctrl" && command.value("led_node", std::string()) == "chamber_light") {
+         const auto mode = command.find("led_mode");
+         if (mode == command.end() || !mode->is_string() || (*mode != "on" && *mode != "off"))
+@@ -167,6 +185,19 @@ AgentInfo QidiPrinterAgent::get_agent_info_static()
+ 
+ void QidiPrinterAgent::append_accessory_status(const nlohmann::json& status, nlohmann::json& payload)
+ {
++    const auto movement = status.find("gcode_move");
++    if (movement != status.end() && movement->is_object() && movement->contains("speed_factor") && (*movement)["speed_factor"].is_number()) {
++        const auto& factor = (*movement)["speed_factor"];
++        if (factor >= 0 && factor <= 10) {
++            const int percent = static_cast<int>(factor.get<double>() * 100.0 + 0.5);
++            payload["print"]["spd_mag"] = percent;
++            payload["print"]["spd_lvl"] = 0;
++            const int speeds[] = {50, 100, 124, 166};
++            for (int i = 0; i < 4; ++i)
++                if (percent == speeds[i])
++                    payload["print"]["spd_lvl"] = i + 1;
++        }
++    }
+     if (status.contains("qidi_config") && status["qidi_config"].is_object() &&
+         status["qidi_config"].contains("polar_cooler_available"))
+         payload["print"]["qidi_polar_cooler_available"] = status["qidi_config"]["polar_cooler_available"];
+@@ -278,6 +309,25 @@ void QidiPrinterAgent::append_box_status(const nlohmann::json& status, nlohmann:
+     read_flag("auto_init_detect", "power_on_flag");
+ }
+ 
++std::string QidiPrinterAgent::camera_url_for_host(std::string base_url)
++{
++    if (base_url.empty())
++        return {};
++    // QIDI Studio uses the printer's web proxy snapshot endpoint. Moonraker's
++    // direct API port does not serve it; custom web-proxy ports are preserved.
++    if (base_url.size() > 5 && base_url.compare(base_url.size() - 5, 5, ":7125") == 0)
++        base_url.resize(base_url.size() - 5);
++    if (base_url.back() == '/')
++        base_url.pop_back();
++    return base_url + "/webcam/?action=snapshot";
++}
++
++std::string QidiPrinterAgent::get_camera_url() const
++{
++    std::lock_guard<std::recursive_mutex> lock(state_mutex);
++    return camera_url_for_host(device_info.base_url);
++}
++
+ bool QidiPrinterAgent::fetch_filament_info(std::string dev_id, FilamentSyncMode /*sync_mode*/)
+ {
+     std::string error;
+diff --git a/src/slic3r/Utils/QidiPrinterAgent.hpp b/src/slic3r/Utils/QidiPrinterAgent.hpp
+index 64120845..21cf025d 100644
+--- a/src/slic3r/Utils/QidiPrinterAgent.hpp
++++ b/src/slic3r/Utils/QidiPrinterAgent.hpp
+@@ -30,6 +30,9 @@ public:
+     static nlohmann::json configuration_notification(const nlohmann::json& notification);
+     static AgentInfo get_agent_info_static();
+     AgentInfo        get_agent_info() override { return get_agent_info_static(); }
++    CameraStreamMode get_camera_stream_mode() const override { return CameraStreamMode::http_snapshot; }
++    std::string get_camera_url() const override;
++    static std::string camera_url_for_host(std::string base_url);
+ 
+     // Override filament sync (Qidi-specific implementation)
+     bool fetch_filament_info(std::string dev_id, FilamentSyncMode sync_mode = FilamentSyncMode::pull) override;
+@@ -44,7 +47,7 @@ public:
+ protected:
+     std::vector<std::string> additional_status_objects() const override
+     { return {"heater_generic chamber", "multi_color_controller", "save_variables", "output_pin caselight",
+-              "fan_generic cooling_fan", "fan_generic auxiliary_cooling_fan", "fan_generic chamber_circulation_fan"}; }
++              "fan_generic cooling_fan", "fan_generic auxiliary_cooling_fan", "fan_generic chamber_circulation_fan", "gcode_move"}; }
+     void append_status_payload(const nlohmann::json& status, nlohmann::json& payload) const override
+     { append_chamber_status(status, payload); append_box_status(status, payload); append_accessory_status(status, payload); }
+     nlohmann::json additional_notification_status(const nlohmann::json& notification) const override
+diff --git a/tests/slic3rutils/test_qidi_printer_agent.cpp b/tests/slic3rutils/test_qidi_printer_agent.cpp
+index 06ea7eeb..ceb957e2 100644
+--- a/tests/slic3rutils/test_qidi_printer_agent.cpp
++++ b/tests/slic3rutils/test_qidi_printer_agent.cpp
+@@ -183,3 +183,28 @@ TEST_CASE("QIDI Polar Cooler availability follows the firmware configuration rep
+     CHECK(payload["print"]["qidi_polar_cooler_available"] == (installed == "1"));
+     CHECK(QidiPrinterAgent::configuration_notification({{"method", "notify_status_update"}}).empty());
+ }
++
++TEST_CASE("QIDI fan controls address named fans instead of the incompatible part fan number", "[QidiPrinterAgent]")
++{
++    CHECK(QidiPrinterAgent::control_script({{"command", "qidi_set_fan"}, {"fan_index", 1}, {"speed", 255}}) ==
++          "SET_FAN_SPEED FAN=cooling_fan SPEED=1.0");
++    CHECK(QidiPrinterAgent::control_script({{"command", "qidi_set_fan"}, {"fan_index", 3}, {"speed", 0}}) ==
++          "SET_FAN_SPEED FAN=chamber_circulation_fan SPEED=0.0");
++    CHECK_THROWS(QidiPrinterAgent::control_script({{"command", "qidi_set_fan"}, {"fan_index", 0}, {"speed", 255}}));
++}
++
++TEST_CASE("QIDI speed selection and telemetry use the same percent", "[QidiPrinterAgent]")
++{
++    CHECK(QidiPrinterAgent::control_script({{"command", "print_speed"}, {"param", "3"}}) == "M220 S124");
++    nlohmann::json payload;
++    QidiPrinterAgent::append_accessory_status({{"gcode_move", {{"speed_factor", 1.24}}}}, payload);
++    CHECK(payload["print"]["spd_mag"] == 124);
++    CHECK(payload["print"]["spd_lvl"] == 3);
++}
++
++TEST_CASE("QIDI snapshots use the web proxy rather than the direct Moonraker port", "[QidiPrinterAgent]")
++{
++    CHECK(QidiPrinterAgent::camera_url_for_host("http://127.0.0.1:7125") == "http://127.0.0.1/webcam/?action=snapshot");
++    CHECK(QidiPrinterAgent::camera_url_for_host("https://[::1]:8443") == "https://[::1]:8443/webcam/?action=snapshot");
++    CHECK(QidiPrinterAgent::camera_url_for_host("").empty());
++}

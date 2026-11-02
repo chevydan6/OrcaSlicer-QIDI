@@ -9,7 +9,8 @@ functions = [
  ('void QidiPrinterAgent::append_chamber_status', 'AgentInfo QidiPrinterAgent::get_agent_info_static'),
  ('void QidiPrinterAgent::append_accessory_status', 'nlohmann::json QidiPrinterAgent::configuration_notification'),
  ('nlohmann::json QidiPrinterAgent::configuration_notification', 'void QidiPrinterAgent::append_box_status'),
- ('void QidiPrinterAgent::append_box_status', 'bool QidiPrinterAgent::fetch_filament_info'),
+ ('void QidiPrinterAgent::append_box_status', 'std::string QidiPrinterAgent::camera_url_for_host'),
+ ('std::string QidiPrinterAgent::camera_url_for_host', 'std::string QidiPrinterAgent::get_camera_url'),
  ('std::string QidiPrinterAgent::build_tool_slot_script', 'std::string QidiPrinterAgent::build_box_selection_script'),
  ('std::string QidiPrinterAgent::build_box_selection_script', 'bool QidiPrinterAgent::print_uploaded_file'),
  ('bool QidiPrinterAgent::print_uploaded_file', 'bool QidiPrinterAgent::set_timelapse_enabled'),
@@ -42,6 +43,7 @@ struct QidiPrinterAgent {
  { return record("start:" + request["filename"].get<std::string>()); }
  bool print_uploaded_file(const PrintParams&, const std::string&);
  static std::optional<std::string> control_script(const nlohmann::json&);
+ static std::string camera_url_for_host(std::string);
  static nlohmann::json configuration_notification(const nlohmann::json&);
  static void append_accessory_status(const nlohmann::json&, nlohmann::json&);
  static void append_box_status(const nlohmann::json&, nlohmann::json&);
@@ -88,6 +90,10 @@ int main() {
  assert(QidiPrinterAgent::control_script({{"command","ledctrl"},{"led_node","chamber_light"},{"led_mode","on"}}) == "SET_PIN PIN=caselight VALUE=1");
  const auto config = QidiPrinterAgent::configuration_notification({{"method","notify_proc_stat_update"},{"params",nlohmann::json::array({{{"config_items",{{"printing.polar_cooler","1"}}}}})}});
  assert(config["qidi_config"]["polar_cooler_available"] == true);
+ assert(QidiPrinterAgent::camera_url_for_host("http://127.0.0.1:7125") == "http://127.0.0.1/webcam/?action=snapshot");
+ assert(QidiPrinterAgent::camera_url_for_host("https://[::1]:8443") == "https://[::1]:8443/webcam/?action=snapshot");
+ assert(QidiPrinterAgent::control_script({{"command","qidi_set_fan"},{"fan_index",1},{"speed",255}}) == "SET_FAN_SPEED FAN=cooling_fan SPEED=1.0");
+ assert(QidiPrinterAgent::control_script({{"command","print_speed"},{"param","3"}}) == "M220 S124");
  PrintParams params;
  params.task_use_ams = true;
  params.ams_mapping = "[-1,-1,5]";

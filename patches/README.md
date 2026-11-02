@@ -20,6 +20,7 @@ QIDI reference revision: `403b619d56147160bb883e94f95a7951245bc6d0`.
 | 0012 | Case-light control and separate named fan telemetry | PrinterTaskDispatcher, QDSDeviceManager |
 | 0013 | Polar Cooler availability and print option | QDSDeviceManager, SelectMachine, public MAX4 proc_stats |
 | 0014 | Hide incompatible Bambu auto-refill dialog on QIDI | Downstream UI integration |
+| 0015 | Native fan/speed controls and LAN snapshot camera | PrinterTaskDispatcher, QDSPrinterWebView |
 
 Profile content and protocol behavior are adapted from QIDI Studio. Core changes
 integrate that behavior into current Orca's existing architecture. Tests and Linux

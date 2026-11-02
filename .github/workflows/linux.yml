@@ -58,6 +58,7 @@ jobs:
           path: source/deps/build
           key: qidi-linux-deps-${{ steps.source.outputs.sha }}
       - name: Build slicer and tests
+        id: build
         working-directory: source
         run: |
           set -o pipefail
@@ -66,8 +67,12 @@ jobs:
         working-directory: source
         run: xvfb-run -a ctest --test-dir build -C Release --output-on-failure --timeout 300
       - name: Profile structure checks
+        if: ${{ !cancelled() && steps.build.outcome == 'success' }}
         working-directory: source
         run: python3 scripts/orca_profile_tool.py check
+      - name: MAX4 offline slicing and persistence
+        if: ${{ !cancelled() && steps.build.outcome == 'success' }}
+        run: xvfb-run -a python3 scripts/validate-max4-slicing.py --source source
       - name: Retain build and logs
         if: always()
         uses: actions/upload-artifact@v4
@@ -79,6 +84,7 @@ jobs:
             source/build/CMakeFiles/CMakeConfigureLog.yaml
             dependencies.log
             compile.log
+            build/max4-slicing/
           if-no-files-found: warn
           retention-days: 30
       - uses: actions/cache/save@v4
