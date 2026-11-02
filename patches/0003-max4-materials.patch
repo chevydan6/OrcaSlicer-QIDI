@@ -1,0 +1,626 @@
+diff --git a/resources/profiles/Qidi.json b/resources/profiles/Qidi.json
+index daac75d1..34b01f9c 100644
+--- a/resources/profiles/Qidi.json
++++ b/resources/profiles/Qidi.json
+@@ -1,6 +1,6 @@
+ {
+ 	"name": "Qidi",
+-	"version": "02.04.00.21",
++	"version": "02.04.00.22",
+ 	"force_update": "0",
+ 	"description": "Qidi configurations",
+ 	"machine_model_list": [
+@@ -1580,6 +1580,10 @@
+ 			"name": "PolyLite PLA@X-Max 4-Series",
+ 			"sub_path": "filament/X4/PolyLite PLA @X-Max 4.json"
+ 		},
++		{
++			"name": "Polymaker PLA-HT@X-Max 4-Series",
++			"sub_path": "filament/X4/Polymaker PLA-HT @X-Max 4.json"
++		},
+ 		{
+ 			"name": "QIDI ABS Odorless@X-Max 4-Series",
+ 			"sub_path": "filament/X4/QIDI ABS Odorless @X-Max 4.json"
+@@ -1600,6 +1604,10 @@
+ 			"name": "QIDI ASA-Aero@X-Max 4-Series",
+ 			"sub_path": "filament/X4/QIDI ASA-Aero @X-Max 4.json"
+ 		},
++		{
++			"name": "QIDI ASA-CF20 Core@X-Max 4-Series",
++			"sub_path": "filament/X4/QIDI ASA-CF20 Core @X-Max 4.json"
++		},
+ 		{
+ 			"name": "QIDI ASA-CF@X-Max 4-Series",
+ 			"sub_path": "filament/X4/QIDI ASA-CF @X-Max 4.json"
+@@ -1612,6 +1620,10 @@
+ 			"name": "QIDI PA12-CF@X-Max 4-Series",
+ 			"sub_path": "filament/X4/QIDI PA12-CF @X-Max 4.json"
+ 		},
++		{
++			"name": "QIDI PA6-CF@X-Max 4-Series",
++			"sub_path": "filament/X4/QIDI PA6-CF @X-Max 4.json"
++		},
+ 		{
+ 			"name": "QIDI PAHT-CF@X-Max 4-Series",
+ 			"sub_path": "filament/X4/QIDI PAHT-CF @X-Max 4.json"
+@@ -4220,6 +4232,22 @@
+ 			"name": "PolyLite PLA @Qidi X-Max 4 0.8 nozzle",
+ 			"sub_path": "filament/X4/PolyLite PLA @Qidi X-Max 4 0.8 nozzle.json"
+ 		},
++		{
++			"name": "Polymaker PLA-HT @Qidi X-Max 4 0.2 nozzle",
++			"sub_path": "filament/X4/Polymaker PLA-HT @Qidi X-Max 4 0.2 nozzle.json"
++		},
++		{
++			"name": "Polymaker PLA-HT @Qidi X-Max 4 0.4 nozzle",
++			"sub_path": "filament/X4/Polymaker PLA-HT @Qidi X-Max 4 0.4 nozzle.json"
++		},
++		{
++			"name": "Polymaker PLA-HT @Qidi X-Max 4 0.6 nozzle",
++			"sub_path": "filament/X4/Polymaker PLA-HT @Qidi X-Max 4 0.6 nozzle.json"
++		},
++		{
++			"name": "Polymaker PLA-HT @Qidi X-Max 4 0.8 nozzle",
++			"sub_path": "filament/X4/Polymaker PLA-HT @Qidi X-Max 4 0.8 nozzle.json"
++		},
+ 		{
+ 			"name": "QIDI ABS Odorless @Qidi X-Max 4 0.2 nozzle",
+ 			"sub_path": "filament/X4/QIDI ABS Odorless @Qidi X-Max 4 0.2 nozzle.json"
+@@ -4284,6 +4312,18 @@
+ 			"name": "QIDI ASA-Aero @Qidi X-Max 4 0.4 nozzle",
+ 			"sub_path": "filament/X4/QIDI ASA-Aero @Qidi X-Max 4 0.4 nozzle.json"
+ 		},
++		{
++			"name": "QIDI ASA-CF20 Core @Qidi X-Max 4 0.4 nozzle",
++			"sub_path": "filament/X4/QIDI ASA-CF20 Core @Qidi X-Max 4 0.4 nozzle.json"
++		},
++		{
++			"name": "QIDI ASA-CF20 Core @Qidi X-Max 4 0.6 nozzle",
++			"sub_path": "filament/X4/QIDI ASA-CF20 Core @Qidi X-Max 4 0.6 nozzle.json"
++		},
++		{
++			"name": "QIDI ASA-CF20 Core @Qidi X-Max 4 0.8 nozzle",
++			"sub_path": "filament/X4/QIDI ASA-CF20 Core @Qidi X-Max 4 0.8 nozzle.json"
++		},
+ 		{
+ 			"name": "QIDI ASA-CF @Qidi X-Max 4 0.4 nozzle",
+ 			"sub_path": "filament/X4/QIDI ASA-CF @Qidi X-Max 4 0.4 nozzle.json"
+@@ -4324,6 +4364,18 @@
+ 			"name": "QIDI PA12-CF @Qidi X-Max 4 0.8 nozzle",
+ 			"sub_path": "filament/X4/QIDI PA12-CF @Qidi X-Max 4 0.8 nozzle.json"
+ 		},
++		{
++			"name": "QIDI PA6-CF @Qidi X-Max 4 0.4 nozzle",
++			"sub_path": "filament/X4/QIDI PA6-CF @Qidi X-Max 4 0.4 nozzle.json"
++		},
++		{
++			"name": "QIDI PA6-CF @Qidi X-Max 4 0.6 nozzle",
++			"sub_path": "filament/X4/QIDI PA6-CF @Qidi X-Max 4 0.6 nozzle.json"
++		},
++		{
++			"name": "QIDI PA6-CF @Qidi X-Max 4 0.8 nozzle",
++			"sub_path": "filament/X4/QIDI PA6-CF @Qidi X-Max 4 0.8 nozzle.json"
++		},
+ 		{
+ 			"name": "QIDI PAHT-CF @Qidi X-Max 4 0.4 nozzle",
+ 			"sub_path": "filament/X4/QIDI PAHT-CF @Qidi X-Max 4 0.4 nozzle.json"
+diff --git a/resources/profiles/Qidi/filament/X4/Polymaker PLA-HT @Qidi X-Max 4 0.2 nozzle.json b/resources/profiles/Qidi/filament/X4/Polymaker PLA-HT @Qidi X-Max 4 0.2 nozzle.json
+new file mode 100644
+index 00000000..0f7568ba
+--- /dev/null
++++ b/resources/profiles/Qidi/filament/X4/Polymaker PLA-HT @Qidi X-Max 4 0.2 nozzle.json	
+@@ -0,0 +1,17 @@
++{
++	"type": "filament",
++	"name": "Polymaker PLA-HT @Qidi X-Max 4 0.2 nozzle",
++	"inherits": "Polymaker PLA-HT@X-Max 4-Series",
++	"from": "system",
++	"setting_id": "Ppz960o3ABtobxOE",
++	"instantiation": "true",
++	"filament_max_volumetric_speed": [
++		"2"
++	],
++	"pressure_advance": [
++		"0.062"
++	],
++	"compatible_printers": [
++		"Qidi X-Max 4 0.2 nozzle"
++	]
++}
+diff --git a/resources/profiles/Qidi/filament/X4/Polymaker PLA-HT @Qidi X-Max 4 0.4 nozzle.json b/resources/profiles/Qidi/filament/X4/Polymaker PLA-HT @Qidi X-Max 4 0.4 nozzle.json
+new file mode 100644
+index 00000000..3c48d9c8
+--- /dev/null
++++ b/resources/profiles/Qidi/filament/X4/Polymaker PLA-HT @Qidi X-Max 4 0.4 nozzle.json	
+@@ -0,0 +1,11 @@
++{
++	"type": "filament",
++	"name": "Polymaker PLA-HT @Qidi X-Max 4 0.4 nozzle",
++	"inherits": "Polymaker PLA-HT@X-Max 4-Series",
++	"from": "system",
++	"setting_id": "KJFyi3eZy0aPtecf",
++	"instantiation": "true",
++	"compatible_printers": [
++		"Qidi X-Max 4 0.4 nozzle"
++	]
++}
+diff --git a/resources/profiles/Qidi/filament/X4/Polymaker PLA-HT @Qidi X-Max 4 0.6 nozzle.json b/resources/profiles/Qidi/filament/X4/Polymaker PLA-HT @Qidi X-Max 4 0.6 nozzle.json
+new file mode 100644
+index 00000000..64b6cb97
+--- /dev/null
++++ b/resources/profiles/Qidi/filament/X4/Polymaker PLA-HT @Qidi X-Max 4 0.6 nozzle.json	
+@@ -0,0 +1,14 @@
++{
++	"type": "filament",
++	"name": "Polymaker PLA-HT @Qidi X-Max 4 0.6 nozzle",
++	"inherits": "Polymaker PLA-HT@X-Max 4-Series",
++	"from": "system",
++	"setting_id": "FPv2ip0wu7ULrt6t",
++	"instantiation": "true",
++	"pressure_advance": [
++		"0.019"
++	],
++	"compatible_printers": [
++		"Qidi X-Max 4 0.6 nozzle"
++	]
++}
+diff --git a/resources/profiles/Qidi/filament/X4/Polymaker PLA-HT @Qidi X-Max 4 0.8 nozzle.json b/resources/profiles/Qidi/filament/X4/Polymaker PLA-HT @Qidi X-Max 4 0.8 nozzle.json
+new file mode 100644
+index 00000000..25f5814d
+--- /dev/null
++++ b/resources/profiles/Qidi/filament/X4/Polymaker PLA-HT @Qidi X-Max 4 0.8 nozzle.json	
+@@ -0,0 +1,14 @@
++{
++	"type": "filament",
++	"name": "Polymaker PLA-HT @Qidi X-Max 4 0.8 nozzle",
++	"inherits": "Polymaker PLA-HT@X-Max 4-Series",
++	"from": "system",
++	"setting_id": "U6YiccJY1tMFiyEe",
++	"instantiation": "true",
++	"pressure_advance": [
++		"0.012"
++	],
++	"compatible_printers": [
++		"Qidi X-Max 4 0.8 nozzle"
++	]
++}
+diff --git a/resources/profiles/Qidi/filament/X4/Polymaker PLA-HT @X-Max 4.json b/resources/profiles/Qidi/filament/X4/Polymaker PLA-HT @X-Max 4.json
+new file mode 100644
+index 00000000..eb9e98d5
+--- /dev/null
++++ b/resources/profiles/Qidi/filament/X4/Polymaker PLA-HT @X-Max 4.json	
+@@ -0,0 +1,86 @@
++{
++	"type": "filament",
++	"name": "Polymaker PLA-HT@X-Max 4-Series",
++	"inherits": "fdm_filament_x4_common",
++	"from": "system",
++	"filament_id": "OFfYHK5z",
++	"instantiation": "false",
++	"cool_plate_temp_initial_layer": [
++		"45"
++	],
++	"cool_plate_temp": [
++		"45"
++	],
++	"eng_plate_temp_initial_layer": [
++		"55"
++	],
++	"eng_plate_temp": [
++		"55"
++	],
++	"fan_cooling_layer_time": [
++		"100"
++	],
++	"filament_adhesiveness_category": [
++		"100"
++	],
++	"filament_density": [
++		"1.2"
++	],
++	"filament_flow_ratio": [
++		"1"
++	],
++	"filament_max_volumetric_speed": [
++		"11"
++	],
++	"filament_type": [
++		"PLA"
++	],
++	"filament_vendor": [
++		"Polymaker"
++	],
++	"hot_plate_temp_initial_layer": [
++		"55"
++	],
++	"hot_plate_temp": [
++		"55"
++	],
++	"additional_cooling_fan_speed": [
++		"100"
++	],
++	"nozzle_temperature_range_high": [
++		"240"
++	],
++	"nozzle_temperature_range_low": [
++		"190"
++	],
++	"nozzle_temperature_initial_layer": [
++		"220"
++	],
++	"nozzle_temperature": [
++		"215"
++	],
++	"overhang_fan_threshold": [
++		"50%"
++	],
++	"pressure_advance": [
++		"0.028"
++	],
++	"slow_down_layer_time": [
++		"10"
++	],
++	"supertack_plate_temp_initial_layer": [
++		"45"
++	],
++	"supertack_plate_temp": [
++		"45"
++	],
++	"temperature_vitrification": [
++		"45"
++	],
++	"textured_plate_temp_initial_layer": [
++		"55"
++	],
++	"textured_plate_temp": [
++		"55"
++	]
++}
+diff --git a/resources/profiles/Qidi/filament/X4/QIDI ASA-CF20 Core @Qidi X-Max 4 0.4 nozzle.json b/resources/profiles/Qidi/filament/X4/QIDI ASA-CF20 Core @Qidi X-Max 4 0.4 nozzle.json
+new file mode 100644
+index 00000000..ef60e1e3
+--- /dev/null
++++ b/resources/profiles/Qidi/filament/X4/QIDI ASA-CF20 Core @Qidi X-Max 4 0.4 nozzle.json	
+@@ -0,0 +1,11 @@
++{
++	"type": "filament",
++	"name": "QIDI ASA-CF20 Core @Qidi X-Max 4 0.4 nozzle",
++	"inherits": "QIDI ASA-CF20 Core@X-Max 4-Series",
++	"from": "system",
++	"setting_id": "RHAyxziWB0s58L66",
++	"instantiation": "true",
++	"compatible_printers": [
++		"Qidi X-Max 4 0.4 nozzle"
++	]
++}
+diff --git a/resources/profiles/Qidi/filament/X4/QIDI ASA-CF20 Core @Qidi X-Max 4 0.6 nozzle.json b/resources/profiles/Qidi/filament/X4/QIDI ASA-CF20 Core @Qidi X-Max 4 0.6 nozzle.json
+new file mode 100644
+index 00000000..222cba1a
+--- /dev/null
++++ b/resources/profiles/Qidi/filament/X4/QIDI ASA-CF20 Core @Qidi X-Max 4 0.6 nozzle.json	
+@@ -0,0 +1,17 @@
++{
++	"type": "filament",
++	"name": "QIDI ASA-CF20 Core @Qidi X-Max 4 0.6 nozzle",
++	"inherits": "QIDI ASA-CF20 Core@X-Max 4-Series",
++	"from": "system",
++	"setting_id": "dxPXHe2i1HAxeBoM",
++	"instantiation": "true",
++	"filament_max_volumetric_speed": [
++		"13"
++	],
++	"pressure_advance": [
++		"0.014"
++	],
++	"compatible_printers": [
++		"Qidi X-Max 4 0.6 nozzle"
++	]
++}
+diff --git a/resources/profiles/Qidi/filament/X4/QIDI ASA-CF20 Core @Qidi X-Max 4 0.8 nozzle.json b/resources/profiles/Qidi/filament/X4/QIDI ASA-CF20 Core @Qidi X-Max 4 0.8 nozzle.json
+new file mode 100644
+index 00000000..0ac246b2
+--- /dev/null
++++ b/resources/profiles/Qidi/filament/X4/QIDI ASA-CF20 Core @Qidi X-Max 4 0.8 nozzle.json	
+@@ -0,0 +1,20 @@
++{
++	"type": "filament",
++	"name": "QIDI ASA-CF20 Core @Qidi X-Max 4 0.8 nozzle",
++	"inherits": "QIDI ASA-CF20 Core@X-Max 4-Series",
++	"from": "system",
++	"setting_id": "lQShrOqtTNLt9JqL",
++	"instantiation": "true",
++	"filament_max_volumetric_speed": [
++		"13"
++	],
++	"pressure_advance": [
++		"0.011"
++	],
++	"slow_down_min_speed": [
++		"10"
++	],
++	"compatible_printers": [
++		"Qidi X-Max 4 0.8 nozzle"
++	]
++}
+diff --git a/resources/profiles/Qidi/filament/X4/QIDI ASA-CF20 Core @X-Max 4.json b/resources/profiles/Qidi/filament/X4/QIDI ASA-CF20 Core @X-Max 4.json
+new file mode 100644
+index 00000000..0de784ab
+--- /dev/null
++++ b/resources/profiles/Qidi/filament/X4/QIDI ASA-CF20 Core @X-Max 4.json	
+@@ -0,0 +1,101 @@
++{
++	"type": "filament",
++	"name": "QIDI ASA-CF20 Core@X-Max 4-Series",
++	"inherits": "fdm_filament_x4_common",
++	"from": "system",
++	"filament_id": "OFzLyxxh",
++	"instantiation": "false",
++	"box_temperature_range_high": [
++		"45"
++	],
++	"close_fan_the_first_x_layers": [
++		"3"
++	],
++	"cool_plate_temp_initial_layer": [
++		"80"
++	],
++	"cool_plate_temp": [
++		"80"
++	],
++	"eng_plate_temp_initial_layer": [
++		"90"
++	],
++	"eng_plate_temp": [
++		"90"
++	],
++	"during_print_exhaust_fan_speed": [
++		"0"
++	],
++	"fan_cooling_layer_time": [
++		"35"
++	],
++	"fan_max_speed": [
++		"25"
++	],
++	"fan_min_speed": [
++		"10"
++	],
++	"filament_adhesiveness_category": [
++		"200"
++	],
++	"filament_density": [
++		"1.07"
++	],
++	"filament_flow_ratio": [
++		"0.9"
++	],
++	"filament_max_volumetric_speed": [
++		"18"
++	],
++	"filament_type": [
++		"ASA-CF"
++	],
++	"hot_plate_temp_initial_layer": [
++		"90"
++	],
++	"hot_plate_temp": [
++		"90"
++	],
++	"nozzle_temperature_initial_layer": [
++		"275"
++	],
++	"nozzle_temperature_range_high": [
++		"280"
++	],
++	"nozzle_temperature_range_low": [
++		"260"
++	],
++	"nozzle_temperature": [
++		"275"
++	],
++	"overhang_fan_speed": [
++		"80"
++	],
++	"overhang_fan_threshold": [
++		"25%"
++	],
++	"pressure_advance": [
++		"0.03"
++	],
++	"slow_down_layer_time": [
++		"12"
++	],
++	"supertack_plate_temp_initial_layer": [
++		"80"
++	],
++	"supertack_plate_temp": [
++		"80"
++	],
++	"temperature_vitrification": [
++		"100"
++	],
++	"textured_plate_temp_initial_layer": [
++		"90"
++	],
++	"textured_plate_temp": [
++		"90"
++	],
++	"chamber_temperature": [
++		"55"
++	]
++}
+diff --git a/resources/profiles/Qidi/filament/X4/QIDI PA6-CF @Qidi X-Max 4 0.4 nozzle.json b/resources/profiles/Qidi/filament/X4/QIDI PA6-CF @Qidi X-Max 4 0.4 nozzle.json
+new file mode 100644
+index 00000000..09334e3c
+--- /dev/null
++++ b/resources/profiles/Qidi/filament/X4/QIDI PA6-CF @Qidi X-Max 4 0.4 nozzle.json	
+@@ -0,0 +1,11 @@
++{
++	"type": "filament",
++	"name": "QIDI PA6-CF @Qidi X-Max 4 0.4 nozzle",
++	"inherits": "QIDI PA6-CF@X-Max 4-Series",
++	"from": "system",
++	"setting_id": "ZDqiXYZQ0woFGBcO",
++	"instantiation": "true",
++	"compatible_printers": [
++		"Qidi X-Max 4 0.4 nozzle"
++	]
++}
+diff --git a/resources/profiles/Qidi/filament/X4/QIDI PA6-CF @Qidi X-Max 4 0.6 nozzle.json b/resources/profiles/Qidi/filament/X4/QIDI PA6-CF @Qidi X-Max 4 0.6 nozzle.json
+new file mode 100644
+index 00000000..1f291a69
+--- /dev/null
++++ b/resources/profiles/Qidi/filament/X4/QIDI PA6-CF @Qidi X-Max 4 0.6 nozzle.json	
+@@ -0,0 +1,11 @@
++{
++	"type": "filament",
++	"name": "QIDI PA6-CF @Qidi X-Max 4 0.6 nozzle",
++	"inherits": "QIDI PA6-CF@X-Max 4-Series",
++	"from": "system",
++	"setting_id": "G7o1TihuFfkaJtc1",
++	"instantiation": "true",
++	"compatible_printers": [
++		"Qidi X-Max 4 0.6 nozzle"
++	]
++}
+diff --git a/resources/profiles/Qidi/filament/X4/QIDI PA6-CF @Qidi X-Max 4 0.8 nozzle.json b/resources/profiles/Qidi/filament/X4/QIDI PA6-CF @Qidi X-Max 4 0.8 nozzle.json
+new file mode 100644
+index 00000000..a5bd1e52
+--- /dev/null
++++ b/resources/profiles/Qidi/filament/X4/QIDI PA6-CF @Qidi X-Max 4 0.8 nozzle.json	
+@@ -0,0 +1,11 @@
++{
++	"type": "filament",
++	"name": "QIDI PA6-CF @Qidi X-Max 4 0.8 nozzle",
++	"inherits": "QIDI PA6-CF@X-Max 4-Series",
++	"from": "system",
++	"setting_id": "yLNV0HAJqkypvMzL",
++	"instantiation": "true",
++	"compatible_printers": [
++		"Qidi X-Max 4 0.8 nozzle"
++	]
++}
+diff --git a/resources/profiles/Qidi/filament/X4/QIDI PA6-CF @X-Max 4.json b/resources/profiles/Qidi/filament/X4/QIDI PA6-CF @X-Max 4.json
+new file mode 100644
+index 00000000..cea40c33
+--- /dev/null
++++ b/resources/profiles/Qidi/filament/X4/QIDI PA6-CF @X-Max 4.json	
+@@ -0,0 +1,107 @@
++{
++	"type": "filament",
++	"name": "QIDI PA6-CF@X-Max 4-Series",
++	"inherits": "fdm_filament_x4_common",
++	"from": "system",
++	"filament_id": "OFZ3K2cL",
++	"instantiation": "false",
++	"box_temperature_range_high": [
++		"65"
++	],
++	"box_temperature_range_low": [
++		"0"
++	],
++	"box_temperature": [
++		"55"
++	],
++	"close_fan_the_first_x_layers": [
++		"3"
++	],
++	"cool_plate_temp_initial_layer": [
++		"60"
++	],
++	"cool_plate_temp": [
++		"60"
++	],
++	"during_print_exhaust_fan_speed": [
++		"0"
++	],
++	"eng_plate_temp_initial_layer": [
++		"80"
++	],
++	"eng_plate_temp": [
++		"80"
++	],
++	"fan_cooling_layer_time": [
++		"10"
++	],
++	"fan_max_speed": [
++		"40"
++	],
++	"fan_min_speed": [
++		"20"
++	],
++	"filament_adhesiveness_category": [
++		"400"
++	],
++	"filament_density": [
++		"1.09"
++	],
++	"filament_flow_ratio": [
++		"0.96"
++	],
++	"filament_max_volumetric_speed": [
++		"8"
++	],
++	"filament_type": [
++		"PA6-CF"
++	],
++	"hot_plate_temp_initial_layer": [
++		"80"
++	],
++	"hot_plate_temp": [
++		"80"
++	],
++	"nozzle_temperature_initial_layer": [
++		"280"
++	],
++	"nozzle_temperature_range_high": [
++		"300"
++	],
++	"nozzle_temperature_range_low": [
++		"280"
++	],
++	"nozzle_temperature": [
++		"280"
++	],
++	"overhang_fan_speed": [
++		"40"
++	],
++	"overhang_fan_threshold": [
++		"0%"
++	],
++	"pressure_advance": [
++		"0.035"
++	],
++	"slow_down_layer_time": [
++		"5"
++	],
++	"supertack_plate_temp_initial_layer": [
++		"60"
++	],
++	"supertack_plate_temp": [
++		"60"
++	],
++	"temperature_vitrification": [
++		"100"
++	],
++	"textured_plate_temp_initial_layer": [
++		"80"
++	],
++	"textured_plate_temp": [
++		"80"
++	],
++	"chamber_temperature": [
++		"55"
++	]
++}
+diff --git a/resources/profiles/Qidi/machine/Qidi X-Max 4.json b/resources/profiles/Qidi/machine/Qidi X-Max 4.json
+index 5e1b05cc..8547483b 100644
+--- a/resources/profiles/Qidi/machine/Qidi X-Max 4.json	
++++ b/resources/profiles/Qidi/machine/Qidi X-Max 4.json	
+@@ -8,5 +8,5 @@
+ 	"bed_model": "qidi_xmax4_buildplate_model.stl",
+ 	"bed_texture": "qidi_xmax4_buildplate_texture.svg",
+ 	"hotend_model": "qidi_xseries_gen3_hotend.stl",
+-	"default_materials": "Generic ABS @Qidi X-Max 4 0.4 nozzle;Generic PLA @Qidi X-Max 4 0.4 nozzle;QIDI ABS Odorless @Qidi X-Max 4 0.4 nozzle;QIDI ABS Rapido @Qidi X-Max 4 0.4 nozzle;QIDI PLA Rapido @Qidi X-Max 4 0.4 nozzle;QIDI PLA Rapido Matte @Qidi X-Max 4 0.4 nozzle;QIDI PLA-CF @Qidi X-Max 4 0.4 nozzle;Generic PLA Silk @Qidi X-Max 4 0.4 nozzle;QIDI PLA Rapido Silk @Qidi X-Max 4 0.4 nozzle;QIDI ASA @Qidi X-Max 4 0.4 nozzle;QIDI PETG Basic @Qidi X-Max 4 0.4 nozzle;QIDI PETG Rapido @Qidi X-Max 4 0.4 nozzle;QIDI PETG Tough @Qidi X-Max 4 0.4 nozzle;QIDI PETG Translucent @Qidi X-Max 4 0.4 nozzle;QIDI PLA Basic @Qidi X-Max 4 0.4 nozzle;QIDI PLA Matte Basic @Qidi X-Max 4 0.4 nozzle;Generic PETG @Qidi X-Max 4 0.4 nozzle;Generic PLA @Qidi X-Max 4 0.2 nozzle;Generic PLA @Qidi X-Max 4 0.6 nozzle;Generic PLA @Qidi X-Max 4 0.8 nozzle"
++	"default_materials": "Generic ABS @Qidi X-Max 4 0.4 nozzle;Generic PLA @Qidi X-Max 4 0.4 nozzle;QIDI ABS Odorless @Qidi X-Max 4 0.4 nozzle;QIDI ABS Rapido @Qidi X-Max 4 0.4 nozzle;QIDI PLA Rapido @Qidi X-Max 4 0.4 nozzle;QIDI PLA Rapido Matte @Qidi X-Max 4 0.4 nozzle;QIDI PLA-CF @Qidi X-Max 4 0.4 nozzle;Generic PLA Silk @Qidi X-Max 4 0.4 nozzle;QIDI PLA Rapido Silk @Qidi X-Max 4 0.4 nozzle;QIDI ASA @Qidi X-Max 4 0.4 nozzle;QIDI PETG Basic @Qidi X-Max 4 0.4 nozzle;QIDI PETG Rapido @Qidi X-Max 4 0.4 nozzle;QIDI PETG Tough @Qidi X-Max 4 0.4 nozzle;QIDI PETG Translucent @Qidi X-Max 4 0.4 nozzle;QIDI PLA Basic @Qidi X-Max 4 0.4 nozzle;QIDI PLA Matte Basic @Qidi X-Max 4 0.4 nozzle;Generic PETG @Qidi X-Max 4 0.4 nozzle;Generic PLA @Qidi X-Max 4 0.2 nozzle;Generic PLA @Qidi X-Max 4 0.6 nozzle;Generic PLA @Qidi X-Max 4 0.8 nozzle;Polymaker PLA-HT @Qidi X-Max 4 0.2 nozzle;Polymaker PLA-HT @Qidi X-Max 4 0.4 nozzle;Polymaker PLA-HT @Qidi X-Max 4 0.6 nozzle;Polymaker PLA-HT @Qidi X-Max 4 0.8 nozzle;QIDI ASA-CF20 Core @Qidi X-Max 4 0.4 nozzle;QIDI ASA-CF20 Core @Qidi X-Max 4 0.6 nozzle;QIDI ASA-CF20 Core @Qidi X-Max 4 0.8 nozzle;QIDI PA6-CF @Qidi X-Max 4 0.4 nozzle;QIDI PA6-CF @Qidi X-Max 4 0.6 nozzle;QIDI PA6-CF @Qidi X-Max 4 0.8 nozzle"
+ }
