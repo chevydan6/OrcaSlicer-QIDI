@@ -1,0 +1,186 @@
+From 327f2dd5cd631b8119f6bf4d3ff23beade795e4c Mon Sep 17 00:00:00 2001
+From: chevydan6 <339888127+chevydan6@users.noreply.github.com>
+Date: Tue, 3 Nov 2026 08:08:17 +0900
+Subject: [PATCH] Merge QIDI live slot updates without discarding synchronized
+ materials
+
+---
+ src/slic3r/GUI/DeviceCore/DevFilaSystem.cpp   | 70 +++++++++++++++++++
+ src/slic3r/GUI/DeviceCore/DevFilaSystem.h     |  2 +
+ src/slic3r/Utils/QidiPrinterAgent.cpp         | 10 ++-
+ tests/slic3rutils/test_qidi_printer_agent.cpp | 28 ++++++++
+ 4 files changed, 109 insertions(+), 1 deletion(-)
+
+diff --git a/src/slic3r/GUI/DeviceCore/DevFilaSystem.cpp b/src/slic3r/GUI/DeviceCore/DevFilaSystem.cpp
+index ef4546f2..83a4c8c1 100644
+--- a/src/slic3r/GUI/DeviceCore/DevFilaSystem.cpp
++++ b/src/slic3r/GUI/DeviceCore/DevFilaSystem.cpp
+@@ -1,4 +1,8 @@
+ #include <array>
++#include <algorithm>
++#include <cctype>
++#include "libslic3r/PresetBundle.hpp"
++#include "libslic3r/Config.hpp"
+ #include <cstddef>
+ #include <cassert>
+ #include <exception>
+@@ -384,6 +388,38 @@ bool DevFilaSystem::IsBBL_Filament(std::string tag_uid)
+     return false;
+ }
+ 
++void DevFilaSystemParser::UpdateQidiTray(DevAmsTray& tray, const nlohmann::json& update,
++                                         const std::string& resolved_filament_id)
++{
++    if (tray.hold_count > 0) {
++        --tray.hold_count;
++        return;
++    }
++    if (update.contains("present") && update["present"].is_boolean())
++        tray.is_exists = update["present"].get<bool>();
++    if (update.contains("filament_type") && update["filament_type"].is_string()) {
++        const auto type = update["filament_type"].get<std::string>();
++        const auto name = update.value("filament_str", tray.sub_brands);
++        if (type != tray.m_fila_type || name != tray.sub_brands || tray.setting_id.empty())
++            tray.setting_id = resolved_filament_id;
++        tray.m_fila_type = type;
++        tray.sub_brands = name;
++    }
++    if (update.contains("color") && update["color"].is_string()) {
++        auto color = update["color"].get<std::string>();
++        if (!color.empty() && color.front() == '#') color.erase(0, 1);
++        if (color.size() > 2 && color.substr(0, 2) == "0x") color.erase(0, 2);
++        if ((color.size() == 6 || color.size() == 8) &&
++            std::all_of(color.begin(), color.end(), [](unsigned char c) { return std::isxdigit(c) != 0; })) {
++            if (color.size() == 6) color += "FF";
++            tray.UpdateColorFromStr(color);
++            tray.cols = {color};
++            tray.ctype = 1;
++        }
++    }
++    tray.is_slot_placeholder = !tray.is_exists || tray.setting_id.empty();
++}
++
+ void DevFilaSystemParser::ParseV1_0(const json& jj, MachineObject* obj, DevFilaSystem* system, bool key_field_only)
+ {
+     if (jj.contains("ams"))
+@@ -646,6 +682,40 @@ void DevFilaSystemParser::ParseV1_0(const json& jj, MachineObject* obj, DevFilaS
+                         }
+                     }
+ 
++                    if (obj->printer_agent_id == "qidi" && it->contains("qidi_slots") && (*it)["qidi_slots"].is_array()) {
++                        for (const auto& update : (*it)["qidi_slots"]) {
++                            if (!update.is_object() || !update.contains("id") || !update["id"].is_string()) continue;
++                            const auto id = update["id"].get<std::string>();
++                            if (id != "0" && id != "1" && id != "2" && id != "3") continue;
++                            if (ams_id != "0" && ams_id != "1" && ams_id != "2" && ams_id != "3") continue;
++                            auto* tray = curr_ams->GetTray(id);
++                            if (!tray) {
++                                tray = new DevAmsTray(id);
++                                curr_ams->m_trays.emplace(id, tray);
++                            }
++                            std::string resolved_id;
++                            auto* bundle = GUI::wxGetApp().preset_bundle;
++                            if (bundle && update.contains("filament_type") && update["filament_type"].is_string()) {
++                                const auto type = update["filament_type"].get<std::string>();
++                                const auto name = update.value("filament_str", std::string());
++                                for (const auto& preset : bundle->filaments.get_presets()) {
++                                    if (!preset.is_visible || !preset.is_compatible) continue;
++                                    const auto* types = preset.config.option<ConfigOptionStrings>("filament_type");
++                                    if (!types || types->values.empty() || types->values.front() != type) continue;
++                                    if (resolved_id.empty()) resolved_id = preset.filament_id;
++                                    if (!name.empty() && (preset.alias == name || preset.name == name)) {
++                                        resolved_id = preset.filament_id;
++                                        break;
++                                    }
++                                }
++                            }
++                            UpdateQidiTray(*tray, update, resolved_id);
++                            const auto bit = 1UL << ((ams_id[0] - '0') * 4 + (id[0] - '0'));
++                            if (tray->is_exists) obj->tray_exist_bits |= bit;
++                            else obj->tray_exist_bits &= ~bit;
++                        }
++                    }
++
+                     if (it->contains("tray"))
+                     {
+                         std::set<std::string> tray_id_set;
+diff --git a/src/slic3r/GUI/DeviceCore/DevFilaSystem.h b/src/slic3r/GUI/DeviceCore/DevFilaSystem.h
+index a07be34d..3615fc8f 100644
+--- a/src/slic3r/GUI/DeviceCore/DevFilaSystem.h
++++ b/src/slic3r/GUI/DeviceCore/DevFilaSystem.h
+@@ -418,6 +418,8 @@ class DevFilaSystemParser
+ public:
+     static void ParseV1_0(const nlohmann::json& print_json, MachineObject* obj, DevFilaSystem* system, bool key_field_only);
+ 
++    // QIDI sends partial slot updates, unlike Bambu's complete tray arrays.
++    static void UpdateQidiTray(DevAmsTray& tray, const nlohmann::json& update, const std::string& resolved_filament_id);
+     static void ParseAgentFilament(const nlohmann::json& data, MachineObject* obj, DevFilaSystem* system);
+ };
+ 
+diff --git a/src/slic3r/Utils/QidiPrinterAgent.cpp b/src/slic3r/Utils/QidiPrinterAgent.cpp
+index b701a1e8..9d09d5e4 100644
+--- a/src/slic3r/Utils/QidiPrinterAgent.cpp
++++ b/src/slic3r/Utils/QidiPrinterAgent.cpp
+@@ -380,7 +380,15 @@ void QidiPrinterAgent::append_box_status(const nlohmann::json& status, nlohmann:
+         const auto humidity = box.find(prefix + "aht20_humidity");
+         if (humidity != box.end() && humidity->is_number() && *humidity >= 0 && *humidity <= 100)
+             unit["humidity_raw"] = std::to_string(humidity->get<int>());
+-        // No tray key: telemetry must preserve synchronized filament metadata.
++        // Separate partial slot updates from Bambu's complete tray-list protocol.
++        // Temperature-only reports must never delete synchronized tray metadata.
++        for (int slot = 0; slot < 4; ++slot) {
++            auto decoded = decoded_box_slot(status, i * 4 + slot);
++            if (!decoded.empty()) {
++                decoded["id"] = std::to_string(slot);
++                unit["qidi_slots"].push_back(std::move(decoded));
++            }
++        }
+         units.push_back(std::move(unit));
+     }
+     std::ostringstream bits;
+diff --git a/tests/slic3rutils/test_qidi_printer_agent.cpp b/tests/slic3rutils/test_qidi_printer_agent.cpp
+index 4c0027ce..c8e502e3 100644
+--- a/tests/slic3rutils/test_qidi_printer_agent.cpp
++++ b/tests/slic3rutils/test_qidi_printer_agent.cpp
+@@ -21,6 +21,7 @@
+ #include <boost/beast/http/write.hpp>
+ #include <boost/filesystem/fstream.hpp>
+ #include "test_utils.hpp"
++#include "slic3r/GUI/DeviceCore/DevFilaSystem.h"
+ 
+ #include <nlohmann/json.hpp>
+ 
+@@ -422,3 +423,30 @@ TEST_CASE("QIDI loaded slot does not interpret malformed firmware names", "[Qidi
+     else
+         CHECK(payload.empty());
+ }
++
++TEST_CASE("QIDI partial slot updates preserve synchronized material identity", "[QidiPrinterAgent]")
++{
++    DevAmsTray tray("2");
++    tray.setting_id = "specific-PLA-preset";
++    tray.m_fila_type = "PLA";
++    tray.color = "112233FF";
++    tray.is_exists = true;
++    DevFilaSystemParser::UpdateQidiTray(tray, {{"filament_type", "PLA"}, {"present", true}}, "generic-PLA-preset");
++    CHECK(tray.setting_id == "specific-PLA-preset");
++    CHECK(tray.color == "112233FF");
++    DevFilaSystemParser::UpdateQidiTray(tray, {{"filament_type", "PETG"}, {"color", "#ABCDEF"}}, "PETG-preset");
++    CHECK(tray.setting_id == "PETG-preset");
++    CHECK(tray.color == "ABCDEFFF");
++    DevFilaSystemParser::UpdateQidiTray(tray, {{"present", false}, {"color", "bad-color"}}, "");
++    CHECK_FALSE(tray.is_exists);
++    CHECK(tray.is_slot_placeholder);
++    CHECK(tray.setting_id == "PETG-preset");
++    CHECK(tray.color == "ABCDEFFF");
++    tray.hold_count = 1;
++    DevFilaSystemParser::UpdateQidiTray(tray, {{"present", true}}, "");
++    CHECK_FALSE(tray.is_exists);
++    DevFilaSystemParser::UpdateQidiTray(tray, {{"present", true}, {"filament_type", "unknown material"}}, "");
++    CHECK(tray.is_exists);
++    CHECK(tray.is_slot_placeholder);
++    CHECK(tray.setting_id.empty());
++}
+-- 
+2.56.0
+

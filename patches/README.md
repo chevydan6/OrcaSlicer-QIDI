@@ -39,3 +39,5 @@ separately from implementation; a patch's presence does not certify hardware use
 21. `0021-qidi-desktop-integration.patch` namespaces optional Linux desktop/icon/protocol entry filenames with `-qidi`; installation continues to use the dedicated wrapper and does not register file associations.
 
 22. `0022-qidi-modern-slot-status.patch` adapts QDSDevice::updateBoxDataByJson nested/flat decoded slot presence/material/color for explicit filament sync, bounds Box counts before allocation, and reports the loaded physical slot (including external slot16). Temperature-only updates retain tray metadata.
+
+23. `0023-qidi-live-materials.patch` applies QIDI Studio decoded Box material/presence reports to native slots as partial updates, preserving explicit-sync identities when the material stays the same. Type resolution requires a compatible visible type; unknown materials remain placeholders. RFID changes can update the monitor without deleting other trays.

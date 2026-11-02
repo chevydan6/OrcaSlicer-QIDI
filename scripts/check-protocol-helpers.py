@@ -56,8 +56,37 @@ struct QidiPrinterAgent {
 '''
 for start,end in functions:
  code += source[source.index(start):source.index(end,source.index(start))]
+gui_source = (root/'OrcaSlicer/src/slic3r/GUI/DeviceCore/DevFilaSystem.cpp').read_text()
+code += """
+struct DevAmsTray {
+ int hold_count=0, ctype=0;
+ bool is_exists=false, is_slot_placeholder=false;
+ std::string setting_id, m_fila_type, sub_brands, color;
+ std::vector<std::string> cols;
+ void UpdateColorFromStr(const std::string& value) { color=value; }
+};
+struct DevFilaSystemParser {
+ static void UpdateQidiTray(DevAmsTray&,const nlohmann::json&,const std::string&);
+};
+"""
+start=gui_source.index('void DevFilaSystemParser::UpdateQidiTray')
+code += gui_source[start:gui_source.index('void DevFilaSystemParser::ParseV1_0',start)]
 code += r'''
 int main() {
+ DevAmsTray tray;
+ tray.setting_id="specific-PLA";tray.m_fila_type="PLA";tray.color="112233FF";tray.is_exists=true;
+ DevFilaSystemParser::UpdateQidiTray(tray,{{"filament_type","PLA"},{"present",true}},"generic-PLA");
+ assert(tray.setting_id=="specific-PLA" && tray.color=="112233FF");
+ DevFilaSystemParser::UpdateQidiTray(tray,{{"filament_type","PETG"},{"color","#ABCDEF"}},"PETG");
+ assert(tray.setting_id=="PETG" && tray.color=="ABCDEFFF");
+ DevFilaSystemParser::UpdateQidiTray(tray,{{"present",false},{"color","bad-color"}},"");
+ assert(!tray.is_exists && tray.is_slot_placeholder && tray.setting_id=="PETG" && tray.color=="ABCDEFFF");
+ tray.hold_count=1;
+ DevFilaSystemParser::UpdateQidiTray(tray,{{"present",true}},"");
+ assert(!tray.is_exists);
+ DevFilaSystemParser::UpdateQidiTray(tray,{{"present",true},{"filament_type","unknown"}},"");
+ assert(tray.is_exists && tray.is_slot_placeholder && tray.setting_id.empty());
+
  assert(QidiPrinterAgent::reported_box_count({},true)==1);
  assert(!QidiPrinterAgent::reported_box_count({{"multi_color_controller",{{"box_count",4294967296ULL}}}},true));
  assert(QidiPrinterAgent::decoded_box_slot({{"multi_color_controller",{{"box1_box_inserted_2",1},{"box1_filament_info_2_filament_type","PETG"},{"box1_filament_info_2_color_rgb_str",{"AABBCC","DDEEFF"}}}}},6)["color"]=="AABBCC");
