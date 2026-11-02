@@ -61,14 +61,34 @@ WebKitGTK is supplied by the existing GNOME runtime used by the installed slicer
 python3 scripts/install-linux.py /path/to/custom.AppImage --flatpak-runtime org.gnome.Platform//50
 ```
 
-This mode verifies that the runtime is installed, extracts the AppImage once and
-creates a launcher for it. It does not launch either the custom app or an existing
-slicer. The wrapper grants home-directory access, graphics/display access and
-network access for ordinary slicer use, and passes the isolated `--datadir`.
-Software validation launches the runtime separately with networking disabled.
-Use the installer-created menu entry; upstream's optional desktop integration
-does not reconstruct this runtime wrapper. Its desktop filenames are nevertheless
-namespaced with `-qidi` to avoid overwriting the official Orca entries.
+This mode verifies that the runtime is installed, extracts the AppImage, packages
+and installs the separate Flatpak application `io.github.chevydan6.OrcaSlicerQIDI`.
+It retains `OrcaSlicer-QIDI.flatpak` beside the original image. The exported menu
+entry and convenience launcher both run that application. Settings are stored in
+`~/.var/app/io.github.chevydan6.OrcaSlicerQIDI/config/OrcaSlicer-QIDI`; the native
+AppImage installation uses the host config directory instead. Existing settings
+are not migrated between these modes or from other slicers.
+
+The Flatpak grants home-directory, graphics/display and network access for normal
+slicer use. Installation does not launch it. Software validation overrides network
+access with `--unshare=network`. A registered application is necessary: launching
+directly inside a bare GNOME runtime fails when its sandboxed image loaders ask
+the portal to create a child sandbox without application metadata. This was
+reproduced and resolved using the official QIDI Studio reference binary on this
+host; validation of the custom Orca binary remains pending.
+
+To package an already extracted build independently, use:
+
+```sh
+python3 scripts/package-flatpak.py /path/to/AppDir --runtime org.gnome.Platform//50 \
+  --output artifacts/OrcaSlicer-QIDI.flatpak --workdir build/flatpak-package
+```
+
+Both output paths must be new. This requires Flatpak and the runtime, but no SDK.
+The bundle includes the build manifest, original resources and license notices;
+runtime updates remain managed by Flatpak. Use the exported menu entry; upstream's
+optional desktop integration does not reconstruct the Flatpak launcher. Its
+desktop filenames are nevertheless namespaced with `-qidi`.
 
 The upstream default for automatic preset bundle updates is off. Keep it off for
 this fork until a downstream update process is available. Official application
@@ -84,7 +104,7 @@ temperature through 3MF. It never uploads files or sends printer commands.
 Use `--binary PATH` for another executable layout and `--output NEW_DIRECTORY`
 for subsequent runs. The output directory must not already exist.
 For offline validation on this Fedora host, point `--binary` at the extracted
-`AppDir/AppRun`, add `--flatpak-runtime org.gnome.Platform//50`, and use
+`AppDir/AppRun`, add `--flatpak-app io.github.chevydan6.OrcaSlicerQIDI`, and use
 `--artifact /path/to/custom.AppImage` to record the original package checksum.
 This validation mode disables networking and uses fresh datadirs; it is separate
 from the normal installed launcher.

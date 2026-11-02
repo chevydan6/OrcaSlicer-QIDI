@@ -1,0 +1,12 @@
+Linux packaging checks (2026-11-03 JST)
+
+Host: Fedora 44 x86_64, GNOME Flatpak runtime 50.
+Official QIDI Studio v02.07.02.73: isolated reference data directories; networking disabled.
+Bare runtime launch: failed; glycin nested sandbox portal rejected missing Application metadata.
+Registered temporary reference app: nested sandbox subprocess succeeds; setup wizard and main window render.
+Custom package script: exported and bundled a minimal shell fixture successfully.
+Fixture AppRun executed through flatpak build after adding a development-only SDK alias to fixture metadata.
+Fixture was not installed as the custom slicer.
+Python syntax checks: package-flatpak.py, install-linux.py, validate-max4-slicing.py passed.
+Custom Orca binary packaging/GUI/coexistence validation: PENDING.
+No printer was contacted.
