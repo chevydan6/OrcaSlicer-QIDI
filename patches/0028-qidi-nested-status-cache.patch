@@ -1,26 +1,33 @@
-From ba030a07f5bf0a011052bf7ae37314a7f9c88ce3 Mon Sep 17 00:00:00 2001
+From 39df3927f52d95ddea5f0d13e3ff2d5b19769241 Mon Sep 17 00:00:00 2001
 From: chevydan6 <339888127+chevydan6@users.noreply.github.com>
 Date: Tue, 3 Nov 2026 08:33:33 +0900
 Subject: [PATCH] Preserve nested QIDI controller fields across partial status
  updates
 
 ---
- src/slic3r/Utils/MoonrakerPrinterAgent.cpp    |  4 ++++
+ src/slic3r/Utils/MoonrakerPrinterAgent.cpp    | 11 +++++++++
  src/slic3r/Utils/MoonrakerPrinterAgent.hpp    |  2 ++
  src/slic3r/Utils/QidiPrinterAgent.hpp         |  2 ++
  tests/slic3rutils/test_qidi_printer_agent.cpp | 23 +++++++++++++++++++
- 4 files changed, 31 insertions(+)
+ 4 files changed, 38 insertions(+)
 
 diff --git a/src/slic3r/Utils/MoonrakerPrinterAgent.cpp b/src/slic3r/Utils/MoonrakerPrinterAgent.cpp
-index c3dec286..70082f8d 100644
+index c3dec286..f7d025f8 100644
 --- a/src/slic3r/Utils/MoonrakerPrinterAgent.cpp
 +++ b/src/slic3r/Utils/MoonrakerPrinterAgent.cpp
-@@ -2136,6 +2136,10 @@ void MoonrakerPrinterAgent::update_status_cache(const nlohmann::json& updates)
+@@ -2136,6 +2136,17 @@ void MoonrakerPrinterAgent::update_status_cache(const nlohmann::json& updates)
              if (!target.is_object()) {
                  target = nlohmann::json::object();
              }
 +            if (merge_status_object_recursively(item.key())) {
-+                target.update(item.value(), true);
++                // The bundled JSON library predates update(..., merge_objects).
++                const auto merge = [](auto&& self, nlohmann::json& destination, const nlohmann::json& source) -> void {
++                    if (!source.is_object()) { destination = source; return; }
++                    if (!destination.is_object()) destination = nlohmann::json::object();
++                    for (const auto& field : source.items())
++                        self(self, destination[field.key()], field.value());
++                };
++                merge(merge, target, item.value());
 +                continue;
 +            }
              for (const auto& field : item.value().items()) {
