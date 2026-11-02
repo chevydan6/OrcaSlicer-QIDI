@@ -1,0 +1,10 @@
+{
+  "orca": {
+    "repository": "https://github.com/OrcaSlicer/OrcaSlicer.git",
+    "commit": "896557bce5281553ee0c6210f2da301b3b3c262e"
+  },
+  "qidi": {
+    "repository": "https://github.com/QIDITECH/QIDIStudio.git",
+    "commit": "403b619d56147160bb883e94f95a7951245bc6d0"
+  }
+}

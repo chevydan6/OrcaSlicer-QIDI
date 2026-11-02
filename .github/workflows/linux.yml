@@ -1,0 +1,62 @@
+name: Linux integration build
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  linux:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+    steps:
+      - uses: actions/checkout@v4
+      - name: Read pinned upstream
+        id: source
+        run: echo "sha=$(python3 -c 'import json; print(json.load(open("sources.json"))["orca"]["commit"])')" >> "$GITHUB_OUTPUT"
+      - uses: actions/checkout@v4
+        with:
+          repository: OrcaSlicer/OrcaSlicer
+          ref: ${{ steps.source.outputs.sha }}
+          path: source
+      - name: Apply downstream patches
+        shell: bash
+        run: |
+          shopt -s nullglob
+          for patch in "$GITHUB_WORKSPACE"/patches/*.patch; do
+            git -C source apply --check "$patch"
+            git -C source apply "$patch"
+          done
+      - uses: lukka/get-cmake@latest
+        with:
+          cmakeVersion: '~4.3.0'
+      - name: Install build packages
+        working-directory: source
+        run: ./build_linux.sh -u
+      - uses: actions/cache@v4
+        id: deps
+        with:
+          path: source/deps/build
+          key: qidi-linux-deps-${{ steps.source.outputs.sha }}
+      - name: Build dependencies
+        if: steps.deps.outputs.cache-hit != 'true'
+        working-directory: source
+        run: ./build_linux.sh -drlL -j 2
+      - name: Build slicer and tests
+        working-directory: source
+        run: ./build_linux.sh -sitrlL -j 2
+      - name: Unit tests
+        working-directory: source
+        run: ctest --test-dir build -C Release --output-on-failure
+      - name: Profile structure checks
+        working-directory: source
+        run: python3 scripts/orca_profile_tool.py check
+      - name: Retain build and logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: linux-integration-${{ github.sha }}
+          path: |
+            source/build/*.AppImage
+            source/build/Testing/Temporary/*.log
+            source/build/CMakeFiles/CMakeConfigureLog.yaml
+          if-no-files-found: warn
+          retention-days: 30
