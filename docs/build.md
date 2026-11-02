@@ -83,6 +83,11 @@ newly imported materials, checks emitted macros, and saves/reloads a custom Box
 temperature through 3MF. It never uploads files or sends printer commands.
 Use `--binary PATH` for another executable layout and `--output NEW_DIRECTORY`
 for subsequent runs. The output directory must not already exist.
+For offline validation on this Fedora host, point `--binary` at the extracted
+`AppDir/AppRun`, add `--flatpak-runtime org.gnome.Platform//50`, and use
+`--artifact /path/to/custom.AppImage` to record the original package checksum.
+This validation mode disables networking and uses fresh datadirs; it is separate
+from the normal installed launcher.
 
 The isolated protocol harness is `python3 scripts/check-protocol-helpers.py` with
 the development checkout at `OrcaSlicer/`. It compiles actual helper/dispatch

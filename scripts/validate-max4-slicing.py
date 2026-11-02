@@ -12,6 +12,8 @@ root = Path(__file__).resolve().parents[1]
 parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument('--source', type=Path, default=root / 'OrcaSlicer')
 parser.add_argument('--binary', type=Path)
+parser.add_argument('--flatpak-runtime', help='Run the entry point inside this installed runtime with networking disabled')
+parser.add_argument('--artifact', type=Path, help='Optional original AppImage whose checksum should be recorded')
 parser.add_argument('--output', type=Path, default=root / 'build/max4-slicing')
 args = parser.parse_args()
 source = args.source.resolve()
@@ -60,8 +62,18 @@ for material in ['Polymaker PLA-HT', 'QIDI ASA-CF20 Core', 'QIDI PA6-CF']:
     for nozzle in processes:
         if nozzle != '0.2' or material == 'Polymaker PLA-HT':
             cases.append((nozzle, material))
-report = {'binary': str(binary), 'binary_sha256': hashlib.sha256(binary.read_bytes()).hexdigest(),
+report = {'entrypoint': str(binary), 'entrypoint_sha256': hashlib.sha256(binary.read_bytes()).hexdigest(),
+          'runtime': args.flatpak_runtime,
           'hardware_contacted': False, 'cases': []}
+
+if args.artifact:
+    report['artifact_sha256'] = hashlib.sha256(args.artifact.read_bytes()).hexdigest()
+runner = [str(binary)]
+if args.flatpak_runtime:
+    subprocess.run(['flatpak', 'info', '--show-commit', args.flatpak_runtime], check=True)
+    runner = ['flatpak', 'run', '--unshare=network', '--share=ipc', '--socket=x11', '--nosocket=wayland',
+              '--env=GDK_BACKEND=x11', '--device=dri', '--filesystem=home',
+              f'--command={binary}', args.flatpak_runtime]
 
 
 def check_case(tag, model_path, options, expected_temperature, expected_tool=0, box_tools=None, first_tool=None):
@@ -69,7 +81,7 @@ def check_case(tag, model_path, options, expected_temperature, expected_tool=0, 
     directory.mkdir()
     datadir = directory / 'datadir'
     datadir.mkdir()
-    command = [str(binary), '--datadir', str(datadir), *options, '--slice', '0',
+    command = [*runner, '--datadir', str(datadir), *options, '--slice', '0',
                '--outputdir', str(directory), '--export-3mf', 'out.3mf', str(model_path)]
     entry = {'case': tag, 'command': command, 'errors': []}
     try:
