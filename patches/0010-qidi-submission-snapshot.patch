@@ -1,0 +1,67 @@
+diff --git a/src/slic3r/GUI/Jobs/PrintJob.cpp b/src/slic3r/GUI/Jobs/PrintJob.cpp
+index c903e3b1..e2e32307 100644
+--- a/src/slic3r/GUI/Jobs/PrintJob.cpp
++++ b/src/slic3r/GUI/Jobs/PrintJob.cpp
+@@ -307,6 +307,7 @@ void PrintJob::process(Ctl &ctl)
+     params.nozzles_info         = this->task_nozzles_info;
+     params.connection_type      = this->connection_type;
+     params.task_use_ams         = this->task_use_ams;
++    params.extra_options        = this->task_extra_options;
+     params.task_bed_type        = this->task_bed_type;
+     params.print_type           = this->m_print_type;
+     params.auto_bed_leveling    = this->auto_bed_leveling;
+diff --git a/src/slic3r/GUI/Jobs/PrintJob.hpp b/src/slic3r/GUI/Jobs/PrintJob.hpp
+index 150635cf..f1761937 100644
+--- a/src/slic3r/GUI/Jobs/PrintJob.hpp
++++ b/src/slic3r/GUI/Jobs/PrintJob.hpp
+@@ -92,6 +92,7 @@ public:
+     bool        has_sdcard { false };
+     bool        could_emmc_print { false };
+     bool        task_use_ams { true };
++    std::string task_extra_options;
+ 
+     DevStorage::SdcardState sdcard_state = DevStorage::SdcardState::NO_SDCARD;        
+     bool        task_ext_change_assist { false };
+diff --git a/src/slic3r/GUI/SelectMachine.cpp b/src/slic3r/GUI/SelectMachine.cpp
+index 9f147b31..2acc866a 100644
+--- a/src/slic3r/GUI/SelectMachine.cpp
++++ b/src/slic3r/GUI/SelectMachine.cpp
+@@ -3798,6 +3798,18 @@ void SelectMachineDialog::on_send_print()
+     BOOST_LOG_TRIVIAL(info) << "print_job: timelapse_option = " << timelapse_option;
+     BOOST_LOG_TRIVIAL(info) << "print_job: use_ams = " << m_print_job->task_use_ams;
+ 
++    if (obj_->printer_agent_id == "qidi") {
++        // Capture capabilities on the UI thread with the submitted job. The
++        // upload worker must not consult a subsequently selected printer preset.
++        const auto& config = wxGetApp().preset_bundle->printers.get_edited_preset().config;
++        nlohmann::json options;
++        for (const char* key : {"is_support_multi_box", "qidi_preprint_bed_leveling", "is_support_timelapse"}) {
++            const auto* value = config.option<ConfigOptionBool>(key);
++            options["qidi"][key] = value && value->value;
++        }
++        m_print_job->task_extra_options = options.dump();
++    }
++
+     m_print_job->on_success([this]() { finish_mode(); });
+ 
+     m_print_job->on_check_ip_address_fail([this]() {
+diff --git a/src/slic3r/Utils/QidiPrinterAgent.cpp b/src/slic3r/Utils/QidiPrinterAgent.cpp
+index 59aec0d9..d70d5787 100644
+--- a/src/slic3r/Utils/QidiPrinterAgent.cpp
++++ b/src/slic3r/Utils/QidiPrinterAgent.cpp
+@@ -298,10 +298,12 @@ std::string QidiPrinterAgent::build_box_selection_script(const PrintParams& para
+ 
+ bool QidiPrinterAgent::print_uploaded_file(const PrintParams& params, const std::string& filename)
+ {
+-    const auto* bundle = GUI::wxGetApp().preset_bundle;
++    const auto options = nlohmann::json::parse(params.extra_options, nullptr, false);
+     const auto supported = [&](const char* key) {
+-        const auto* option = bundle ? bundle->printers.get_edited_preset().config.option<ConfigOptionBool>(key) : nullptr;
+-        return option && option->value;
++        if (!options.is_object() || !options.contains("qidi") || !options["qidi"].is_object())
++            return false;
++        const auto value = options["qidi"].find(key);
++        return value != options["qidi"].end() && value->is_boolean() && value->get<bool>();
+     };
+     const bool has_box_support = supported("is_support_multi_box");
+     const std::string script = has_box_support ? build_box_selection_script(params) : build_tool_slot_script(params.ams_mapping);

@@ -42540,6 +42540,10 @@
           "orca": "qidi",
           "qidi": null
         },
+        "qidi_preprint_bed_leveling": {
+          "orca": "1",
+          "qidi": null
+        },
         "silent_mode": {
           "orca": null,
           "qidi": "0"
@@ -42710,6 +42714,10 @@
         },
         "printer_agent": {
           "orca": "qidi",
+          "qidi": null
+        },
+        "qidi_preprint_bed_leveling": {
+          "orca": "1",
           "qidi": null
         },
         "silent_mode": {
@@ -42884,6 +42892,10 @@
           "orca": "qidi",
           "qidi": null
         },
+        "qidi_preprint_bed_leveling": {
+          "orca": "1",
+          "qidi": null
+        },
         "silent_mode": {
           "orca": null,
           "qidi": "0"
@@ -43054,6 +43066,10 @@
         },
         "printer_agent": {
           "orca": "qidi",
+          "qidi": null
+        },
+        "qidi_preprint_bed_leveling": {
+          "orca": "1",
           "qidi": null
         },
         "silent_mode": {
@@ -43250,6 +43266,7 @@
     "machine_max_speed_z": 4,
     "machine_start_gcode": 4,
     "printer_agent": 4,
+    "qidi_preprint_bed_leveling": 4,
     "silent_mode": 4,
     "support_fast_purge_mode": 4,
     "thumbnail_size": 4,

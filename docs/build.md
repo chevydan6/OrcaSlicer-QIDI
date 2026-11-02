@@ -17,7 +17,7 @@ cd build/source
 ./build_linux.sh -u
 ./build_linux.sh -drlL -j 2
 ./build_linux.sh -sitrlL -j 2
-ctest --test-dir build -C Release --output-on-failure
+xvfb-run -a ctest --test-dir build -C Release --output-on-failure --timeout 300
 python3 scripts/orca_profile_tool.py check
 ```
 
@@ -41,7 +41,7 @@ python3 scripts/install-linux.py /path/to/custom.AppImage
 
 Installation is per-user and does not require sudo. It adds a distinct desktop
 entry and stores each image by checksum under `~/.local/opt/orca-slicer-qidi`.
-The launcher passes a separate `--datadir` under `OrcaSlicer-QIDI`; it neither
+The compiled Linux default and launcher use a separate datadir under `OrcaSlicer-QIDI`; it neither
 migrates existing slicer settings nor changes file associations. Installation
 does not launch the application or contact a printer. The AppImage path also
 gives it a distinct single-instance identity in Orca's Linux implementation.

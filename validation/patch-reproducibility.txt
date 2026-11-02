@@ -1,3 +1,1 @@
-All six patches apply in order to the pinned upstream.
-Patched tree matches the local integration commit exactly.
-Tree: d8b5b5ed298339b7f56f2f0a0e82d54ef6153f0a
+PASS: 11 patches applied to 896557bce5281553ee0c6210f2da301b3b3c262e reproduce downstream tree 3cee95a4ae6bdec0ee5ddbfda8e73f7f8eb92e09

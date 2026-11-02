@@ -14,6 +14,9 @@ QIDI reference revision: `403b619d56147160bb883e94f95a7951245bc6d0`.
 | 0006 | Native RFID and load/unload UI wiring with physical slot selection | PrinterTaskDispatcher local Box macros |
 | 0007 | MAX4 pre-print leveling and QIDI timelapse settings | SelectMachine, OctoPrint local options |
 | 0008 | Box temperature/humidity telemetry and enclosure display | QDSDeviceManager, QDSPrinterWebView |
+| 0009 | Material editing, RFID preferences and generation-aware eject | PrinterTaskDispatcher, AMSMaterialsSetting, AMSControl |
+| 0010 | Capture submission capabilities with the job | Downstream threading integration |
+| 0011 | Linux default data isolation and fork identification | Downstream packaging |
 
 Profile content and protocol behavior are adapted from QIDI Studio. Core changes
 integrate that behavior into current Orca's existing architecture. Tests and Linux

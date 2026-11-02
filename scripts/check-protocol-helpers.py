@@ -10,17 +10,35 @@ functions = [
  ('void QidiPrinterAgent::append_box_status', 'bool QidiPrinterAgent::fetch_filament_info'),
  ('std::string QidiPrinterAgent::build_tool_slot_script', 'std::string QidiPrinterAgent::build_box_selection_script'),
  ('std::string QidiPrinterAgent::build_box_selection_script', 'bool QidiPrinterAgent::print_uploaded_file'),
+ ('bool QidiPrinterAgent::print_uploaded_file', 'bool QidiPrinterAgent::set_timelapse_enabled'),
 ]
 code = '''#include <nlohmann/json.hpp>
 #include <optional>
 #include <stdexcept>
 #include <string>
 #include <cassert>
+#include <algorithm>
+#include <cctype>
+#include <vector>
 #include <sstream>
 #include <ios>
 #include <utility>
-struct PrintParams { bool task_use_ams{}; std::string ams_mapping; };
+struct PrintParams {
+ bool task_use_ams{}; std::string ams_mapping;
+ bool task_bed_leveling{}, task_record_timelapse{};
+ std::string extra_options;
+};
 struct QidiPrinterAgent {
+ struct { std::string dev_id, base_url, api_key; } device_info;
+ std::vector<std::string> calls;
+ unsigned fail_at = 0;
+ bool record(const std::string& call) { calls.push_back(call); return calls.size() != fail_at; }
+ bool send_gcode_sync(const std::string&, const std::string& script) { return record(script); }
+ bool set_timelapse_enabled(bool enabled) { return record(enabled ? "timelapse:on" : "timelapse:off"); }
+ static nlohmann::json print_start_request(const PrintParams&, const std::string& filename) { return {{"filename",filename}}; }
+ bool send_jsonrpc_command(const std::string&, const std::string&, const nlohmann::json& request, std::string&)
+ { return record("start:" + request["filename"].get<std::string>()); }
+ bool print_uploaded_file(const PrintParams&, const std::string&);
  static std::optional<std::string> control_script(const nlohmann::json&);
  static void append_box_status(const nlohmann::json&, nlohmann::json&);
  static void append_chamber_status(const nlohmann::json&, nlohmann::json&);
@@ -35,11 +53,13 @@ int main() {
  assert(QidiPrinterAgent::build_tool_slot_script("[-1,-1,5]") == "SAVE_VARIABLE VARIABLE=value_t2 VALUE=\"'slot5'\"");
  assert(QidiPrinterAgent::build_tool_slot_script("[3,-1,0]") == "SAVE_VARIABLE VARIABLE=value_t0 VALUE=\"'slot3'\"\nSAVE_VARIABLE VARIABLE=value_t2 VALUE=\"'slot0'\"");
  assert(QidiPrinterAgent::build_tool_slot_script("[16]").empty());
- assert(QidiPrinterAgent::build_box_selection_script({false,"[3]"}) == "SAVE_VARIABLE VARIABLE=enable_box VALUE=0");
- assert(QidiPrinterAgent::build_box_selection_script({true,"[]"}).empty());
+ assert(QidiPrinterAgent::build_box_selection_script({false,"[3]",false,false,{}}) == "SAVE_VARIABLE VARIABLE=enable_box VALUE=0");
+ assert(QidiPrinterAgent::build_box_selection_script({true,"[]",false,false,{}}).empty());
  assert(QidiPrinterAgent::control_script({{"command","set_ctt"},{"ctt_val",45}}) == "SET_HEATER_TEMPERATURE HEATER=chamber TARGET=45");
  assert(QidiPrinterAgent::control_script({{"command","ams_get_rfid"},{"ams_id",3},{"slot_id",3}}) == "READ_RFID SLOT=15");
  assert(QidiPrinterAgent::control_script({{"command","ams_change_filament"},{"ams_id",1},{"slot_id",2},{"target",255}}) == "UNLOAD_FILAMENT_CONTROL SLOT=6");
+ assert(QidiPrinterAgent::control_script({{"command","ams_filament_setting"},{"ams_id",1},{"slot_id",3},{"tray_color","FF8000FF"},{"tray_vendor","QIDI"},{"tray_type","PLA"}}) == "UPDATE_FILAMENT_INFORMATION SLOT=7 COLOR='FF8000' VENDOR='QIDI' FILAMENT='PLA'");
+ assert(QidiPrinterAgent::control_script({{"command","ams_eject_filament"},{"ams_id",2},{"slot_id",0}}) == "EJECT_FILAMENT_CONTROL SLOT=8");
  bool rejected=false;
  try { QidiPrinterAgent::control_script({{"command","set_ctt"},{"ctt_val",66}}); }
  catch(const std::invalid_argument&) { rejected=true; }
@@ -57,6 +77,28 @@ int main() {
  payload = nlohmann::json::object();
  QidiPrinterAgent::append_box_status({{"multi_color_controller",{{"box_count",4294967296ULL}}}},payload);
  assert(payload.empty());
+ PrintParams params;
+ params.task_use_ams = true;
+ params.ams_mapping = "[-1,-1,5]";
+ params.task_bed_leveling = true;
+ params.task_record_timelapse = true;
+ params.extra_options = R"({"qidi":{"is_support_multi_box":true,"qidi_preprint_bed_leveling":true,"is_support_timelapse":true}})";
+ QidiPrinterAgent agent;
+ assert(agent.print_uploaded_file(params,"chosen.gcode.3mf"));
+ assert(agent.calls.size() == 4);
+ assert(agent.calls[0] == "SAVE_VARIABLE VARIABLE=enable_box VALUE=1\nSAVE_VARIABLE VARIABLE=value_t2 VALUE=\"'slot5'\"");
+ assert(agent.calls[1] == "G31");
+ assert(agent.calls[2] == "timelapse:on");
+ assert(agent.calls[3] == "start:chosen.gcode.3mf");
+ for (unsigned failure = 1; failure <= 3; ++failure) {
+   agent.calls.clear(); agent.fail_at = failure;
+   assert(!agent.print_uploaded_file(params,"must-not-start.gcode"));
+   assert(agent.calls.size() == failure);
+   for (const auto& call : agent.calls) assert(call.find("start:") != 0);
+ }
+ agent.calls.clear(); agent.fail_at = 0; params.ams_mapping = "[]";
+ assert(!agent.print_uploaded_file(params,"must-not-start.gcode"));
+ assert(agent.calls.empty());
 }
 '''
 build = root/'build/protocol-helpers'
@@ -64,4 +106,4 @@ build.mkdir(parents=True,exist_ok=True)
 (build/'test.cpp').write_text(code)
 subprocess.run(['g++','-std=c++17','-Wall','-Wextra','-Werror','-I'+str(root/'OrcaSlicer/deps_src'),str(build/'test.cpp'),'-o',str(build/'test')],check=True)
 subprocess.run([str(build/'test')],check=True)
-print('PASS: isolated production protocol helper compilation and offline assertions. Full app compilation, GUI, HTTP and hardware are NOT covered.')
+print('PASS: isolated production protocol helper compilation and offline assertions. Submission ordering and stop-on-failure use recording transports. Full app compilation, GUI, real HTTP and hardware are NOT covered.')

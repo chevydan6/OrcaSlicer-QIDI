@@ -1,0 +1,308 @@
+diff --git a/src/slic3r/GUI/DeviceCore/DevFilaSystem.cpp b/src/slic3r/GUI/DeviceCore/DevFilaSystem.cpp
+index 08398de8..ef4546f2 100644
+--- a/src/slic3r/GUI/DeviceCore/DevFilaSystem.cpp
++++ b/src/slic3r/GUI/DeviceCore/DevFilaSystem.cpp
+@@ -539,6 +539,8 @@ void DevFilaSystemParser::ParseV1_0(const json& jj, MachineObject* obj, DevFilaS
+                     curr_ams->SetAmsType(type_id);
+ 
+                     DevJsonValParser::ParseVal(*it, "display_name", curr_ams->m_display_name, std::string());
++                    if (it->contains("qidi_box_identity") && (*it)["qidi_box_identity"].is_string())
++                        curr_ams->m_qidi_box_identity = (*it)["qidi_box_identity"].get<std::string>();
+ 
+                     // Refresh the switch-aware extruder binding on every push (both create and
+                     // update paths) so it can't go stale after an AMS is re-homed to another
+diff --git a/src/slic3r/GUI/DeviceCore/DevFilaSystem.h b/src/slic3r/GUI/DeviceCore/DevFilaSystem.h
+index b8b8ad8c..a07be34d 100644
+--- a/src/slic3r/GUI/DeviceCore/DevFilaSystem.h
++++ b/src/slic3r/GUI/DeviceCore/DevFilaSystem.h
+@@ -270,6 +270,7 @@ private:
+     AmsType       m_ams_type = AmsType::AMS;
+     std::string   m_ams_id;
+     std::string   m_display_name; // Orca: set by printer agents for their own units, replaces the type-based name
++    std::string   m_qidi_box_identity; // QIDI Box generation; box_v2 does not expose manual eject.
+     int           m_ext_id;//extruder id
+     // Orca: pull-mode / multi-vendor agent model — keeps the legacy single m_ext_id for existing
+     // consumers and carries the switch-aware binding alongside it. Without a Filament Track Switch
+@@ -434,4 +435,4 @@ struct DevFilamentDryingPreset
+     float filament_dev_ams_drying_heat_distortion_temperature = 0.0f;
+ };
+ 
+-}// namespace Slic3r
+\ No newline at end of file
++}// namespace Slic3r
+diff --git a/src/slic3r/GUI/DeviceManager.cpp b/src/slic3r/GUI/DeviceManager.cpp
+index 71240cd3..69f1de74 100644
+--- a/src/slic3r/GUI/DeviceManager.cpp
++++ b/src/slic3r/GUI/DeviceManager.cpp
+@@ -1830,6 +1830,23 @@ int MachineObject::command_ams_filament_settings(int ams_id, int slot_id, std::s
+     j["print"]["nozzle_temp_min"]   = nozzle_temp_min;
+     j["print"]["nozzle_temp_max"]   = nozzle_temp_max;
+     j["print"]["tray_type"]         = tray_type;
++    if (printer_agent_id == "qidi") {
++        j["print"]["tray_vendor"] = "Generic";
++        if (const auto* bundle = GUI::wxGetApp().preset_bundle; bundle && !setting_id.empty()) {
++            for (const auto& preset : bundle->filaments.get_presets()) {
++                if (preset.setting_id == setting_id) {
++                    const auto vendor = preset.config.get_filament_vendor();
++                    j["print"]["tray_vendor"] = vendor;
++                    // QIDI records the material product name (e.g. PLA Rapido),
++                    // not only Orca's broad filament_type (PLA).
++                    const auto prefix = vendor + " ";
++                    if (preset.alias.compare(0, prefix.size(), prefix) == 0)
++                        j["print"]["tray_type"] = preset.alias.substr(prefix.size());
++                    break;
++                }
++            }
++        }
++    }
+     if (!tray_colors.empty()) {
+         j["print"]["cols"]  = tray_colors;
+         j["print"]["ctype"] = tray_ctype;
+diff --git a/src/slic3r/GUI/StatusPanel.cpp b/src/slic3r/GUI/StatusPanel.cpp
+index 2df810f4..19989c89 100644
+--- a/src/slic3r/GUI/StatusPanel.cpp
++++ b/src/slic3r/GUI/StatusPanel.cpp
+@@ -20,6 +20,9 @@
+ #include "CalibUtils.hpp"
+ #include <boost/algorithm/string/replace.hpp>
+ #include <cstddef>
++#include <exception>
++#include <nlohmann/json.hpp>
++#include "slic3r/GUI/DeviceCore/DevFilaSystem.h"
+ #include <ctime>
+ #include "slic3r/GUI/DeviceManager.hpp"
+ #include "slic3r/GUI/DeviceCore/DevExtruderSystem.h"
+@@ -2606,6 +2609,25 @@ void StatusPanel::wire_controls()
+     Bind(EVT_AMS_EXTRUSION_CALI, &StatusPanel::on_filament_extrusion_cali, this);
+     Bind(EVT_AMS_LOAD, &StatusPanel::on_ams_load, this);
+     Bind(EVT_AMS_UNLOAD, &StatusPanel::on_ams_unload, this);
++    Bind(EVT_QIDI_BOX_EJECT, [this](SimpleEvent&) {
++        if (!obj || obj->printer_agent_id != "qidi" || obj->is_in_printing())
++            return;
++        const auto ams_id = m_ams_control->GetCurentAms();
++        const auto slot_id = m_ams_control->GetCurrentCan(ams_id);
++        const auto* unit = obj->GetFilaSystem()->GetAmsById(ams_id);
++        if (!unit || unit->m_qidi_box_identity == "box_v2")
++            return;
++        try {
++            const int box = std::stoi(ams_id);
++            const int slot = std::stoi(slot_id);
++            if (box < 0 || box > 3 || slot < 0 || slot > 3)
++                return;
++            nlohmann::json request{{"print", {{"command", "ams_eject_filament"}, {"ams_id", box}, {"slot_id", slot}}}};
++            obj->publish_json(request);
++        } catch (const std::exception&) {
++            // No physical slot is selected (for example the external spool).
++        }
++    });
+     Bind(EVT_AMS_SWITCH, &StatusPanel::on_ams_switch, this);
+     Bind(EVT_AMS_FILAMENT_BACKUP, &StatusPanel::on_ams_filament_backup, this);
+     Bind(EVT_AMS_SETTINGS, &StatusPanel::on_ams_setting_click, this);
+diff --git a/src/slic3r/GUI/Widgets/AMSControl.cpp b/src/slic3r/GUI/Widgets/AMSControl.cpp
+index 2fe4ac60..e80f9213 100644
+--- a/src/slic3r/GUI/Widgets/AMSControl.cpp
++++ b/src/slic3r/GUI/Widgets/AMSControl.cpp
+@@ -177,6 +177,14 @@ AMSControl::AMSControl(wxWindow *parent, wxWindowID id, const wxPoint &pos, cons
+     m_button_ams_setting->SetMinSize(wxSize(FromDIP(24), FromDIP(24)));
+     m_button_ams_setting->SetMaxSize(wxSize(FromDIP(24), FromDIP(24)));
+     m_sizer_option_left->Add(m_button_auto_refill, 0, wxALIGN_CENTER, 0);
++    m_button_qidi_eject = new Button(m_panel_option_left, _L("Eject"));
++    m_button_qidi_eject->SetStyle(ButtonStyle::Regular, ButtonType::Choice);
++    m_button_qidi_eject->SetToolTip(_L("Eject filament from the selected QIDI Box slot."));
++    m_button_qidi_eject->Hide();
++    m_sizer_option_left->Add(m_button_qidi_eject, 0, wxALIGN_CENTER, 0);
++    m_button_qidi_eject->Bind(wxEVT_BUTTON, [this](wxCommandEvent&) {
++        post_event(SimpleEvent(EVT_QIDI_BOX_EJECT));
++    });
+     m_sizer_option_left->Add(0, 0, 0, wxLEFT, FromDIP(20));
+     m_sizer_option_left->Add(m_button_ams_setting, 0, wxALIGN_CENTER, 0);
+ 
+@@ -441,6 +449,7 @@ void AMSControl::EnableLoadFilamentBtn(bool enable, const std::string& ams_id, c
+ void AMSControl::EnableUnLoadFilamentBtn(bool enable, const std::string& ams_id, const std::string& can_id,const wxString& tips)
+ {
+     m_button_extruder_back->Enable(enable);
++    m_button_qidi_eject->Enable(enable);
+     if (m_button_extruder_back->GetToolTipText() != tips) {
+         BOOST_LOG_TRIVIAL(info) << "ams_id=" << ams_id << ", can_id=" << can_id << "  Set Unload Filament Button ToolTip : " << tips.ToUTF8();
+         m_button_extruder_back->SetToolTip(tips);
+@@ -523,6 +532,7 @@ void AMSControl::msw_rescale()
+ 
+     if (m_button_extruder_feed) m_button_extruder_feed->Rescale(); // ORCA
+     if (m_button_extruder_back) m_button_extruder_back->Rescale(); // ORCA
++    if (m_button_qidi_eject) m_button_qidi_eject->Rescale();
+     if (m_button_auto_refill) m_button_auto_refill->Rescale();     // ORCA
+     if (m_button_ams_setting) m_button_ams_setting->SetMinSize(wxSize(FromDIP(25), FromDIP(24)));
+ 
+@@ -962,6 +972,20 @@ void AMSControl::UpdateAms(const std::string   &series_name,
+                            bool                 is_reset,
+                            bool                 test)
+ {
++    bool show_eject = obj && obj->printer_agent_id == "qidi" && !ams_info.empty();
++    if (show_eject) {
++        for (const auto& unit : obj->GetFilaSystem()->amsList) {
++            if (unit.second->m_qidi_box_identity == "box_v2") {
++                show_eject = false;
++                break;
++            }
++        }
++    }
++    if (m_button_qidi_eject->IsShown() != show_eject) {
++        m_button_qidi_eject->Show(show_eject);
++        m_amswin->Layout();
++        m_amswin->Fit();
++    }
+     if (!test){
+         // update item
+         bool fresh = false;
+@@ -1488,6 +1512,7 @@ bool AMSControl::Enable(bool enable)
+ 
+     m_button_extruder_feed->Enable(enable);
+     m_button_extruder_back->Enable(enable);
++    m_button_qidi_eject->Enable(enable);
+     m_button_auto_refill->Enable(enable);
+     m_button_ams_setting->Enable(enable);
+ 
+diff --git a/src/slic3r/GUI/Widgets/AMSControl.hpp b/src/slic3r/GUI/Widgets/AMSControl.hpp
+index 99146a01..7c300cfd 100644
+--- a/src/slic3r/GUI/Widgets/AMSControl.hpp
++++ b/src/slic3r/GUI/Widgets/AMSControl.hpp
+@@ -131,6 +131,7 @@ protected:
+ 
+     Button *m_button_extruder_feed {nullptr};
+     Button *m_button_extruder_back {nullptr};
++    Button *m_button_qidi_eject {nullptr};
+     Button *m_button_auto_refill{ nullptr };
+     wxStaticBitmap* m_button_ams_setting   {nullptr};
+     wxStaticBitmap* m_img_ams_backup  {nullptr};
+diff --git a/src/slic3r/GUI/Widgets/AMSItem.cpp b/src/slic3r/GUI/Widgets/AMSItem.cpp
+index 8a274d15..b62bca72 100644
+--- a/src/slic3r/GUI/Widgets/AMSItem.cpp
++++ b/src/slic3r/GUI/Widgets/AMSItem.cpp
+@@ -58,6 +58,7 @@ namespace Slic3r { namespace GUI {
+     wxDEFINE_EVENT(EVT_AMS_EXTRUSION_CALI, wxCommandEvent);
+     wxDEFINE_EVENT(EVT_AMS_LOAD, SimpleEvent);
+     wxDEFINE_EVENT(EVT_AMS_UNLOAD, SimpleEvent);
++    wxDEFINE_EVENT(EVT_QIDI_BOX_EJECT, SimpleEvent);
+     wxDEFINE_EVENT(EVT_AMS_SETTINGS, SimpleEvent);
+     wxDEFINE_EVENT(EVT_AMS_FILAMENT_BACKUP, SimpleEvent);
+     wxDEFINE_EVENT(EVT_AMS_REFRESH_RFID, wxCommandEvent);
+diff --git a/src/slic3r/GUI/Widgets/AMSItem.hpp b/src/slic3r/GUI/Widgets/AMSItem.hpp
+index daedd29d..9bcd0c67 100644
+--- a/src/slic3r/GUI/Widgets/AMSItem.hpp
++++ b/src/slic3r/GUI/Widgets/AMSItem.hpp
+@@ -875,6 +875,7 @@ private:
+ wxDECLARE_EVENT(EVT_AMS_EXTRUSION_CALI, wxCommandEvent);
+ wxDECLARE_EVENT(EVT_AMS_LOAD, SimpleEvent);
+ wxDECLARE_EVENT(EVT_AMS_UNLOAD, SimpleEvent);
++wxDECLARE_EVENT(EVT_QIDI_BOX_EJECT, SimpleEvent);
+ wxDECLARE_EVENT(EVT_AMS_SETTINGS, SimpleEvent);
+ wxDECLARE_EVENT(EVT_AMS_FILAMENT_BACKUP, SimpleEvent);
+ wxDECLARE_EVENT(EVT_AMS_REFRESH_RFID, wxCommandEvent);
+diff --git a/src/slic3r/Utils/QidiPrinterAgent.cpp b/src/slic3r/Utils/QidiPrinterAgent.cpp
+index 2b1a7ced..59aec0d9 100644
+--- a/src/slic3r/Utils/QidiPrinterAgent.cpp
++++ b/src/slic3r/Utils/QidiPrinterAgent.cpp
+@@ -13,6 +13,7 @@
+ #include <boost/algorithm/string/case_conv.hpp>
+ #include <boost/log/trivial.hpp>
+ #include <cctype>
++#include <algorithm>
+ #include <ios>
+ #include "libslic3r/Preset.hpp"
+ #include <map>
+@@ -68,6 +69,39 @@ std::optional<std::string> QidiPrinterAgent::control_script(const nlohmann::json
+     }
+     if (name == "ams_get_rfid")
+         return "READ_RFID SLOT=" + std::to_string(integer("ams_id", 3) * 4 + integer("slot_id", 3));
++    if (name == "ams_eject_filament")
++        return "EJECT_FILAMENT_CONTROL SLOT=" + std::to_string(integer("ams_id", 3) * 4 + integer("slot_id", 3));
++    if (name == "ams_user_setting") {
++        const auto flag = [&](const char* key) {
++            const auto value = command.find(key);
++            if (value == command.end() || !value->is_boolean())
++                throw std::invalid_argument("Invalid QIDI RFID setting");
++            return value->get<bool>() ? "1" : "0";
++        };
++        return std::string("SET_ENABLE_RFID_READ ENABLE=\"") + flag("tray_read_option") + "\"\n"
++            + "SET_ENABLE_INIT_READ_RFID ENABLE=\"" + flag("startup_read_option") + "\"";
++    }
++    if (name == "ams_filament_setting") {
++        // QIDI's material table has an additional external-spool entry at 16.
++        const int ams_id = integer("ams_id", 255);
++        const int slot = ams_id == 255 ? (integer("slot_id", 0), 16) : integer("ams_id", 3) * 4 + integer("slot_id", 3);
++        const auto literal = [&](const char* key) {
++            const auto value = command.find(key);
++            if (value == command.end() || !value->is_string())
++                throw std::invalid_argument("Invalid QIDI filament description");
++            const std::string text = value->get<std::string>();
++            if (text.size() > 128 || text.find_first_of("'\"\\;\r\n") != std::string::npos ||
++                std::any_of(text.begin(), text.end(), [](unsigned char c) { return c < 32; }))
++                throw std::invalid_argument("Invalid QIDI filament description");
++            return text;
++        };
++        std::string color = literal("tray_color");
++        if ((color.size() != 6 && color.size() != 8) || !std::all_of(color.begin(), color.end(), [](unsigned char c) { return std::isxdigit(c); }))
++            throw std::invalid_argument("Invalid QIDI filament color");
++        color.resize(6); // Orca's RGBA to QIDI's RGB.
++        return "UPDATE_FILAMENT_INFORMATION SLOT=" + std::to_string(slot) + " COLOR='" + color
++            + "' VENDOR='" + literal("tray_vendor") + "' FILAMENT='" + literal("tray_type") + "'";
++    }
+     return std::nullopt;
+ }
+ 
+@@ -151,6 +185,10 @@ void QidiPrinterAgent::append_box_status(const nlohmann::json& status, nlohmann:
+         const auto prefix = "box" + std::to_string(i) + "_";
+         nlohmann::json unit{{"id", std::to_string(i)}, {"info", "0003"},
+                             {"display_name", "Qidi Box " + std::to_string(i + 1)}};
++        if (controller->contains("identity") && (*controller)["identity"].is_string())
++            unit["qidi_box_identity"] = (*controller)["identity"];
++        else if (box.contains("identity") && box["identity"].is_string())
++            unit["qidi_box_identity"] = box["identity"];
+         const auto temperature = box.find(prefix + "aht20_temp");
+         if (temperature != box.end() && temperature->is_number() && *temperature >= -40 && *temperature <= 125)
+             unit["temp"] = temperature->dump();
+@@ -164,6 +202,17 @@ void QidiPrinterAgent::append_box_status(const nlohmann::json& status, nlohmann:
+     bits << std::hex << ((1U << *count) - 1U);
+     payload["print"]["ams"]["ams"] = std::move(units);
+     payload["print"]["ams"]["ams_exist_bits"] = bits.str();
++    const auto read_flag = [&](const char* from, const char* to) {
++        const auto value = controller->find(from);
++        if (value != controller->end()) {
++            if (value->is_boolean())
++                payload["print"]["ams"][to] = *value;
++            else if (value->is_number_integer() && *value >= 0 && *value <= 1)
++                payload["print"]["ams"][to] = value->get<int>() != 0;
++        }
++    };
++    read_flag("auto_read_rfid", "insert_flag");
++    read_flag("auto_init_detect", "power_on_flag");
+ }
+ 
+ bool QidiPrinterAgent::fetch_filament_info(std::string dev_id, FilamentSyncMode /*sync_mode*/)
+diff --git a/tests/slic3rutils/test_qidi_printer_agent.cpp b/tests/slic3rutils/test_qidi_printer_agent.cpp
+index 44f249e4..054c15d1 100644
+--- a/tests/slic3rutils/test_qidi_printer_agent.cpp
++++ b/tests/slic3rutils/test_qidi_printer_agent.cpp
+@@ -133,3 +133,22 @@ TEST_CASE("QIDI Box telemetry requires a valid known box count", "[QidiPrinterAg
+     QidiPrinterAgent::append_box_status({{"multi_color_controller", {{"box_count", count}}}}, payload);
+     CHECK(payload.empty());
+ }
++
++TEST_CASE("QIDI Box material edits carry the selected slot vendor type and RGB color", "[QidiPrinterAgent]")
++{
++    nlohmann::json request{{"command", "ams_filament_setting"}, {"ams_id", 1}, {"slot_id", 3},
++                           {"tray_color", "FF8000FF"}, {"tray_vendor", "QIDI"}, {"tray_type", "PLA"}};
++    CHECK(QidiPrinterAgent::control_script(request) ==
++          "UPDATE_FILAMENT_INFORMATION SLOT=7 COLOR='FF8000' VENDOR='QIDI' FILAMENT='PLA'");
++    request["tray_type"] = "PLA'\nG28";
++    CHECK_THROWS(QidiPrinterAgent::control_script(request));
++}
++
++TEST_CASE("QIDI Box RFID preferences and eject controls use local macros", "[QidiPrinterAgent]")
++{
++    CHECK(QidiPrinterAgent::control_script({{"command", "ams_user_setting"}, {"tray_read_option", true}, {"startup_read_option", false}}) ==
++          "SET_ENABLE_RFID_READ ENABLE=\"1\"\nSET_ENABLE_INIT_READ_RFID ENABLE=\"0\"");
++    CHECK(QidiPrinterAgent::control_script({{"command", "ams_eject_filament"}, {"ams_id", 2}, {"slot_id", 0}}) ==
++          "EJECT_FILAMENT_CONTROL SLOT=8");
++    CHECK_THROWS(QidiPrinterAgent::control_script({{"command", "ams_user_setting"}, {"tray_read_option", "1"}, {"startup_read_option", false}}));
++}

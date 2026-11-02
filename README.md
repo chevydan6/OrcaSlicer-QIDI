@@ -32,5 +32,6 @@ real printers. Hardware verification will be reported separately from software t
 
 ## Progress
 
-See [investigation notes](docs/investigation.md). This repository is a progress
+See the [feature checklist](docs/feature-checklist.md), [investigation notes](docs/investigation.md)
+and [build/install instructions](docs/build.md). This repository is a progress
 backup, not a claim that the port is complete.
