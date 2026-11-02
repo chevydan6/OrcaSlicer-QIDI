@@ -48,8 +48,8 @@ MQTT/tunnel stack are not implemented. Existing Orca backends remain available.
 ## Software validation to date
 
 - All-vendor profile structural check: 72 bundles, zero errors/warnings.
-- Qidi profile version check: passed, bundle 02.05.00.20 to 02.05.00.22.
-- Six numbered patches reproduce the local downstream Git tree exactly.
+- Qidi profile version check: passed, bundle 02.04.00.20 to 02.04.00.23.
+- The first six numbered patches reproduce the local downstream Git tree exactly.
 - Production protocol helper bodies compile in isolation with C++17 and warnings
   treated as errors; sparse mappings, Box mode, chamber, RFID and load/unload
   assertions pass. This harness does not compile the full application.
@@ -59,3 +59,9 @@ MQTT/tunnel stack are not implemented. Existing Orca backends remain available.
 
 No printer has been contacted. Physical slot selection, filament motion, heating,
 printing and firmware compatibility remain unverified and require authorization.
+
+Additional general-port patches connect MAX4 bed leveling and QIDI timelapse
+submission options, and show Box temperature/humidity in the native enclosure
+display. The latter reuses QIDI Studio's enclosed four-slot UI classification;
+remote drying is not enabled by that classification. These patches are not yet
+in the running six-patch build.

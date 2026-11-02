@@ -1,0 +1,156 @@
+diff --git a/src/slic3r/Utils/MoonrakerPrinterAgent.cpp b/src/slic3r/Utils/MoonrakerPrinterAgent.cpp
+index 4a9eef48..c51ab2fc 100644
+--- a/src/slic3r/Utils/MoonrakerPrinterAgent.cpp
++++ b/src/slic3r/Utils/MoonrakerPrinterAgent.cpp
+@@ -631,7 +631,7 @@ void MoonrakerPrinterAgent::build_ams_payload(int ams_count, int max_lane_index,
+ 
+         nlohmann::json ams_unit = nlohmann::json::object();
+         ams_unit["id"] = std::to_string(ams_id);
+-        ams_unit["info"] = "0002";  // treat as AMS_LITE 
++        ams_unit["info"] = ams_unit_info();
+         if (const std::string name = ams_unit_name(ams_id); !name.empty()) {
+             ams_unit["display_name"] = name;
+         }
+diff --git a/src/slic3r/Utils/MoonrakerPrinterAgent.hpp b/src/slic3r/Utils/MoonrakerPrinterAgent.hpp
+index f1c7636e..639dd6e5 100644
+--- a/src/slic3r/Utils/MoonrakerPrinterAgent.hpp
++++ b/src/slic3r/Utils/MoonrakerPrinterAgent.hpp
+@@ -122,6 +122,7 @@ protected:
+     void build_ams_payload(int ams_count, int max_lane_index, const std::vector<AmsTrayData>& trays);
+     // Name shown for a filament unit, or empty for the AMS Lite name
+     virtual std::string ams_unit_name(int /*ams_id*/) const { return {}; }
++    virtual std::string ams_unit_info() const { return "0002"; }
+     virtual std::vector<std::string> additional_status_objects() const { return {}; }
+     virtual void append_status_payload(const nlohmann::json&, nlohmann::json&) const {}
+ 
+diff --git a/src/slic3r/Utils/QidiPrinterAgent.cpp b/src/slic3r/Utils/QidiPrinterAgent.cpp
+index f8666276..2b1a7ced 100644
+--- a/src/slic3r/Utils/QidiPrinterAgent.cpp
++++ b/src/slic3r/Utils/QidiPrinterAgent.cpp
+@@ -13,6 +13,7 @@
+ #include <boost/algorithm/string/case_conv.hpp>
+ #include <boost/log/trivial.hpp>
+ #include <cctype>
++#include <ios>
+ #include "libslic3r/Preset.hpp"
+ #include <map>
+ #include <sstream>
+@@ -120,6 +121,51 @@ AgentInfo QidiPrinterAgent::get_agent_info_static()
+     return AgentInfo{"qidi", "Qidi", QidiPrinterAgent_VERSION, "Qidi printer agent"};
+ }
+ 
++void QidiPrinterAgent::append_box_status(const nlohmann::json& status, nlohmann::json& payload)
++{
++    const auto controller = status.find("multi_color_controller");
++    if (controller == status.end() || !controller->is_object())
++        return;
++    const auto nested = controller->find("box");
++    const auto& box = nested != controller->end() && nested->is_object() ? *nested : *controller;
++    const auto count_in = [](const nlohmann::json& object) -> std::optional<int> {
++        const auto count = object.find("box_count");
++        if (count == object.end() || !count->is_number_integer() || *count < 0 || *count > 4)
++            return std::nullopt;
++        return count->get<int>();
++    };
++    auto count = count_in(*controller);
++    if (!count)
++        count = count_in(box);
++    if (!count && status.contains("save_variables") && status["save_variables"].is_object()) {
++        const auto variables = status["save_variables"].find("variables");
++        if (variables != status["save_variables"].end() && variables->is_object())
++            count = count_in(*variables);
++    }
++    // The AMS parser treats this as a complete unit list, so never infer count
++    // from a partial temperature update and accidentally remove other Boxes.
++    if (!count)
++        return;
++    nlohmann::json units = nlohmann::json::array();
++    for (int i = 0; i < *count; ++i) {
++        const auto prefix = "box" + std::to_string(i) + "_";
++        nlohmann::json unit{{"id", std::to_string(i)}, {"info", "0003"},
++                            {"display_name", "Qidi Box " + std::to_string(i + 1)}};
++        const auto temperature = box.find(prefix + "aht20_temp");
++        if (temperature != box.end() && temperature->is_number() && *temperature >= -40 && *temperature <= 125)
++            unit["temp"] = temperature->dump();
++        const auto humidity = box.find(prefix + "aht20_humidity");
++        if (humidity != box.end() && humidity->is_number() && *humidity >= 0 && *humidity <= 100)
++            unit["humidity_raw"] = std::to_string(humidity->get<int>());
++        // No tray key: telemetry must preserve synchronized filament metadata.
++        units.push_back(std::move(unit));
++    }
++    std::ostringstream bits;
++    bits << std::hex << ((1U << *count) - 1U);
++    payload["print"]["ams"]["ams"] = std::move(units);
++    payload["print"]["ams"]["ams_exist_bits"] = bits.str();
++}
++
+ bool QidiPrinterAgent::fetch_filament_info(std::string dev_id, FilamentSyncMode /*sync_mode*/)
+ {
+     std::string error;
+diff --git a/src/slic3r/Utils/QidiPrinterAgent.hpp b/src/slic3r/Utils/QidiPrinterAgent.hpp
+index bd386942..06b3ae61 100644
+--- a/src/slic3r/Utils/QidiPrinterAgent.hpp
++++ b/src/slic3r/Utils/QidiPrinterAgent.hpp
+@@ -25,6 +25,7 @@ public:
+     int send_message_to_printer(std::string dev_id, std::string json_str, int qos, int flag) override;
+     static std::optional<std::string> control_script(const nlohmann::json& command);
+     static void append_chamber_status(const nlohmann::json& status, nlohmann::json& payload);
++    static void append_box_status(const nlohmann::json& status, nlohmann::json& payload);
+     static AgentInfo get_agent_info_static();
+     AgentInfo        get_agent_info() override { return get_agent_info_static(); }
+ 
+@@ -39,12 +40,16 @@ public:
+     static nlohmann::json print_start_request(const PrintParams& params, const std::string& filename);
+ 
+ protected:
+-    std::vector<std::string> additional_status_objects() const override { return {"heater_generic chamber"}; }
++    std::vector<std::string> additional_status_objects() const override
++    { return {"heater_generic chamber", "multi_color_controller", "save_variables"}; }
+     void append_status_payload(const nlohmann::json& status, nlohmann::json& payload) const override
+-    { append_chamber_status(status, payload); }
++    { append_chamber_status(status, payload); append_box_status(status, payload); }
+     // Saves the Box slot picked for each filament in the print dialog, then starts the print through Moonraker
+     bool print_uploaded_file(const PrintParams& params, const std::string& filename) override;
+     std::string ams_unit_name(int ams_id) const override { return "Qidi Box " + std::to_string(ams_id + 1); }
++    // QIDI Studio uses the enclosed four-slot presentation for Box telemetry.
++    // Remote drying remains disabled; this only selects its display layout.
++    std::string ams_unit_info() const override { return "0003"; }
+ 
+ private:
+     bool set_timelapse_enabled(bool enabled) const;
+diff --git a/tests/slic3rutils/test_qidi_printer_agent.cpp b/tests/slic3rutils/test_qidi_printer_agent.cpp
+index 9c5dd774..44f249e4 100644
+--- a/tests/slic3rutils/test_qidi_printer_agent.cpp
++++ b/tests/slic3rutils/test_qidi_printer_agent.cpp
+@@ -105,3 +105,31 @@ TEST_CASE("QIDI load and unload address the selected physical slot", "[QidiPrint
+     CHECK(script == (target == 255 ? "UNLOAD_FILAMENT_CONTROL SLOT=6" : "LOAD_FILAMENT_CONTROL SLOT=6"));
+     CHECK_THROWS(QidiPrinterAgent::control_script({{"command", "ams_change_filament"}, {"ams_id", 1}, {"slot_id", 255}, {"target", 255}}));
+ }
++
++TEST_CASE("QIDI Box telemetry preserves the complete unit list without replacing trays", "[QidiPrinterAgent]")
++{
++    nlohmann::json payload;
++    const nlohmann::json box{{"box0_aht20_temp", 23.5}, {"box0_aht20_humidity", 35},
++                            {"box1_aht20_temp", 45}, {"box1_aht20_humidity", 10}};
++    const bool nested = GENERATE(false, true);
++    nlohmann::json status{{"save_variables", {{"variables", {{"box_count", 2}}}}},
++                          {"multi_color_controller", nested ? nlohmann::json{{"box", box}} : box}};
++    QidiPrinterAgent::append_box_status(status, payload);
++    const auto& ams = payload["print"]["ams"];
++    CHECK(ams["ams_exist_bits"] == "3");
++    REQUIRE(ams["ams"].size() == 2);
++    CHECK(ams["ams"][0]["temp"] == "23.5");
++    CHECK(ams["ams"][1]["humidity_raw"] == "10");
++    CHECK(ams["ams"][1]["id"] == "1");
++    CHECK_FALSE(ams["ams"][0].contains("tray"));
++    CHECK_FALSE(ams["ams"][1].contains("tray"));
++}
++
++TEST_CASE("QIDI Box telemetry requires a valid known box count", "[QidiPrinterAgent]")
++{
++    nlohmann::json payload = nlohmann::json::object();
++    const auto count = GENERATE(nlohmann::json(nullptr), nlohmann::json(5), nlohmann::json(-1),
++                               nlohmann::json(4294967296ULL), nlohmann::json("2"));
++    QidiPrinterAgent::append_box_status({{"multi_color_controller", {{"box_count", count}}}}, payload);
++    CHECK(payload.empty());
++}

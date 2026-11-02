@@ -7,6 +7,7 @@ source = (root/'OrcaSlicer/src/slic3r/Utils/QidiPrinterAgent.cpp').read_text()
 functions = [
  ('std::optional<std::string> QidiPrinterAgent::control_script', 'int QidiPrinterAgent::command_ams_refresh_rfid'),
  ('void QidiPrinterAgent::append_chamber_status', 'AgentInfo QidiPrinterAgent::get_agent_info_static'),
+ ('void QidiPrinterAgent::append_box_status', 'bool QidiPrinterAgent::fetch_filament_info'),
  ('std::string QidiPrinterAgent::build_tool_slot_script', 'std::string QidiPrinterAgent::build_box_selection_script'),
  ('std::string QidiPrinterAgent::build_box_selection_script', 'bool QidiPrinterAgent::print_uploaded_file'),
 ]
@@ -15,9 +16,13 @@ code = '''#include <nlohmann/json.hpp>
 #include <stdexcept>
 #include <string>
 #include <cassert>
+#include <sstream>
+#include <ios>
+#include <utility>
 struct PrintParams { bool task_use_ams{}; std::string ams_mapping; };
 struct QidiPrinterAgent {
  static std::optional<std::string> control_script(const nlohmann::json&);
+ static void append_box_status(const nlohmann::json&, nlohmann::json&);
  static void append_chamber_status(const nlohmann::json&, nlohmann::json&);
  static std::string build_tool_slot_script(const std::string&);
  static std::string build_box_selection_script(const PrintParams&);
@@ -43,6 +48,15 @@ int main() {
  QidiPrinterAgent::append_chamber_status({{"heater_generic chamber",{{"temperature",42.5},{"target",55}}}},payload);
  assert(payload["print"]["chamber_temper"]==42.5);
  assert(payload["print"]["ctt"]==55);
+ payload = nlohmann::json::object();
+ QidiPrinterAgent::append_box_status({{"multi_color_controller",{{"box_count",2},{"box",{{"box0_aht20_temp",23.5},{"box1_aht20_humidity",35}}}}}},payload);
+ assert(payload["print"]["ams"]["ams"].size()==2);
+ assert(payload["print"]["ams"]["ams"][0]["temp"]=="23.5");
+ assert(payload["print"]["ams"]["ams"][1]["humidity_raw"]=="35");
+ assert(!payload["print"]["ams"]["ams"][0].contains("tray"));
+ payload = nlohmann::json::object();
+ QidiPrinterAgent::append_box_status({{"multi_color_controller",{{"box_count",4294967296ULL}}}},payload);
+ assert(payload.empty());
 }
 '''
 build = root/'build/protocol-helpers'

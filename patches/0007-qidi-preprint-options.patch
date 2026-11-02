@@ -1,0 +1,194 @@
+diff --git a/resources/profiles/Qidi.json b/resources/profiles/Qidi.json
+index 34b01f9c..1d4bb4aa 100644
+--- a/resources/profiles/Qidi.json
++++ b/resources/profiles/Qidi.json
+@@ -1,6 +1,6 @@
+ {
+ 	"name": "Qidi",
+-	"version": "02.04.00.22",
++	"version": "02.04.00.23",
+ 	"force_update": "0",
+ 	"description": "Qidi configurations",
+ 	"machine_model_list": [
+diff --git a/resources/profiles/Qidi/machine/Qidi X-Max 4 0.4 nozzle.json b/resources/profiles/Qidi/machine/Qidi X-Max 4 0.4 nozzle.json
+index a06ca5e7..fb50c98c 100644
+--- a/resources/profiles/Qidi/machine/Qidi X-Max 4 0.4 nozzle.json	
++++ b/resources/profiles/Qidi/machine/Qidi X-Max 4 0.4 nozzle.json	
+@@ -26,6 +26,7 @@
+ 	"is_support_3mf": "1",
+ 	"is_support_mqtt": "1",
+ 	"is_support_timelapse": "1",
++	"qidi_preprint_bed_leveling": "1",
+ 	"is_support_multi_box": "1",
+ 	"layer_change_gcode": "{if timelapse_type == 1} ; timelapse with wipe tower\nG92 E0\nG1 E-[retraction_length] F1800\n{if layer_z + 0.4 > max_print_height}\nG2 Z{max_print_height} I0.86 J0.86 P1 F20000 ; spiral lift a little\n{else}\nG2 Z{layer_z + 0.4} I0.86 J0.86 P1 F20000 ; spiral lift a little\n{endif}\nMOVE_TO_TRASH\n{if layer_z <=25}\nG1 Z25\n{endif}\nG92 E0\nM400\nTIMELAPSE_TAKE_FRAME\nG1 E[retraction_length] F300\nG1 X180 F8000\nG1 Y380\n{if layer_z <=25}\nG1 Z[layer_z]\n{endif}\n{elsif timelapse_type == 0} ; timelapse without wipe tower\nTIMELAPSE_TAKE_FRAME\n{endif}\nG92 E0\nSET_PRINT_STATS_INFO CURRENT_LAYER={layer_num + 1}",
+ 	"machine_end_gcode": "SET_PRINT_MAIN_STATUS MAIN_STATUS=print_end\nDISABLE_BOX_HEATER\nM141 S0\nM140 S0\nDISABLE_ALL_SENSOR\nG1 E-3 F1800\n{if max_layer_z + 3 > max_print_height}\nG0 Z{max_print_height} F600\n{else}\nG0 Z{max_layer_z + 3} F600\n{endif}\nUNLOAD_FILAMENT T=[current_extruder]\nG0 Y380 F12000\nG0 X128 Y380 F12000\n{if max_layer_z < max_print_height / 2}G1 Z{max_print_height / 2 + 10} F600{else}G1 Z{min(max_print_height, max_layer_z + 3)}{endif}\nM104 S0\nPRINT_END",
+diff --git a/src/libslic3r/Preset.cpp b/src/libslic3r/Preset.cpp
+index 2bb368cd..e9d873b8 100644
+--- a/src/libslic3r/Preset.cpp
++++ b/src/libslic3r/Preset.cpp
+@@ -1618,7 +1618,7 @@ static std::vector<std::string> s_Preset_printer_options {
+     "nozzle_height", "master_extruder_id",
+     "default_print_profile", "inherits",
+     "scan_first_layer", "enable_power_loss_recovery", "wrapping_detection_layers", "wrapping_exclude_area", "machine_load_filament_time", "machine_unload_filament_time", "machine_tool_change_time", "time_cost", "machine_pause_gcode", "template_custom_gcode",
+-    "nozzle_type", "nozzle_hrc","auxiliary_fan", "fan_direction", "nozzle_volume","upward_compatible_machine", "z_hop_types", "travel_slope", "retract_lift_enforce","support_chamber_temp_control","support_box_temp_control","is_support_multi_box","support_air_filtration","support_cooling_filter","cooling_filter_enabled","printer_structure","farthest_point_timelapse",
++    "nozzle_type", "nozzle_hrc","auxiliary_fan", "fan_direction", "nozzle_volume","upward_compatible_machine", "z_hop_types", "travel_slope", "retract_lift_enforce","support_chamber_temp_control","support_box_temp_control","is_support_multi_box","qidi_preprint_bed_leveling","is_support_timelapse","support_air_filtration","support_cooling_filter","cooling_filter_enabled","printer_structure","farthest_point_timelapse",
+     "best_object_pos", "head_wrap_detect_zone",
+     "host_type", "print_host", "printhost_apikey", "flashforge_serial_number", "bbl_use_printhost", "printer_agent",
+     "print_host_webui",
+diff --git a/src/libslic3r/PrintConfig.cpp b/src/libslic3r/PrintConfig.cpp
+index 5a86745f..449d96c4 100644
+--- a/src/libslic3r/PrintConfig.cpp
++++ b/src/libslic3r/PrintConfig.cpp
+@@ -8030,6 +8030,18 @@ void PrintConfigDef::init_fff_params()
+     def->mode = comAdvanced;
+     def->set_default_value(new ConfigOptionBool(false));
+ 
++    def = this->add("qidi_preprint_bed_leveling", coBool);
++    def->label = L("QIDI pre-print bed leveling");
++    def->tooltip = L("Use QIDI G31 and G32 commands to apply the bed leveling selection when submitting a print.");
++    def->mode = comAdvanced;
++    def->set_default_value(new ConfigOptionBool(false));
++
++    def = this->add("is_support_timelapse", coBool);
++    def->label = L("QIDI timelapse support");
++    def->tooltip = L("Apply the timelapse selection through QIDI Moonraker when submitting a print.");
++    def->mode = comAdvanced;
++    def->set_default_value(new ConfigOptionBool(false));
++
+     def = this->add("support_box_temp_control", coBool);
+     def->label = L("Support QIDI Box temperature control");
+     def->tooltip = L("Enable QIDI Box temperature commands in generated G-code.");
+diff --git a/src/slic3r/GUI/SelectMachine.cpp b/src/slic3r/GUI/SelectMachine.cpp
+index 07b54d5b..9f147b31 100644
+--- a/src/slic3r/GUI/SelectMachine.cpp
++++ b/src/slic3r/GUI/SelectMachine.cpp
+@@ -3120,8 +3120,14 @@ void SelectMachineDialog::update_option_opts(MachineObject *obj)
+         return;
+     }
+ 
++    const auto* bundle = wxGetApp().preset_bundle;
++    const auto qidi_supports = [&](const char* key) {
++        const auto* option = bundle ? bundle->printers.get_edited_preset().config.option<ConfigOptionBool>(key) : nullptr;
++        return obj->printer_agent_id == "qidi" && option && option->value;
++    };
++
+     /*timelapse*/
+-    m_checkbox_list["timelapse"]->Show();
++    m_checkbox_list["timelapse"]->Show(obj->printer_agent_id != "qidi" || qidi_supports("is_support_timelapse"));
+     if (obj->is_support_internal_timelapse) {
+         m_timelapse_folder_btn->Show();
+         if (m_timelapse_storage.empty()) {
+@@ -3138,7 +3144,7 @@ void SelectMachineDialog::update_option_opts(MachineObject *obj)
+         m_checkbox_list["bed_leveling"]->Show();
+         m_checkbox_list["bed_leveling"]->update_options(ops_auto, _L("This checks the flatness of heatbed. Leveling makes extruded height uniform.\n*Automatic mode: Run a "
+                                                                      "leveling check(about 10 seconds). Skip if surface is fine."));
+-    } else if (obj->is_support_bed_leveling == 1) {
++    } else if (obj->is_support_bed_leveling == 1 || qidi_supports("qidi_preprint_bed_leveling")) {
+         m_checkbox_list["bed_leveling"]->Show();
+         m_checkbox_list["bed_leveling"]->update_options(ops_no_auto, _L("This checks the flatness of heatbed. Leveling makes extruded height uniform."));
+     } else {
+diff --git a/src/slic3r/GUI/Tab.cpp b/src/slic3r/GUI/Tab.cpp
+index 7bbefba9..1ea9016c 100644
+--- a/src/slic3r/GUI/Tab.cpp
++++ b/src/slic3r/GUI/Tab.cpp
+@@ -5660,6 +5660,8 @@ void TabPrinter::build_fff()
+         optgroup->append_single_option_line("fan_direction");
+         optgroup->append_single_option_line("support_chamber_temp_control", "printer_basic_information_accessory#support-controlling-chamber-temperature");
+         optgroup->append_single_option_line("is_support_multi_box");
++        optgroup->append_single_option_line("qidi_preprint_bed_leveling");
++        optgroup->append_single_option_line("is_support_timelapse");
+         optgroup->append_single_option_line("support_box_temp_control");
+         optgroup->append_single_option_line("support_air_filtration", "printer_basic_information_accessory#support-air-filtration");
+         optgroup->append_single_option_line("cooling_filter_enabled");
+diff --git a/src/slic3r/Utils/QidiPrinterAgent.cpp b/src/slic3r/Utils/QidiPrinterAgent.cpp
+index 823b8bed..f8666276 100644
+--- a/src/slic3r/Utils/QidiPrinterAgent.cpp
++++ b/src/slic3r/Utils/QidiPrinterAgent.cpp
+@@ -204,20 +204,48 @@ std::string QidiPrinterAgent::build_box_selection_script(const PrintParams& para
+ bool QidiPrinterAgent::print_uploaded_file(const PrintParams& params, const std::string& filename)
+ {
+     const auto* bundle = GUI::wxGetApp().preset_bundle;
+-    const auto* support = bundle ? bundle->printers.get_edited_preset().config.option<ConfigOptionBool>("is_support_multi_box") : nullptr;
+-    const bool has_box_support = support && support->value;
++    const auto supported = [&](const char* key) {
++        const auto* option = bundle ? bundle->printers.get_edited_preset().config.option<ConfigOptionBool>(key) : nullptr;
++        return option && option->value;
++    };
++    const bool has_box_support = supported("is_support_multi_box");
+     const std::string script = has_box_support ? build_box_selection_script(params) : build_tool_slot_script(params.ams_mapping);
+     if (has_box_support && params.task_use_ams && script.empty())
+         return false;
+     if (!script.empty() && !send_gcode_sync(device_info.dev_id, script)) {
+         return false;
+     }
++    // QIDI Studio applies these choices before starting the uploaded job.
++    if (supported("qidi_preprint_bed_leveling") &&
++        !send_gcode_sync(device_info.dev_id, params.task_bed_leveling ? "G31" : "G32"))
++        return false;
++    if (supported("is_support_timelapse") && !set_timelapse_enabled(params.task_record_timelapse))
++        return false;
+ 
+     // On the X-Max 4 and Q2, Klipper only opens the copy Moonraker's print start makes, so SDCARD_PRINT_FILE can't find the upload
+     std::string response;
+     return send_jsonrpc_command(device_info.base_url, device_info.api_key, print_start_request(params, filename), response);
+ }
+ 
++bool QidiPrinterAgent::set_timelapse_enabled(bool enabled) const
++{
++    auto http = Http::post(join_url(device_info.base_url,
++        std::string("/machine/timelapse/settings?enabled=") + (enabled ? "true" : "false")));
++    if (!device_info.api_key.empty())
++        http.header("X-Api-Key", device_info.api_key);
++    bool success = false;
++    http.header("Content-Type", "application/json")
++        .set_post_body("{}")
++        .timeout_connect(5)
++        .timeout_max(10)
++        .on_complete([&](std::string, unsigned status) { success = status >= 200 && status < 300; })
++        .on_error([](std::string, std::string error, unsigned status) {
++            BOOST_LOG_TRIVIAL(error) << "QIDI timelapse setting failed: " << error << " (HTTP " << status << ")";
++        })
++        .perform_sync();
++    return success;
++}
++
+ nlohmann::json QidiPrinterAgent::print_start_request(const PrintParams& params, const std::string& filename)
+ {
+     nlohmann::json request{{"filename", filename}};
+diff --git a/src/slic3r/Utils/QidiPrinterAgent.hpp b/src/slic3r/Utils/QidiPrinterAgent.hpp
+index 8e9e899b..bd386942 100644
+--- a/src/slic3r/Utils/QidiPrinterAgent.hpp
++++ b/src/slic3r/Utils/QidiPrinterAgent.hpp
+@@ -47,6 +47,8 @@ protected:
+     std::string ams_unit_name(int ams_id) const override { return "Qidi Box " + std::to_string(ams_id + 1); }
+ 
+ private:
++    bool set_timelapse_enabled(bool enabled) const;
++
+     struct QidiFilamentDict
+     {
+         std::map<int, std::string> colors;
+diff --git a/tests/libslic3r/test_config.cpp b/tests/libslic3r/test_config.cpp
+index 4a10f2ae..50adffbd 100644
+--- a/tests/libslic3r/test_config.cpp
++++ b/tests/libslic3r/test_config.cpp
+@@ -1939,6 +1939,9 @@ TEST_CASE("QIDI Box settings survive a preset save and reload", "[Config][QidiBo
+     DynamicPrintConfig config = DynamicPrintConfig::full_print_config();
+     config.set_deserialize_strict({
+         {"support_box_temp_control", true},
++        {"is_support_multi_box", true},
++        {"qidi_preprint_bed_leveling", true},
++        {"is_support_timelapse", true},
+         {"box_temperature", "0,45"},
+         {"box_temperature_range_low", "0,35"},
+         {"box_temperature_range_high", "35,55"},
+@@ -1951,6 +1954,9 @@ TEST_CASE("QIDI Box settings survive a preset save and reload", "[Config][QidiBo
+     REQUIRE(loaded.load_from_json(tmp.string(), substitutions, true, metadata, reason) == 0);
+     CHECK(reason.empty());
+     CHECK(loaded.opt_bool("support_box_temp_control"));
++    CHECK(loaded.opt_bool("is_support_multi_box"));
++    CHECK(loaded.opt_bool("qidi_preprint_bed_leveling"));
++    CHECK(loaded.opt_bool("is_support_timelapse"));
+     CHECK(loaded.option<ConfigOptionInts>("box_temperature")->values == std::vector<int>{0, 45});
+     CHECK(loaded.option<ConfigOptionInts>("box_temperature_range_low")->values == std::vector<int>{0, 35});
+     CHECK(loaded.option<ConfigOptionInts>("box_temperature_range_high")->values == std::vector<int>{35, 55});

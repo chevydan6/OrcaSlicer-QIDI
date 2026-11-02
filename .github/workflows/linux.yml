@@ -6,7 +6,10 @@ permissions:
 jobs:
   linux:
     runs-on: ubuntu-24.04
-    timeout-minutes: 180
+    timeout-minutes: 360
+    env:
+      CCACHE_DIR: ${{ github.workspace }}/.ccache
+      CCACHE_MAXSIZE: 2G
     steps:
       - uses: actions/checkout@v4
       - name: Read pinned upstream
@@ -30,22 +33,38 @@ jobs:
           cmakeVersion: '~4.3.0'
       - name: Install build packages
         working-directory: source
-        run: ./build_linux.sh -u
-      - uses: actions/cache@v4
+        run: |
+          ./build_linux.sh -u
+          sudo apt-get install -y ccache xvfb
+      - uses: actions/cache/restore@v4
         id: deps
         with:
           path: source/deps/build
           key: qidi-linux-deps-${{ steps.source.outputs.sha }}
+      - uses: actions/cache/restore@v4
+        with:
+          path: .ccache
+          key: qidi-ccache-${{ steps.source.outputs.sha }}-${{ github.sha }}
+          restore-keys: qidi-ccache-${{ steps.source.outputs.sha }}-
       - name: Build dependencies
         if: steps.deps.outputs.cache-hit != 'true'
         working-directory: source
-        run: ./build_linux.sh -drlL -j 2
+        run: |
+          set -o pipefail
+          ./build_linux.sh -drlL -j 2 2>&1 | tee ../dependencies.log
+      - uses: actions/cache/save@v4
+        if: steps.deps.outputs.cache-hit != 'true'
+        with:
+          path: source/deps/build
+          key: qidi-linux-deps-${{ steps.source.outputs.sha }}
       - name: Build slicer and tests
         working-directory: source
-        run: ./build_linux.sh -sitrlL -j 2
+        run: |
+          set -o pipefail
+          ./build_linux.sh -sitrlL -j 2 2>&1 | tee ../compile.log
       - name: Unit tests
         working-directory: source
-        run: ctest --test-dir build -C Release --output-on-failure
+        run: xvfb-run -a ctest --test-dir build -C Release --output-on-failure --timeout 300
       - name: Profile structure checks
         working-directory: source
         run: python3 scripts/orca_profile_tool.py check
@@ -58,5 +77,12 @@ jobs:
             source/build/*.AppImage
             source/build/Testing/Temporary/*.log
             source/build/CMakeFiles/CMakeConfigureLog.yaml
+            dependencies.log
+            compile.log
           if-no-files-found: warn
           retention-days: 30
+      - uses: actions/cache/save@v4
+        if: always()
+        with:
+          path: .ccache
+          key: qidi-ccache-${{ steps.source.outputs.sha }}-${{ github.sha }}
