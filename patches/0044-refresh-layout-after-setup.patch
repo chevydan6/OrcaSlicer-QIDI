@@ -1,4 +1,4 @@
-From 4d9de20f9ab24e0024a7efdf8da0e23ec6cd596b Mon Sep 17 00:00:00 2001
+From 7a85a279eb140b051ad09aa0ca4b43522ad84a1d Mon Sep 17 00:00:00 2001
 From: chevydan6 <339888127+chevydan6@users.noreply.github.com>
 Date: Tue, 3 Nov 2026 13:10:29 +0900
 Subject: [PATCH] Refresh the main window layout after setup completes
@@ -8,7 +8,7 @@ Subject: [PATCH] Refresh the main window layout after setup completes
  1 file changed, 4 insertions(+)
 
 diff --git a/src/slic3r/GUI/GUI_App.cpp b/src/slic3r/GUI/GUI_App.cpp
-index edaad9d3..235b39e0 100644
+index edaad9d3..29726973 100644
 --- a/src/slic3r/GUI/GUI_App.cpp
 +++ b/src/slic3r/GUI/GUI_App.cpp
 @@ -9993,6 +9993,10 @@ bool GUI_App::run_wizard(RunReason reason, StartPage start_page)
@@ -18,7 +18,7 @@ index edaad9d3..235b39e0 100644
 +        // GTK may retain the initial page's zero-sized layout after the modal
 +        // setup wizard. Deliver the resize that otherwise requires a manual
 +        // window resize before Prepare and Device controls become visible.
-+        mainframe->SendSizeEvent();
++        mainframe->SendSizeEvent(wxSEND_EVENT_POST);
          // BBS: remove SLA related message
      }
  
