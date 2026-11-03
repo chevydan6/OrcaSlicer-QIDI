@@ -1,0 +1,26 @@
+QIDI project import investigation — 2026-11-03 JST
+
+Official upstream Orca AppImage (unpatched baseline): the original QIDI saved
+projects encountered a MAX4 compatibility-name mismatch and then rejected QIDI's
+raft_first_layer_expansion=-1. Import logging also identified them as generic
+third-party 3MF files and reported zero objects in the CLI model list.
+
+A diagnostic COPY of the sparse project changed only:
+- Application marker QIDIStudio-02.07.02.73 to OrcaSlicer-2.0.0 and its 3mfVersion
+  metadata name to the corresponding Bambu marker;
+- print_compatible_printers to Orca's Qidi X-Max 4 0.4 nozzle name;
+- raft_first_layer_expansion from -1 to 2 (the value used by QIDI's auto path).
+
+With that copy and Orca's MAX4 machine override, the SAME unpatched binary sliced
+successfully. Its exported model retains extruder=3, first tool is T2, Box print
+preparation uses EXTRUDER=2, and initial nozzle temperature is 220 C. It lacks
+BOX_TEMP_SET, as expected from the unpatched baseline. Original reference archives
+were not changed. Networking was disabled through Flatpak throughout.
+
+Patch 0034 implements the equivalent source import recognition and configuration
+migrations, and adds a full-library test loading the original QIDI archive.
+The project compatibility baseline is deliberately separate from QIDI's product
+version. This does not imply engine/output equivalence or arbitrary future-QIDI
+project compatibility. Compiled patched tests, GUI import and paired slicing are
+still pending. Nothing here validates a physical printer or explains all cases
+of the user's starting-filament issue.
