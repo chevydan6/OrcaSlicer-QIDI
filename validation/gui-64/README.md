@@ -46,3 +46,9 @@ editor correction. Print Options remains usable. On this binary, a chooser opene
 for fixture.gcode rejects its selection after replacement.gcode arrives (no
 EXCLUDE_OBJECT request); a fresh chooser sends EXCLUDE_OBJECT NAME=fixture_cube.
 These exploratory checks must be repeated on the final matching binary.
+
+A subsequent malformed-telemetry sweep covered invalid JSON, wrong Box type,
+null product metadata, extreme chamber numbers and partial slot metadata. Each
+was followed by a recorded loopback lamp request and a live GUI process
+(fault-results.json). The second session exited 0. These remain partial checks
+on a rejected binary, not the complete fault/lifecycle gate.

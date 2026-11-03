@@ -1,0 +1,23 @@
+[
+  {
+    "file": "upload-qee06xc2.bin",
+    "sha256": "8f3d73b26b1defc83849c0bb75b6bd68c07d17d439391d0590f1f80b19f2a711",
+    "tool_commands": [
+      "BOX_TEMP_SET VT2=45",
+      "BOX_PRINT_START EXTRUDER=2 HOTENDTEMP=240",
+      "T2",
+      "T2"
+    ]
+  },
+  {
+    "file": "upload-q3td6ymj.bin",
+    "sha256": "eb26c1c6845ff52f84cfa49d110821f3c00262aab3004a921f753885f135586f",
+    "tool_commands": [
+      "BOX_TEMP_SET VT2=45 VT0=35",
+      "BOX_PRINT_START EXTRUDER=2 HOTENDTEMP=240",
+      "T0",
+      "T0",
+      "T2"
+    ]
+  }
+]

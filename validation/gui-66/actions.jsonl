@@ -1,0 +1,33 @@
+{"time": 1793699270.0216787, "screenshot": "01-start", "action": []}
+{"time": 1793699274.311337, "screenshot": "02-welcome", "action": ["mousemove", "514", "570", "click", "1", "mousemove", "1034", "570", "click", "1", "sleep", "3", "mousemove", "800", "620", "click", "1", "sleep", "1", "mousemove", "1144", "798", "click", "1", "sleep", "1", "mousemove", "473", "222", "click", "1", "type", "X-Max 4"]}
+{"time": 1793699289.6957145, "screenshot": "03-setup-complete", "action": ["mousemove", "510", "373", "click", "1", "mousemove", "1144", "798", "click", "1", "sleep", "1", "mousemove", "1081", "490", "click", "1", "mousemove", "1144", "798", "click", "1", "sleep", "1", "mousemove", "521", "480", "click", "1", "mousemove", "1144", "784", "click", "1", "sleep", "1", "mousemove", "1144", "784", "click", "1", "sleep", "4"]}
+{"time": 1793699304.8361897, "screenshot": "04-fresh-prepare", "action": ["mousemove", "941", "768", "click", "1", "sleep", "1", "mousemove", "335", "152", "click", "1", "sleep", "2"]}
+{"time": 1793699320.079571, "screenshot": "05-preferences", "action": ["mousemove", "1355", "117", "click", "1", "key", "ctrl+p", "sleep", "1"]}
+{"time": 1793699325.2888865, "screenshot": "06-agents", "action": ["search", "--onlyvisible", "--name", "^Preferences$", "windowmove", "480", "180", "mousemove", "995", "217", "click", "1", "mousemove", "798", "484", "click", "1", "sleep", "1", "mousemove", "1107", "191", "click", "1", "mousemove", "431", "52", "click", "1", "sleep", "1"]}
+{"time": 1793699334.2464273, "screenshot": "07-connect", "action": ["mousemove", "200", "97", "click", "1", "mousemove", "110", "177", "click", "1", "sleep", "1", "type", "--clearmodifiers", "http://127.0.0.1:19025"]}
+{"time": 1793699340.5294409, "screenshot": "08-connected", "action": ["mousemove", "968", "657", "click", "1", "sleep", "2", "mousemove", "130", "52", "click", "1", "key", "ctrl+o", "sleep", "1", "key", "ctrl+l", "type", "--clearmodifiers", "/home/dan/qidi-orca-port/validation/qidi-reference/sparse-project.3mf", "key", "Return", "sleep", "2"]}
+{"time": 1793699369.0919561, "screenshot": "09-path", "action": ["key", "ctrl+a", "type", "--clearmodifiers", "/home/dan/qidi-orca-port/validation/qidi-reference/sparse-project.3mf"]}
+{"time": 1793699370.1285615, "screenshot": "10-import", "action": ["key", "Return", "sleep", "2"]}
+{"time": 1793699381.9144576, "screenshot": "11-import-confirm", "action": ["mousemove", "1177", "604", "click", "1", "sleep", "1"]}
+{"time": 1793699393.6717227, "screenshot": "12-sparse-ready", "action": ["mousemove", "1110", "594", "click", "1", "sleep", "2", "mousemove", "1298", "52", "click", "1", "sleep", "4"]}
+{"time": 1793699405.154345, "screenshot": "13-send-dialog", "action": ["mousemove", "1389", "52", "click", "1", "mousemove", "1467", "86", "click", "1", "mousemove", "1500", "52", "click", "1", "sleep", "2"]}
+{"time": 1793699420.406455, "screenshot": "14-sparse-map", "action": ["mousemove", "534", "565", "click", "1"]}
+{"time": 1793699425.9681702, "screenshot": "15-sparse-B2", "action": ["mousemove", "610", "783", "click", "1"]}
+{"time": 1793699426.6481245, "screenshot": "16-sparse-send", "action": ["mousemove", "1073", "796", "click", "1", "sleep", "3"]}
+{"time": 1793699449.1777365, "screenshot": "17-support-open", "action": ["key", "ctrl+o", "sleep", "1"]}
+{"time": 1793699450.7799242, "screenshot": "18-support-path", "action": ["key", "ctrl+l", "type", "--clearmodifiers", "/home/dan/qidi-orca-port/validation/qidi-reference/support-first-project.3mf"]}
+{"time": 1793699451.858635, "screenshot": "19-support-load", "action": ["key", "Return", "sleep", "2"]}
+{"time": 1793699461.7784724, "screenshot": "20-discard", "action": ["mousemove", "882", "754", "click", "1", "sleep", "1"]}
+{"time": 1793699463.4466143, "screenshot": "21-support-path", "action": ["key", "ctrl+l", "type", "--clearmodifiers", "/home/dan/qidi-orca-port/validation/qidi-reference/support-first-project.3mf"]}
+{"time": 1793699464.525016, "screenshot": "22-support-import", "action": ["key", "Return", "sleep", "2"]}
+{"time": 1793699480.9341314, "screenshot": "23-support-accept", "action": ["mousemove", "1177", "604", "click", "1", "sleep", "1", "mousemove", "1110", "594", "click", "1", "sleep", "2", "mousemove", "130", "52", "click", "1", "mousemove", "1298", "52", "click", "1", "sleep", "4"]}
+{"time": 1793699500.3025227, "screenshot": "24-support-send-dialog", "action": ["mousemove", "1389", "52", "click", "1", "mousemove", "1467", "86", "click", "1", "mousemove", "1500", "52", "click", "1", "sleep", "2"]}
+{"time": 1793699515.7404087, "screenshot": "25-support-first-map", "action": ["mousemove", "534", "550", "click", "1"]}
+{"time": 1793699523.4844544, "screenshot": "26-support-refresh", "action": ["key", "Escape", "sleep", "1", "mousemove", "534", "550", "click", "1"]}
+{"time": 1793699538.6820815, "screenshot": "27-support-reopen", "action": ["mousemove", "1500", "52", "click", "1", "sleep", "2", "mousemove", "534", "550", "click", "1"]}
+{"time": 1793699556.6423151, "screenshot": "28-support-type", "action": ["key", "Escape", "mousemove", "1500", "52", "click", "1", "sleep", "2", "mousemove", "534", "550", "click", "1"]}
+{"time": 1793699574.0660214, "screenshot": "29-support-second-map", "action": ["mousemove", "610", "783", "click", "1", "mousemove", "609", "565", "click", "1"]}
+{"time": 1793699580.5667944, "screenshot": "30-support-reversed", "action": ["mousemove", "632", "698", "click", "1"]}
+{"time": 1793699581.2588928, "screenshot": "31-support-submitted", "action": ["mousemove", "1073", "796", "click", "1", "sleep", "3"]}
+{"time": 1793699610.8553054, "screenshot": "32-close-import", "action": ["key", "alt+F4", "sleep", "1"]}
+{"time": 1793699612.462166, "screenshot": "33-discard-close", "action": ["mousemove", "884", "754", "click", "1", "sleep", "2"]}

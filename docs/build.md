@@ -1,17 +1,16 @@
 # Linux build and installation
 
-Status: the 42-patch integration build passed compilation, unit tests, all seven
-CLI regressions, all 72 profile bundles and all 19 MAX4 slicing cases in run
-41574937523. This fixes the four G-code import regressions found on earlier
-builds. Actual GUI simulation through patch 38 has exercised controls, faults,
-camera display and filament-three to Box-B2 submission. Later source patches
-address additional GUI defects; their full build and acceptance remain pending.
-This is not yet a validated final release or physical printer certification.
+The current acceptance candidate and CI state are recorded in [HANDOFF.md](../HANDOFF.md).
+No final release is accepted yet. Candidate 64 passed compilation, 2,914 unit
+cases without failures/skips, seven CLI regressions, 72 vendor bundles and all
+21 MAX4 cases, but failed GUI acceptance. Later corrections require matching
+build and GUI evidence. Software validation does not certify physical behavior.
 
-The tested host is Fedora 44 x86_64. Builds target Ubuntu 24.04 x86_64 AppImage,
-using the official Orca build script and dependency recipes at the pinned source
-revision. The local host lacks GUI development packages and passwordless sudo;
-the GitHub workflow provides a separate build machine.
+The recovered host is Ubuntu 24.04.5 x86_64 with GNOME/Wayland, 14 GiB RAM and
+23 GiB swap. Private GUI tests use Xvfb and Openbox. The native extracted AppImage
+and native file chooser run here without the old Fedora runtime workaround.
+Builds target Ubuntu 24.04 x86_64 with two compiler/test jobs; adjust parallelism
+to available memory. Do not copy historical host assumptions without checking.
 
 ## Reproduce
 

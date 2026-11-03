@@ -1,0 +1,104 @@
+[
+  {
+    "time": 1793699426.6911721,
+    "method": "POST",
+    "path": "/server/files/upload",
+    "query": {},
+    "body": ""
+  },
+  {
+    "time": 1793699426.6944735,
+    "method": "POST",
+    "path": "/server/files/upload",
+    "query": {},
+    "body": ""
+  },
+  {
+    "time": 1793699426.6961696,
+    "method": "POST",
+    "path": "/printer/gcode/script",
+    "query": {},
+    "body": "{\"script\":\"SAVE_VARIABLE VARIABLE=enable_box VALUE=1\\nSAVE_VARIABLE VARIABLE=value_t2 VALUE=\\\"'slot5'\\\"\"}"
+  },
+  {
+    "time": 1793699426.6966908,
+    "method": "POST",
+    "path": "/printer/gcode/script",
+    "query": {},
+    "body": "{\"script\":\"G31\"}"
+  },
+  {
+    "time": 1793699426.696997,
+    "method": "POST",
+    "path": "/machine/timelapse/settings",
+    "query": {
+      "enabled": "false"
+    },
+    "body": "{}"
+  },
+  {
+    "time": 1793699426.697193,
+    "method": "POST",
+    "path": "/printer/gcode/script",
+    "query": {},
+    "body": "{\"script\":\"SAVE_VARIABLE VARIABLE=enable_polar_cooler VALUE=1\"}"
+  },
+  {
+    "time": 1793699426.6973677,
+    "method": "POST",
+    "path": "/printer/print/start",
+    "query": {},
+    "body": "{\"filename\":\"sparse-project.gcode\"}"
+  },
+  {
+    "time": 1793699581.3035994,
+    "method": "POST",
+    "path": "/server/files/upload",
+    "query": {},
+    "body": ""
+  },
+  {
+    "time": 1793699581.3076925,
+    "method": "POST",
+    "path": "/server/files/upload",
+    "query": {},
+    "body": ""
+  },
+  {
+    "time": 1793699581.3094609,
+    "method": "POST",
+    "path": "/printer/gcode/script",
+    "query": {},
+    "body": "{\"script\":\"SAVE_VARIABLE VARIABLE=enable_box VALUE=1\\nSAVE_VARIABLE VARIABLE=value_t0 VALUE=\\\"'slot5'\\\"\\nSAVE_VARIABLE VARIABLE=value_t2 VALUE=\\\"'slot0'\\\"\"}"
+  },
+  {
+    "time": 1793699581.309634,
+    "method": "POST",
+    "path": "/printer/gcode/script",
+    "query": {},
+    "body": "{\"script\":\"G31\"}"
+  },
+  {
+    "time": 1793699581.3097792,
+    "method": "POST",
+    "path": "/machine/timelapse/settings",
+    "query": {
+      "enabled": "false"
+    },
+    "body": "{}"
+  },
+  {
+    "time": 1793699581.3099222,
+    "method": "POST",
+    "path": "/printer/gcode/script",
+    "query": {},
+    "body": "{\"script\":\"SAVE_VARIABLE VARIABLE=enable_polar_cooler VALUE=1\"}"
+  },
+  {
+    "time": 1793699581.310059,
+    "method": "POST",
+    "path": "/printer/print/start",
+    "query": {},
+    "body": "{\"filename\":\"support-first-project.gcode\"}"
+  }
+]

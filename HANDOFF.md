@@ -8,7 +8,7 @@ Feature expansion is frozen pending one complete software acceptance.
 
 - Integration repository: https://github.com/chevydan6/OrcaSlicer-QIDI, branch main.
 - Workspace: `/home/dan/qidi-orca-port`; recovered at `70d58fc17f0132d926424a5a74144bf80cb1dcfd`.
-- Current source: **68 patches**, pending matching build. Candidate 64 build input: `9b06cba3424e19e53a4235ce8b3bf9d455ea393a`. Latest evaluated build input: `b8ef9f8e4f3e27fda362401da9076d453e3cf06b` (62 patches), GUI rejected.
+- Current source: **68 patches**, build input `8c258d62e15fded96b400782d7e6c5d150b92a07`, matching CI running. Candidate 66 (`d1a35c855fd968125d39830f48328fdbd9eaf6b1`) is undergoing targeted layout/import checks; it lacks the two later fixes and is not accepted.
 - Orca pin: `896557bce5281553ee0c6210f2da301b3b3c262e`.
 - QIDI Studio pin: `403b619d56147160bb883e94f95a7951245bc6d0`.
 - Prepared source: `build/source`, local commit `c2d5adf9`.
@@ -21,7 +21,9 @@ Feature expansion is frozen pending one complete software acceptance.
 
 | Candidate | Integration | Static | Acceptance |
 | --- | --- | --- | --- |
-| 64 / 9b06cba | [41610127689](https://github.com/chevydan6/OrcaSlicer-QIDI/actions/runs/41610127689), running | [41610133489](https://github.com/chevydan6/OrcaSlicer-QIDI/actions/runs/41610133489), running | Fresh layout failed; import-agent defect not fixed here |
+| 68 / 8c258d6 | [41614117101](https://github.com/chevydan6/OrcaSlicer-QIDI/actions/runs/41614117101), running | [41614122533](https://github.com/chevydan6/OrcaSlicer-QIDI/actions/runs/41614122533), running | Matching artifact and full GUI matrix pending |
+| 66 / d1a35c8 | [41612448931](https://github.com/chevydan6/OrcaSlicer-QIDI/actions/runs/41612448931), running | [41612454913](https://github.com/chevydan6/OrcaSlicer-QIDI/actions/runs/41612454913), passed | Fresh setup layout and original sparse import/submission now work; targeted evidence only |
+| 64 / 9b06cba | [41610127689](https://github.com/chevydan6/OrcaSlicer-QIDI/actions/runs/41610127689), passed | [41610133489](https://github.com/chevydan6/OrcaSlicer-QIDI/actions/runs/41610133489), passed | Fresh layout failed; import-agent defect not fixed here |
 | 62 / b8ef9f8 | [41605999278](https://github.com/chevydan6/OrcaSlicer-QIDI/actions/runs/41605999278), passed | [41606004232](https://github.com/chevydan6/OrcaSlicer-QIDI/actions/runs/41606004232), passed | 2,913 unit / 7 CLI / 72 vendors / 21 MAX4 pass; GUI rejected |
 | 59 / cd6d820 | [41602372652](https://github.com/chevydan6/OrcaSlicer-QIDI/actions/runs/41602372652), passed | [41602379555](https://github.com/chevydan6/OrcaSlicer-QIDI/actions/runs/41602379555), passed | Verified matching artifact; GUI failed layout, repeated material dialogs and restart |
 | 58 / c1aa8e5 | 41601936217, cancelled | 41601942066, cancelled | Superseded by fresh-connection fix; cancellation is not a pass |
