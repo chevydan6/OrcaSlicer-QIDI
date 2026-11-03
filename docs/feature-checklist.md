@@ -5,12 +5,15 @@ The full integrated build and dedicated validation phase remain open.
 No MAX4 is connected during this work; communication tests use local fixtures,
 and printer-specific protocol/physical verification remains pending.
 
-Build update: all 38 patches passed the full changed-line C++ static/include
-checks (GitHub run 41569820617); the corresponding application build is still
-running. Prior compile failures exposed private-member
+Build update: all 40 patches passed the full changed-line C++ static/include
+checks (GitHub run 41573713149); the 42-patch application build is running. Prior compile failures exposed private-member
 access, an ambiguous HTTP overload and missing direct includes; those have been
 corrected. The earlier 32-patch revision compiled and produced an AppImage in run
-41567417124; its tests are running. That build does not validate later patches.
+41567417124. All seven CLI regressions and all 72 profile bundles passed; four
+G-code import unit failures led to patch 41. The corrected slicing fixture passes
+17/19 cases on that binary; the remaining QIDI imports require patch 34.
+First GUI startup succeeded; control validation is in progress. That build does
+not validate later patches.
 
 Further stability validation reproduced a type-conversion exception for a null
 material name in the native tray updater. Patch 0032 preserves existing metadata

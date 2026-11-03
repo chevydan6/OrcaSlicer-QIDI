@@ -1,7 +1,9 @@
 # Linux build and installation
 
 Status: the 32-patch custom application compiled and packaged successfully in run
-41567417124. Its tests are running; the newer 38-patch build is also running.
+41567417124. Tests exposed four upstream G-code import regressions, corrected
+in patch 41; details are in `validation/custom-32-results.md`. The 42-patch
+application build and static checks are running.
 Neither result yet establishes GUI stability or a validated installable release.
 
 The tested host is Fedora 44 x86_64. Builds target Ubuntu 24.04 x86_64 AppImage,
