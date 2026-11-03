@@ -42,6 +42,17 @@ and `QIDIStudio/` checkouts. Use those names for a maintenance workspace or adap
 those explicit paths when working elsewhere. The CI workflow reads pins from the
 integration commit and creates its own clean source checkout.
 
+## Shared-code changes to review during upstream updates
+
+Most controls and telemetry are gated by the QIDI agent. The changes to shared
+code also need review: the CLI filament-diameter default, structured QIDI 3MF
+recognition/configuration migration, optional QIDI API-key handling, and delayed
+Moonraker response lifetime. In particular, queued message dispatchers must stop
+after callback clearing, connection reset or agent destruction. Keep the existing
+non-QIDI access-control and cache-merge regression cases when updating these
+paths. QIDI's four-part product version must not be interpreted as an Orca
+application version or trigger obsolete plate-origin migrations.
+
 ## Licensing and distribution
 
 OrcaSlicer and QIDI Studio source in this port is AGPL-3.0. Their original license
