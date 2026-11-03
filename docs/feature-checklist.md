@@ -11,6 +11,13 @@ direct includes. Patch 0030 addresses those findings; patch 0031 adds control
 stability guards. Neither correction is evidence of a passing integrated build
 until the subsequent run completes.
 
+Further stability validation reproduced a type-conversion exception for a null
+material name in the native tray updater. Patch 0032 preserves existing metadata
+for wrongly typed names, adds the missing device-manager definition identified
+by the next static-check run, and rejects deferred dialog work during window
+destruction. The isolated control harness passes with address/undefined-behavior
+sanitizers; full GUI acceptance remains pending.
+
 | Workflow | Existing Orca | Downstream implementation | Validation / remaining work |
 | --- | --- | --- | --- |
 | MAX4 machine profiles | Four nozzle sizes and machine limits | Preserve profiles; height guards; pre-print capability | All 72 vendor bundles pass structure checks; runtime load pending |

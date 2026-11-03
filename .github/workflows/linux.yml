@@ -44,6 +44,8 @@ jobs:
         with:
           path: source/deps/build
           key: qidi-linux-deps-${{ steps.source.outputs.sha }}
+      - name: Offline protocol input and memory checks
+        run: python3 scripts/check-protocol-helpers.py --source source --sanitize
       - uses: actions/cache/restore@v4
         with:
           path: .ccache

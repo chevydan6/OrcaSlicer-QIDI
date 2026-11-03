@@ -1,9 +1,16 @@
 #!/usr/bin/env python3
 """Compile selected production helper bodies in isolation; NOT a slicer build."""
 from pathlib import Path
+import argparse
 import subprocess
 root = Path(__file__).resolve().parents[1]
-source = (root/'OrcaSlicer/src/slic3r/Utils/QidiPrinterAgent.cpp').read_text()
+parser = argparse.ArgumentParser(description=__doc__)
+parser.add_argument('--sanitize', action='store_true', help='Enable address and undefined-behavior sanitizers for the isolated harness')
+parser.add_argument('--source', type=Path, default=root/'OrcaSlicer')
+parser.add_argument('--sanitizer-libs', type=Path, help='Optional directory containing locally extracted sanitizer runtime libraries')
+args = parser.parse_args()
+source_root = args.source.resolve()
+source = (source_root/'src/slic3r/Utils/QidiPrinterAgent.cpp').read_text()
 functions = [
  ('std::optional<std::string> QidiPrinterAgent::control_script', 'int QidiPrinterAgent::command_ams_refresh_rfid'),
  ('void QidiPrinterAgent::append_chamber_status', 'AgentInfo QidiPrinterAgent::get_agent_info_static'),
@@ -56,8 +63,8 @@ struct QidiPrinterAgent {
 '''
 for start,end in functions:
  code += source[source.index(start):source.index(end,source.index(start))]
-cache_source = (root/'OrcaSlicer/src/slic3r/Utils/MoonrakerPrinterAgent.cpp').read_text()
-qidi_header = (root/'OrcaSlicer/src/slic3r/Utils/QidiPrinterAgent.hpp').read_text()
+cache_source = (source_root/'src/slic3r/Utils/MoonrakerPrinterAgent.cpp').read_text()
+qidi_header = (source_root/'src/slic3r/Utils/QidiPrinterAgent.hpp').read_text()
 code += """
 #include <mutex>
 struct MoonrakerCacheHarness {
@@ -72,7 +79,7 @@ start=qidi_header.index('    bool merge_status_object_recursively')
 code += qidi_header[start:qidi_header.index('    void append_status_payload',start)] + '};\n'
 start=cache_source.index('void MoonrakerPrinterAgent::update_status_cache')
 code += cache_source[start:cache_source.index('nlohmann::json MoonrakerPrinterAgent::build_print_payload_locked',start)].replace('MoonrakerPrinterAgent::','MoonrakerCacheHarness::')
-gui_source = (root/'OrcaSlicer/src/slic3r/GUI/DeviceCore/DevFilaSystem.cpp').read_text()
+gui_source = (source_root/'src/slic3r/GUI/DeviceCore/DevFilaSystem.cpp').read_text()
 code += """
 struct DevAmsTray {
  int hold_count=0, ctype=0;
@@ -87,9 +94,10 @@ struct DevFilaSystemParser {
 """
 start=gui_source.index('void DevFilaSystemParser::UpdateQidiTray')
 code += gui_source[start:gui_source.index('void DevFilaSystemParser::ParseV1_0',start)]
-device_source = (root/'OrcaSlicer/src/slic3r/GUI/DeviceManager.cpp').read_text()
+device_source = (source_root/'src/slic3r/GUI/DeviceManager.cpp').read_text()
 code += '''
 #include <cstdlib>
+#include <iostream>
 using json = nlohmann::json;
 constexpr int BAMBU_NETWORK_ERR_INVALID_RESULT = -999;
 struct MachineObject {
@@ -105,6 +113,18 @@ start=device_source.index('int MachineObject::command_ams_change_filament(')
 code += device_source[start:device_source.index('int MachineObject::command_ams_user_settings(',start)]
 code += r'''
 int main() {
+ for (const auto& invalid : nlohmann::json::array({nullptr, false, 42, nlohmann::json::array(), nlohmann::json::object()})) {
+  DevAmsTray tray;
+  tray.m_fila_type="PLA"; tray.sub_brands="PLA Rapido"; tray.setting_id="specific-PLA";
+  try {
+   DevFilaSystemParser::UpdateQidiTray(tray,{{"filament_type","PLA"},{"filament_str",invalid}},"generic-PLA");
+  } catch (const std::exception& error) {
+   std::cerr << "Malformed slot metadata escaped the GUI updater: " << error.what() << '\n';
+   return 1;
+  }
+  assert(tray.sub_brands=="PLA Rapido");
+  assert(tray.setting_id=="specific-PLA");
+ }
  MachineObject controls;
  for (bool load : {false,true}) {
   for (const std::string invalid : {"", "-1", "4", "254", "invalid", "1junk", "18446744073709551615"}) {
@@ -255,9 +275,12 @@ int main() {
  assert(agent.calls.empty());
 }
 '''
-build = root/'build/protocol-helpers'
+build = root/('build/protocol-helpers-sanitized' if args.sanitize else 'build/protocol-helpers')
 build.mkdir(parents=True,exist_ok=True)
 (build/'test.cpp').write_text(code)
-subprocess.run(['g++','-std=c++17','-Wall','-Wextra','-Werror','-I'+str(root/'OrcaSlicer/deps_src'),str(build/'test.cpp'),'-o',str(build/'test')],check=True)
+sanitizers = ['-fsanitize=address,undefined','-fno-omit-frame-pointer','-g'] if args.sanitize else []
+if args.sanitize and args.sanitizer_libs:
+ sanitizers += ['-L'+str(args.sanitizer_libs.resolve()), '-Wl,-rpath,'+str(args.sanitizer_libs.resolve())]
+subprocess.run(['g++','-std=c++17','-Wall','-Wextra','-Werror',*sanitizers,'-I'+str(source_root/'deps_src'),str(build/'test.cpp'),'-o',str(build/'test')],check=True)
 subprocess.run([str(build/'test')],check=True)
 print('PASS: isolated production protocol helper compilation and offline assertions. Submission ordering and stop-on-failure use recording transports. Full app compilation, GUI, real HTTP and hardware are NOT covered.')

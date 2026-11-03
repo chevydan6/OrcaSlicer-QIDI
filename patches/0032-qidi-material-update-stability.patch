@@ -1,0 +1,93 @@
+From b4142ecafcef02925d2fd1d692303ee37f0caec9 Mon Sep 17 00:00:00 2001
+From: chevydan6 <339888127+chevydan6@users.noreply.github.com>
+Date: Tue, 3 Nov 2026 11:35:24 +0900
+Subject: [PATCH] Handle malformed material names and closing QIDI dialogs
+
+---
+ src/slic3r/GUI/DeviceCore/DevFilaSystem.cpp   |  6 ++++--
+ src/slic3r/GUI/PrintOptionsDialog.cpp         |  5 +++--
+ tests/slic3rutils/test_qidi_printer_agent.cpp | 14 ++++++++++++++
+ 3 files changed, 21 insertions(+), 4 deletions(-)
+
+diff --git a/src/slic3r/GUI/DeviceCore/DevFilaSystem.cpp b/src/slic3r/GUI/DeviceCore/DevFilaSystem.cpp
+index 5d068468..b68f1570 100644
+--- a/src/slic3r/GUI/DeviceCore/DevFilaSystem.cpp
++++ b/src/slic3r/GUI/DeviceCore/DevFilaSystem.cpp
+@@ -392,7 +392,8 @@ std::string DevFilaSystemParser::ResolveQidiFilament(const nlohmann::json& updat
+ {
+     if (!update.contains("filament_type") || !update["filament_type"].is_string()) return {};
+     const auto type = update["filament_type"].get<std::string>();
+-    const auto name = update.value("filament_str", std::string());
++    const auto name = update.contains("filament_str") && update["filament_str"].is_string()
++        ? update["filament_str"].get<std::string>() : std::string();
+     std::string resolved_id;
+     for (const auto& preset : filaments.get_presets()) {
+         if (!preset.is_visible || !preset.is_compatible) continue;
+@@ -415,7 +416,8 @@ void DevFilaSystemParser::UpdateQidiTray(DevAmsTray& tray, const nlohmann::json&
+         tray.is_exists = update["present"].get<bool>();
+     if (update.contains("filament_type") && update["filament_type"].is_string()) {
+         const auto type = update["filament_type"].get<std::string>();
+-        const auto name = update.value("filament_str", tray.sub_brands);
++        const auto name = update.contains("filament_str") && update["filament_str"].is_string()
++            ? update["filament_str"].get<std::string>() : tray.sub_brands;
+         if (type != tray.m_fila_type || name != tray.sub_brands || tray.setting_id.empty())
+             tray.setting_id = resolved_filament_id;
+         tray.m_fila_type = type;
+diff --git a/src/slic3r/GUI/PrintOptionsDialog.cpp b/src/slic3r/GUI/PrintOptionsDialog.cpp
+index 35ea5ec7..72cfad93 100644
+--- a/src/slic3r/GUI/PrintOptionsDialog.cpp
++++ b/src/slic3r/GUI/PrintOptionsDialog.cpp
+@@ -38,6 +38,7 @@
+ #include "MsgDialog.hpp"
+ 
+ #include "DeviceCore/DevConfig.h"
++#include "DeviceCore/DevManager.h"
+ #include "DeviceCore/DevExtruderSystem.h"
+ #include "DeviceCore/DevNozzleSystem.h"
+ #include "DeviceCore/DevFan.h"
+@@ -90,7 +91,7 @@ PrintOptionsDialog::PrintOptionsDialog(wxWindow* parent)
+         m_qidi_skip_dialog_open = true;
+         wxWeakRef<PrintOptionsDialog> self(this);
+         CallAfter([self]() {
+-            if (!self) return;
++            if (!self || self->IsBeingDeleted()) return;
+             auto* manager = wxGetApp().getDeviceManager();
+             auto* target = manager ? manager->get_selected_machine() : nullptr;
+             if (!target || self->obj != target || target->printer_agent_id != "qidi" ||
+@@ -105,7 +106,7 @@ PrintOptionsDialog::PrintOptionsDialog(wxWindow* parent)
+             for (const auto& name : names) choices.Add(wxString::FromUTF8(name));
+             wxMultiChoiceDialog dialog(self, _L("Select objects to stop printing for the rest of this job."), _L("Skip objects"), choices);
+             const int result = dialog.ShowModal();
+-            if (!self) return;
++            if (!self || self->IsBeingDeleted()) return;
+             self->m_qidi_skip_dialog_open = false;
+             // The nested dialog loop can process a disconnect, printer switch,
+             // or device removal. Reacquire the current device before dereferencing it.
+diff --git a/tests/slic3rutils/test_qidi_printer_agent.cpp b/tests/slic3rutils/test_qidi_printer_agent.cpp
+index 227f6c83..7cdf93b8 100644
+--- a/tests/slic3rutils/test_qidi_printer_agent.cpp
++++ b/tests/slic3rutils/test_qidi_printer_agent.cpp
+@@ -451,6 +451,20 @@ TEST_CASE("QIDI loaded slot does not interpret malformed firmware names", "[Qidi
+         CHECK(payload.empty());
+ }
+ 
++TEST_CASE("Malformed QIDI material names preserve existing tray metadata", "[QidiPrinterAgent]")
++{
++    for (const auto& invalid : nlohmann::json::array({nullptr, false, 42, nlohmann::json::array(), nlohmann::json::object()})) {
++        DevAmsTray tray("0");
++        tray.m_fila_type = "PLA";
++        tray.sub_brands = "PLA Rapido";
++        tray.setting_id = "specific-PLA";
++        const nlohmann::json update{{"filament_type", "PLA"}, {"filament_str", invalid}};
++        CHECK_NOTHROW(DevFilaSystemParser::UpdateQidiTray(tray, update, "generic-PLA"));
++        CHECK(tray.sub_brands == "PLA Rapido");
++        CHECK(tray.setting_id == "specific-PLA");
++    }
++}
++
+ TEST_CASE("QIDI partial slot updates preserve synchronized material identity", "[QidiPrinterAgent]")
+ {
+     DevAmsTray tray("2");
+-- 
+2.56.0
+

@@ -1,0 +1,24 @@
+QIDI control stability checks — 2026-11-03 JST
+
+Before patch 0032, the isolated production DevFilaSystemParser::UpdateQidiTray
+body threw json.exception.type_error.302 when filament_str was null.
+The regression also covers boolean, numeric, array and object material names.
+After the fix, all cases preserve the existing product name and preset identity.
+
+Physical slot input tests cover load and unload with empty strings, negative
+values, out-of-range values, external sentinel 254, alphabetic strings, trailing
+junk and unsigned overflow. All reject without a recorded submission. Valid
+Box/slot selection preserves physical slot 14; a non-QIDI control case retains
+the existing mapping behavior.
+
+Commands completed successfully:
+python3 scripts/check-protocol-helpers.py
+python3 scripts/check-protocol-helpers.py --sanitize --sanitizer-libs research/sanitizer-runtime/usr/lib64
+
+Sanitizer run: AddressSanitizer and UndefinedBehaviorSanitizer, no reported
+errors. Fedora libasan/libubsan 16.2.1-3.fc44 x86_64 were downloaded and extracted
+inside research; no system packages were installed.
+
+These tests compile selected production method bodies with small value/transport
+stubs. They do NOT validate full application compilation, GUI interaction,
+actual HTTP transport, printer firmware or physical hardware behavior.
