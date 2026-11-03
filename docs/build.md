@@ -143,11 +143,19 @@ research/printer-fixture-venv/bin/python scripts/qidi-printer-fixture.py \
   --port 19025 --boxes 2 --log logs/gui-fixture-requests.jsonl
 ```
 
-In an isolated custom-slicer configuration, add the QIDI device at
+The native QIDI controls use upstream's **Preferences → Developer → Experimental
+Features → Use printer agents instead of print hosts** option. Enable it in the
+isolated custom-slicer configuration, select a MAX4 profile (its printer agent is
+`qidi`), and add the QIDI device at
 `http://127.0.0.1:19025`. The fixture binds only `127.0.0.1`; it has no discovery or
 outbound connection code. Use the native app or a Flatpak with network sharing
 for this test so the app can reach host loopback. Configure only this fixture
 address in the isolated settings directory.
+
+The API-key field is optional for trusted Moonraker LAN access. Leave it blank
+for this fixture. A real server that requires a key still requires its valid key;
+the client must not substitute an invented credential. Exact dialog navigation
+and native-control activation remain part of the compiled GUI validation gate.
 
 `POST /__fixture__/state` accepts JSON with `update` (recursive status update),
 `replace` (whole status replacement), `notification` (arbitrary WebSocket JSON),

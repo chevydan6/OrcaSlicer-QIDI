@@ -24,6 +24,11 @@ regressions pass ASan/UBSan. Patch 0034 addresses QIDI structured-project import
 including material assignment and MAX4 compatibility migration; its compiled
 import tests and full-GUI comparison remain pending.
 
+Patch 0037 extends Moonraker's optional-key and credential-refresh behavior to the
+QIDI GUI connection path, with explicit logout and agent-ownership regression
+cases. The native controls require the upstream printer-agent preference;
+the build guide documents that setup. Compiled GUI activation is still pending.
+
 | Workflow | Existing Orca | Downstream implementation | Validation / remaining work |
 | --- | --- | --- | --- |
 | MAX4 machine profiles | Four nozzle sizes and machine limits | Preserve profiles; height guards; pre-print capability | All 72 vendor bundles pass structure checks; runtime load pending |
