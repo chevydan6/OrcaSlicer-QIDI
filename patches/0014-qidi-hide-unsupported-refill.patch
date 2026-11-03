@@ -1,3 +1,12 @@
+From 2e3c8c26ba3f9a3d3b06982c488f08424f36c740 Mon Sep 17 00:00:00 2001
+From: chevydan6 <339888127+chevydan6@users.noreply.github.com>
+Date: Tue, 3 Nov 2026 07:21:37 +0900
+Subject: [PATCH] Hide the unsupported replacement-material dialog for QIDI
+
+---
+ src/slic3r/GUI/StatusPanel.cpp | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
 diff --git a/src/slic3r/GUI/StatusPanel.cpp b/src/slic3r/GUI/StatusPanel.cpp
 index 19989c89..30f1865e 100644
 --- a/src/slic3r/GUI/StatusPanel.cpp

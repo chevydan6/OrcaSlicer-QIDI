@@ -1,5 +1,16 @@
+From c65858fd138df917ec7fa0254dd47b2e95cbdbd3 Mon Sep 17 00:00:00 2001
+From: chevydan6 <339888127+chevydan6@users.noreply.github.com>
+Date: Tue, 3 Nov 2026 06:36:11 +0900
+Subject: [PATCH] Port QIDI MAX4 height guards while retaining Orca tool-change
+ behavior
+
+---
+ resources/profiles/Qidi.json                                | 2 +-
+ .../profiles/Qidi/machine/Qidi X-Max 4 0.4 nozzle.json      | 6 +++---
+ 2 files changed, 4 insertions(+), 4 deletions(-)
+
 diff --git a/resources/profiles/Qidi.json b/resources/profiles/Qidi.json
-index 41df005..1b5362c 100644
+index c481623b..daac75d1 100644
 --- a/resources/profiles/Qidi.json
 +++ b/resources/profiles/Qidi.json
 @@ -1,6 +1,6 @@
@@ -11,7 +22,7 @@ index 41df005..1b5362c 100644
  	"description": "Qidi configurations",
  	"machine_model_list": [
 diff --git a/resources/profiles/Qidi/machine/Qidi X-Max 4 0.4 nozzle.json b/resources/profiles/Qidi/machine/Qidi X-Max 4 0.4 nozzle.json
-index 3cb2659..ecb02c8 100644
+index 2d54aed3..a06ca5e7 100644
 --- a/resources/profiles/Qidi/machine/Qidi X-Max 4 0.4 nozzle.json	
 +++ b/resources/profiles/Qidi/machine/Qidi X-Max 4 0.4 nozzle.json	
 @@ -13,7 +13,7 @@

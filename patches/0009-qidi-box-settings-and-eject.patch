@@ -1,3 +1,22 @@
+From 8a76fc4213ae3c7c6dde37f95171acbbcdd93ae0 Mon Sep 17 00:00:00 2001
+From: chevydan6 <339888127+chevydan6@users.noreply.github.com>
+Date: Tue, 3 Nov 2026 07:07:35 +0900
+Subject: [PATCH] Port QIDI Box material editing, RFID preferences and
+ generation-aware eject
+
+---
+ src/slic3r/GUI/DeviceCore/DevFilaSystem.cpp   |  2 +
+ src/slic3r/GUI/DeviceCore/DevFilaSystem.h     |  3 +-
+ src/slic3r/GUI/DeviceManager.cpp              | 17 +++++++
+ src/slic3r/GUI/StatusPanel.cpp                | 22 +++++++++
+ src/slic3r/GUI/Widgets/AMSControl.cpp         | 25 ++++++++++
+ src/slic3r/GUI/Widgets/AMSControl.hpp         |  1 +
+ src/slic3r/GUI/Widgets/AMSItem.cpp            |  1 +
+ src/slic3r/GUI/Widgets/AMSItem.hpp            |  1 +
+ src/slic3r/Utils/QidiPrinterAgent.cpp         | 49 +++++++++++++++++++
+ tests/slic3rutils/test_qidi_printer_agent.cpp | 19 +++++++
+ 10 files changed, 139 insertions(+), 1 deletion(-)
+
 diff --git a/src/slic3r/GUI/DeviceCore/DevFilaSystem.cpp b/src/slic3r/GUI/DeviceCore/DevFilaSystem.cpp
 index 08398de8..ef4546f2 100644
 --- a/src/slic3r/GUI/DeviceCore/DevFilaSystem.cpp

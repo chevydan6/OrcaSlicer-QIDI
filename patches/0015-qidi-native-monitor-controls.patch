@@ -1,3 +1,15 @@
+From 6d80401d62a038bba12424fdca02308499fff656 Mon Sep 17 00:00:00 2001
+From: chevydan6 <339888127+chevydan6@users.noreply.github.com>
+Date: Tue, 3 Nov 2026 07:25:31 +0900
+Subject: [PATCH] Port native QIDI fan, speed and snapshot camera workflows
+
+---
+ src/slic3r/GUI/DeviceCore/DevFan.cpp          |  4 ++
+ src/slic3r/Utils/QidiPrinterAgent.cpp         | 50 +++++++++++++++++++
+ src/slic3r/Utils/QidiPrinterAgent.hpp         |  5 +-
+ tests/slic3rutils/test_qidi_printer_agent.cpp | 25 ++++++++++
+ 4 files changed, 83 insertions(+), 1 deletion(-)
+
 diff --git a/src/slic3r/GUI/DeviceCore/DevFan.cpp b/src/slic3r/GUI/DeviceCore/DevFan.cpp
 index c4fc8011..2cb47b4c 100644
 --- a/src/slic3r/GUI/DeviceCore/DevFan.cpp

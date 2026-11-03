@@ -1,3 +1,15 @@
+From 1e407781590a70fb8523bb59af02af631d5d6fe1 Mon Sep 17 00:00:00 2001
+From: chevydan6 <339888127+chevydan6@users.noreply.github.com>
+Date: Tue, 3 Nov 2026 07:09:50 +0900
+Subject: [PATCH] Snapshot QIDI submission capabilities with the print job
+
+---
+ src/slic3r/GUI/Jobs/PrintJob.cpp      |  1 +
+ src/slic3r/GUI/Jobs/PrintJob.hpp      |  1 +
+ src/slic3r/GUI/SelectMachine.cpp      | 12 ++++++++++++
+ src/slic3r/Utils/QidiPrinterAgent.cpp |  8 +++++---
+ 4 files changed, 19 insertions(+), 3 deletions(-)
+
 diff --git a/src/slic3r/GUI/Jobs/PrintJob.cpp b/src/slic3r/GUI/Jobs/PrintJob.cpp
 index c903e3b1..e2e32307 100644
 --- a/src/slic3r/GUI/Jobs/PrintJob.cpp

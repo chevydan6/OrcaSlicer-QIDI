@@ -1,6 +1,9 @@
 # Downstream patch series and attribution
 
 Apply patches in lexical order to the Orca revision in `sources.json`.
+Every patch uses mail format with the original downstream commit's author/date
+metadata. Both `git apply` and `git am` replay have been verified to reproduce the
+development source tree; evidence is under `validation/`.
 The application remains AGPL-3.0; retain both projects' licenses and source notices.
 QIDI reference revision: `403b619d56147160bb883e94f95a7951245bc6d0`.
 

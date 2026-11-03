@@ -1,3 +1,17 @@
+From d6ed624094dd8b6a09cf8eb7cb917defda19f605 Mon Sep 17 00:00:00 2001
+From: chevydan6 <339888127+chevydan6@users.noreply.github.com>
+Date: Tue, 3 Nov 2026 06:44:09 +0900
+Subject: [PATCH] Port QIDI chamber control and monitoring plus physical Box
+ RFID addressing
+
+---
+ src/slic3r/Utils/MoonrakerPrinterAgent.cpp    |  6 +++
+ src/slic3r/Utils/MoonrakerPrinterAgent.hpp    |  2 +
+ src/slic3r/Utils/QidiPrinterAgent.cpp         | 54 +++++++++++++++++++
+ src/slic3r/Utils/QidiPrinterAgent.hpp         |  8 +++
+ tests/slic3rutils/test_qidi_printer_agent.cpp | 23 ++++++++
+ 5 files changed, 93 insertions(+)
+
 diff --git a/src/slic3r/Utils/MoonrakerPrinterAgent.cpp b/src/slic3r/Utils/MoonrakerPrinterAgent.cpp
 index 69e60f6f..4a9eef48 100644
 --- a/src/slic3r/Utils/MoonrakerPrinterAgent.cpp

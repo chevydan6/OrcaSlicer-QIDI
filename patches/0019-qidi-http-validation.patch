@@ -1,3 +1,14 @@
+From 203f12787bd60d7063babb6042eed7ed3022c107 Mon Sep 17 00:00:00 2001
+From: chevydan6 <339888127+chevydan6@users.noreply.github.com>
+Date: Tue, 3 Nov 2026 07:43:33 +0900
+Subject: [PATCH] Exercise QIDI upload and preflight against a loopback HTTP
+ fixture
+
+---
+ src/slic3r/Utils/QidiPrinterAgent.hpp         |   2 +
+ tests/slic3rutils/test_qidi_printer_agent.cpp | 146 ++++++++++++++++++
+ 2 files changed, 148 insertions(+)
+
 diff --git a/src/slic3r/Utils/QidiPrinterAgent.hpp b/src/slic3r/Utils/QidiPrinterAgent.hpp
 index a2a579b3..a90e3d5c 100644
 --- a/src/slic3r/Utils/QidiPrinterAgent.hpp

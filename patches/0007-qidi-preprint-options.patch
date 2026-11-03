@@ -1,3 +1,21 @@
+From db0510efa9c4fce1f107198f3c7ce617f350d39b Mon Sep 17 00:00:00 2001
+From: chevydan6 <339888127+chevydan6@users.noreply.github.com>
+Date: Tue, 3 Nov 2026 07:01:09 +0900
+Subject: [PATCH] Apply MAX4 bed leveling and QIDI timelapse choices before
+ print start
+
+---
+ resources/profiles/Qidi.json                  |  2 +-
+ .../Qidi/machine/Qidi X-Max 4 0.4 nozzle.json |  1 +
+ src/libslic3r/Preset.cpp                      |  2 +-
+ src/libslic3r/PrintConfig.cpp                 | 12 +++++++
+ src/slic3r/GUI/SelectMachine.cpp              | 10 ++++--
+ src/slic3r/GUI/Tab.cpp                        |  2 ++
+ src/slic3r/Utils/QidiPrinterAgent.cpp         | 32 +++++++++++++++++--
+ src/slic3r/Utils/QidiPrinterAgent.hpp         |  2 ++
+ tests/libslic3r/test_config.cpp               |  6 ++++
+ 9 files changed, 63 insertions(+), 6 deletions(-)
+
 diff --git a/resources/profiles/Qidi.json b/resources/profiles/Qidi.json
 index 34b01f9c..1d4bb4aa 100644
 --- a/resources/profiles/Qidi.json

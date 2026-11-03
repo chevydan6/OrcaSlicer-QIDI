@@ -1,3 +1,40 @@
+From cdde046a27727a9553427f588bf5c1beeb0bc9bc Mon Sep 17 00:00:00 2001
+From: chevydan6 <339888127+chevydan6@users.noreply.github.com>
+Date: Tue, 3 Nov 2026 06:40:10 +0900
+Subject: [PATCH] Port missing MAX4 PLA-HT, ASA-CF20 Core and PA6-CF material
+ profiles
+
+---
+ resources/profiles/Qidi.json                  |  54 ++++++++-
+ ...maker PLA-HT @Qidi X-Max 4 0.2 nozzle.json |  17 +++
+ ...maker PLA-HT @Qidi X-Max 4 0.4 nozzle.json |  11 ++
+ ...maker PLA-HT @Qidi X-Max 4 0.6 nozzle.json |  14 +++
+ ...maker PLA-HT @Qidi X-Max 4 0.8 nozzle.json |  14 +++
+ .../X4/Polymaker PLA-HT @X-Max 4.json         |  86 ++++++++++++++
+ ...SA-CF20 Core @Qidi X-Max 4 0.4 nozzle.json |  11 ++
+ ...SA-CF20 Core @Qidi X-Max 4 0.6 nozzle.json |  17 +++
+ ...SA-CF20 Core @Qidi X-Max 4 0.8 nozzle.json |  20 ++++
+ .../X4/QIDI ASA-CF20 Core @X-Max 4.json       | 101 +++++++++++++++++
+ .../QIDI PA6-CF @Qidi X-Max 4 0.4 nozzle.json |  11 ++
+ .../QIDI PA6-CF @Qidi X-Max 4 0.6 nozzle.json |  11 ++
+ .../QIDI PA6-CF @Qidi X-Max 4 0.8 nozzle.json |  11 ++
+ .../filament/X4/QIDI PA6-CF @X-Max 4.json     | 107 ++++++++++++++++++
+ .../profiles/Qidi/machine/Qidi X-Max 4.json   |   2 +-
+ 15 files changed, 485 insertions(+), 2 deletions(-)
+ create mode 100644 resources/profiles/Qidi/filament/X4/Polymaker PLA-HT @Qidi X-Max 4 0.2 nozzle.json
+ create mode 100644 resources/profiles/Qidi/filament/X4/Polymaker PLA-HT @Qidi X-Max 4 0.4 nozzle.json
+ create mode 100644 resources/profiles/Qidi/filament/X4/Polymaker PLA-HT @Qidi X-Max 4 0.6 nozzle.json
+ create mode 100644 resources/profiles/Qidi/filament/X4/Polymaker PLA-HT @Qidi X-Max 4 0.8 nozzle.json
+ create mode 100644 resources/profiles/Qidi/filament/X4/Polymaker PLA-HT @X-Max 4.json
+ create mode 100644 resources/profiles/Qidi/filament/X4/QIDI ASA-CF20 Core @Qidi X-Max 4 0.4 nozzle.json
+ create mode 100644 resources/profiles/Qidi/filament/X4/QIDI ASA-CF20 Core @Qidi X-Max 4 0.6 nozzle.json
+ create mode 100644 resources/profiles/Qidi/filament/X4/QIDI ASA-CF20 Core @Qidi X-Max 4 0.8 nozzle.json
+ create mode 100644 resources/profiles/Qidi/filament/X4/QIDI ASA-CF20 Core @X-Max 4.json
+ create mode 100644 resources/profiles/Qidi/filament/X4/QIDI PA6-CF @Qidi X-Max 4 0.4 nozzle.json
+ create mode 100644 resources/profiles/Qidi/filament/X4/QIDI PA6-CF @Qidi X-Max 4 0.6 nozzle.json
+ create mode 100644 resources/profiles/Qidi/filament/X4/QIDI PA6-CF @Qidi X-Max 4 0.8 nozzle.json
+ create mode 100644 resources/profiles/Qidi/filament/X4/QIDI PA6-CF @X-Max 4.json
+
 diff --git a/resources/profiles/Qidi.json b/resources/profiles/Qidi.json
 index daac75d1..34b01f9c 100644
 --- a/resources/profiles/Qidi.json

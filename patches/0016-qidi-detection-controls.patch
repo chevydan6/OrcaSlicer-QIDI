@@ -1,3 +1,15 @@
+From 602e6cf570305978438ef8389428af247be36b27 Mon Sep 17 00:00:00 2001
+From: chevydan6 <339888127+chevydan6@users.noreply.github.com>
+Date: Tue, 3 Nov 2026 07:34:28 +0900
+Subject: [PATCH] Port QIDI detection controls and reported settings
+
+---
+ src/slic3r/GUI/DeviceCore/DevPrintOptions.cpp |  8 +++++
+ src/slic3r/GUI/DeviceManager.cpp              | 12 +++++++
+ src/slic3r/Utils/QidiPrinterAgent.cpp         | 33 ++++++++++++++++++-
+ tests/slic3rutils/test_qidi_printer_agent.cpp | 17 ++++++++++
+ 4 files changed, 69 insertions(+), 1 deletion(-)
+
 diff --git a/src/slic3r/GUI/DeviceCore/DevPrintOptions.cpp b/src/slic3r/GUI/DeviceCore/DevPrintOptions.cpp
 index c80597e2..e9c71873 100644
 --- a/src/slic3r/GUI/DeviceCore/DevPrintOptions.cpp

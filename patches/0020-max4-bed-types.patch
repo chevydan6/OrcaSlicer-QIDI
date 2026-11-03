@@ -1,3 +1,16 @@
+From 9d49154e5825cc8dcbc43b8251b73e6a9e8422a4 Mon Sep 17 00:00:00 2001
+From: chevydan6 <339888127+chevydan6@users.noreply.github.com>
+Date: Tue, 3 Nov 2026 07:45:06 +0900
+Subject: [PATCH] Port MAX4 unsupported plate metadata with canonical plate
+ matching
+
+---
+ resources/profiles/Qidi.json                      | 2 +-
+ resources/profiles/Qidi/machine/Qidi X-Max 4.json | 3 ++-
+ src/slic3r/GUI/PlateSettingsDialog.cpp            | 5 ++++-
+ src/slic3r/GUI/Plater.cpp                         | 5 ++++-
+ 4 files changed, 11 insertions(+), 4 deletions(-)
+
 diff --git a/resources/profiles/Qidi.json b/resources/profiles/Qidi.json
 index 5404db83..6aa0ee5a 100644
 --- a/resources/profiles/Qidi.json

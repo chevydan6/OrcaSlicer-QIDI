@@ -1,3 +1,15 @@
+From 17ee6554a40195c2e2bd8372561dd24626002082 Mon Sep 17 00:00:00 2001
+From: chevydan6 <339888127+chevydan6@users.noreply.github.com>
+Date: Tue, 3 Nov 2026 07:35:59 +0900
+Subject: [PATCH] Expose reported QIDI chamber heater in native monitor
+ controls
+
+---
+ src/slic3r/GUI/StatusPanel.cpp                |  5 +++--
+ src/slic3r/Utils/QidiPrinterAgent.cpp         | 10 ++++++++--
+ tests/slic3rutils/test_qidi_printer_agent.cpp |  3 +++
+ 3 files changed, 14 insertions(+), 4 deletions(-)
+
 diff --git a/src/slic3r/GUI/StatusPanel.cpp b/src/slic3r/GUI/StatusPanel.cpp
 index 30f1865e..90181a5a 100644
 --- a/src/slic3r/GUI/StatusPanel.cpp

@@ -1,3 +1,17 @@
+From cee87e5c64bfcccb91552a73756b65e926787a15 Mon Sep 17 00:00:00 2001
+From: chevydan6 <339888127+chevydan6@users.noreply.github.com>
+Date: Tue, 3 Nov 2026 07:02:25 +0900
+Subject: [PATCH] Show QIDI Box temperature and humidity through native
+ monitoring
+
+---
+ src/slic3r/Utils/MoonrakerPrinterAgent.cpp    |  2 +-
+ src/slic3r/Utils/MoonrakerPrinterAgent.hpp    |  1 +
+ src/slic3r/Utils/QidiPrinterAgent.cpp         | 46 +++++++++++++++++++
+ src/slic3r/Utils/QidiPrinterAgent.hpp         |  9 +++-
+ tests/slic3rutils/test_qidi_printer_agent.cpp | 28 +++++++++++
+ 5 files changed, 83 insertions(+), 3 deletions(-)
+
 diff --git a/src/slic3r/Utils/MoonrakerPrinterAgent.cpp b/src/slic3r/Utils/MoonrakerPrinterAgent.cpp
 index 4a9eef48..c51ab2fc 100644
 --- a/src/slic3r/Utils/MoonrakerPrinterAgent.cpp

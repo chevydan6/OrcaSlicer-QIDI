@@ -1,3 +1,18 @@
+From c5733d079a9c95614efa864772b9c5aeb192ab16 Mon Sep 17 00:00:00 2001
+From: chevydan6 <339888127+chevydan6@users.noreply.github.com>
+Date: Tue, 3 Nov 2026 07:37:33 +0900
+Subject: [PATCH] Add reported Polar Cooler control to QIDI print options
+
+---
+ src/slic3r/GUI/DeviceManager.cpp              |  2 ++
+ src/slic3r/GUI/DeviceManager.hpp              |  1 +
+ src/slic3r/GUI/PrintOptionsDialog.cpp         | 28 +++++++++++++++++++
+ src/slic3r/GUI/PrintOptionsDialog.hpp         |  2 ++
+ src/slic3r/Utils/QidiPrinterAgent.cpp         | 12 ++++++++
+ src/slic3r/Utils/QidiPrinterAgent.hpp         |  3 +-
+ tests/slic3rutils/test_qidi_printer_agent.cpp | 10 +++++++
+ 7 files changed, 57 insertions(+), 1 deletion(-)
+
 diff --git a/src/slic3r/GUI/DeviceManager.cpp b/src/slic3r/GUI/DeviceManager.cpp
 index 806616b5..59c143bf 100644
 --- a/src/slic3r/GUI/DeviceManager.cpp

@@ -1,3 +1,18 @@
+From 10423108dc547668bfb7459764e24d55cfdfc0d0 Mon Sep 17 00:00:00 2001
+From: chevydan6 <339888127+chevydan6@users.noreply.github.com>
+Date: Tue, 3 Nov 2026 06:42:55 +0900
+Subject: [PATCH] Port explicit QIDI Box versus external-spool selection before
+ print submission
+
+---
+ src/libslic3r/Preset.cpp                      |  2 +-
+ src/libslic3r/PrintConfig.cpp                 |  6 ++++++
+ src/slic3r/GUI/Tab.cpp                        |  1 +
+ src/slic3r/Utils/QidiPrinterAgent.cpp         | 17 ++++++++++++++++-
+ src/slic3r/Utils/QidiPrinterAgent.hpp         |  2 ++
+ tests/slic3rutils/test_qidi_printer_agent.cpp | 15 +++++++++++++++
+ 6 files changed, 41 insertions(+), 2 deletions(-)
+
 diff --git a/src/libslic3r/Preset.cpp b/src/libslic3r/Preset.cpp
 index 8f4dc288..2bb368cd 100644
 --- a/src/libslic3r/Preset.cpp

@@ -1,3 +1,25 @@
+From 3b5f3842a174b610f59b94e0a0c6bd4bd9d6b918 Mon Sep 17 00:00:00 2001
+From: chevydan6 <339888127+chevydan6@users.noreply.github.com>
+Date: Tue, 3 Nov 2026 07:20:09 +0900
+Subject: [PATCH] Port firmware-gated QIDI Polar Cooler print selection
+
+---
+ resources/profiles/Qidi.json                  |  2 +-
+ .../Qidi/machine/Qidi X-Max 4 0.4 nozzle.json |  1 +
+ src/libslic3r/Preset.cpp                      |  2 +-
+ src/libslic3r/PrintConfig.cpp                 |  6 +++++
+ src/slic3r/GUI/DeviceManager.cpp              |  2 ++
+ src/slic3r/GUI/DeviceManager.hpp              |  1 +
+ src/slic3r/GUI/SelectMachine.cpp              |  8 +++++++
+ src/slic3r/GUI/Tab.cpp                        |  1 +
+ src/slic3r/Utils/MoonrakerPrinterAgent.cpp    |  5 ++++
+ src/slic3r/Utils/MoonrakerPrinterAgent.hpp    |  1 +
+ src/slic3r/Utils/QidiPrinterAgent.cpp         | 24 +++++++++++++++++++
+ src/slic3r/Utils/QidiPrinterAgent.hpp         |  3 +++
+ tests/libslic3r/test_config.cpp               |  2 ++
+ tests/slic3rutils/test_qidi_printer_agent.cpp | 12 ++++++++++
+ 14 files changed, 68 insertions(+), 2 deletions(-)
+
 diff --git a/resources/profiles/Qidi.json b/resources/profiles/Qidi.json
 index 1d4bb4aa..5404db83 100644
 --- a/resources/profiles/Qidi.json

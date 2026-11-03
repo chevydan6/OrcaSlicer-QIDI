@@ -1,3 +1,20 @@
+From 0787f32e4fce3b158e77f7dcc1c9e559caf37849 Mon Sep 17 00:00:00 2001
+From: chevydan6 <339888127+chevydan6@users.noreply.github.com>
+Date: Tue, 3 Nov 2026 06:37:27 +0900
+Subject: [PATCH] Port gated QIDI Box temperature settings, persistence, GUI
+ and G-code
+
+---
+ src/libslic3r/GCode.cpp         | 15 +++++++++++++++
+ src/libslic3r/Preset.cpp        |  4 ++--
+ src/libslic3r/Print.cpp         |  4 ++++
+ src/libslic3r/PrintConfig.cpp   | 31 +++++++++++++++++++++++++++++++
+ src/libslic3r/PrintConfig.hpp   |  4 ++++
+ src/slic3r/GUI/Tab.cpp          | 10 ++++++++++
+ tests/fff_print/test_gcode.cpp  | 32 ++++++++++++++++++++++++++++++++
+ tests/libslic3r/test_config.cpp | 23 +++++++++++++++++++++++
+ 8 files changed, 121 insertions(+), 2 deletions(-)
+
 diff --git a/src/libslic3r/GCode.cpp b/src/libslic3r/GCode.cpp
 index d876c93d..edc9fc47 100644
 --- a/src/libslic3r/GCode.cpp

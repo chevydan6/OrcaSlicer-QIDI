@@ -1,3 +1,14 @@
+From 9d34ab0f0b626d5bb3dcfbed760f5bed20014698 Mon Sep 17 00:00:00 2001
+From: chevydan6 <339888127+chevydan6@users.noreply.github.com>
+Date: Tue, 3 Nov 2026 07:16:33 +0900
+Subject: [PATCH] Translate QIDI case lighting and report named fan telemetry
+
+---
+ src/slic3r/Utils/QidiPrinterAgent.cpp         | 49 ++++++++++++++++++-
+ src/slic3r/Utils/QidiPrinterAgent.hpp         |  6 ++-
+ tests/slic3rutils/test_qidi_printer_agent.cpp | 19 +++++++
+ 3 files changed, 70 insertions(+), 4 deletions(-)
+
 diff --git a/src/slic3r/Utils/QidiPrinterAgent.cpp b/src/slic3r/Utils/QidiPrinterAgent.cpp
 index d70d5787..b04002d7 100644
 --- a/src/slic3r/Utils/QidiPrinterAgent.cpp

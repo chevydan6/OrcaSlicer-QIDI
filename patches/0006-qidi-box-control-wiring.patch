@@ -1,3 +1,17 @@
+From 34c11f0afaaf2f8d825db383de07bb218525df0e Mon Sep 17 00:00:00 2001
+From: chevydan6 <339888127+chevydan6@users.noreply.github.com>
+Date: Tue, 3 Nov 2026 06:45:22 +0900
+Subject: [PATCH] Connect native Box load, unload and RFID actions to QIDI
+ local commands
+
+---
+ src/slic3r/GUI/DeviceManager.cpp              |  3 ++-
+ src/slic3r/GUI/StatusPanel.cpp                |  4 ++--
+ src/slic3r/Utils/QidiPrinterAgent.cpp         | 17 +++++++++++++++++
+ src/slic3r/Utils/QidiPrinterAgent.hpp         |  1 +
+ tests/slic3rutils/test_qidi_printer_agent.cpp |  8 ++++++++
+ 5 files changed, 30 insertions(+), 3 deletions(-)
+
 diff --git a/src/slic3r/GUI/DeviceManager.cpp b/src/slic3r/GUI/DeviceManager.cpp
 index 2bc91ff5..71240cd3 100644
 --- a/src/slic3r/GUI/DeviceManager.cpp

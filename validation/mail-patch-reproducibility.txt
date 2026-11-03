@@ -1,0 +1,3 @@
+PASS: git am replayed all 38 patches onto 896557bce5281553ee0c6210f2da301b3b3c262e.
+Replayed source tree matches the development checkout: 4802aa19e08fd6ce9b072e4a68e3ed1a3d13c5ab
+Verification used an isolated temporary sparse checkout; original worktrees were unchanged.

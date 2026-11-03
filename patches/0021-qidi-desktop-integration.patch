@@ -1,3 +1,12 @@
+From f13124ffbe73b9d61e6faac8309706c8d8bcbbbc Mon Sep 17 00:00:00 2001
+From: chevydan6 <339888127+chevydan6@users.noreply.github.com>
+Date: Tue, 3 Nov 2026 07:56:40 +0900
+Subject: [PATCH] Keep optional Linux desktop integration in the QIDI namespace
+
+---
+ src/slic3r/GUI/DesktopIntegrationDialog.cpp | 8 ++++++++
+ 1 file changed, 8 insertions(+)
+
 diff --git a/src/slic3r/GUI/DesktopIntegrationDialog.cpp b/src/slic3r/GUI/DesktopIntegrationDialog.cpp
 index c073ecc5..3bced533 100644
 --- a/src/slic3r/GUI/DesktopIntegrationDialog.cpp

@@ -1,3 +1,17 @@
+From 923d8f7493c0aefa4a381e5909a9ced19ecbd899 Mon Sep 17 00:00:00 2001
+From: chevydan6 <339888127+chevydan6@users.noreply.github.com>
+Date: Tue, 3 Nov 2026 07:13:15 +0900
+Subject: [PATCH] Give the Linux fork isolated default settings and downstream
+ attribution
+
+---
+ resources/qidi-port-notice.txt | 25 +++++++++++++++++++++++++
+ src/libslic3r/utils.cpp        |  4 +++-
+ tests/libslic3r/test_utils.cpp |  2 +-
+ version.inc                    |  4 ++--
+ 4 files changed, 31 insertions(+), 4 deletions(-)
+ create mode 100644 resources/qidi-port-notice.txt
+
 diff --git a/resources/qidi-port-notice.txt b/resources/qidi-port-notice.txt
 new file mode 100644
 index 00000000..e5b68141
