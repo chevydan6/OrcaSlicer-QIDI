@@ -224,3 +224,10 @@ Then record the AppImage SHA-256 and compare its packaged
 `resources/qidi-port-build.json` with the integration commit, source pins and
 every patch hash. Download and inspect the matching test-report artifact too;
 an AppImage upload alone does not establish that the run passed.
+
+For submission evidence, the fixture accepts `--upload-dir PATH`. It records
+the SHA-256 of each multipart field and optionally stores file bytes under
+generated names; supplied filenames never select a local path. Inspect those
+captured archives to compare the actual uploaded G-code with the GUI slice.
+The fixture still never executes or forwards a request. Verify it with
+`python3 scripts/check-printer-fixture.py` in the fixture environment first.

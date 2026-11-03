@@ -2,11 +2,12 @@
 """Exercise the loopback fixture itself; this does not validate the slicer GUI."""
 import asyncio
 import importlib.util
+import hashlib
 import json
 from pathlib import Path
 import tempfile
 
-from aiohttp import ClientSession, WSMsgType, web
+from aiohttp import ClientSession, FormData, WSMsgType, web
 from aiohttp.test_utils import TestServer
 
 spec = importlib.util.spec_from_file_location('qidi_fixture', Path(__file__).with_name('qidi-printer-fixture.py'))
@@ -16,7 +17,7 @@ spec.loader.exec_module(module)
 
 async def check():
     with tempfile.TemporaryDirectory() as temporary:
-        fixture = module.Fixture(2, Path(temporary)/'requests.jsonl')
+        fixture = module.Fixture(2, Path(temporary)/'requests.jsonl', Path(temporary)/'uploads')
         app = web.Application()
         app.router.add_route('*', '/{path:.*}', fixture.handle)
         async with TestServer(app, host='127.0.0.1') as server, ClientSession() as client:
@@ -31,6 +32,16 @@ async def check():
             async with client.post(base+'/printer/gcode/script', json={'script': 'OFFLINE_TEST_ONLY'}) as response:
                 assert (await response.json())['result'] == 'ok'
             assert fixture.status['extruder']['target'] == 0
+            form = FormData()
+            payload = b'offline upload bytes; never executed'
+            form.add_field('file', payload, filename='../../outside.gcode', content_type='application/octet-stream')
+            async with client.post(base+'/server/files/upload', data=form) as response:
+                assert (await response.json())['result']['print_started'] is False
+            events = [json.loads(line) for line in fixture.log.read_text().splitlines()]
+            upload = next(e for e in events if e.get('upload_field') == 'file')
+            assert upload['sha256'] == hashlib.sha256(payload).hexdigest()
+            assert (fixture.upload_dir / upload['saved_file']).read_bytes() == payload
+            assert '/' not in upload['saved_file'] and not (Path(temporary)/'outside.gcode').exists()
             async with client.post(base+'/__fixture__/state', json={'raw': 'invalid-json', 'http_error': 503}) as response:
                 assert response.status == 200
             assert (await ws.receive(timeout=3)).data == 'invalid-json'

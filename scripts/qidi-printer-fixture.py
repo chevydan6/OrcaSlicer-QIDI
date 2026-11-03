@@ -3,8 +3,11 @@
 import argparse
 import asyncio
 import copy
+from contextlib import nullcontext
+import hashlib
 import json
 from pathlib import Path
+import tempfile
 import time
 
 from aiohttp import web, WSMsgType
@@ -55,13 +58,16 @@ def merge(target, update):
 
 
 class Fixture:
-    def __init__(self, boxes, log):
+    def __init__(self, boxes, log, upload_dir=None):
         self.status = initial_status(boxes)
         self.log = log
         self.clients = set()
         self.http_error = 0
         self.delay = 0
         self.invalid_camera_frame = False
+        self.upload_dir = upload_dir
+        if upload_dir is not None:
+            upload_dir.mkdir(parents=True, exist_ok=True)
 
     def record(self, **event):
         with self.log.open('a') as stream:
@@ -168,11 +174,21 @@ class Fixture:
             filename = 'fixture.gcode'
             async for part in reader:
                 size = 0
-                while chunk := await part.read_chunk():
-                    size += len(chunk)
+                digest = hashlib.sha256()
+                capture = (tempfile.NamedTemporaryFile(dir=self.upload_dir, prefix='upload-',
+                                                      suffix='.bin', delete=False)
+                           if part.filename and self.upload_dir is not None else nullcontext())
+                with capture as saved:
+                    while chunk := await part.read_chunk():
+                        size += len(chunk)
+                        digest.update(chunk)
+                        if saved is not None:
+                            saved.write(chunk)
+                    saved_name = Path(saved.name).name if saved is not None else None
                 if part.filename:
                     filename = part.filename
-                self.record(upload_field=part.name, filename=part.filename, size=size)
+                self.record(upload_field=part.name, filename=part.filename, size=size,
+                            sha256=digest.hexdigest(), saved_file=saved_name)
             result = {'item': {'path': filename, 'root': 'gcodes'}, 'print_started': False, 'action': 'create_file'}
         elif request.method == 'GET':
             return web.json_response({'error': {'message': 'Fixture endpoint not implemented'}}, status=404)
@@ -184,9 +200,11 @@ def main():
     parser.add_argument('--port', type=int, default=19025)
     parser.add_argument('--boxes', type=int, choices=range(5), default=2)
     parser.add_argument('--log', type=Path, required=True)
+    parser.add_argument('--upload-dir', type=Path,
+                        help='Optionally retain uploaded bytes under generated names for offline inspection')
     args = parser.parse_args()
     args.log.parent.mkdir(parents=True, exist_ok=True)
-    fixture = Fixture(args.boxes, args.log)
+    fixture = Fixture(args.boxes, args.log, args.upload_dir)
     app = web.Application(client_max_size=2**20)
     app.router.add_route('*', '/{path:.*}', fixture.handle)
     print('OFFLINE FIXTURE: records commands only; no hardware or forwarding.', flush=True)
