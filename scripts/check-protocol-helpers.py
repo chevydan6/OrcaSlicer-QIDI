@@ -113,6 +113,14 @@ start=device_source.index('int MachineObject::command_ams_change_filament(')
 code += device_source[start:device_source.index('int MachineObject::command_ams_user_settings(',start)]
 code += r'''
 int main() {
+ for (const auto& invalid : nlohmann::json::array({nullptr,false,"bad",-1e300,1e300,nlohmann::json::array(),nlohmann::json::object()})) {
+  nlohmann::json payload=nlohmann::json::object();
+  QidiPrinterAgent::append_chamber_status({{"heater_generic chamber",{{"temperature",invalid},{"target",invalid}}}},payload);
+  assert(payload.empty());
+ }
+ nlohmann::json chamber;
+ QidiPrinterAgent::append_chamber_status({{"heater_generic chamber",{{"temperature",-5},{"target",1e300}}}},chamber);
+ assert(chamber["print"]["chamber_temper"]==-5 && !chamber["print"].contains("ctt"));
  for (const auto& invalid : nlohmann::json::array({nullptr, false, 42, nlohmann::json::array(), nlohmann::json::object()})) {
   DevAmsTray tray;
   tray.m_fila_type="PLA"; tray.sub_brands="PLA Rapido"; tray.setting_id="specific-PLA";

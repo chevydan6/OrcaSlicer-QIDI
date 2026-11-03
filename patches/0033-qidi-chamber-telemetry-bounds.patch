@@ -1,0 +1,59 @@
+From 44700f5844b9dbf16108e4356dfeaa560284aead Mon Sep 17 00:00:00 2001
+From: chevydan6 <339888127+chevydan6@users.noreply.github.com>
+Date: Tue, 3 Nov 2026 11:40:33 +0900
+Subject: [PATCH] Reject corrupt chamber temperatures before GUI numeric
+ conversion
+
+---
+ src/slic3r/Utils/QidiPrinterAgent.cpp         |  8 ++++++--
+ tests/slic3rutils/test_qidi_printer_agent.cpp | 11 +++++++++++
+ 2 files changed, 17 insertions(+), 2 deletions(-)
+
+diff --git a/src/slic3r/Utils/QidiPrinterAgent.cpp b/src/slic3r/Utils/QidiPrinterAgent.cpp
+index cbaed130..11b2110a 100644
+--- a/src/slic3r/Utils/QidiPrinterAgent.cpp
++++ b/src/slic3r/Utils/QidiPrinterAgent.cpp
+@@ -216,12 +216,16 @@ void QidiPrinterAgent::append_chamber_status(const nlohmann::json& status, nlohm
+     const auto chamber = status.find("heater_generic chamber");
+     if (chamber == status.end() || !chamber->is_object())
+         return;
+-    if (chamber->contains("temperature") && (*chamber)["temperature"].is_number()) {
++    // StatusPanel passes these values to integer temperature widgets. Reject
++    // corrupt magnitudes before the GUI converts them from JSON to float/int.
++    if (chamber->contains("temperature") && (*chamber)["temperature"].is_number() &&
++        (*chamber)["temperature"] >= -273.15 && (*chamber)["temperature"] <= 1000) {
+         payload["print"]["support_chamber"] = true;
+         payload["print"]["support_chamber_temp_display"] = true;
+         payload["print"]["chamber_temper"] = (*chamber)["temperature"];
+     }
+-    if (chamber->contains("target") && (*chamber)["target"].is_number()) {
++    if (chamber->contains("target") && (*chamber)["target"].is_number() &&
++        (*chamber)["target"] >= 0 && (*chamber)["target"] <= 65) {
+         payload["print"]["support_chamber_temp_edit"] = true;
+         payload["print"]["support_chamber_temp_edit_range"] = {0, 65};
+         payload["print"]["ctt"] = (*chamber)["target"];
+diff --git a/tests/slic3rutils/test_qidi_printer_agent.cpp b/tests/slic3rutils/test_qidi_printer_agent.cpp
+index 7cdf93b8..e5b13b15 100644
+--- a/tests/slic3rutils/test_qidi_printer_agent.cpp
++++ b/tests/slic3rutils/test_qidi_printer_agent.cpp
+@@ -271,6 +271,17 @@ TEST_CASE("QIDI chamber telemetry carries measured and requested temperatures",
+     payload = nlohmann::json::object();
+     QidiPrinterAgent::append_chamber_status({{"heater_generic chamber", {{"temperature", "bad"}, {"target", nullptr}}}}, payload);
+     CHECK(payload.empty());
++    for (const auto& invalid : nlohmann::json::array({nullptr, false, "bad", -1e300, 1e300,
++                                                     nlohmann::json::array(), nlohmann::json::object()})) {
++        payload = nlohmann::json::object();
++        CHECK_NOTHROW(QidiPrinterAgent::append_chamber_status(
++            {{"heater_generic chamber", {{"temperature", invalid}, {"target", invalid}}}}, payload));
++        CHECK(payload.empty());
++    }
++    // One malformed field must not hide a valid independent measurement.
++    QidiPrinterAgent::append_chamber_status({{"heater_generic chamber", {{"temperature", -5}, {"target", 1e300}}}}, payload);
++    CHECK(payload["print"]["chamber_temper"] == -5);
++    CHECK_FALSE(payload["print"].contains("ctt"));
+ }
+ 
+ TEST_CASE("QIDI load and unload address the selected physical slot", "[QidiPrinterAgent]")
+-- 
+2.56.0
+

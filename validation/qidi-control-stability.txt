@@ -11,6 +11,11 @@ junk and unsigned overflow. All reject without a recorded submission. Valid
 Box/slot selection preserves physical slot 14; a non-QIDI control case retains
 the existing mapping behavior.
 
+Patch 0033 also rejects malformed chamber fields and extreme numeric magnitudes
+(+/-1e300) before they reach the GUI's float/integer conversions. A valid -5 C
+measurement remains visible when its accompanying target is malformed. The
+sanitized production-body harness passed these additional cases.
+
 Commands completed successfully:
 python3 scripts/check-protocol-helpers.py
 python3 scripts/check-protocol-helpers.py --sanitize --sanitizer-libs research/sanitizer-runtime/usr/lib64
