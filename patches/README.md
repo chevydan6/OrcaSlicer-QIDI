@@ -110,3 +110,5 @@ separately from implementation; a patch's presence does not certify hardware use
 55. `0055-qidi-fresh-material-editor.patch` replaces a completed QIDI slot editor with a fresh window for Box and external slots. Runtime testing disproved patch 52's maximum-size hypothesis: five openings still shrank 25 pixels each. The new editor lifecycle avoids reuse of the affected GTK window and its old slot state; duplicate opening while shown is refused. Other agents keep their existing editor lifecycle.
 
 56. `0056-qidi-native-slot-color-dialog.patch` uses a native single-RGB chooser for QIDI slot metadata, revalidating the selected device before/after the modal loop. The shared palette opened off-screen when the material editor appeared at the left edge in GUI55. Other agents retain the shared multicolor palette.
+
+57. `0057-qidi-color-data-include.patch` directly includes the header defining `wxColourData`, as required by the failed 56-patch include-cleaner run. Runtime behavior is unchanged; a new matching integration/static build is required before acceptance.

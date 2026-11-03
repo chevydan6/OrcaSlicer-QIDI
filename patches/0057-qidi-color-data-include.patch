@@ -1,0 +1,24 @@
+From 34233ea1bca62a5cbf39d6b4979d25a34bc626cf Mon Sep 17 00:00:00 2001
+From: chevydan6 <339888127+chevydan6@users.noreply.github.com>
+Date: Tue, 3 Nov 2026 17:03:24 +0900
+Subject: [PATCH] Include wxColourData directly for QIDI native color editor
+
+---
+ src/slic3r/GUI/AMSMaterialsSetting.cpp | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/src/slic3r/GUI/AMSMaterialsSetting.cpp b/src/slic3r/GUI/AMSMaterialsSetting.cpp
+index 0a1ab38b..b975b3ea 100644
+--- a/src/slic3r/GUI/AMSMaterialsSetting.cpp
++++ b/src/slic3r/GUI/AMSMaterialsSetting.cpp
+@@ -47,6 +47,7 @@
+ #include <wx/dc.h>
+ #include <wx/colour.h>
+ #include <wx/colordlg.h>
++#include <wx/colourdata.h>
+ #include <wx/brush.h>
+ #include <wx/pen.h>
+ #include <wx/window.h>
+-- 
+2.43.0
+

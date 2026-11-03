@@ -1,8 +1,7 @@
 # Project handoff
 
-Last updated: 2026-11-03 07:22 UTC. **Paused at the user's request. The project is
-unfinished; the latest candidate has not yet passed final acceptance.** Resume
-only when the user asks. This file is the resumption point for another developer.
+Last updated: 2026-11-03, new Ubuntu host recovery. **Resumed at the user's request.
+The project is unfinished; no candidate has final acceptance.** This file is the resumption point for another developer.
 Update it when the candidate, validation result, installation or remaining work changes.
 
 ## Goal and authorization
@@ -20,7 +19,25 @@ user authorization.** Simulated commands go only to `127.0.0.1:19025`; the fixtu
 records/discards requests and never executes or forwards them. Hardware testing
 is a separate acceptance stage and is not implied by software test success.
 
-## Pause state
+## Recovery update
+
+Recovered integration revision `70d58fc17f0132d926424a5a74144bf80cb1dcfd` into
+`/home/dan/qidi-orca-port` on Ubuntu 24.04.5 x86_64 / GNOME, GCC 13.3,
+14 GiB RAM, 23 GiB swap and 279 GiB available disk. Use parallelism 2.
+The 56-patch source exactly reproduces recorded tree
+`20f0b1398164ca1b5ab5bd44c6ecd6071aaaad3e`; upstream pins are unchanged.
+
+Run 41595285772 completed successfully. Its report has 2,912 unit cases,
+zero failures/skips; all 21 MAX4 cases pass. Static run 41595289239 failed:
+`AMSMaterialsSetting.cpp` needs a direct `<wx/colourdata.h>` include.
+Patch 57 supplies that include; reproduced tree is
+`0e97b1e9b901311fc5b8cd40f3d5330ef70f1888`. New CI and exact-artifact GUI
+acceptance are required. No installation or hardware test has occurred here.
+See `validation/recovery-2026-11-03/`.
+
+The following pause/host notes are historical, retained as evidence.
+
+## Historical pause state
 
 The user requested: "ok you can pause. create a github handoff". Development and
 new validation are paused. The already-started GitHub builds may finish; their
@@ -52,8 +69,8 @@ the user requested; this pause does not restore system sleep.
 
 | Candidate | Run | State / significance |
 | --- | --- | --- |
-| 56 patches | [41595285772](https://github.com/chevydan6/OrcaSlicer-QIDI/actions/runs/41595285772) | Running; intended acceptance candidate |
-| 56 static checks | [41595289239](https://github.com/chevydan6/OrcaSlicer-QIDI/actions/runs/41595289239) | Running |
+| 56 patches | [41595285772](https://github.com/chevydan6/OrcaSlicer-QIDI/actions/runs/41595285772) | Integration passed; static check failed, superseded by patch 57 |
+| 56 static checks | [41595289239](https://github.com/chevydan6/OrcaSlicer-QIDI/actions/runs/41595289239) | Failed: missing direct wx/colourdata.h include |
 | 55 patches | [41593288187](https://github.com/chevydan6/OrcaSlicer-QIDI/actions/runs/41593288187) | Compiles; 2,912 unit cases pass without skips, seven CLI checks and 72 vendor bundles pass; all 21 slices execute, 20 assertions pass; one parameter-order assertion fails, validator corrected in 4061021 |
 | 55 static checks | [41593291506](https://github.com/chevydan6/OrcaSlicer-QIDI/actions/runs/41593291506) | Pass |
 | 54 patches | [41592928800](https://github.com/chevydan6/OrcaSlicer-QIDI/actions/runs/41592928800) | Compiles; same parameter-order assertion failure, corrected validator |
