@@ -1,0 +1,175 @@
+From 6bf9e97bcee117cfc069821e6b95eb4145723e90 Mon Sep 17 00:00:00 2001
+From: chevydan6 <339888127+chevydan6@users.noreply.github.com>
+Date: Tue, 3 Nov 2026 13:26:14 +0900
+Subject: [PATCH] Clarify QIDI RFID settings and reject stale material-dialog
+ actions
+
+---
+ src/slic3r/GUI/AMSMaterialsSetting.cpp |  8 +++++-
+ src/slic3r/GUI/AMSSetting.cpp          | 39 ++++++++++++++++++++++++--
+ src/slic3r/GUI/AMSSetting.hpp          |  2 ++
+ 3 files changed, 45 insertions(+), 4 deletions(-)
+
+diff --git a/src/slic3r/GUI/AMSMaterialsSetting.cpp b/src/slic3r/GUI/AMSMaterialsSetting.cpp
+index da3de55a..c5f9ff91 100644
+--- a/src/slic3r/GUI/AMSMaterialsSetting.cpp
++++ b/src/slic3r/GUI/AMSMaterialsSetting.cpp
+@@ -29,6 +29,7 @@
+ #include <cstdlib>
+ #include <cstdio>
+ #include "slic3r/GUI/DeviceCore/DevDefs.h"
++#include "slic3r/GUI/DeviceCore/DevManager.h"
+ #include "libslic3r/calib.hpp"
+ #include "libslic3r/Config.hpp"
+ #include <vector>
+@@ -809,7 +810,9 @@ sCheckFilamentInfo(PresetBundle*      preset_bundle,
+ 
+ void AMSMaterialsSetting::on_select_ok(wxCommandEvent &event)
+ {
+-    if (!obj)
++    auto* manager = wxGetApp().getDeviceManager();
++    auto* current = manager ? manager->get_selected_machine() : nullptr;
++    if (!current || current != obj || !current->is_info_ready())
+         return;
+ 
+     if (m_view_only) return; // Orca: view-only never commits
+@@ -845,6 +848,9 @@ void AMSMaterialsSetting::on_select_ok(wxCommandEvent &event)
+         }
+         FilamentWarningDialog msg_window(nullptr, _L("Warning"), infos);
+         msg_window.ShowModal();
++        // A nested event loop can remove or change the selected printer.
++        if (manager->get_selected_machine() != current || obj != current)
++            return;
+     }
+ 
+     wxString nozzle_temp_min = m_input_nozzle_min->GetTextCtrl()->GetValue();
+diff --git a/src/slic3r/GUI/AMSSetting.cpp b/src/slic3r/GUI/AMSSetting.cpp
+index f953dd11..e805a44d 100644
+--- a/src/slic3r/GUI/AMSSetting.cpp
++++ b/src/slic3r/GUI/AMSSetting.cpp
+@@ -25,6 +25,7 @@
+ #include "slic3r/GUI/DeviceCore/DevConfigUtil.h"
+ #include <wx/event.h>
+ #include <vector>
++#include <initializer_list>
+ 
+ namespace Slic3r { namespace GUI {
+ 
+@@ -304,6 +305,26 @@ void AMSSetting::UpdateByObj(MachineObject* obj)
+         return;
+     }
+ 
++    const bool qidi = obj->printer_agent_id == "qidi";
++    if (qidi != m_qidi) {
++        m_qidi = qidi;
++        m_static_ams_settings->SetLabel(qidi ? _L("QIDI Box Settings") : _L("AMS Settings"));
++        m_tip_Insert_material_line1->SetLabel(qidi
++            ? _L("Automatically read supported filament RFID tags when a spool is inserted.")
++            : _L("The AMS will automatically read the filament information when inserting a new Bambu Lab filament spool. This takes about 20 seconds."));
++        m_tip_Insert_material_line3->SetLabel(qidi
++            ? _L("Automatic RFID reading on insertion is disabled. Filament information can be edited manually.")
++            : _L("When inserting a new filament, the AMS will not automatically read its information, leaving it blank for you to enter manually."));
++        m_tip_starting_line1->SetLabel(qidi
++            ? _L("Read filament RFID tags when the printer starts.")
++            : _L("The AMS will automatically read the information of inserted filament on start-up. It will take about 1 minute. The reading process will rotate the filament spools."));
++        m_tip_starting_line2->SetLabel(qidi
++            ? _L("Automatic RFID reading at startup is disabled.")
++            : _L("The AMS will not automatically read information from inserted filament during startup and will continue to use the information recorded before the last shutdown."));
++        for (auto* label : {m_tip_Insert_material_line1, m_tip_Insert_material_line3, m_tip_starting_line1, m_tip_starting_line2})
++            label->Wrap(AMS_SETTING_BODY_WIDTH);
++        m_am_img->GetParent()->Show(!qidi);
++    }
+     update_ams_img(obj);
+ 
+     m_ams_type->UpdateInfo(obj);
+@@ -404,7 +425,7 @@ void AMSSetting::update_insert_material_read_mode(bool selected, std::string ver
+         m_title_Insert_material_auto_read->Show();
+         if (selected) {
+             m_tip_Insert_material_line1->Show();
+-            m_tip_Insert_material_line2->Show();
++            m_tip_Insert_material_line2->Show(!m_qidi);
+             m_tip_Insert_material_line3->Hide();
+         }
+         else {
+@@ -510,13 +531,21 @@ void AMSSetting::update_air_printing_detection(MachineObject* obj)
+     m_checkbox_air_print->SetValue(obj->ams_air_print_status);
+ }
+ 
++bool AMSSetting::selected_device_ready() const
++{
++    auto* manager = wxGetApp().getDeviceManager();
++    auto* current = manager ? manager->get_selected_machine() : nullptr;
++    return current && current == m_obj && current->is_info_ready();
++}
++
+ void AMSSetting::on_insert_material_read(wxCommandEvent &event)
+ {
++    if (!selected_device_ready()) return;
+     // send command
+     if (m_checkbox_Insert_material_auto_read->GetValue()) {
+         // checked
+         m_tip_Insert_material_line1->Show();
+-        m_tip_Insert_material_line2->Show();
++        m_tip_Insert_material_line2->Show(!m_qidi);
+         m_tip_Insert_material_line3->Hide();
+     } else {
+         // unchecked
+@@ -541,6 +570,7 @@ void AMSSetting::on_insert_material_read(wxCommandEvent &event)
+ 
+ void AMSSetting::on_starting_read(wxCommandEvent &event)
+ {
++    if (!selected_device_ready()) return;
+     if (m_checkbox_starting_auto_read->GetValue()) {
+         // checked
+         m_tip_starting_line1->Show();
+@@ -567,6 +597,7 @@ void AMSSetting::on_starting_read(wxCommandEvent &event)
+ 
+ void AMSSetting::on_remain(wxCommandEvent& event)
+ {
++    if (!selected_device_ready()) return;
+     bool start_read_opt = m_checkbox_starting_auto_read->GetValue();
+     bool tray_read_opt = m_checkbox_Insert_material_auto_read->GetValue();
+     bool remain_opt = m_checkbox_remain->GetValue();
+@@ -576,6 +607,7 @@ void AMSSetting::on_remain(wxCommandEvent& event)
+ 
+ void AMSSetting::on_switch_filament(wxCommandEvent& event)
+ {
++    if (!selected_device_ready()) return;
+     bool switch_filament = m_checkbox_switch_filament->GetValue();
+     m_obj->command_ams_switch_filament(switch_filament);
+     event.Skip();
+@@ -583,6 +615,7 @@ void AMSSetting::on_switch_filament(wxCommandEvent& event)
+ 
+ void AMSSetting::on_air_print_detect(wxCommandEvent& event)
+ {
++    if (!selected_device_ready()) return;
+     bool air_print_detect = m_checkbox_air_print->GetValue();
+     m_obj->command_ams_air_print_detect(air_print_detect);
+     event.Skip();
+@@ -806,4 +839,4 @@ void AMSSettingArrangeAMSOrder::OnBtnRearrangeClicked(wxCommandEvent& event)
+ }
+ #endif
+ 
+-}} // namespace Slic3r::GUI
+\ No newline at end of file
++}} // namespace Slic3r::GUI
+diff --git a/src/slic3r/GUI/AMSSetting.hpp b/src/slic3r/GUI/AMSSetting.hpp
+index 84b8bc85..6b0bde8e 100644
+--- a/src/slic3r/GUI/AMSSetting.hpp
++++ b/src/slic3r/GUI/AMSSetting.hpp
+@@ -57,6 +57,7 @@ protected:
+     void update_air_printing_detection(MachineObject* obj);
+ 
+     void update_firmware_switching_status();
++    bool selected_device_ready() const;
+ 
+     // event handlers
+     void on_insert_material_read(wxCommandEvent& event);
+@@ -68,6 +69,7 @@ protected:
+ 
+ protected:
+     MachineObject *m_obj{nullptr};
++    bool m_qidi = false;
+ 
+     wxStaticText* m_static_ams_settings = nullptr;
+ 
