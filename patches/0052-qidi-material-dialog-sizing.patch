@@ -1,0 +1,30 @@
+From 2ef4224d94c7f7f70365809df94d9b5951aab766 Mon Sep 17 00:00:00 2001
+From: chevydan6 <339888127+chevydan6@users.noreply.github.com>
+Date: Tue, 3 Nov 2026 15:46:23 +0900
+Subject: [PATCH] Keep QIDI material editor buttons visible when reopening
+
+---
+ src/slic3r/GUI/AMSMaterialsSetting.cpp | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
+
+diff --git a/src/slic3r/GUI/AMSMaterialsSetting.cpp b/src/slic3r/GUI/AMSMaterialsSetting.cpp
+index dfea8e8c..4fe05766 100644
+--- a/src/slic3r/GUI/AMSMaterialsSetting.cpp
++++ b/src/slic3r/GUI/AMSMaterialsSetting.cpp
+@@ -1165,9 +1165,15 @@ bool AMSMaterialsSetting::Show(bool show)
+         //m_clr_picker->set_color(m_clr_picker->GetParent()->GetBackgroundColour());
+ 
+         m_ratio_text->Show();
+-        m_wiki_ctrl->Show();
++        const bool qidi = obj && obj->printer_agent_id == "qidi";
++        m_wiki_ctrl->Show(!qidi);
+         m_k_param->Show();
+         m_input_k_val->Show();
++        // GTK gives a non-resizable dialog a maximum equal to its previous
++        // size. Fit() can then repeatedly subtract the window decorations on
++        // reopening. Recompute the QIDI layout without that stale size cap.
++        if (qidi)
++            SetMaxSize(wxDefaultSize);
+         Layout();
+         Fit();
+         wxGetApp().UpdateDlgDarkUI(this);
