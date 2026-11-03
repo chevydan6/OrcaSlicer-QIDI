@@ -96,3 +96,5 @@ separately from implementation; a patch's presence does not certify hardware use
 48. `0048-qidi-material-editor-profile-lookup.patch` resolves QIDI material choices through the printer's vendor display name and hides Bambu pressure-calibration/reset actions. The offline GUI exposed an empty material list. Final compiled GUI verification remains pending.
 
 49. `0049-status-snapshot-access.patch` provides a protected, locked copy of Moonraker status for the stale-selection check, preserving private cache ownership. The static check caught direct access to private members in patch 47.
+
+50. `0050-qidi-chamber-placeholder-compatibility.patch` preserves QIDI's chamber-temperature placeholder spelling as a vector alias during G-code generation. The installed GUI reproduced a parsing error when slicing an original QIDI project with its embedded machine G-code; prior CLI checks replaced the machine profile and missed that path. A slicing unit regression checks implicit and explicit vector access, and two additional integration cases retain the embedded machine. Compiled rerun is pending.

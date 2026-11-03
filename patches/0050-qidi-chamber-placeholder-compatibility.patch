@@ -1,0 +1,47 @@
+From 473f58a89ebe3ffecfa0faccc1d35ae205889ee5 Mon Sep 17 00:00:00 2001
+From: chevydan6 <339888127+chevydan6@users.noreply.github.com>
+Date: Tue, 3 Nov 2026 15:29:19 +0900
+Subject: [PATCH] Accept QIDI chamber placeholders in embedded project G-code
+
+---
+ src/libslic3r/GCode.cpp        |  3 +++
+ tests/fff_print/test_gcode.cpp | 12 ++++++++++++
+ 2 files changed, 15 insertions(+)
+
+diff --git a/src/libslic3r/GCode.cpp b/src/libslic3r/GCode.cpp
+index edc9fc47..c5c1edde 100644
+--- a/src/libslic3r/GCode.cpp
++++ b/src/libslic3r/GCode.cpp
+@@ -4045,6 +4045,9 @@ void GCode::_do_export(Print& print, GCodeOutputStream &file, ThumbnailsGenerato
+         this->placeholder_parser().set("bed_temperature_initial_layer_single", new ConfigOptionInt(target_bed_temp));
+         this->placeholder_parser().set("bed_temperature_initial_layer_vector", new ConfigOptionString());
+         this->placeholder_parser().set("chamber_temperature", new ConfigOptionInts(m_config.chamber_temperature));
++        // QIDI projects retain this spelling in embedded start/change G-code.
++        // Their configuration key is already migrated to chamber_temperature.
++        this->placeholder_parser().set("chamber_temperatures", new ConfigOptionInts(m_config.chamber_temperature));
+         this->placeholder_parser().set("overall_chamber_temperature", new ConfigOptionInt(max_chamber_temp));
+         this->placeholder_parser().set("chamber_minimal_temperature", new ConfigOptionInts(m_config.chamber_minimal_temperature));
+         this->placeholder_parser().set("enable_high_low_temp_mix", new ConfigOptionBool(!print.need_check_multi_filaments_compatibility()));
+diff --git a/tests/fff_print/test_gcode.cpp b/tests/fff_print/test_gcode.cpp
+index 2d576e0c..4ba8c75d 100644
+--- a/tests/fff_print/test_gcode.cpp
++++ b/tests/fff_print/test_gcode.cpp
+@@ -585,6 +585,18 @@ TEST_CASE("The temperature tower steps the temperature of the tool printing it",
+     }
+ }
+ 
++TEST_CASE("QIDI chamber placeholders retain imported filament temperatures", "[GCode][Qidi][Regression]")
++{
++    auto config = Test::multifilament_config(2, {
++        {"chamber_temperature", "35,45"},
++        {"enable_prime_tower", 0},
++        {"machine_start_gcode", "M141 S[chamber_temperatures]\n;QIDI_CHAMBER {chamber_temperatures[1]} {chamber_temperature[1]}"},
++    });
++    const std::string gcode = Test::slice({Test::cube(2)}, config);
++    CHECK(gcode.find("\nM141 S35\n") != std::string::npos);
++    CHECK(gcode.find("\n;QIDI_CHAMBER 45 45\n") != std::string::npos);
++}
++
+ TEST_CASE("QIDI Box temperatures retain logical filament indices before machine start", "[GCode][QidiBox]")
+ {
+     const bool enabled = GENERATE(false, true);

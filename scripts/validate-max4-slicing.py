@@ -181,6 +181,10 @@ for name, tools, first in [('sparse-project', [2], 2), ('support-first-project',
     check_case('qidi-reference-' + name, reference / (name + '.3mf'),
                ['--load-settings', str(profiles / 'machine/Qidi X-Max 4 0.4 nozzle.json')],
                [35, 40, 45], expected_tool=2, box_tools=tools, first_tool=first)
+    # The GUI also supports retaining the project's embedded machine G-code.
+    # Replacing the machine above masked QIDI-only placeholder spellings.
+    check_case('qidi-embedded-' + name, reference / (name + '.3mf'), [],
+               [35, 40, 45], expected_tool=2, box_tools=tools, first_tool=first)
 failures = sum(not case['passed'] for case in report['cases'])
 print(f'{len(report["cases"])} offline slicing cases, {failures} failed. No printer was contacted.')
 raise SystemExit(bool(failures))
