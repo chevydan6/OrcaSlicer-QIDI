@@ -32,7 +32,13 @@ files = staging / 'files'
 shutil.copytree(appdir, files / 'lib/orca-slicer-qidi', symlinks=True)
 (files / 'bin').mkdir()
 launcher = files / 'bin/orca-slicer-qidi'
-launcher.write_text('#!/bin/sh\nexec /app/lib/orca-slicer-qidi/AppRun "$@"\n')
+launcher.write_text('''#!/bin/sh
+# Use the runtime's CA bundle instead of the build machine's OpenSSL path.
+if [ -z "${SSL_CERT_FILE:-}" ] && [ -s /etc/ssl/certs/ca-certificates.crt ]; then
+    export SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt
+fi
+exec /app/lib/orca-slicer-qidi/AppRun "$@"
+''')
 launcher.chmod(0o755)
 (staging / 'metadata').write_text(
     f'[Application]\nname={APP_ID}\nruntime={"/".join(parts[1:])}\ncommand=orca-slicer-qidi\n')

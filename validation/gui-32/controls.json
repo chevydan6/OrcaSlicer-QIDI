@@ -1,0 +1,17 @@
+{
+  "build": "4d9dac7588c2acebbf127c2587e8c8e0cbb44414",
+  "patch_count": 32,
+  "endpoint": "http://127.0.0.1:19025",
+  "hardware_contacted": false,
+  "commands_recorded_not_executed": [
+    "SET_PIN PIN=polar_cooler VALUE=1",
+    "SAVE_VARIABLE VARIABLE=enable_noodle_detection VALUE=0\nSAVE_VARIABLE VARIABLE=noodle_sensitivity_level VALUE=\"'MEDIUM'\"",
+    "SAVE_VARIABLE VARIABLE=enable_pre_print_model_check VALUE=0",
+    "LOAD_FILAMENT_CONTROL SLOT=5",
+    "UNLOAD_FILAMENT_CONTROL SLOT=5",
+    "READ_RFID SLOT=5",
+    "SET_PIN PIN=caselight VALUE=1"
+  ],
+  "ui_selection_for_load_unload_rfid": "Box B, slot 2 (physical slot 5)",
+  "scope": "Initial happy-path GUI check only; failure, reconnect, final build and hardware checks remain pending"
+}

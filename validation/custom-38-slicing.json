@@ -1,0 +1,336 @@
+{
+  "entrypoint": "/home/runner/work/OrcaSlicer-QIDI/OrcaSlicer-QIDI/source/build/src/Release/orca-slicer",
+  "entrypoint_sha256": "cde45d9f32fc28289aa8ad5a222fd4cb7a1149570625bb258ecabe8cb04aa304",
+  "flatpak_app": null,
+  "hardware_contacted": false,
+  "cases": [
+    {
+      "case": "00-0.2-QIDI_PLA_Rapido",
+      "errors": [],
+      "exit_code": 0,
+      "gcode_sha256": "ee5988be924ca9727b1175d74a3bd1153832e45cd316e37f543affba740e938b",
+      "startup_trace": [
+        "BOX_TEMP_SET VT0=0",
+        "BOX_PRINT_START EXTRUDER=0 HOTENDTEMP=240",
+        "M109 S210",
+        "M104 S140",
+        "M109 S210",
+        "T0",
+        "M104 S210",
+        "M104 S0"
+      ],
+      "passed": true
+    },
+    {
+      "case": "01-0.4-QIDI_PLA_Rapido",
+      "errors": [],
+      "exit_code": 0,
+      "gcode_sha256": "8c2f82a875943b128380893cc4c8f9800ea4bfe8ca96e3a380c38436e32065fe",
+      "startup_trace": [
+        "BOX_TEMP_SET VT0=0",
+        "BOX_PRINT_START EXTRUDER=0 HOTENDTEMP=240",
+        "M109 S210",
+        "M104 S140",
+        "M109 S210",
+        "T0",
+        "M104 S210",
+        "M104 S0"
+      ],
+      "passed": true
+    },
+    {
+      "case": "02-0.6-QIDI_PLA_Rapido",
+      "errors": [],
+      "exit_code": 0,
+      "gcode_sha256": "3e8e22c79536c6f675f9668cfb8bd395c9ae44eb3772a5494e87896944fe8915",
+      "startup_trace": [
+        "BOX_TEMP_SET VT0=0",
+        "BOX_PRINT_START EXTRUDER=0 HOTENDTEMP=240",
+        "M109 S210",
+        "M104 S140",
+        "M109 S210",
+        "T0",
+        "M104 S210",
+        "M104 S0"
+      ],
+      "passed": true
+    },
+    {
+      "case": "03-0.8-QIDI_PLA_Rapido",
+      "errors": [],
+      "exit_code": 0,
+      "gcode_sha256": "a89e1d53d96de67dc0f24da3869f955946e9a798fddc712e1298082ace010639",
+      "startup_trace": [
+        "BOX_TEMP_SET VT0=0",
+        "BOX_PRINT_START EXTRUDER=0 HOTENDTEMP=240",
+        "M109 S210",
+        "M104 S140",
+        "M109 S210",
+        "T0",
+        "M104 S210",
+        "M104 S0"
+      ],
+      "passed": true
+    },
+    {
+      "case": "04-0.2-Polymaker_PLA-HT",
+      "errors": [],
+      "exit_code": 0,
+      "gcode_sha256": "becacd6cb8d831111c295be1a972de40496e5d78f8c3639656e568305a05bca5",
+      "startup_trace": [
+        "BOX_TEMP_SET VT0=0",
+        "BOX_PRINT_START EXTRUDER=0 HOTENDTEMP=240",
+        "M109 S220",
+        "M104 S140",
+        "M109 S220",
+        "T0",
+        "M104 S220",
+        "M104 S215 ; set nozzle temperature",
+        "M104 S0"
+      ],
+      "passed": true
+    },
+    {
+      "case": "05-0.4-Polymaker_PLA-HT",
+      "errors": [],
+      "exit_code": 0,
+      "gcode_sha256": "f829c53b038289c63fe56acbd86ad623dcda0380c9ec4cbe3b1e98fe8a481e08",
+      "startup_trace": [
+        "BOX_TEMP_SET VT0=0",
+        "BOX_PRINT_START EXTRUDER=0 HOTENDTEMP=240",
+        "M109 S220",
+        "M104 S140",
+        "M109 S220",
+        "T0",
+        "M104 S220",
+        "M104 S215 ; set nozzle temperature",
+        "M104 S0"
+      ],
+      "passed": true
+    },
+    {
+      "case": "06-0.6-Polymaker_PLA-HT",
+      "errors": [],
+      "exit_code": 0,
+      "gcode_sha256": "5775dcaae1e5de54929549812e0e1c979c6dbcf50c190fdfe118307df107046d",
+      "startup_trace": [
+        "BOX_TEMP_SET VT0=0",
+        "BOX_PRINT_START EXTRUDER=0 HOTENDTEMP=240",
+        "M109 S220",
+        "M104 S140",
+        "M109 S220",
+        "T0",
+        "M104 S220",
+        "M104 S215 ; set nozzle temperature",
+        "M104 S0"
+      ],
+      "passed": true
+    },
+    {
+      "case": "07-0.8-Polymaker_PLA-HT",
+      "errors": [],
+      "exit_code": 0,
+      "gcode_sha256": "dd011fd41a4c87d011e2bf7d2feaf25725fcf50494c0f9027662c844e335fcb2",
+      "startup_trace": [
+        "BOX_TEMP_SET VT0=0",
+        "BOX_PRINT_START EXTRUDER=0 HOTENDTEMP=240",
+        "M109 S220",
+        "M104 S140",
+        "M109 S220",
+        "T0",
+        "M104 S220",
+        "M104 S215 ; set nozzle temperature",
+        "M104 S0"
+      ],
+      "passed": true
+    },
+    {
+      "case": "08-0.4-QIDI_ASA-CF20_Core",
+      "errors": [],
+      "exit_code": 0,
+      "gcode_sha256": "3d6dcf79f82443a7df1ca531c180029a843432f962825cc4a1e419f8c0b0b1b9",
+      "startup_trace": [
+        "BOX_TEMP_SET VT0=0",
+        "BOX_PRINT_START EXTRUDER=0 HOTENDTEMP=280",
+        "M109 S275",
+        "M104 S140",
+        "M109 S275",
+        "T0",
+        "M104 S275",
+        "M104 S0"
+      ],
+      "passed": true
+    },
+    {
+      "case": "09-0.6-QIDI_ASA-CF20_Core",
+      "errors": [],
+      "exit_code": 0,
+      "gcode_sha256": "f0354ec59ef6a0903aa71d8bce8db2084e0a95effdfee39c34e20eff2c527c31",
+      "startup_trace": [
+        "BOX_TEMP_SET VT0=0",
+        "BOX_PRINT_START EXTRUDER=0 HOTENDTEMP=280",
+        "M109 S275",
+        "M104 S140",
+        "M109 S275",
+        "T0",
+        "M104 S275",
+        "M104 S0"
+      ],
+      "passed": true
+    },
+    {
+      "case": "10-0.8-QIDI_ASA-CF20_Core",
+      "errors": [],
+      "exit_code": 0,
+      "gcode_sha256": "907621977d9151c233531f81b2eceae3435890ed55de9a00ceee0e7071064341",
+      "startup_trace": [
+        "BOX_TEMP_SET VT0=0",
+        "BOX_PRINT_START EXTRUDER=0 HOTENDTEMP=280",
+        "M109 S275",
+        "M104 S140",
+        "M109 S275",
+        "T0",
+        "M104 S275",
+        "M104 S0"
+      ],
+      "passed": true
+    },
+    {
+      "case": "11-0.4-QIDI_PA6-CF",
+      "errors": [],
+      "exit_code": 0,
+      "gcode_sha256": "997c43aaedad259d47ca797aa618a2419b8212e70d30f34b05652dac530f008f",
+      "startup_trace": [
+        "BOX_TEMP_SET VT0=55",
+        "BOX_PRINT_START EXTRUDER=0 HOTENDTEMP=300",
+        "M109 S280",
+        "M104 S140",
+        "M109 S280",
+        "T0",
+        "M104 S280",
+        "M104 S0"
+      ],
+      "passed": true
+    },
+    {
+      "case": "12-0.6-QIDI_PA6-CF",
+      "errors": [],
+      "exit_code": 0,
+      "gcode_sha256": "62f3d0de63dd5e1211e7da8cdf6a87a9db6d35c337a57907f6a293842aa23976",
+      "startup_trace": [
+        "BOX_TEMP_SET VT0=55",
+        "BOX_PRINT_START EXTRUDER=0 HOTENDTEMP=300",
+        "M109 S280",
+        "M104 S140",
+        "M109 S280",
+        "T0",
+        "M104 S280",
+        "M104 S0"
+      ],
+      "passed": true
+    },
+    {
+      "case": "13-0.8-QIDI_PA6-CF",
+      "errors": [],
+      "exit_code": 0,
+      "gcode_sha256": "3ae26f4fd5e0f20086319d7b1128fcdf145eb3c3ac2192b227f8038d39f52f2c",
+      "startup_trace": [
+        "BOX_TEMP_SET VT0=55",
+        "BOX_PRINT_START EXTRUDER=0 HOTENDTEMP=300",
+        "M109 S280",
+        "M104 S140",
+        "M109 S280",
+        "T0",
+        "M104 S280",
+        "M104 S0"
+      ],
+      "passed": true
+    },
+    {
+      "case": "persist-write",
+      "errors": [],
+      "exit_code": 0,
+      "gcode_sha256": "9cb88dd67c3fc3da532ff6969d8289fc534191869d236de610c1bafabc37fa42",
+      "startup_trace": [
+        "BOX_TEMP_SET VT0=45",
+        "BOX_PRINT_START EXTRUDER=0 HOTENDTEMP=240",
+        "M109 S210",
+        "M104 S140",
+        "M109 S210",
+        "T0",
+        "M104 S210",
+        "M104 S0"
+      ],
+      "passed": true
+    },
+    {
+      "case": "persist-reload",
+      "errors": [],
+      "exit_code": 0,
+      "gcode_sha256": "26bb2bd5b97e9e22d33f955e10bbedacd16bf75c6bd27dfff270a45de8d5f03b",
+      "startup_trace": [
+        "BOX_TEMP_SET VT0=45",
+        "BOX_PRINT_START EXTRUDER=0 HOTENDTEMP=240",
+        "M109 S210",
+        "M104 S140",
+        "M109 S210",
+        "T0",
+        "M104 S210",
+        "M104 S0"
+      ],
+      "passed": true
+    },
+    {
+      "case": "unused-leading-filaments",
+      "errors": [
+        "slicer exited 251; see /home/runner/work/OrcaSlicer-QIDI/OrcaSlicer-QIDI/build/max4-slicing/unused-leading-filaments/slicer.log"
+      ],
+      "exit_code": 251,
+      "passed": false
+    },
+    {
+      "case": "qidi-reference-sparse-project",
+      "errors": [],
+      "exit_code": 0,
+      "gcode_sha256": "95a582e3ba23853e193361874f0cdc3ef4b9b40de4ec03db6b5c196c118935f8",
+      "startup_trace": [
+        "BOX_TEMP_SET VT2=45",
+        "BOX_PRINT_START EXTRUDER=2 HOTENDTEMP=240",
+        "M109 S220",
+        "M104 S140",
+        "M109 S220",
+        "T2",
+        "M104 S220",
+        "T2",
+        "M104 S220 ; set nozzle temperature",
+        "M104 S210 ; set nozzle temperature",
+        "M104 S0"
+      ],
+      "passed": true
+    },
+    {
+      "case": "qidi-reference-support-first-project",
+      "errors": [],
+      "exit_code": 0,
+      "gcode_sha256": "05d1342a5ccdee0bd594db01ae9db38f2541b781753bb9158f5db7020af4b8de",
+      "startup_trace": [
+        "BOX_TEMP_SET VT0=35 VT2=45",
+        "BOX_PRINT_START EXTRUDER=2 HOTENDTEMP=240",
+        "M109 S200",
+        "M104 S140",
+        "M109 S200",
+        "T0",
+        "M104 S200",
+        "T0",
+        "M104 S210 ; set nozzle temperature",
+        "M104 S200",
+        "T2",
+        "M104 S240",
+        "M104 S200",
+        "M104 S210",
+        "M104 S0"
+      ],
+      "passed": true
+    }
+  ]
+}

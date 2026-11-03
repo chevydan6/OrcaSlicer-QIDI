@@ -9,10 +9,15 @@ jobs:
     timeout-minutes: 360
     env:
       CCACHE_DIR: ${{ github.workspace }}/.ccache
-      CCACHE_MAXSIZE: 2G
+      CCACHE_MAXSIZE: 6G
       CTEST_PARALLEL_LEVEL: 2
     steps:
       - uses: actions/checkout@v4
+      - name: Reserve space for native builds and compiler cache
+        run: |
+          # These preinstalled SDKs are not used by this C++ Linux build.
+          sudo rm -rf -- /usr/share/dotnet /usr/local/lib/android /opt/ghc /opt/hostedtoolcache/CodeQL
+          df -h "$GITHUB_WORKSPACE"
       - name: Read pinned upstream
         id: source
         run: echo "sha=$(python3 -c 'import json; print(json.load(open("sources.json"))["orca"]["commit"])')" >> "$GITHUB_OUTPUT"
@@ -111,6 +116,7 @@ jobs:
       - name: Free completed build intermediates for compiler cache archival
         if: always()
         run: |
+          ccache --show-stats || true
           # Tests and retained artifacts are complete. These are runner-local build trees.
           rm -rf -- "$GITHUB_WORKSPACE/source/build" "$GITHUB_WORKSPACE/source/deps/build"
           df -h "$GITHUB_WORKSPACE"
