@@ -29,6 +29,13 @@ captured callback across that reset would be incorrect. The sanitized harness
 passes the production reset/dispatcher/destructor bodies with queued and late
 responses from the old registration; full-library disconnect cases await CI.
 
+Patch 0039: the extracted legacy slot parser reproduced this sanitizer failure:
+runtime error: 1e+300 is outside the range of representable values of type 'int'
+The bounded parser passes extreme positive/negative values, fractions, unsigned
+overflow, invalid sensor states and valid modern array/string compatibility cases.
+The harness explicitly enables float-cast-overflow and terminates on sanitizer
+errors; source-block testing does not establish full GUI synchronization behavior.
+
 Commands completed successfully:
 python3 scripts/check-protocol-helpers.py
 python3 scripts/check-protocol-helpers.py --sanitize --sanitizer-libs research/sanitizer-runtime/usr/lib64

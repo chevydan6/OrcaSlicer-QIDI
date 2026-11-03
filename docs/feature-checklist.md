@@ -51,7 +51,7 @@ the build guide documents that setup. Compiled GUI activation is still pending.
 | Box monitoring | Filament sync only | Temperature/humidity/loaded physical slot; modern nested/flat slot sync and live material/presence updates; preserve partial metadata | Nested/flat firmware formats checked in isolation |
 | Start/end/change G-code | MAX4 macros present | Height guards and Box thermal preamble | Engine-generated G-code tests pending |
 | LAN printing | Moonraker upload, 3MF selected plate | Ordered Box mode/mapping/options before start | Loopback HTTP tests added; execution pending; no printer contacted |
-| Experimental batch/multi-device printing | Separate upstream submission path | Not validated for QIDI; its job builder does not capture the new QIDI options | Must validate per-device mapping or reject safely before release; use the single-printer path for current testing |
+| Experimental batch/multi-device printing | Separate upstream submission path | QIDI entry point refuses the job because this path lacks per-printer slot/options snapshots | Single-printer submission supported; batch limitation is explicit; compiled refusal/GUI check pending |
 | Bed leveling option | QIDI option ineffective/hidden | MAX4 G31/G32 selection | Recording-transport check passes |
 | Timelapse option | UI and frame macros exist | QIDI Moonraker settings request | Recording-transport check passes; actual HTTP pending |
 | Object skipping | Bambu numeric-ID interface only | QIDI named-object chooser and EXCLUDE_OBJECT translation | Isolated name/telemetry checks pass; GUI/hardware pending |

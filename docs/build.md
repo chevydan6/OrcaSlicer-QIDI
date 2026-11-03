@@ -124,7 +124,8 @@ implementation. `python3 scripts/verify-patches.py` verifies source reproduction
 without modifying the developer checkout's index or working tree.
 
 Add `--sanitize` to the protocol harness to enable AddressSanitizer and
-UndefinedBehaviorSanitizer; this checks the isolated production helper bodies,
+UndefinedBehaviorSanitizer, including float-to-integer overflow; sanitizer errors
+terminate the check. This checks the isolated production helper bodies,
 not the complete GUI. Use `--source PATH` for a prepared source checkout. The
 Linux workflow runs this check before compiling the application. On a host with
 sanitizer libraries extracted into a private directory rather than installed,

@@ -1,0 +1,132 @@
+From e2abb3734922b813f7d17f7530417943e0f4844e Mon Sep 17 00:00:00 2001
+From: chevydan6 <339888127+chevydan6@users.noreply.github.com>
+Date: Tue, 3 Nov 2026 12:40:49 +0900
+Subject: [PATCH] Reject corrupt legacy filament indexes before integer
+ conversion
+
+---
+ src/slic3r/Utils/QidiPrinterAgent.cpp         | 25 +++++++++++++--
+ tests/slic3rutils/test_qidi_printer_agent.cpp | 31 +++++++++++++++++--
+ 2 files changed, 51 insertions(+), 5 deletions(-)
+
+diff --git a/src/slic3r/Utils/QidiPrinterAgent.cpp b/src/slic3r/Utils/QidiPrinterAgent.cpp
+index 11b2110a..6d3e5c78 100644
+--- a/src/slic3r/Utils/QidiPrinterAgent.cpp
++++ b/src/slic3r/Utils/QidiPrinterAgent.cpp
+@@ -16,6 +16,8 @@
+ #include <cctype>
+ #include <cstddef>
+ #include <exception>
++#include <initializer_list>
++#include <limits>
+ #include <algorithm>
+ #include <ios>
+ #include "libslic3r/Preset.hpp"
+@@ -733,9 +735,20 @@ bool QidiPrinterAgent::fetch_slot_info(const std::string&        base_url,
+         // indexes, and only in the slots it has rewritten, so each slot is checked for both forms.
+         const auto color_value    = variables.value("color_slot" + std::to_string(i), nlohmann::json(1));
+         const auto filament_value = variables.value("filament_slot" + std::to_string(i), nlohmann::json(1));
++        const auto vendor_value   = variables.value("vendor_slot" + std::to_string(i), nlohmann::json(0));
++        const auto valid_index = [](const nlohmann::json& value) {
++            return value.is_number_integer() && value >= 0 && value <= std::numeric_limits<int>::max();
++        };
++        // Modern colors/material IDs may be arrays or strings. Numeric legacy
++        // dictionary indexes must be validated before narrowing to int.
++        if ((color_value.is_number() && !valid_index(color_value)) ||
++            (filament_value.is_number() && !valid_index(filament_value)) || !valid_index(vendor_value)) {
++            error = "Invalid QIDI legacy filament index";
++            return false;
++        }
+         const int color_index     = color_value.is_number() ? color_value.get<int>() : 0;
+         const int filament_type   = filament_value.is_number() ? filament_value.get<int>() : 0;
+-        const int vendor_type     = variables.value("vendor_slot" + std::to_string(i), 0);
++        const int vendor_type     = vendor_value.get<int>();
+ 
+         // Check filament presence via runout sensor
+         std::string box_stepper_key = "box_stepper slot" + std::to_string(i);
+@@ -743,8 +756,14 @@ bool QidiPrinterAgent::fetch_slot_info(const std::string&        base_url,
+         if (status.contains(box_stepper_key)) {
+             auto& box_stepper = status[box_stepper_key];
+             if (box_stepper.contains("runout_button") && !box_stepper["runout_button"].is_null()) {
+-                int runout_button = box_stepper["runout_button"].template get<int>();
+-                tray.has_filament = (runout_button == 0);
++                const auto& runout = box_stepper["runout_button"];
++                if (runout.is_boolean()) tray.has_filament = !runout.get<bool>();
++                else if (runout.is_number_integer() && runout >= 0 && runout <= 1)
++                    tray.has_filament = runout.get<int>() == 0;
++                else {
++                    error = "Invalid QIDI filament runout state";
++                    return false;
++                }
+             }
+         }
+ 
+diff --git a/tests/slic3rutils/test_qidi_printer_agent.cpp b/tests/slic3rutils/test_qidi_printer_agent.cpp
+index 8fccb196..08a5174d 100644
+--- a/tests/slic3rutils/test_qidi_printer_agent.cpp
++++ b/tests/slic3rutils/test_qidi_printer_agent.cpp
+@@ -68,6 +68,13 @@ struct QidiPrinterAgentTestAccess
+     { return agent.message_dispatcher("offline-fixture"); }
+     static bool upload(QidiPrinterAgent& agent, const std::string& path)
+     { return agent.upload_gcode(path, "offline cube.gcode", agent.device_info.base_url, agent.device_info.api_key, {}, {}); }
++    static bool slots(QidiPrinterAgent& agent, std::string& error)
++    {
++        QidiPrinterAgent::QidiFilamentDict dictionary;
++        std::vector<MoonrakerPrinterAgent::AmsTrayData> trays;
++        int count = 0;
++        return agent.fetch_slot_info(agent.device_info.base_url, agent.device_info.api_key, dictionary, "4", trays, count, error);
++    }
+ };
+ }
+ 
+@@ -129,7 +136,8 @@ class QidiHttpFixture
+ {
+ public:
+     struct Request { std::string path, body, api_key; };
+-    explicit QidiHttpFixture(std::size_t fail_at) : m_fail_at(fail_at)
++    explicit QidiHttpFixture(std::size_t fail_at, std::string reply = R"({"result":"ok"})")
++        : m_fail_at(fail_at), m_reply(std::move(reply))
+     {
+         accept();
+         m_thread = std::thread([this] { m_io.run(); });
+@@ -161,7 +169,7 @@ private:
+                         fail = m_requests.size() == m_fail_at;
+                     }
+                     session->response = {fail ? http::status::internal_server_error : http::status::ok, 11};
+-                    session->response.body() = fail ? "{\"error\":\"fixture failure\"}" : "{\"result\":\"ok\"}";
++                    session->response.body() = fail ? "{\"error\":\"fixture failure\"}" : m_reply;
+                     session->response.prepare_payload();
+                     http::async_write(session->socket, session->response,
+                         [session](boost::beast::error_code, std::size_t) {});
+@@ -172,12 +180,31 @@ private:
+     net::io_context m_io;
+     tcp::acceptor m_acceptor{m_io, {net::ip::make_address("127.0.0.1"), 0}};
+     std::size_t m_fail_at;
++    std::string m_reply;
+     std::mutex m_mutex;
+     std::vector<Request> m_requests;
+     std::thread m_thread;
+ };
+ }
+ 
++TEST_CASE("QIDI legacy slot indexes reject corrupt numeric values before conversion", "[QidiPrinterAgent][Http][Regression]")
++{
++    const std::string key = GENERATE("color_slot0", "filament_slot0", "vendor_slot0");
++    for (const auto& value : nlohmann::json::array({1e300, -1e300, -1, 1.5, 18446744073709551615ULL})) {
++        DYNAMIC_SECTION(key << "=" << value.dump()) {
++            const nlohmann::json status{{"save_variables", {{"variables", {{"box_count", 1}, {key, value}}}}}};
++            QidiHttpFixture server(0, nlohmann::json{{"result", {{"status", status}}}}.dump());
++            QidiPrinterAgent agent("");
++            QidiPrinterAgentTestAccess::endpoint(agent, server.url());
++            std::string error;
++            bool result = true;
++            CHECK_NOTHROW(result = QidiPrinterAgentTestAccess::slots(agent, error));
++            CHECK_FALSE(result);
++            CHECK_FALSE(error.empty());
++        }
++    }
++}
++
+ TEST_CASE("QIDI HTTP submission orders setup before the selected plate and stops on errors", "[QidiPrinterAgent][Http]")
+ {
+     const std::size_t fail_at = GENERATE(0U, 1U, 2U, 3U, 4U, 5U);

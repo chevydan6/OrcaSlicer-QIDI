@@ -1,0 +1,28 @@
+From a322ff20bc10b0031a07274eb159dff0233bd79a Mon Sep 17 00:00:00 2001
+From: chevydan6 <339888127+chevydan6@users.noreply.github.com>
+Date: Tue, 3 Nov 2026 12:40:50 +0900
+Subject: [PATCH] Refuse QIDI batch jobs that bypass per-printer slot
+ validation
+
+---
+ src/slic3r/GUI/Plater.cpp | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/src/slic3r/GUI/Plater.cpp b/src/slic3r/GUI/Plater.cpp
+index df855d49..914df02b 100644
+--- a/src/slic3r/GUI/Plater.cpp
++++ b/src/slic3r/GUI/Plater.cpp
+@@ -13867,6 +13867,13 @@ void Plater::priv::open_machine_select_dialog(int plate_idx, PrintFromType print
+ 
+ void Plater::priv::on_action_send_to_multi_machine(SimpleEvent&)
+ {
++    const auto* bundle = wxGetApp().preset_bundle;
++    if (bundle && bundle->printers.get_edited_preset().config.opt_string("printer_agent") == "qidi") {
++        // This separate batch path has no per-printer QIDI slot/options snapshot.
++        // Never let it bypass the normal print dialog's mapping preflight.
++        GUI::show_error(q, _L("QIDI batch printing is not supported. Send the job to one printer at a time so its filament slots can be selected and checked."));
++        return;
++    }
+     if (!m_send_multi_dlg)
+         m_send_multi_dlg = new SendMultiMachinePage(q);
+     m_send_multi_dlg->prepare(partplate_list.get_curr_plate_index());

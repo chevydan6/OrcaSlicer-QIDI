@@ -63,6 +63,12 @@ struct QidiPrinterAgent {
 '''
 for start,end in functions:
  code += source[source.index(start):source.index(end,source.index(start))]
+start=source.index('        const auto color_value    = variables.value(')
+end=source.index('        const auto decoded = decoded_box_slot',start)
+code += '\n#include <limits>\nbool legacy_slot(const nlohmann::json& variables, const nlohmann::json& status) {\n'
+code += 'int i=0; std::string error; struct { bool has_filament=false; } tray;\n'
+code += source[start:end]
+code += '\n(void)tray.has_filament; return color_index>=0 && filament_type>=0 && vendor_type>=0;\n}\n'
 cache_source = (source_root/'src/slic3r/Utils/MoonrakerPrinterAgent.cpp').read_text()
 qidi_header = (source_root/'src/slic3r/Utils/QidiPrinterAgent.hpp').read_text()
 code += """
@@ -139,6 +145,14 @@ start=device_source.index('int MachineObject::command_ams_change_filament(')
 code += device_source[start:device_source.index('int MachineObject::command_ams_user_settings(',start)]
 code += r'''
 int main() {
+ for (const char* key : {"color_slot0","filament_slot0","vendor_slot0"}) {
+  for (const auto& value : nlohmann::json::array({1e300,-1e300,-1,1.5,18446744073709551615ULL}))
+   assert(!legacy_slot({{key,value}},nlohmann::json::object()));
+ }
+ for (const auto& value : nlohmann::json::array({2,-1,1.5,1e300,"bad",nlohmann::json::object()}))
+  assert(!legacy_slot(nlohmann::json::object(),{{"box_stepper slot0",{{"runout_button",value}}}}));
+ assert(legacy_slot(nlohmann::json::object(),nlohmann::json::object()));
+ assert(legacy_slot({{"color_slot0",{"112233"}},{"filament_slot0","PLA"}},nlohmann::json::object()));
  {
  int received=0;
  std::vector<std::function<void()>> queued;
@@ -328,7 +342,7 @@ int main() {
 build = root/('build/protocol-helpers-sanitized' if args.sanitize else 'build/protocol-helpers')
 build.mkdir(parents=True,exist_ok=True)
 (build/'test.cpp').write_text(code)
-sanitizers = ['-fsanitize=address,undefined','-fno-omit-frame-pointer','-g'] if args.sanitize else []
+sanitizers = ['-fsanitize=address,undefined,float-cast-overflow','-fno-sanitize-recover=all','-fno-omit-frame-pointer','-g'] if args.sanitize else []
 if args.sanitize and args.sanitizer_libs:
  sanitizers += ['-L'+str(args.sanitizer_libs.resolve()), '-Wl,-rpath,'+str(args.sanitizer_libs.resolve())]
 subprocess.run(['g++','-std=c++17','-Wall','-Wextra','-Werror',*sanitizers,'-I'+str(source_root/'deps_src'),str(build/'test.cpp'),'-o',str(build/'test')],check=True)
