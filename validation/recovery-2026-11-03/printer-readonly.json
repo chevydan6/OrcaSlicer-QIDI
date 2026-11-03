@@ -1,0 +1,107 @@
+{
+  "read_only": true,
+  "requests": "GET only; no printer commands, uploads or persistent changes",
+  "main_mcu_version": "02.01.01.12",
+  "box_mcu_version": "02.03.01.21",
+  "overall_max4_firmware": "not established; printer/info reports ?",
+  "box_count": 1,
+  "identity": "box_v1",
+  "loaded_slot": "slot16",
+  "auto_refill": [],
+  "auto_reload_detect": 1,
+  "camera": {
+    "content_type": "image/jpeg",
+    "dimensions": [
+      1920,
+      1080
+    ],
+    "format": "JPEG",
+    "sha256": "dae4b844577db6a341f6ca675626226156455b0e90129f3d31a8693409dc8d64"
+  },
+  "slots": [
+    {
+      "index": 0,
+      "filament_id": "QFB91",
+      "info_from_rfid": 0,
+      "read_rfid_state": 0,
+      "vendor_str": "Generic",
+      "filament_str": "ABS",
+      "filament_type": "ABS",
+      "color_rgb_str": [
+        "#2850FF"
+      ],
+      "filament_per": 100,
+      "min_temp": 240,
+      "max_temp": 280,
+      "box_min_temp": 0,
+      "box_max_temp": 45,
+      "physical_slot": 0,
+      "reported_present": 0
+    },
+    {
+      "index": 1,
+      "filament_id": "QFB91",
+      "info_from_rfid": 0,
+      "read_rfid_state": 0,
+      "vendor_str": "Generic",
+      "filament_str": "ABS",
+      "filament_type": "ABS",
+      "color_rgb_str": [
+        "#2850FF"
+      ],
+      "filament_per": 100,
+      "min_temp": 240,
+      "max_temp": 280,
+      "box_min_temp": 0,
+      "box_max_temp": 45,
+      "physical_slot": 1,
+      "reported_present": 1
+    },
+    {
+      "index": 2,
+      "filament_id": "QFA00",
+      "info_from_rfid": 0,
+      "read_rfid_state": 0,
+      "vendor_str": "QIDI",
+      "filament_str": "PLA Basic",
+      "filament_type": "PLA",
+      "color_rgb_str": [
+        "#FAFAFA"
+      ],
+      "filament_per": 100,
+      "min_temp": 190,
+      "max_temp": 240,
+      "box_min_temp": 0,
+      "box_max_temp": 0,
+      "physical_slot": 2,
+      "reported_present": 0
+    },
+    {
+      "index": 3,
+      "filament_id": "QFA00",
+      "info_from_rfid": 0,
+      "read_rfid_state": 0,
+      "vendor_str": "QIDI",
+      "filament_str": "PLA Basic",
+      "filament_type": "PLA",
+      "color_rgb_str": [
+        "#FAFAFA"
+      ],
+      "filament_per": 100,
+      "min_temp": 190,
+      "max_temp": 240,
+      "box_min_temp": 0,
+      "box_max_temp": 0,
+      "physical_slot": 3,
+      "reported_present": 0
+    }
+  ],
+  "fixture_differences": [
+    "Actual identity and loaded_slot occur inside box; fixture puts identity at controller root.",
+    "Actual printer provides both nested and flattened slot metadata.",
+    "Actual colors include a leading #.",
+    "Actual box_extras reports auto_refill independently.",
+    "Actual printer has one Box; fixture default is two."
+  ],
+  "verification_limit": "Read-only telemetry and camera decoding only; no physical behavior verified."
+}
