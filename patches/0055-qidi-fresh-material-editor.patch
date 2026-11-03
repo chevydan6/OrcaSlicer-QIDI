@@ -1,0 +1,61 @@
+From a9295a1aea4a152c0989fd8074ad7cf216f5e56a Mon Sep 17 00:00:00 2001
+From: chevydan6 <339888127+chevydan6@users.noreply.github.com>
+Date: Tue, 3 Nov 2026 15:58:50 +0900
+Subject: [PATCH] Create a fresh QIDI slot editor after each completed modal
+ session
+
+---
+ src/slic3r/GUI/AMSMaterialsSetting.cpp |  5 -----
+ src/slic3r/GUI/StatusPanel.cpp         | 16 ++++++++++++++++
+ 2 files changed, 16 insertions(+), 5 deletions(-)
+
+diff --git a/src/slic3r/GUI/AMSMaterialsSetting.cpp b/src/slic3r/GUI/AMSMaterialsSetting.cpp
+index 4fe05766..392d7696 100644
+--- a/src/slic3r/GUI/AMSMaterialsSetting.cpp
++++ b/src/slic3r/GUI/AMSMaterialsSetting.cpp
+@@ -1169,11 +1169,6 @@ bool AMSMaterialsSetting::Show(bool show)
+         m_wiki_ctrl->Show(!qidi);
+         m_k_param->Show();
+         m_input_k_val->Show();
+-        // GTK gives a non-resizable dialog a maximum equal to its previous
+-        // size. Fit() can then repeatedly subtract the window decorations on
+-        // reopening. Recompute the QIDI layout without that stale size cap.
+-        if (qidi)
+-            SetMaxSize(wxDefaultSize);
+         Layout();
+         Fit();
+         wxGetApp().UpdateDlgDarkUI(this);
+diff --git a/src/slic3r/GUI/StatusPanel.cpp b/src/slic3r/GUI/StatusPanel.cpp
+index fe96983a..82c94085 100644
+--- a/src/slic3r/GUI/StatusPanel.cpp
++++ b/src/slic3r/GUI/StatusPanel.cpp
+@@ -4681,6 +4681,14 @@ void StatusPanel::on_filament_extrusion_cali(wxCommandEvent &event)
+ 
+ void StatusPanel::on_filament_edit(wxCommandEvent &event)
+ {
++    if (obj && obj->printer_agent_id == "qidi" && m_filament_setting_dlg) {
++        if (m_filament_setting_dlg->IsShown())
++            return;
++        // Reusing this fixed-size GTK dialog clips its controls on each reopen.
++        // A fresh editor also drops the preceding slot's queued widget state.
++        m_filament_setting_dlg->Destroy();
++        m_filament_setting_dlg = nullptr;
++    }
+     // update params
+     if (!m_filament_setting_dlg) m_filament_setting_dlg = new AMSMaterialsSetting((wxWindow *) this, wxID_ANY);
+ 
+@@ -4751,6 +4759,14 @@ void StatusPanel::on_filament_edit(wxCommandEvent &event)
+ 
+ void StatusPanel::on_ext_spool_edit(wxCommandEvent &event)
+ {
++    if (obj && obj->printer_agent_id == "qidi" && m_filament_setting_dlg) {
++        if (m_filament_setting_dlg->IsShown())
++            return;
++        // Reusing this fixed-size GTK dialog clips its controls on each reopen.
++        // A fresh editor also drops the preceding slot's queued widget state.
++        m_filament_setting_dlg->Destroy();
++        m_filament_setting_dlg = nullptr;
++    }
+     // update params
+     if (!m_filament_setting_dlg) m_filament_setting_dlg = new AMSMaterialsSetting((wxWindow*)this, wxID_ANY);
+ 

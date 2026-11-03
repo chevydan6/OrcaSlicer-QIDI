@@ -22,6 +22,8 @@ python3 scripts/prepare-source.py
 python3 scripts/write-build-manifest.py build/source
 cd build/source
 ./build_linux.sh -u
+sudo apt-get install -y ccache xvfb locales
+sudo locale-gen de_DE.UTF-8 fr_FR.UTF-8
 ./build_linux.sh -drlL -j 2
 ./build_linux.sh -sitrlL -j 2
 CTEST_PARALLEL_LEVEL=2 xvfb-run -a ./scripts/run_unit_tests.sh build/tests Release
@@ -36,7 +38,8 @@ The packaged `resources/qidi-port-build.json` records those source commits, the
 integration commit and every patch checksum.
 Upstream dependency recipes govern third-party downloads; the runner image,
 package repositories and some build utilities are not bit-for-bit pinned.
-Install `ccache` and `xvfb` with the build prerequisites. The upstream unit-test
+Install `ccache`, `xvfb` and `locales` with the build prerequisites, then run
+`sudo locale-gen de_DE.UTF-8 fr_FR.UTF-8` to enable the locale regression cases. The upstream unit-test
 runner installs its pinned NumPy into the bundled test interpreter and excludes
 tests already labelled NotWorking. CLI regression tests run separately.
 
