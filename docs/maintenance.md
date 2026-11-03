@@ -47,7 +47,9 @@ integration commit and creates its own clean source checkout.
 Most controls and telemetry are gated by the QIDI agent. The changes to shared
 code also need review: the CLI filament-diameter default, structured QIDI 3MF
 recognition/configuration migration, optional QIDI API-key handling, and delayed
-Moonraker response lifetime. In particular, queued message dispatchers must stop
+Moonraker response lifetime, shutdown validation suppression and GTK notebook
+allocation. Fresh setup, tab switching, resizing, file selection and non-QIDI
+slicing must be checked with the matching packaged GUI. In particular, queued message dispatchers must stop
 after callback clearing, connection reset or agent destruction. Keep the existing
 non-QIDI access-control and cache-merge regression cases when updating these
 paths. QIDI's four-part product version must not be interpreted as an Orca

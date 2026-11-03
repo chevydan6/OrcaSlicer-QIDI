@@ -6,10 +6,10 @@ and Linux release acceptance are still in progress.
 Start with [HANDOFF.md](HANDOFF.md) for the current candidate, build links,
 known failures, validation evidence and exact next steps.
 
-The source baseline is current official OrcaSlicer main. QIDI Studio is the reference
+The source baseline is a pinned official OrcaSlicer main revision. QIDI Studio is the reference
 for MAX4 profiles, Box workflows and communication. Local source checkouts are
 excluded from this integration repository; pinned revisions and reviewable patches
-will make the resulting build reproducible without duplicating upstream history.
+make the resulting source reproducible without duplicating upstream history.
 
 ## Scope and acceptance checklist
 
