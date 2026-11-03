@@ -61,6 +61,7 @@ class Fixture:
         self.clients = set()
         self.http_error = 0
         self.delay = 0
+        self.invalid_camera_frame = False
 
     def record(self, **event):
         with self.log.open('a') as stream:
@@ -83,6 +84,8 @@ class Fixture:
             self.http_error = int(data['http_error'])
         if 'delay' in data:
             self.delay = max(0, min(60, float(data['delay'])))
+        if 'invalid_camera_frame' in data:
+            self.invalid_camera_frame = bool(data['invalid_camera_frame'])
         if 'replace' in data:
             self.status = data['replace']
         if 'update' in data:
@@ -133,13 +136,18 @@ class Fixture:
         if self.delay:
             await asyncio.sleep(self.delay)
         if self.http_error:
+            self.record(method=request.method, path=path, injected_http_error=self.http_error)
             return web.json_response({'error': {'message': 'Injected fixture failure'}}, status=self.http_error)
         if path == '/websocket':
             return await self.websocket(request)
         body = await request.text() if request.can_read_body and path != '/server/files/upload' else ''
         self.record(method=request.method, path=path, query=dict(request.query), body=body)
         result = 'ok'
-        if path == '/server/info':
+        if path == '/webcam/' and request.query.get('action') == 'snapshot':
+            frame = b'invalid image data' if self.invalid_camera_frame else (
+                Path(__file__).resolve().parents[1] / 'fixtures/qidi-camera.jpg').read_bytes()
+            return web.Response(body=frame, content_type='image/jpeg')
+        elif path == '/server/info':
             result = {'machine_name': 'OFFLINE MAX4 FIXTURE', 'hostname': 'offline-fixture',
                       'moonraker_version': 'fixture', 'klippy_state': 'ready', 'components': ['file_manager']}
         elif path == '/printer/info':

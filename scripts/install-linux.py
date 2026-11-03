@@ -16,7 +16,11 @@ parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument('image', type=Path)
 parser.add_argument('--extract', action='store_true', help='Install an extracted AppDir; no FUSE required')
 parser.add_argument('--flatpak-runtime', help='Package and install a separate Flatpak app using an installed runtime, e.g. org.gnome.Platform//50')
+parser.add_argument('--private-session-bus', action='store_true',
+                    help='Use a private D-Bus session with the GTK portal for a broken desktop portal session (Flatpak only)')
 args = parser.parse_args()
+if args.private_session_bus and (not args.flatpak_runtime or not shutil.which('dbus-run-session')):
+    raise SystemExit('--private-session-bus requires --flatpak-runtime and dbus-run-session')
 image = args.image.resolve()
 with image.open('rb') as stream:
     header = stream.read(12)
@@ -61,6 +65,10 @@ if args.flatpak_runtime:
                         '--no-deps', '--no-related', '--reinstall', str(bundle)], check=True)
         shutil.copyfile(bundle, directory / 'OrcaSlicer-QIDI.flatpak')
     command = ['flatpak', 'run', APP_ID]
+    if args.private_session_bus:
+        # LXQt sessions without graphical-session.target can fail to activate
+        # the portal. Keep the workaround confined to this application's bus.
+        command = ['env', 'XDG_CURRENT_DESKTOP=GNOME', 'dbus-run-session', '--', *command]
 launcher = home / '.local/bin/orca-slicer-qidi'
 launcher.parent.mkdir(parents=True, exist_ok=True)
 marker = '# Managed by OrcaSlicer-QIDI installer'
@@ -80,6 +88,17 @@ escaped = str(launcher).replace('\\', '\\\\').replace('"', '\\"').replace('`', '
 if args.flatpak_runtime:
     # Flatpak exports the application menu entry. Avoid two identical entries.
     desktop.unlink(missing_ok=True)
+    override = desktop.with_name(APP_ID + '.desktop')
+    if args.private_session_bus:
+        if override.exists() and marker not in override.read_text():
+            raise SystemExit(f'Refusing to overwrite unrelated desktop entry: {override}')
+        # Same ID overrides the exported entry instead of adding a duplicate.
+        override.write_text('[Desktop Entry]\n' + marker + '\nType=Application\n'
+            'Name=OrcaSlicer QIDI (Custom)\nComment=Personal MAX4 and QIDI Box build\n'
+            f'Exec="{escaped}" %F\nIcon={APP_ID}\nTerminal=false\n'
+            f'X-Flatpak={APP_ID}\nCategories=Graphics;3DGraphics;Engineering;\n')
+    elif override.exists() and marker in override.read_text():
+        override.unlink()
 else:
     desktop.write_text('[Desktop Entry]\n' + marker + '\nType=Application\n'
         'Name=OrcaSlicer QIDI (Custom)\nComment=Personal MAX4 and QIDI Box build\n'

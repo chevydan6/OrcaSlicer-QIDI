@@ -1,10 +1,12 @@
 # Linux build and installation
 
-Status: the 32-patch custom application compiled and packaged successfully in run
-41567417124. Tests exposed four upstream G-code import regressions, corrected
-in patch 41; details are in `validation/custom-32-results.md`. The 42-patch
-application build and static checks are running.
-Neither result yet establishes GUI stability or a validated installable release.
+Status: the 42-patch integration build passed compilation, unit tests, all seven
+CLI regressions, all 72 profile bundles and all 19 MAX4 slicing cases in run
+41574937523. This fixes the four G-code import regressions found on earlier
+builds. Actual GUI simulation through patch 38 has exercised controls, faults,
+camera display and filament-three to Box-B2 submission. Later source patches
+address additional GUI defects; their full build and acceptance remain pending.
+This is not yet a validated final release or physical printer certification.
 
 The tested host is Fedora 44 x86_64. Builds target Ubuntu 24.04 x86_64 AppImage,
 using the official Orca build script and dependency recipes at the pinned source
@@ -70,6 +72,22 @@ WebKitGTK is supplied by the existing GNOME runtime used by the installed slicer
 ```sh
 python3 scripts/install-linux.py /path/to/custom.AppImage --flatpak-runtime org.gnome.Platform//50
 ```
+
+On this Fedora/LXQt session, the desktop portal cannot start because its
+`graphical-session.target` prerequisite is inactive. The GUI test's file chooser
+works in a private D-Bus session with the GTK portal. For that specific host issue:
+
+```sh
+python3 scripts/install-linux.py /path/to/custom.AppImage \
+  --flatpak-runtime org.gnome.Platform//50 --private-session-bus
+```
+
+This option requires `dbus-run-session` and a working GTK portal backend. It uses
+an application-specific session bus and a matching menu-entry override; it does
+not alter the desktop's systemd targets or other slicers. The normal Flatpak
+launch remains the default on desktops with working portals. The private-session
+mode has been tested with the registered validation runtime; final installation
+validation remains pending. It does not disable image-loader sandboxing.
 
 This mode verifies that the runtime is installed, extracts the AppImage, packages
 and installs the separate Flatpak application `io.github.chevydan6.OrcaSlicerQIDI`.
