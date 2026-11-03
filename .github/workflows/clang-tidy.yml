@@ -1,0 +1,52 @@
+name: Downstream C++ include and static checks
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  tidy:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - name: Read pinned upstream
+        id: source
+        run: echo "sha=$(python3 -c 'import json; print(json.load(open("sources.json"))["orca"]["commit"])')" >> "$GITHUB_OUTPUT"
+      - uses: actions/checkout@v4
+        with:
+          repository: OrcaSlicer/OrcaSlicer
+          ref: ${{ steps.source.outputs.sha }}
+          path: source
+      - name: Apply downstream patches
+        shell: bash
+        run: |
+          shopt -s nullglob
+          for patch in "$GITHUB_WORKSPACE"/patches/*.patch; do
+            git -C source apply --check "$patch"
+            git -C source apply "$patch"
+          done
+      - uses: lukka/get-cmake@latest
+        with:
+          cmakeVersion: '~4.3.0'
+      - uses: actions/cache/restore@v4
+        with:
+          path: source/deps/build
+          key: qidi-linux-deps-${{ steps.source.outputs.sha }}
+          fail-on-cache-miss: true
+      - name: Install build prerequisites
+        working-directory: source
+        run: ./build_linux.sh -u
+      - name: Run upstream changed-line checks without precompiled headers
+        working-directory: source
+        run: |
+          set -o pipefail
+          ./scripts/run_clang_tidy.sh --base '${{ steps.source.outputs.sha }}' --no-fetch --yes -j 2 2>&1 | tee ../clang-tidy.log
+      - name: Retain diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: clang-tidy-${{ github.sha }}
+          path: |
+            clang-tidy.log
+            source/build-tidy/configure.log
+          retention-days: 30

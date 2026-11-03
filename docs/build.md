@@ -39,6 +39,12 @@ manually. It uploads the AppImage and available test/configuration logs. A run
 that predates a patch does not validate that patch. Only a successful patched
 run can be used as evidence of compilation and test execution.
 
+The separate **Downstream C++ include and static checks** workflow runs upstream's
+`scripts/run_clang_tidy.sh --base PINNED_ORCA_COMMIT --no-fetch --yes -j 2` against
+the applied patches, without precompiled headers. Dispatch it after a dependency
+cache is available; it deliberately fails on a cache miss rather than duplicating
+the dependency build. Static checks complement compilation and runtime tests.
+
 ## Install once the custom artifact passes validation
 
 ```sh
