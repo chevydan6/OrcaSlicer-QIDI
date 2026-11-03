@@ -1,0 +1,30 @@
+From c2d5adf9542f59a4244887e7ff40ec33f051d105 Mon Sep 17 00:00:00 2001
+From: chevydan6 <339888127+chevydan6@users.noreply.github.com>
+Date: Tue, 3 Nov 2026 18:42:49 +0900
+Subject: [PATCH] Keep QIDI fan dialog usable through GTK decoration changes
+
+---
+ src/slic3r/GUI/Widgets/FanControl.cpp | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/src/slic3r/GUI/Widgets/FanControl.cpp b/src/slic3r/GUI/Widgets/FanControl.cpp
+index b9ba93b7..b6758d57 100644
+--- a/src/slic3r/GUI/Widgets/FanControl.cpp
++++ b/src/slic3r/GUI/Widgets/FanControl.cpp
+@@ -687,6 +687,13 @@ FanControlPopupNew::FanControlPopupNew(wxWindow* parent, MachineObject* obj, con
+     SetSizer(m_sizer_main);
+     Layout();
+     Fit();
++    if (obj && obj->printer_agent_id == "qidi") {
++        // As with the QIDI material editor, GTK decoration updates can shrink
++        // this fixed dialog to 2x5 without a layout-derived minimum.
++        SetMinSize(wxDefaultSize);
++        SetMaxSize(wxDefaultSize);
++        m_sizer_main->SetSizeHints(this);
++    }
+ 
+     this->Centre(wxBOTH);
+     Bind(wxEVT_PAINT, &FanControlPopupNew::paintEvent, this);
+-- 
+2.43.0
+

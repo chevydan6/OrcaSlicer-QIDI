@@ -8,12 +8,12 @@ Feature expansion is frozen pending one complete software acceptance.
 
 - Integration repository: https://github.com/chevydan6/OrcaSlicer-QIDI, branch main.
 - Workspace: `/home/dan/qidi-orca-port`; recovered at `70d58fc17f0132d926424a5a74144bf80cb1dcfd`.
-- Current source: **67 patches**, pending matching build. Candidate 64 build input: `9b06cba3424e19e53a4235ce8b3bf9d455ea393a`. Latest evaluated build input: `b8ef9f8e4f3e27fda362401da9076d453e3cf06b` (62 patches), GUI rejected.
+- Current source: **68 patches**, pending matching build. Candidate 64 build input: `9b06cba3424e19e53a4235ce8b3bf9d455ea393a`. Latest evaluated build input: `b8ef9f8e4f3e27fda362401da9076d453e3cf06b` (62 patches), GUI rejected.
 - Orca pin: `896557bce5281553ee0c6210f2da301b3b3c262e`.
 - QIDI Studio pin: `403b619d56147160bb883e94f95a7951245bc6d0`.
-- Prepared source: `build/source`, local commit `b917eadf`.
-- Exact downstream tree: `a25d2d0d6bf104a78c2271799463241ab94e4e5c`.
-- All 67 patches reproduce that tree via `scripts/verify-patches.py`.
+- Prepared source: `build/source`, local commit `c2d5adf9`.
+- Exact downstream tree: `201334508eee83acb0968133b12a93649ba2fd08`.
+- All 68 patches reproduce that tree via `scripts/verify-patches.py`.
 - Original 56-patch recovery matched recorded tree `20f0b1398164ca1b5ab5bd44c6ecd6071aaaad3e`.
 - Pins remain fixed. Local recovery commits have fresh metadata; tree identity is verified.
 
@@ -95,6 +95,12 @@ reopens, but an open A1 editor still dispatched after zero Boxes was reported.
 Patch 67 adds latest-status Box validation for physical-slot controls. It is not
 in candidate 66 and requires a new compiled candidate. See `validation/gui-64`.
 
+GUI64 also exposed a 2x5 fan dialog. Patch 68 applies the material editor's
+layout-derived minimum to the QIDI fan dialog. Print Options, stale exclusion
+rejection and fresh exclusion dispatch were observed in GUI64, but cannot accept
+the pending binary. Candidate 64 automated gates passed: 2,914 unit cases, seven
+CLI cases, 72 vendor bundles, 21 MAX4 cases and static checks. See ci-64.json.
+
 ## Host and isolated GUI environment
 
 Ubuntu 24.04.5 x86_64, GNOME Wayland, GCC 13.3, 24 logical CPUs, 14 GiB RAM,
@@ -133,9 +139,9 @@ QIDI Studio/Orca comparisons must be sequential, with identical model/materials/
 
 ## Next steps
 
-1. Build candidate 67, check actual integration/static results and fix failures.
+1. Build candidate 68, check actual integration/static results and fix failures.
 2. Download its matching AppImage and reports, verify GitHub ZIP digest, record ZIP
-   and AppImage hashes, compare packaged manifest against the new build input and all 67 patch hashes.
+   and AppImage hashes, compare packaged manifest against the new build input and all 68 patch hashes.
 3. Start with fresh settings: rerun setup/layout and native blank-key connection.
    Verify populated materials without hand-editing model identity; native color
    edits; repeated Box/external dialogs; slot switching; duplicate opens; disconnect

@@ -38,3 +38,11 @@ still sent UPDATE_FILAMENT_INFORMATION SLOT=0 (33/34 and stale-material-request.
 This is a stale GUI selection, not hardware testing. Patch 67 checks the latest
 locked protocol snapshot before material/load/unload/eject/RFID dispatch; external
 slot 16 remains independent of Box count. Compiled/GUI retesting is pending.
+
+The fan control dialog also opens at 2x5 (46-fan-click.png, fan-geometry.json),
+leaving its controls inaccessible. It can be closed via its window manager action.
+Patch 68 applies a layout-derived minimum only for QIDI, matching the material
+editor correction. Print Options remains usable. On this binary, a chooser opened
+for fixture.gcode rejects its selection after replacement.gcode arrives (no
+EXCLUDE_OBJECT request); a fresh chooser sends EXCLUDE_OBJECT NAME=fixture_cube.
+These exploratory checks must be repeated on the final matching binary.
