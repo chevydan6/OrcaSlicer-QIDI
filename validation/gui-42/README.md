@@ -17,3 +17,14 @@ GUI presents an error without crashing. Earlier CLI comparison cases replaced
 the machine with the Orca MAX4 profile and did not cover embedded QIDI macros.
 Patch 50 adds the compatibility alias; two new CLI cases retain embedded G-code.
 Final-build slicing and GUI retesting remain pending. No printer was contacted.
+
+The native Device page with no configured printer disables commands; clicking
+lamp, options and movement controls leaves the GUI usable. Native agents were
+enabled and automatic preset updates disabled through Preferences in this custom
+datadir only. The setting changes persist in its configuration file.
+
+Closing the imported project and choosing No/Discard exposed a shutdown failure:
+preset reset opened a belt/raft validation warning after closing was committed.
+The existing watchdog then ended the app with exit code 1 after 30 seconds. The
+installed launcher exit record and screenshot are retained. Patch 51 skips
+print-preset validation once is_closing is set; compiled GUI rerun is required.

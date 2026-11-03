@@ -1,0 +1,26 @@
+From 93c9a68765a3e8ed172591376f5515dcb610f15a Mon Sep 17 00:00:00 2001
+From: chevydan6 <339888127+chevydan6@users.noreply.github.com>
+Date: Tue, 3 Nov 2026 15:34:54 +0900
+Subject: [PATCH] Avoid preset validation dialogs during application shutdown
+
+---
+ src/slic3r/GUI/ConfigManipulation.cpp | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/src/slic3r/GUI/ConfigManipulation.cpp b/src/slic3r/GUI/ConfigManipulation.cpp
+index dd2d7e59..190491e5 100644
+--- a/src/slic3r/GUI/ConfigManipulation.cpp
++++ b/src/slic3r/GUI/ConfigManipulation.cpp
+@@ -338,6 +338,12 @@ bool ConfigManipulation::layer_height_out_of_range_dialog(DynamicPrintConfig* co
+ 
+ void ConfigManipulation::update_print_fff_config(DynamicPrintConfig* config, const bool is_global_config, const bool is_plate_config)
+ {
++    // Closing resets embedded presets after the user has resolved save/discard.
++    // Validation dialogs during that reset can block shutdown until the exit
++    // watchdog kills the process (for example, a transient belt/raft mismatch).
++    if (wxGetApp().is_closing())
++        return;
++
+     // #ys_FIXME_to_delete
+     //! Temporary workaround for the correct updates of the TextCtrl (like "layer_height"):
+     // KillFocus() for the wxSpinCtrl use CallAfter function. So,
