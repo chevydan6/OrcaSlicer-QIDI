@@ -1,0 +1,36 @@
+[
+  {
+    "case": "sparse",
+    "commands": [
+      "SAVE_VARIABLE VARIABLE=enable_box VALUE=1\nSAVE_VARIABLE VARIABLE=value_t2 VALUE=\"'slot5'\"",
+      "G31",
+      "SAVE_VARIABLE VARIABLE=enable_polar_cooler VALUE=1"
+    ],
+    "start": {
+      "filename": "sparse-project.gcode"
+    },
+    "upload_sha256": "9b7ecd7720375e5fc3d7f0f2c518eb9335c216d2598dc839d433829b41fa5edb",
+    "gcode_tool_commands": [
+      "T2",
+      "T2"
+    ],
+    "prep_tool": 2
+  },
+  {
+    "case": "external",
+    "commands": [
+      "SAVE_VARIABLE VARIABLE=enable_box VALUE=0",
+      "G31",
+      "SAVE_VARIABLE VARIABLE=enable_polar_cooler VALUE=1"
+    ],
+    "start": {
+      "filename": "sparse-project.gcode"
+    },
+    "upload_sha256": "9b7ecd7720375e5fc3d7f0f2c518eb9335c216d2598dc839d433829b41fa5edb",
+    "gcode_tool_commands": [
+      "T2",
+      "T2"
+    ],
+    "prep_tool": 2
+  }
+]

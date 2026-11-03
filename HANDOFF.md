@@ -8,12 +8,12 @@ Feature expansion is frozen pending one complete software acceptance.
 
 - Integration repository: https://github.com/chevydan6/OrcaSlicer-QIDI, branch main.
 - Workspace: `/home/dan/qidi-orca-port`; recovered at `70d58fc17f0132d926424a5a74144bf80cb1dcfd`.
-- Current source: **69 patches**, matching artifact verified; full GUI gate in progress. Build input `f8192f7761bb55275e049e854544393eccbb4485`. Candidate 68 passed all build gates but GUI acceptance failed: multicolor external jobs are safely rejected, yet Send is misleadingly re-enabled and its explanation disappears. See `validation/gui-68`.
+- Current source: **70 patches**, pending matching build. Candidate 69 passed all CI gates and most GUI checks but is rejected: timelapse On remains disabled because its UI uses an unpopulated Bambu capability flag. See `validation/gui-69`.
 - Orca pin: `896557bce5281553ee0c6210f2da301b3b3c262e`.
 - QIDI Studio pin: `403b619d56147160bb883e94f95a7951245bc6d0`.
-- Prepared source: `build/source`, local commit `f73648d1`.
-- Exact downstream tree: `471d8870cb342690af8f3c4a2903f46b71c06047`.
-- All 69 patches reproduce that tree via `scripts/verify-patches.py`.
+- Prepared source: `build/source`, local commit `54d95481c2e88abba71bfd5b43889c75d40cb728`.
+- Exact downstream tree: `dd5107b2ecaa9dc53d7c503ebf096ae11e8fc68b`.
+- All 70 patches reproduce that tree via `scripts/verify-patches.py`.
 - Original 56-patch recovery matched recorded tree `20f0b1398164ca1b5ab5bd44c6ecd6071aaaad3e`.
 - Pins remain fixed. Local recovery commits have fresh metadata; tree identity is verified.
 
@@ -21,7 +21,7 @@ Feature expansion is frozen pending one complete software acceptance.
 
 | Candidate | Integration | Static | Acceptance |
 | --- | --- | --- | --- |
-| 69 / f8192f7 | [41618831360](https://github.com/chevydan6/OrcaSlicer-QIDI/actions/runs/41618831360), running | [41618837779](https://github.com/chevydan6/OrcaSlicer-QIDI/actions/runs/41618837779), running | Compiled; digest/manifest verified; full fresh GUI rerun in progress |
+| 69 / f8192f7 | [41618831360](https://github.com/chevydan6/OrcaSlicer-QIDI/actions/runs/41618831360), passed | [41618837779](https://github.com/chevydan6/OrcaSlicer-QIDI/actions/runs/41618837779), passed | 2,916 unit / 7 CLI / 72 vendors / 21 MAX4 pass; GUI rejected (timelapse On disabled) |
 | 68 / 8c258d6 | [41614117101](https://github.com/chevydan6/OrcaSlicer-QIDI/actions/runs/41614117101), passed | [41614122533](https://github.com/chevydan6/OrcaSlicer-QIDI/actions/runs/41614122533), passed | 2,916 unit / 7 CLI / 72 vendors / 21 MAX4 pass; exact artifact verified; GUI rejected (unsupported-job status) |
 | 66 / d1a35c8 | [41612448931](https://github.com/chevydan6/OrcaSlicer-QIDI/actions/runs/41612448931), passed | [41612454913](https://github.com/chevydan6/OrcaSlicer-QIDI/actions/runs/41612454913), passed | 2,914 unit / 7 CLI / 72 vendors / 21 MAX4 pass; targeted GUI layout/import/submission/exit pass, not full acceptance |
 | 64 / 9b06cba | [41610127689](https://github.com/chevydan6/OrcaSlicer-QIDI/actions/runs/41610127689), passed | [41610133489](https://github.com/chevydan6/OrcaSlicer-QIDI/actions/runs/41610133489), passed | Fresh layout failed; import-agent defect not fixed here |
@@ -182,3 +182,10 @@ No physical starting-filament, refill, temperature or print behavior is verified
 Preserve Orca engine/tuning and non-QIDI regressions, copyright/AGPL/dependency notices.
 Historical host/install details are preserved in
 `validation/recovery-2026-11-03/original-handoff.md` and Git history.
+
+GUI69 additionally verifies persistent external-job rejection, support-first
+preparation2/deposition0, both physical mappings, and shutdown with a confirmed
+in-flight request followed by clean restart. Expanded pre-print checks found
+Timelapse On disabled despite profile support and available storage. Patch70
+uses QIDI profile support plus the existing storage gate; new matching acceptance
+is required. Candidate69 was not installed.

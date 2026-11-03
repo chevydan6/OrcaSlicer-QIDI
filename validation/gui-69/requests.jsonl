@@ -289,3 +289,502 @@
 {"time": 1793702259.9049835, "method": "GET", "path": "/webcam/", "injected_http_error": 503}
 {"time": 1793702260.1074853, "request_received": {"method": "GET", "path": "/webcam/"}}
 {"time": 1793702260.107611, "method": "GET", "path": "/webcam/", "injected_http_error": 503}
+{"time": 1793702260.3122478, "request_received": {"method": "GET", "path": "/webcam/"}}
+{"time": 1793702260.3123944, "method": "GET", "path": "/webcam/", "injected_http_error": 503}
+{"time": 1793702260.515633, "request_received": {"method": "GET", "path": "/webcam/"}}
+{"time": 1793702260.5157387, "method": "GET", "path": "/webcam/", "injected_http_error": 503}
+{"time": 1793702260.7216384, "request_received": {"method": "GET", "path": "/webcam/"}}
+{"time": 1793702260.7217715, "method": "GET", "path": "/webcam/", "injected_http_error": 503}
+{"time": 1793702260.8569326, "admin": {"disconnect": true}}
+{"time": 1793702260.9249077, "request_received": {"method": "GET", "path": "/webcam/"}}
+{"time": 1793702260.9250066, "method": "GET", "path": "/webcam/", "injected_http_error": 503}
+{"time": 1793702261.127512, "request_received": {"method": "GET", "path": "/webcam/"}}
+{"time": 1793702261.1275666, "method": "GET", "path": "/webcam/", "injected_http_error": 503}
+{"time": 1793702261.3324509, "request_received": {"method": "GET", "path": "/webcam/"}}
+{"time": 1793702261.332579, "method": "GET", "path": "/webcam/", "injected_http_error": 503}
+{"time": 1793702261.536225, "request_received": {"method": "GET", "path": "/webcam/"}}
+{"time": 1793702261.5363584, "method": "GET", "path": "/webcam/", "injected_http_error": 503}
+{"time": 1793702261.740545, "request_received": {"method": "GET", "path": "/webcam/"}}
+{"time": 1793702261.7406428, "method": "GET", "path": "/webcam/", "injected_http_error": 503}
+{"time": 1793702261.86085, "request_received": {"method": "GET", "path": "/websocket"}}
+{"time": 1793702261.8609564, "method": "GET", "path": "/websocket", "injected_http_error": 503}
+{"time": 1793702261.9447322, "request_received": {"method": "GET", "path": "/webcam/"}}
+{"time": 1793702261.9448633, "method": "GET", "path": "/webcam/", "injected_http_error": 503}
+{"time": 1793702262.147972, "request_received": {"method": "GET", "path": "/webcam/"}}
+{"time": 1793702262.1480649, "method": "GET", "path": "/webcam/", "injected_http_error": 503}
+{"time": 1793702262.3525276, "request_received": {"method": "GET", "path": "/webcam/"}}
+{"time": 1793702262.352664, "method": "GET", "path": "/webcam/", "injected_http_error": 503}
+{"time": 1793702262.5568118, "request_received": {"method": "GET", "path": "/webcam/"}}
+{"time": 1793702262.556961, "method": "GET", "path": "/webcam/", "injected_http_error": 503}
+{"time": 1793702262.7604365, "request_received": {"method": "GET", "path": "/webcam/"}}
+{"time": 1793702262.7605321, "method": "GET", "path": "/webcam/", "injected_http_error": 503}
+{"time": 1793702262.9636245, "request_received": {"method": "GET", "path": "/webcam/"}}
+{"time": 1793702262.9637146, "method": "GET", "path": "/webcam/", "injected_http_error": 503}
+{"time": 1793702263.170735, "request_received": {"method": "GET", "path": "/webcam/"}}
+{"time": 1793702263.1708324, "method": "GET", "path": "/webcam/", "injected_http_error": 503}
+{"time": 1793702263.3730214, "request_received": {"method": "GET", "path": "/webcam/"}}
+{"time": 1793702263.3731732, "method": "GET", "path": "/webcam/", "injected_http_error": 503}
+{"time": 1793702263.5760336, "request_received": {"method": "GET", "path": "/webcam/"}}
+{"time": 1793702263.576128, "method": "GET", "path": "/webcam/", "injected_http_error": 503}
+{"time": 1793702263.7797084, "request_received": {"method": "GET", "path": "/webcam/"}}
+{"time": 1793702263.779821, "method": "GET", "path": "/webcam/", "injected_http_error": 503}
+{"time": 1793702263.8633077, "request_received": {"method": "GET", "path": "/websocket"}}
+{"time": 1793702263.8634338, "method": "GET", "path": "/websocket", "injected_http_error": 503}
+{"time": 1793702263.9284658, "request_received": {"method": "POST", "path": "/printer/gcode/script"}}
+{"time": 1793702263.9285543, "method": "POST", "path": "/printer/gcode/script", "injected_http_error": 503}
+{"time": 1793702263.9843652, "request_received": {"method": "GET", "path": "/webcam/"}}
+{"time": 1793702263.9844563, "method": "GET", "path": "/webcam/", "injected_http_error": 503}
+{"time": 1793702264.18893, "request_received": {"method": "GET", "path": "/webcam/"}}
+{"time": 1793702264.1890204, "method": "GET", "path": "/webcam/", "injected_http_error": 503}
+{"time": 1793702264.3919818, "request_received": {"method": "GET", "path": "/webcam/"}}
+{"time": 1793702264.392075, "method": "GET", "path": "/webcam/", "injected_http_error": 503}
+{"time": 1793702264.5965457, "request_received": {"method": "GET", "path": "/webcam/"}}
+{"time": 1793702264.596603, "method": "GET", "path": "/webcam/", "injected_http_error": 503}
+{"time": 1793702264.800717, "request_received": {"method": "GET", "path": "/webcam/"}}
+{"time": 1793702264.8007736, "method": "GET", "path": "/webcam/", "injected_http_error": 503}
+{"time": 1793702265.004111, "request_received": {"method": "GET", "path": "/webcam/"}}
+{"time": 1793702265.0041687, "method": "GET", "path": "/webcam/", "injected_http_error": 503}
+{"time": 1793702265.2084372, "request_received": {"method": "GET", "path": "/webcam/"}}
+{"time": 1793702265.208526, "method": "GET", "path": "/webcam/", "injected_http_error": 503}
+{"time": 1793702265.412535, "request_received": {"method": "GET", "path": "/webcam/"}}
+{"time": 1793702265.4125922, "method": "GET", "path": "/webcam/", "injected_http_error": 503}
+{"time": 1793702265.6157758, "request_received": {"method": "GET", "path": "/webcam/"}}
+{"time": 1793702265.6158292, "method": "GET", "path": "/webcam/", "injected_http_error": 503}
+{"time": 1793702265.8205202, "request_received": {"method": "GET", "path": "/webcam/"}}
+{"time": 1793702265.8205822, "method": "GET", "path": "/webcam/", "injected_http_error": 503}
+{"time": 1793702266.0238435, "request_received": {"method": "GET", "path": "/webcam/"}}
+{"time": 1793702266.023949, "method": "GET", "path": "/webcam/", "injected_http_error": 503}
+{"time": 1793702266.2280724, "request_received": {"method": "GET", "path": "/webcam/"}}
+{"time": 1793702266.228142, "method": "GET", "path": "/webcam/", "injected_http_error": 503}
+{"time": 1793702266.434199, "request_received": {"method": "GET", "path": "/webcam/"}}
+{"time": 1793702266.4342701, "method": "GET", "path": "/webcam/", "injected_http_error": 503}
+{"time": 1793702266.6364293, "request_received": {"method": "GET", "path": "/webcam/"}}
+{"time": 1793702266.6365275, "method": "GET", "path": "/webcam/", "injected_http_error": 503}
+{"time": 1793702266.8403523, "request_received": {"method": "GET", "path": "/webcam/"}}
+{"time": 1793702266.8404765, "method": "GET", "path": "/webcam/", "injected_http_error": 503}
+{"time": 1793702267.044709, "request_received": {"method": "GET", "path": "/webcam/"}}
+{"time": 1793702267.0447996, "method": "GET", "path": "/webcam/", "injected_http_error": 503}
+{"time": 1793702267.2475648, "request_received": {"method": "GET", "path": "/webcam/"}}
+{"time": 1793702267.2476208, "method": "GET", "path": "/webcam/", "injected_http_error": 503}
+{"time": 1793702267.4524841, "request_received": {"method": "GET", "path": "/webcam/"}}
+{"time": 1793702267.4525788, "method": "GET", "path": "/webcam/", "injected_http_error": 503}
+{"time": 1793702267.5769322, "admin": {"http_error": 0}}
+{"time": 1793702267.65691, "request_received": {"method": "GET", "path": "/webcam/"}}
+{"time": 1793702267.6570318, "method": "GET", "path": "/webcam/", "query": {"action": "snapshot", "_orca_frame": "1793702267655"}, "body": ""}
+{"time": 1793702267.860788, "request_received": {"method": "GET", "path": "/webcam/"}}
+{"time": 1793702267.8609262, "method": "GET", "path": "/webcam/", "query": {"action": "snapshot", "_orca_frame": "1793702267859"}, "body": ""}
+{"time": 1793702267.8646011, "request_received": {"method": "GET", "path": "/websocket"}}
+{"time": 1793702267.8650186, "websocket": {"id": 0, "jsonrpc": "2.0", "method": "server.connection.identify", "params": {"client_name": "OrcaSlicer", "type": "agent", "url": "https://github.com/SoftFever/OrcaSlicer", "version": "1.0.0"}}}
+{"time": 1793702267.8654432, "request_received": {"method": "GET", "path": "/printer/objects/list"}}
+{"time": 1793702267.86549, "method": "GET", "path": "/printer/objects/list", "query": {}, "body": ""}
+{"time": 1793702267.8661764, "request_received": {"method": "GET", "path": "/server/files/directory"}}
+{"time": 1793702267.8662298, "method": "GET", "path": "/server/files/directory", "query": {"path": "gcodes"}, "body": ""}
+{"time": 1793702267.866487, "websocket": {"id": 1, "jsonrpc": "2.0", "method": "printer.objects.subscribe", "params": {"objects": {"display_status": null, "exclude_object": null, "extruder": null, "fan": null, "fan_generic auxiliary_cooling_fan": null, "fan_generic chamber_circulation_fan": null, "fan_generic cooling_fan": null, "gcode_move": null, "heater_bed": null, "heater_generic chamber": null, "multi_color_controller": null, "output_pin caselight": null, "output_pin polar_cooler": null, "print_stats": null, "save_variables": null, "toolhead": null, "virtual_sdcard": null}}}}
+{"time": 1793702268.064684, "request_received": {"method": "GET", "path": "/webcam/"}}
+{"time": 1793702268.0648093, "method": "GET", "path": "/webcam/", "query": {"action": "snapshot", "_orca_frame": "1793702268063"}, "body": ""}
+{"time": 1793702268.2674048, "request_received": {"method": "GET", "path": "/webcam/"}}
+{"time": 1793702268.2674775, "method": "GET", "path": "/webcam/", "query": {"action": "snapshot", "_orca_frame": "1793702268266"}, "body": ""}
+{"time": 1793702268.4715652, "request_received": {"method": "GET", "path": "/webcam/"}}
+{"time": 1793702268.471631, "method": "GET", "path": "/webcam/", "query": {"action": "snapshot", "_orca_frame": "1793702268470"}, "body": ""}
+{"time": 1793702268.6756086, "request_received": {"method": "GET", "path": "/webcam/"}}
+{"time": 1793702268.6757286, "method": "GET", "path": "/webcam/", "query": {"action": "snapshot", "_orca_frame": "1793702268674"}, "body": ""}
+{"time": 1793702268.8792026, "request_received": {"method": "GET", "path": "/webcam/"}}
+{"time": 1793702268.8792727, "method": "GET", "path": "/webcam/", "query": {"action": "snapshot", "_orca_frame": "1793702268878"}, "body": ""}
+{"time": 1793702269.0840309, "request_received": {"method": "GET", "path": "/webcam/"}}
+{"time": 1793702269.0841618, "method": "GET", "path": "/webcam/", "query": {"action": "snapshot", "_orca_frame": "1793702269082"}, "body": ""}
+{"time": 1793702269.28854, "request_received": {"method": "GET", "path": "/webcam/"}}
+{"time": 1793702269.288704, "method": "GET", "path": "/webcam/", "query": {"action": "snapshot", "_orca_frame": "1793702269286"}, "body": ""}
+{"time": 1793702269.4928076, "request_received": {"method": "GET", "path": "/webcam/"}}
+{"time": 1793702269.4930878, "method": "GET", "path": "/webcam/", "query": {"action": "snapshot", "_orca_frame": "1793702269490"}, "body": ""}
+{"time": 1793702269.6956728, "request_received": {"method": "GET", "path": "/webcam/"}}
+{"time": 1793702269.695783, "method": "GET", "path": "/webcam/", "query": {"action": "snapshot", "_orca_frame": "1793702269694"}, "body": ""}
+{"time": 1793702269.899413, "request_received": {"method": "GET", "path": "/webcam/"}}
+{"time": 1793702269.899487, "method": "GET", "path": "/webcam/", "query": {"action": "snapshot", "_orca_frame": "1793702269898"}, "body": ""}
+{"time": 1793702270.1036422, "request_received": {"method": "GET", "path": "/webcam/"}}
+{"time": 1793702270.1037557, "method": "GET", "path": "/webcam/", "query": {"action": "snapshot", "_orca_frame": "1793702270102"}, "body": ""}
+{"time": 1793702270.3077283, "request_received": {"method": "GET", "path": "/webcam/"}}
+{"time": 1793702270.307837, "method": "GET", "path": "/webcam/", "query": {"action": "snapshot", "_orca_frame": "1793702270306"}, "body": ""}
+{"time": 1793702270.5116377, "request_received": {"method": "GET", "path": "/webcam/"}}
+{"time": 1793702270.5117536, "method": "GET", "path": "/webcam/", "query": {"action": "snapshot", "_orca_frame": "1793702270510"}, "body": ""}
+{"time": 1793702270.7156746, "request_received": {"method": "GET", "path": "/webcam/"}}
+{"time": 1793702270.7157483, "method": "GET", "path": "/webcam/", "query": {"action": "snapshot", "_orca_frame": "1793702270714"}, "body": ""}
+{"time": 1793702270.9201887, "request_received": {"method": "GET", "path": "/webcam/"}}
+{"time": 1793702270.9202645, "method": "GET", "path": "/webcam/", "query": {"action": "snapshot", "_orca_frame": "1793702270918"}, "body": ""}
+{"time": 1793702271.1235707, "request_received": {"method": "GET", "path": "/webcam/"}}
+{"time": 1793702271.12368, "method": "GET", "path": "/webcam/", "query": {"action": "snapshot", "_orca_frame": "1793702271122"}, "body": ""}
+{"time": 1793702271.328455, "request_received": {"method": "GET", "path": "/webcam/"}}
+{"time": 1793702271.3286004, "method": "GET", "path": "/webcam/", "query": {"action": "snapshot", "_orca_frame": "1793702271326"}, "body": ""}
+{"time": 1793702271.5318294, "request_received": {"method": "GET", "path": "/webcam/"}}
+{"time": 1793702271.5319624, "method": "GET", "path": "/webcam/", "query": {"action": "snapshot", "_orca_frame": "1793702271530"}, "body": ""}
+{"time": 1793702271.735853, "request_received": {"method": "GET", "path": "/webcam/"}}
+{"time": 1793702271.7359927, "method": "GET", "path": "/webcam/", "query": {"action": "snapshot", "_orca_frame": "1793702271734"}, "body": ""}
+{"time": 1793702271.9408574, "request_received": {"method": "GET", "path": "/webcam/"}}
+{"time": 1793702271.9410462, "method": "GET", "path": "/webcam/", "query": {"action": "snapshot", "_orca_frame": "1793702271938"}, "body": ""}
+{"time": 1793702272.1438375, "request_received": {"method": "GET", "path": "/webcam/"}}
+{"time": 1793702272.1439183, "method": "GET", "path": "/webcam/", "query": {"action": "snapshot", "_orca_frame": "1793702272142"}, "body": ""}
+{"time": 1793702272.3495781, "request_received": {"method": "GET", "path": "/webcam/"}}
+{"time": 1793702272.3496978, "method": "GET", "path": "/webcam/", "query": {"action": "snapshot", "_orca_frame": "1793702272346"}, "body": ""}
+{"time": 1793702272.5539346, "request_received": {"method": "GET", "path": "/webcam/"}}
+{"time": 1793702272.554102, "method": "GET", "path": "/webcam/", "query": {"action": "snapshot", "_orca_frame": "1793702272551"}, "body": ""}
+{"time": 1793702272.7577057, "request_received": {"method": "GET", "path": "/webcam/"}}
+{"time": 1793702272.7578294, "method": "GET", "path": "/webcam/", "query": {"action": "snapshot", "_orca_frame": "1793702272754"}, "body": ""}
+{"time": 1793702272.959578, "request_received": {"method": "GET", "path": "/webcam/"}}
+{"time": 1793702272.9596505, "method": "GET", "path": "/webcam/", "query": {"action": "snapshot", "_orca_frame": "1793702272958"}, "body": ""}
+{"time": 1793702273.1638865, "request_received": {"method": "GET", "path": "/webcam/"}}
+{"time": 1793702273.1639597, "method": "GET", "path": "/webcam/", "query": {"action": "snapshot", "_orca_frame": "1793702273162"}, "body": ""}
+{"time": 1793702273.3674624, "request_received": {"method": "GET", "path": "/webcam/"}}
+{"time": 1793702273.3675632, "method": "GET", "path": "/webcam/", "query": {"action": "snapshot", "_orca_frame": "1793702273366"}, "body": ""}
+{"time": 1793702273.571496, "request_received": {"method": "GET", "path": "/webcam/"}}
+{"time": 1793702273.5716147, "method": "GET", "path": "/webcam/", "query": {"action": "snapshot", "_orca_frame": "1793702273570"}, "body": ""}
+{"time": 1793702273.7764223, "request_received": {"method": "GET", "path": "/webcam/"}}
+{"time": 1793702273.7765608, "method": "GET", "path": "/webcam/", "query": {"action": "snapshot", "_orca_frame": "1793702273774"}, "body": ""}
+{"time": 1793702273.9804096, "request_received": {"method": "GET", "path": "/webcam/"}}
+{"time": 1793702273.9805338, "method": "GET", "path": "/webcam/", "query": {"action": "snapshot", "_orca_frame": "1793702273978"}, "body": ""}
+{"time": 1793702274.1837618, "request_received": {"method": "GET", "path": "/webcam/"}}
+{"time": 1793702274.1839225, "method": "GET", "path": "/webcam/", "query": {"action": "snapshot", "_orca_frame": "1793702274182"}, "body": ""}
+{"time": 1793702274.3874934, "request_received": {"method": "GET", "path": "/webcam/"}}
+{"time": 1793702274.3876135, "method": "GET", "path": "/webcam/", "query": {"action": "snapshot", "_orca_frame": "1793702274386"}, "body": ""}
+{"time": 1793702274.591644, "request_received": {"method": "GET", "path": "/webcam/"}}
+{"time": 1793702274.591754, "method": "GET", "path": "/webcam/", "query": {"action": "snapshot", "_orca_frame": "1793702274590"}, "body": ""}
+{"time": 1793702274.618512, "request_received": {"method": "POST", "path": "/printer/gcode/script"}}
+{"time": 1793702274.6186383, "method": "POST", "path": "/printer/gcode/script", "query": {}, "body": "{\"script\":\"SET_PIN PIN=caselight VALUE=1\"}"}
+{"time": 1793702274.795789, "request_received": {"method": "GET", "path": "/webcam/"}}
+{"time": 1793702274.7959244, "method": "GET", "path": "/webcam/", "query": {"action": "snapshot", "_orca_frame": "1793702274794"}, "body": ""}
+{"time": 1793702274.9997284, "request_received": {"method": "GET", "path": "/webcam/"}}
+{"time": 1793702274.9998202, "method": "GET", "path": "/webcam/", "query": {"action": "snapshot", "_orca_frame": "1793702274998"}, "body": ""}
+{"time": 1793702275.2045767, "request_received": {"method": "GET", "path": "/webcam/"}}
+{"time": 1793702275.2046459, "method": "GET", "path": "/webcam/", "query": {"action": "snapshot", "_orca_frame": "1793702275202"}, "body": ""}
+{"time": 1793702275.4089246, "request_received": {"method": "GET", "path": "/webcam/"}}
+{"time": 1793702275.40907, "method": "GET", "path": "/webcam/", "query": {"action": "snapshot", "_orca_frame": "1793702275406"}, "body": ""}
+{"time": 1793702275.6114144, "request_received": {"method": "GET", "path": "/webcam/"}}
+{"time": 1793702275.61149, "method": "GET", "path": "/webcam/", "query": {"action": "snapshot", "_orca_frame": "1793702275610"}, "body": ""}
+{"time": 1793702275.8178453, "request_received": {"method": "GET", "path": "/webcam/"}}
+{"time": 1793702275.8179808, "method": "GET", "path": "/webcam/", "query": {"action": "snapshot", "_orca_frame": "1793702275814"}, "body": ""}
+{"time": 1793702276.0213795, "request_received": {"method": "GET", "path": "/webcam/"}}
+{"time": 1793702276.0214994, "method": "GET", "path": "/webcam/", "query": {"action": "snapshot", "_orca_frame": "1793702276020"}, "body": ""}
+{"time": 1793702276.2235954, "request_received": {"method": "GET", "path": "/webcam/"}}
+{"time": 1793702276.223663, "method": "GET", "path": "/webcam/", "query": {"action": "snapshot", "_orca_frame": "1793702276222"}, "body": ""}
+{"time": 1793702276.4288628, "request_received": {"method": "GET", "path": "/webcam/"}}
+{"time": 1793702276.4290576, "method": "GET", "path": "/webcam/", "query": {"action": "snapshot", "_orca_frame": "1793702276426"}, "body": ""}
+{"time": 1793702276.632487, "request_received": {"method": "GET", "path": "/webcam/"}}
+{"time": 1793702276.632606, "method": "GET", "path": "/webcam/", "query": {"action": "snapshot", "_orca_frame": "1793702276631"}, "body": ""}
+{"time": 1793702276.8357334, "request_received": {"method": "GET", "path": "/webcam/"}}
+{"time": 1793702276.8358488, "method": "GET", "path": "/webcam/", "query": {"action": "snapshot", "_orca_frame": "1793702276834"}, "body": ""}
+{"time": 1793702277.0417435, "request_received": {"method": "GET", "path": "/webcam/"}}
+{"time": 1793702277.041926, "method": "GET", "path": "/webcam/", "query": {"action": "snapshot", "_orca_frame": "1793702277039"}, "body": ""}
+{"time": 1793702277.2452319, "request_received": {"method": "GET", "path": "/webcam/"}}
+{"time": 1793702277.2454543, "method": "GET", "path": "/webcam/", "query": {"action": "snapshot", "_orca_frame": "1793702277243"}, "body": ""}
+{"time": 1793702277.2968605, "admin": {"update": {"heater_generic chamber": {"temperature": 31, "target": 0}}}}
+{"time": 1793702277.449482, "request_received": {"method": "GET", "path": "/webcam/"}}
+{"time": 1793702277.4496098, "method": "GET", "path": "/webcam/", "query": {"action": "snapshot", "_orca_frame": "1793702277447"}, "body": ""}
+{"time": 1793702277.6532865, "request_received": {"method": "GET", "path": "/webcam/"}}
+{"time": 1793702277.653449, "method": "GET", "path": "/webcam/", "query": {"action": "snapshot", "_orca_frame": "1793702277651"}, "body": ""}
+{"time": 1793702277.8563404, "request_received": {"method": "GET", "path": "/webcam/"}}
+{"time": 1793702277.8564982, "method": "GET", "path": "/webcam/", "query": {"action": "snapshot", "_orca_frame": "1793702277854"}, "body": ""}
+{"time": 1793702278.0596373, "request_received": {"method": "GET", "path": "/webcam/"}}
+{"time": 1793702278.0597565, "method": "GET", "path": "/webcam/", "query": {"action": "snapshot", "_orca_frame": "1793702278058"}, "body": ""}
+{"time": 1793702278.2657914, "request_received": {"method": "GET", "path": "/webcam/"}}
+{"time": 1793702278.2659252, "method": "GET", "path": "/webcam/", "query": {"action": "snapshot", "_orca_frame": "1793702278263"}, "body": ""}
+{"time": 1793702278.470328, "request_received": {"method": "GET", "path": "/webcam/"}}
+{"time": 1793702278.470447, "method": "GET", "path": "/webcam/", "query": {"action": "snapshot", "_orca_frame": "1793702278467"}, "body": ""}
+{"time": 1793702278.6716142, "request_received": {"method": "GET", "path": "/webcam/"}}
+{"time": 1793702278.6716852, "method": "GET", "path": "/webcam/", "query": {"action": "snapshot", "_orca_frame": "1793702278670"}, "body": ""}
+{"time": 1793702278.8755965, "request_received": {"method": "GET", "path": "/webcam/"}}
+{"time": 1793702278.8756626, "method": "GET", "path": "/webcam/", "query": {"action": "snapshot", "_orca_frame": "1793702278874"}, "body": ""}
+{"time": 1793702279.0799398, "request_received": {"method": "GET", "path": "/webcam/"}}
+{"time": 1793702279.0800548, "method": "GET", "path": "/webcam/", "query": {"action": "snapshot", "_orca_frame": "1793702279078"}, "body": ""}
+{"time": 1793702279.283809, "request_received": {"method": "GET", "path": "/webcam/"}}
+{"time": 1793702279.2838962, "method": "GET", "path": "/webcam/", "query": {"action": "snapshot", "_orca_frame": "1793702279282"}, "body": ""}
+{"time": 1793702279.48768, "request_received": {"method": "GET", "path": "/webcam/"}}
+{"time": 1793702279.4877512, "method": "GET", "path": "/webcam/", "query": {"action": "snapshot", "_orca_frame": "1793702279486"}, "body": ""}
+{"time": 1793702279.692227, "request_received": {"method": "GET", "path": "/webcam/"}}
+{"time": 1793702279.692346, "method": "GET", "path": "/webcam/", "query": {"action": "snapshot", "_orca_frame": "1793702279690"}, "body": ""}
+{"time": 1793702279.8969803, "request_received": {"method": "GET", "path": "/webcam/"}}
+{"time": 1793702279.897103, "method": "GET", "path": "/webcam/", "query": {"action": "snapshot", "_orca_frame": "1793702279894"}, "body": ""}
+{"time": 1793702280.1007624, "request_received": {"method": "GET", "path": "/webcam/"}}
+{"time": 1793702280.1008952, "method": "GET", "path": "/webcam/", "query": {"action": "snapshot", "_orca_frame": "1793702280098"}, "body": ""}
+{"time": 1793702280.3037028, "request_received": {"method": "GET", "path": "/webcam/"}}
+{"time": 1793702280.30378, "method": "GET", "path": "/webcam/", "query": {"action": "snapshot", "_orca_frame": "1793702280302"}, "body": ""}
+{"time": 1793702280.5081184, "request_received": {"method": "GET", "path": "/webcam/"}}
+{"time": 1793702280.5081968, "method": "GET", "path": "/webcam/", "query": {"action": "snapshot", "_orca_frame": "1793702280506"}, "body": ""}
+{"time": 1793702280.7117665, "request_received": {"method": "GET", "path": "/webcam/"}}
+{"time": 1793702280.7118526, "method": "GET", "path": "/webcam/", "query": {"action": "snapshot", "_orca_frame": "1793702280710"}, "body": ""}
+{"time": 1793702280.9162164, "request_received": {"method": "GET", "path": "/webcam/"}}
+{"time": 1793702280.916334, "method": "GET", "path": "/webcam/", "query": {"action": "snapshot", "_orca_frame": "1793702280914"}, "body": ""}
+{"time": 1793702281.1195698, "request_received": {"method": "GET", "path": "/webcam/"}}
+{"time": 1793702281.1197305, "method": "GET", "path": "/webcam/", "query": {"action": "snapshot", "_orca_frame": "1793702281118"}, "body": ""}
+{"time": 1793702281.3236878, "request_received": {"method": "GET", "path": "/webcam/"}}
+{"time": 1793702281.3238034, "method": "GET", "path": "/webcam/", "query": {"action": "snapshot", "_orca_frame": "1793702281322"}, "body": ""}
+{"time": 1793702281.5277834, "request_received": {"method": "GET", "path": "/webcam/"}}
+{"time": 1793702281.5279033, "method": "GET", "path": "/webcam/", "query": {"action": "snapshot", "_orca_frame": "1793702281526"}, "body": ""}
+{"time": 1793702281.7315755, "request_received": {"method": "GET", "path": "/webcam/"}}
+{"time": 1793702281.7316866, "method": "GET", "path": "/webcam/", "query": {"action": "snapshot", "_orca_frame": "1793702281730"}, "body": ""}
+{"time": 1793702281.9358032, "request_received": {"method": "GET", "path": "/webcam/"}}
+{"time": 1793702281.9358978, "method": "GET", "path": "/webcam/", "query": {"action": "snapshot", "_orca_frame": "1793702281934"}, "body": ""}
+{"time": 1793702282.1393836, "request_received": {"method": "GET", "path": "/webcam/"}}
+{"time": 1793702282.1394649, "method": "GET", "path": "/webcam/", "query": {"action": "snapshot", "_orca_frame": "1793702282138"}, "body": ""}
+{"time": 1793702282.3438704, "request_received": {"method": "GET", "path": "/webcam/"}}
+{"time": 1793702282.3439913, "method": "GET", "path": "/webcam/", "query": {"action": "snapshot", "_orca_frame": "1793702282342"}, "body": ""}
+{"time": 1793702282.548547, "request_received": {"method": "GET", "path": "/webcam/"}}
+{"time": 1793702282.5486689, "method": "GET", "path": "/webcam/", "query": {"action": "snapshot", "_orca_frame": "1793702282546"}, "body": ""}
+{"time": 1793702282.7519286, "request_received": {"method": "GET", "path": "/webcam/"}}
+{"time": 1793702282.7520475, "method": "GET", "path": "/webcam/", "query": {"action": "snapshot", "_orca_frame": "1793702282750"}, "body": ""}
+{"time": 1793702282.9555175, "request_received": {"method": "GET", "path": "/webcam/"}}
+{"time": 1793702282.9556162, "method": "GET", "path": "/webcam/", "query": {"action": "snapshot", "_orca_frame": "1793702282954"}, "body": ""}
+{"time": 1793702283.1598423, "request_received": {"method": "GET", "path": "/webcam/"}}
+{"time": 1793702283.1599731, "method": "GET", "path": "/webcam/", "query": {"action": "snapshot", "_orca_frame": "1793702283158"}, "body": ""}
+{"time": 1793702283.36484, "request_received": {"method": "GET", "path": "/webcam/"}}
+{"time": 1793702283.3650625, "method": "GET", "path": "/webcam/", "query": {"action": "snapshot", "_orca_frame": "1793702283362"}, "body": ""}
+{"time": 1793702283.5690594, "request_received": {"method": "GET", "path": "/webcam/"}}
+{"time": 1793702283.5691774, "method": "GET", "path": "/webcam/", "query": {"action": "snapshot", "_orca_frame": "1793702283567"}, "body": ""}
+{"time": 1793702283.7712011, "request_received": {"method": "GET", "path": "/webcam/"}}
+{"time": 1793702283.7712722, "method": "GET", "path": "/webcam/", "query": {"action": "snapshot", "_orca_frame": "1793702283770"}, "body": ""}
+{"time": 1793702283.9752226, "request_received": {"method": "GET", "path": "/webcam/"}}
+{"time": 1793702283.9752944, "method": "GET", "path": "/webcam/", "query": {"action": "snapshot", "_orca_frame": "1793702283974"}, "body": ""}
+{"time": 1793702284.0403016, "admin": {"delay": 4}}
+{"time": 1793702284.179339, "request_received": {"method": "GET", "path": "/webcam/"}}
+{"time": 1793702286.0824199, "request_received": {"method": "POST", "path": "/printer/gcode/script"}}
+{"time": 1793702288.181976, "method": "GET", "path": "/webcam/", "query": {"action": "snapshot", "_orca_frame": "1793702284178"}, "body": ""}
+{"time": 1793702288.2623785, "request_received": {"method": "GET", "path": "/webcam/"}}
+{"time": 1793702290.0854573, "method": "POST", "path": "/printer/gcode/script", "query": {}, "body": "{\"script\":\"UPDATE_FILAMENT_INFORMATION SLOT=0 COLOR='FF0000' VENDOR='QIDI' FILAMENT='PLA Rapido'\"}"}
+{"time": 1793702292.266131, "method": "GET", "path": "/webcam/", "query": {"action": "snapshot", "_orca_frame": "1793702288259"}, "body": ""}
+{"time": 1793702292.340819, "request_received": {"method": "GET", "path": "/webcam/"}}
+{"time": 1793702295.4783275, "admin": {"delay": 0}}
+{"time": 1793702296.3421504, "method": "GET", "path": "/webcam/", "query": {"action": "snapshot", "_orca_frame": "1793702292338"}, "body": ""}
+{"time": 1793702296.420589, "request_received": {"method": "GET", "path": "/webcam/"}}
+{"time": 1793702296.420765, "method": "GET", "path": "/webcam/", "query": {"action": "snapshot", "_orca_frame": "1793702296419"}, "body": ""}
+{"time": 1793702296.6252992, "request_received": {"method": "GET", "path": "/webcam/"}}
+{"time": 1793702296.6254196, "method": "GET", "path": "/webcam/", "query": {"action": "snapshot", "_orca_frame": "1793702296623"}, "body": ""}
+{"time": 1793702296.8295, "request_received": {"method": "GET", "path": "/webcam/"}}
+{"time": 1793702296.8296702, "method": "GET", "path": "/webcam/", "query": {"action": "snapshot", "_orca_frame": "1793702296827"}, "body": ""}
+{"time": 1793702297.0322647, "request_received": {"method": "GET", "path": "/webcam/"}}
+{"time": 1793702297.03239, "method": "GET", "path": "/webcam/", "query": {"action": "snapshot", "_orca_frame": "1793702297030"}, "body": ""}
+{"time": 1793702297.2357392, "request_received": {"method": "GET", "path": "/webcam/"}}
+{"time": 1793702297.2358522, "method": "GET", "path": "/webcam/", "query": {"action": "snapshot", "_orca_frame": "1793702297234"}, "body": ""}
+{"time": 1793702297.4408648, "request_received": {"method": "GET", "path": "/webcam/"}}
+{"time": 1793702297.4410913, "method": "GET", "path": "/webcam/", "query": {"action": "snapshot", "_orca_frame": "1793702297438"}, "body": ""}
+{"time": 1793702297.6438465, "request_received": {"method": "GET", "path": "/webcam/"}}
+{"time": 1793702297.6439755, "method": "GET", "path": "/webcam/", "query": {"action": "snapshot", "_orca_frame": "1793702297642"}, "body": ""}
+{"time": 1793702297.8489754, "request_received": {"method": "GET", "path": "/webcam/"}}
+{"time": 1793702297.8490965, "method": "GET", "path": "/webcam/", "query": {"action": "snapshot", "_orca_frame": "1793702297846"}, "body": ""}
+{"time": 1793702298.0539317, "request_received": {"method": "GET", "path": "/webcam/"}}
+{"time": 1793702298.0540094, "method": "GET", "path": "/webcam/", "query": {"action": "snapshot", "_orca_frame": "1793702298051"}, "body": ""}
+{"time": 1793702298.2557783, "request_received": {"method": "GET", "path": "/webcam/"}}
+{"time": 1793702298.2559104, "method": "GET", "path": "/webcam/", "query": {"action": "snapshot", "_orca_frame": "1793702298254"}, "body": ""}
+{"time": 1793702298.4595346, "request_received": {"method": "GET", "path": "/webcam/"}}
+{"time": 1793702298.4596484, "method": "GET", "path": "/webcam/", "query": {"action": "snapshot", "_orca_frame": "1793702298458"}, "body": ""}
+{"time": 1793702298.6638212, "request_received": {"method": "GET", "path": "/webcam/"}}
+{"time": 1793702298.6640615, "method": "GET", "path": "/webcam/", "query": {"action": "snapshot", "_orca_frame": "1793702298662"}, "body": ""}
+{"time": 1793702298.8675015, "request_received": {"method": "GET", "path": "/webcam/"}}
+{"time": 1793702298.8676136, "method": "GET", "path": "/webcam/", "query": {"action": "snapshot", "_orca_frame": "1793702298866"}, "body": ""}
+{"time": 1793702299.0728133, "request_received": {"method": "GET", "path": "/webcam/"}}
+{"time": 1793702299.0729988, "method": "GET", "path": "/webcam/", "query": {"action": "snapshot", "_orca_frame": "1793702299070"}, "body": ""}
+{"time": 1793702299.2760806, "request_received": {"method": "GET", "path": "/webcam/"}}
+{"time": 1793702299.276194, "method": "GET", "path": "/webcam/", "query": {"action": "snapshot", "_orca_frame": "1793702299274"}, "body": ""}
+{"time": 1793702299.4797087, "request_received": {"method": "GET", "path": "/webcam/"}}
+{"time": 1793702299.4798262, "method": "GET", "path": "/webcam/", "query": {"action": "snapshot", "_orca_frame": "1793702299478"}, "body": ""}
+{"time": 1793702299.6844747, "request_received": {"method": "GET", "path": "/webcam/"}}
+{"time": 1793702299.6845965, "method": "GET", "path": "/webcam/", "query": {"action": "snapshot", "_orca_frame": "1793702299682"}, "body": ""}
+{"time": 1793702299.8877141, "request_received": {"method": "GET", "path": "/webcam/"}}
+{"time": 1793702299.887783, "method": "GET", "path": "/webcam/", "query": {"action": "snapshot", "_orca_frame": "1793702299886"}, "body": ""}
+{"time": 1793702300.09316, "request_received": {"method": "GET", "path": "/webcam/"}}
+{"time": 1793702300.0932837, "method": "GET", "path": "/webcam/", "query": {"action": "snapshot", "_orca_frame": "1793702300090"}, "body": ""}
+{"time": 1793702300.2970936, "request_received": {"method": "GET", "path": "/webcam/"}}
+{"time": 1793702300.2972188, "method": "GET", "path": "/webcam/", "query": {"action": "snapshot", "_orca_frame": "1793702300295"}, "body": ""}
+{"time": 1793702300.5006967, "request_received": {"method": "GET", "path": "/webcam/"}}
+{"time": 1793702300.5007734, "method": "GET", "path": "/webcam/", "query": {"action": "snapshot", "_orca_frame": "1793702300498"}, "body": ""}
+{"time": 1793702300.704037, "request_received": {"method": "GET", "path": "/webcam/"}}
+{"time": 1793702300.7041466, "method": "GET", "path": "/webcam/", "query": {"action": "snapshot", "_orca_frame": "1793702300702"}, "body": ""}
+{"time": 1793702300.9082637, "request_received": {"method": "GET", "path": "/webcam/"}}
+{"time": 1793702300.908334, "method": "GET", "path": "/webcam/", "query": {"action": "snapshot", "_orca_frame": "1793702300906"}, "body": ""}
+{"time": 1793702300.9096045, "admin": {"delay": 2}}
+{"time": 1793702301.1136177, "request_received": {"method": "GET", "path": "/webcam/"}}
+{"time": 1793702302.9554405, "request_received": {"method": "POST", "path": "/printer/gcode/script"}}
+{"time": 1793702303.1149049, "method": "GET", "path": "/webcam/", "query": {"action": "snapshot", "_orca_frame": "1793702301111"}, "body": ""}
+{"time": 1793702303.151345, "request_received": {"method": "GET", "path": "/webcam/"}}
+{"time": 1793702303.2560818, "request_received": {"method": "POST", "path": "/printer/gcode/script"}}
+{"time": 1793702304.958362, "method": "POST", "path": "/printer/gcode/script", "query": {}, "body": "{\"script\":\"SET_PIN PIN=caselight VALUE=1\"}"}
+{"time": 1793702305.1528866, "method": "GET", "path": "/webcam/", "query": {"action": "snapshot", "_orca_frame": "1793702303150"}, "body": ""}
+{"time": 1793702305.2587962, "method": "POST", "path": "/printer/gcode/script", "query": {}, "body": "{\"script\":\"SET_PIN PIN=caselight VALUE=0\"}"}
+{"time": 1793702308.0901275, "admin": {"delay": 0}}
+{"time": 1793702350.0919194, "request_received": {"method": "GET", "path": "/server/info"}}
+{"time": 1793702350.0920167, "method": "GET", "path": "/server/info", "query": {}, "body": ""}
+{"time": 1793702350.0927598, "request_received": {"method": "GET", "path": "/server/files/config/officiall_filas_list.cfg"}}
+{"time": 1793702350.0928085, "method": "GET", "path": "/server/files/config/officiall_filas_list.cfg", "query": {}, "body": ""}
+{"time": 1793702350.0932536, "request_received": {"method": "GET", "path": "/printer/objects/query"}}
+{"time": 1793702350.0932884, "method": "GET", "path": "/printer/objects/query", "query": {"save_variables": "variables", "multi_color_controller": "", "box_stepper slot0": "runout_button", "box_stepper slot1": "runout_button", "box_stepper slot2": "runout_button", "box_stepper slot3": "runout_button", "box_stepper slot4": "runout_button", "box_stepper slot5": "runout_button", "box_stepper slot6": "runout_button", "box_stepper slot7": "runout_button", "box_stepper slot8": "runout_button", "box_stepper slot9": "runout_button", "box_stepper slot10": "runout_button", "box_stepper slot11": "runout_button", "box_stepper slot12": "runout_button", "box_stepper slot13": "runout_button", "box_stepper slot14": "runout_button", "box_stepper slot15": "runout_button"}, "body": ""}
+{"time": 1793702356.8771226, "request_received": {"method": "POST", "path": "/server/files/upload"}}
+{"time": 1793702356.877216, "method": "POST", "path": "/server/files/upload", "query": {}, "body": ""}
+{"time": 1793702356.8778048, "upload_field": "root", "filename": null, "size": 6, "sha256": "d55d08b142884d1912141f11d038d226537734f973c707684bc49bb8a8a46e7e", "saved_file": null}
+{"time": 1793702356.877985, "upload_field": "print", "filename": null, "size": 5, "sha256": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa", "saved_file": null}
+{"time": 1793702356.8784876, "upload_field": "file", "filename": "verify_job.gcode", "size": 16, "sha256": "d70762425aeea0a99d5d0822dd4746e0a2f4c46901a13d7aefdd633f1a2d8701", "saved_file": "upload-z2ulohmf.bin"}
+{"time": 1793702356.879889, "request_received": {"method": "POST", "path": "/server/files/upload"}}
+{"time": 1793702356.8799217, "method": "POST", "path": "/server/files/upload", "query": {}, "body": ""}
+{"time": 1793702356.8802624, "upload_field": "root", "filename": null, "size": 6, "sha256": "d55d08b142884d1912141f11d038d226537734f973c707684bc49bb8a8a46e7e", "saved_file": null}
+{"time": 1793702356.8804994, "upload_field": "print", "filename": null, "size": 5, "sha256": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa", "saved_file": null}
+{"time": 1793702356.8811085, "upload_field": "file", "filename": "sparse-project.gcode", "size": 92227, "sha256": "9b7ecd7720375e5fc3d7f0f2c518eb9335c216d2598dc839d433829b41fa5edb", "saved_file": "upload-1s46n3df.bin"}
+{"time": 1793702356.8815353, "request_received": {"method": "POST", "path": "/printer/gcode/script"}}
+{"time": 1793702356.8815799, "method": "POST", "path": "/printer/gcode/script", "query": {}, "body": "{\"script\":\"SAVE_VARIABLE VARIABLE=enable_box VALUE=1\\nSAVE_VARIABLE VARIABLE=value_t2 VALUE=\\\"'slot5'\\\"\"}"}
+{"time": 1793702356.8818302, "request_received": {"method": "POST", "path": "/printer/gcode/script"}}
+{"time": 1793702356.8818598, "method": "POST", "path": "/printer/gcode/script", "query": {}, "body": "{\"script\":\"G31\"}"}
+{"time": 1793702356.8820808, "request_received": {"method": "POST", "path": "/machine/timelapse/settings"}}
+{"time": 1793702356.882117, "method": "POST", "path": "/machine/timelapse/settings", "query": {"enabled": "false"}, "body": "{}"}
+{"time": 1793702356.8823144, "request_received": {"method": "POST", "path": "/printer/gcode/script"}}
+{"time": 1793702356.8823392, "method": "POST", "path": "/printer/gcode/script", "query": {}, "body": "{\"script\":\"SAVE_VARIABLE VARIABLE=enable_polar_cooler VALUE=1\"}"}
+{"time": 1793702356.88253, "request_received": {"method": "POST", "path": "/printer/print/start"}}
+{"time": 1793702356.8825552, "method": "POST", "path": "/printer/print/start", "query": {}, "body": "{\"filename\":\"sparse-project.gcode\"}"}
+{"time": 1793702361.509237, "admin": {"update": {"multi_color_controller": {"extra": {"filament_info": {"filament_type": "PLA", "filament_str": "PLA", "vendor_str": "Generic", "color_rgb_str": ["0000FF"]}}}}}}
+{"time": 1793702361.5102994, "request_received": {"method": "GET", "path": "/server/files/directory"}}
+{"time": 1793702361.5103774, "method": "GET", "path": "/server/files/directory", "query": {"path": "gcodes"}, "body": ""}
+{"time": 1793702363.8660102, "request_received": {"method": "GET", "path": "/server/info"}}
+{"time": 1793702363.8660614, "method": "GET", "path": "/server/info", "query": {}, "body": ""}
+{"time": 1793702363.866773, "request_received": {"method": "GET", "path": "/server/files/config/officiall_filas_list.cfg"}}
+{"time": 1793702363.866841, "method": "GET", "path": "/server/files/config/officiall_filas_list.cfg", "query": {}, "body": ""}
+{"time": 1793702363.867297, "request_received": {"method": "GET", "path": "/printer/objects/query"}}
+{"time": 1793702363.8673558, "method": "GET", "path": "/printer/objects/query", "query": {"save_variables": "variables", "multi_color_controller": "", "box_stepper slot0": "runout_button", "box_stepper slot1": "runout_button", "box_stepper slot2": "runout_button", "box_stepper slot3": "runout_button", "box_stepper slot4": "runout_button", "box_stepper slot5": "runout_button", "box_stepper slot6": "runout_button", "box_stepper slot7": "runout_button", "box_stepper slot8": "runout_button", "box_stepper slot9": "runout_button", "box_stepper slot10": "runout_button", "box_stepper slot11": "runout_button", "box_stepper slot12": "runout_button", "box_stepper slot13": "runout_button", "box_stepper slot14": "runout_button", "box_stepper slot15": "runout_button"}, "body": ""}
+{"time": 1793702369.175114, "request_received": {"method": "POST", "path": "/server/files/upload"}}
+{"time": 1793702369.1751819, "method": "POST", "path": "/server/files/upload", "query": {}, "body": ""}
+{"time": 1793702369.1754646, "upload_field": "root", "filename": null, "size": 6, "sha256": "d55d08b142884d1912141f11d038d226537734f973c707684bc49bb8a8a46e7e", "saved_file": null}
+{"time": 1793702369.1756022, "upload_field": "print", "filename": null, "size": 5, "sha256": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa", "saved_file": null}
+{"time": 1793702369.1759284, "upload_field": "file", "filename": "verify_job.gcode", "size": 16, "sha256": "d70762425aeea0a99d5d0822dd4746e0a2f4c46901a13d7aefdd633f1a2d8701", "saved_file": "upload-3q12oxis.bin"}
+{"time": 1793702369.1775804, "request_received": {"method": "POST", "path": "/server/files/upload"}}
+{"time": 1793702369.177611, "method": "POST", "path": "/server/files/upload", "query": {}, "body": ""}
+{"time": 1793702369.1778042, "upload_field": "root", "filename": null, "size": 6, "sha256": "d55d08b142884d1912141f11d038d226537734f973c707684bc49bb8a8a46e7e", "saved_file": null}
+{"time": 1793702369.1779733, "upload_field": "print", "filename": null, "size": 5, "sha256": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa", "saved_file": null}
+{"time": 1793702369.178604, "upload_field": "file", "filename": "sparse-project.gcode", "size": 92227, "sha256": "9b7ecd7720375e5fc3d7f0f2c518eb9335c216d2598dc839d433829b41fa5edb", "saved_file": "upload-yzu4st1_.bin"}
+{"time": 1793702369.1791873, "request_received": {"method": "POST", "path": "/printer/gcode/script"}}
+{"time": 1793702369.179236, "method": "POST", "path": "/printer/gcode/script", "query": {}, "body": "{\"script\":\"SAVE_VARIABLE VARIABLE=enable_box VALUE=0\"}"}
+{"time": 1793702369.1795783, "request_received": {"method": "POST", "path": "/printer/gcode/script"}}
+{"time": 1793702369.1796076, "method": "POST", "path": "/printer/gcode/script", "query": {}, "body": "{\"script\":\"G31\"}"}
+{"time": 1793702369.1799138, "request_received": {"method": "POST", "path": "/machine/timelapse/settings"}}
+{"time": 1793702369.1799407, "method": "POST", "path": "/machine/timelapse/settings", "query": {"enabled": "false"}, "body": "{}"}
+{"time": 1793702369.1802313, "request_received": {"method": "POST", "path": "/printer/gcode/script"}}
+{"time": 1793702369.1802557, "method": "POST", "path": "/printer/gcode/script", "query": {}, "body": "{\"script\":\"SAVE_VARIABLE VARIABLE=enable_polar_cooler VALUE=1\"}"}
+{"time": 1793702369.1805434, "request_received": {"method": "POST", "path": "/printer/print/start"}}
+{"time": 1793702369.1805675, "method": "POST", "path": "/printer/print/start", "query": {}, "body": "{\"filename\":\"sparse-project.gcode\"}"}
+{"time": 1793702407.0410252, "request_received": {"method": "GET", "path": "/server/info"}}
+{"time": 1793702407.041129, "method": "GET", "path": "/server/info", "query": {}, "body": ""}
+{"time": 1793702407.0416586, "request_received": {"method": "GET", "path": "/printer/objects/query"}}
+{"time": 1793702407.0416968, "method": "GET", "path": "/printer/objects/query", "query": {"print_stats": "", "virtual_sdcard": "", "extruder": "", "heater_bed": "", "fan": ""}, "body": ""}
+{"time": 1793702407.0427344, "request_received": {"method": "GET", "path": "/websocket"}}
+{"time": 1793702407.0430646, "websocket": {"id": 0, "jsonrpc": "2.0", "method": "server.connection.identify", "params": {"client_name": "OrcaSlicer", "type": "agent", "url": "https://github.com/SoftFever/OrcaSlicer", "version": "1.0.0"}}}
+{"time": 1793702407.0433762, "request_received": {"method": "GET", "path": "/printer/objects/list"}}
+{"time": 1793702407.0434093, "method": "GET", "path": "/printer/objects/list", "query": {}, "body": ""}
+{"time": 1793702407.0438223, "request_received": {"method": "GET", "path": "/server/files/directory"}}
+{"time": 1793702407.0438545, "method": "GET", "path": "/server/files/directory", "query": {"path": "gcodes"}, "body": ""}
+{"time": 1793702407.0441127, "websocket": {"id": 1, "jsonrpc": "2.0", "method": "printer.objects.subscribe", "params": {"objects": {"display_status": null, "exclude_object": null, "extruder": null, "fan": null, "fan_generic auxiliary_cooling_fan": null, "fan_generic chamber_circulation_fan": null, "fan_generic cooling_fan": null, "gcode_move": null, "heater_bed": null, "heater_generic chamber": null, "multi_color_controller": null, "output_pin caselight": null, "output_pin polar_cooler": null, "print_stats": null, "save_variables": null, "toolhead": null, "virtual_sdcard": null}}}}
+{"time": 1793702431.7589417, "request_received": {"method": "GET", "path": "/server/info"}}
+{"time": 1793702431.7590375, "method": "GET", "path": "/server/info", "query": {}, "body": ""}
+{"time": 1793702431.7595513, "request_received": {"method": "GET", "path": "/printer/objects/query"}}
+{"time": 1793702431.7595766, "method": "GET", "path": "/printer/objects/query", "query": {"print_stats": "", "virtual_sdcard": "", "extruder": "", "heater_bed": "", "fan": ""}, "body": ""}
+{"time": 1793702431.7603788, "request_received": {"method": "GET", "path": "/websocket"}}
+{"time": 1793702431.7606676, "websocket": {"id": 0, "jsonrpc": "2.0", "method": "server.connection.identify", "params": {"client_name": "OrcaSlicer", "type": "agent", "url": "https://github.com/SoftFever/OrcaSlicer", "version": "1.0.0"}}}
+{"time": 1793702431.7609634, "request_received": {"method": "GET", "path": "/printer/objects/list"}}
+{"time": 1793702431.7609973, "method": "GET", "path": "/printer/objects/list", "query": {}, "body": ""}
+{"time": 1793702431.761501, "request_received": {"method": "GET", "path": "/server/files/directory"}}
+{"time": 1793702431.7615297, "method": "GET", "path": "/server/files/directory", "query": {"path": "gcodes"}, "body": ""}
+{"time": 1793702431.7617624, "websocket": {"id": 1, "jsonrpc": "2.0", "method": "printer.objects.subscribe", "params": {"objects": {"display_status": null, "exclude_object": null, "extruder": null, "fan": null, "fan_generic auxiliary_cooling_fan": null, "fan_generic chamber_circulation_fan": null, "fan_generic cooling_fan": null, "gcode_move": null, "heater_bed": null, "heater_generic chamber": null, "multi_color_controller": null, "output_pin caselight": null, "output_pin polar_cooler": null, "print_stats": null, "save_variables": null, "toolhead": null, "virtual_sdcard": null}}}}
+{"time": 1793702450.662978, "request_received": {"method": "GET", "path": "/server/info"}}
+{"time": 1793702450.6630368, "method": "GET", "path": "/server/info", "query": {}, "body": ""}
+{"time": 1793702450.6636121, "request_received": {"method": "GET", "path": "/server/files/config/officiall_filas_list.cfg"}}
+{"time": 1793702450.6636326, "method": "GET", "path": "/server/files/config/officiall_filas_list.cfg", "query": {}, "body": ""}
+{"time": 1793702450.664032, "request_received": {"method": "GET", "path": "/printer/objects/query"}}
+{"time": 1793702450.6640742, "method": "GET", "path": "/printer/objects/query", "query": {"save_variables": "variables", "multi_color_controller": "", "box_stepper slot0": "runout_button", "box_stepper slot1": "runout_button", "box_stepper slot2": "runout_button", "box_stepper slot3": "runout_button", "box_stepper slot4": "runout_button", "box_stepper slot5": "runout_button", "box_stepper slot6": "runout_button", "box_stepper slot7": "runout_button", "box_stepper slot8": "runout_button", "box_stepper slot9": "runout_button", "box_stepper slot10": "runout_button", "box_stepper slot11": "runout_button", "box_stepper slot12": "runout_button", "box_stepper slot13": "runout_button", "box_stepper slot14": "runout_button", "box_stepper slot15": "runout_button"}, "body": ""}
+{"time": 1793702453.0802069, "admin": {"update": {"multi_color_controller": {"box": {"box1_filament_info_1_filament_type": "PLA-S", "box1_filament_info_1_filament_str": "Support For PLA", "box1_filament_info_1_vendor_str": "Generic"}}}}}
+{"time": 1793702454.4626393, "request_received": {"method": "GET", "path": "/server/info"}}
+{"time": 1793702454.4626932, "method": "GET", "path": "/server/info", "query": {}, "body": ""}
+{"time": 1793702454.4630027, "request_received": {"method": "GET", "path": "/server/files/config/officiall_filas_list.cfg"}}
+{"time": 1793702454.4630187, "method": "GET", "path": "/server/files/config/officiall_filas_list.cfg", "query": {}, "body": ""}
+{"time": 1793702454.4632015, "request_received": {"method": "GET", "path": "/printer/objects/query"}}
+{"time": 1793702454.463218, "method": "GET", "path": "/printer/objects/query", "query": {"save_variables": "variables", "multi_color_controller": "", "box_stepper slot0": "runout_button", "box_stepper slot1": "runout_button", "box_stepper slot2": "runout_button", "box_stepper slot3": "runout_button", "box_stepper slot4": "runout_button", "box_stepper slot5": "runout_button", "box_stepper slot6": "runout_button", "box_stepper slot7": "runout_button", "box_stepper slot8": "runout_button", "box_stepper slot9": "runout_button", "box_stepper slot10": "runout_button", "box_stepper slot11": "runout_button", "box_stepper slot12": "runout_button", "box_stepper slot13": "runout_button", "box_stepper slot14": "runout_button", "box_stepper slot15": "runout_button"}, "body": ""}
+{"time": 1793702459.7643118, "request_received": {"method": "POST", "path": "/server/files/upload"}}
+{"time": 1793702459.764397, "method": "POST", "path": "/server/files/upload", "query": {}, "body": ""}
+{"time": 1793702459.7647161, "upload_field": "root", "filename": null, "size": 6, "sha256": "d55d08b142884d1912141f11d038d226537734f973c707684bc49bb8a8a46e7e", "saved_file": null}
+{"time": 1793702459.7648542, "upload_field": "print", "filename": null, "size": 5, "sha256": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa", "saved_file": null}
+{"time": 1793702459.7651691, "upload_field": "file", "filename": "verify_job.gcode", "size": 16, "sha256": "d70762425aeea0a99d5d0822dd4746e0a2f4c46901a13d7aefdd633f1a2d8701", "saved_file": "upload-qny0a427.bin"}
+{"time": 1793702459.7675667, "request_received": {"method": "POST", "path": "/server/files/upload"}}
+{"time": 1793702459.7676153, "method": "POST", "path": "/server/files/upload", "query": {}, "body": ""}
+{"time": 1793702459.7679572, "upload_field": "root", "filename": null, "size": 6, "sha256": "d55d08b142884d1912141f11d038d226537734f973c707684bc49bb8a8a46e7e", "saved_file": null}
+{"time": 1793702459.7681859, "upload_field": "print", "filename": null, "size": 5, "sha256": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa", "saved_file": null}
+{"time": 1793702459.768944, "upload_field": "file", "filename": "support-first-project.gcode", "size": 261716, "sha256": "2d84ab205de182d450be0f075c84a567c8b196f1e2b65322961feeb8b2afb21f", "saved_file": "upload-alnk9svg.bin"}
+{"time": 1793702459.769488, "request_received": {"method": "POST", "path": "/printer/gcode/script"}}
+{"time": 1793702459.7695339, "method": "POST", "path": "/printer/gcode/script", "query": {}, "body": "{\"script\":\"SAVE_VARIABLE VARIABLE=enable_box VALUE=1\\nSAVE_VARIABLE VARIABLE=value_t0 VALUE=\\\"'slot5'\\\"\\nSAVE_VARIABLE VARIABLE=value_t2 VALUE=\\\"'slot0'\\\"\"}"}
+{"time": 1793702459.7699132, "request_received": {"method": "POST", "path": "/printer/gcode/script"}}
+{"time": 1793702459.7699516, "method": "POST", "path": "/printer/gcode/script", "query": {}, "body": "{\"script\":\"G31\"}"}
+{"time": 1793702459.7703142, "request_received": {"method": "POST", "path": "/machine/timelapse/settings"}}
+{"time": 1793702459.7703516, "method": "POST", "path": "/machine/timelapse/settings", "query": {"enabled": "false"}, "body": "{}"}
+{"time": 1793702459.7706125, "request_received": {"method": "POST", "path": "/printer/gcode/script"}}
+{"time": 1793702459.7706416, "method": "POST", "path": "/printer/gcode/script", "query": {}, "body": "{\"script\":\"SAVE_VARIABLE VARIABLE=enable_polar_cooler VALUE=1\"}"}
+{"time": 1793702459.770889, "request_received": {"method": "POST", "path": "/printer/print/start"}}
+{"time": 1793702459.7709153, "method": "POST", "path": "/printer/print/start", "query": {}, "body": "{\"filename\":\"support-first-project.gcode\"}"}
+{"time": 1793702464.716793, "request_received": {"method": "GET", "path": "/server/info"}}
+{"time": 1793702464.716849, "method": "GET", "path": "/server/info", "query": {}, "body": ""}
+{"time": 1793702464.7172272, "request_received": {"method": "GET", "path": "/server/files/config/officiall_filas_list.cfg"}}
+{"time": 1793702464.717247, "method": "GET", "path": "/server/files/config/officiall_filas_list.cfg", "query": {}, "body": ""}
+{"time": 1793702464.717508, "request_received": {"method": "GET", "path": "/printer/objects/query"}}
+{"time": 1793702464.7175286, "method": "GET", "path": "/printer/objects/query", "query": {"save_variables": "variables", "multi_color_controller": "", "box_stepper slot0": "runout_button", "box_stepper slot1": "runout_button", "box_stepper slot2": "runout_button", "box_stepper slot3": "runout_button", "box_stepper slot4": "runout_button", "box_stepper slot5": "runout_button", "box_stepper slot6": "runout_button", "box_stepper slot7": "runout_button", "box_stepper slot8": "runout_button", "box_stepper slot9": "runout_button", "box_stepper slot10": "runout_button", "box_stepper slot11": "runout_button", "box_stepper slot12": "runout_button", "box_stepper slot13": "runout_button", "box_stepper slot14": "runout_button", "box_stepper slot15": "runout_button"}, "body": ""}
+{"time": 1793702512.4582741, "request_received": {"method": "GET", "path": "/server/info"}}
+{"time": 1793702512.458369, "method": "GET", "path": "/server/info", "query": {}, "body": ""}
+{"time": 1793702512.4588172, "request_received": {"method": "GET", "path": "/printer/objects/query"}}
+{"time": 1793702512.4588432, "method": "GET", "path": "/printer/objects/query", "query": {"print_stats": "", "virtual_sdcard": "", "extruder": "", "heater_bed": "", "fan": ""}, "body": ""}
+{"time": 1793702512.459442, "request_received": {"method": "GET", "path": "/websocket"}}
+{"time": 1793702512.459696, "websocket": {"id": 0, "jsonrpc": "2.0", "method": "server.connection.identify", "params": {"client_name": "OrcaSlicer", "type": "agent", "url": "https://github.com/SoftFever/OrcaSlicer", "version": "1.0.0"}}}
+{"time": 1793702512.459966, "request_received": {"method": "GET", "path": "/printer/objects/list"}}
+{"time": 1793702512.4599924, "method": "GET", "path": "/printer/objects/list", "query": {}, "body": ""}
+{"time": 1793702512.460455, "request_received": {"method": "GET", "path": "/server/files/directory"}}
+{"time": 1793702512.4604812, "method": "GET", "path": "/server/files/directory", "query": {"path": "gcodes"}, "body": ""}
+{"time": 1793702512.460692, "websocket": {"id": 1, "jsonrpc": "2.0", "method": "printer.objects.subscribe", "params": {"objects": {"display_status": null, "exclude_object": null, "extruder": null, "fan": null, "fan_generic auxiliary_cooling_fan": null, "fan_generic chamber_circulation_fan": null, "fan_generic cooling_fan": null, "gcode_move": null, "heater_bed": null, "heater_generic chamber": null, "multi_color_controller": null, "output_pin caselight": null, "output_pin polar_cooler": null, "print_stats": null, "save_variables": null, "toolhead": null, "virtual_sdcard": null}}}}
+{"time": 1793702526.047168, "request_received": {"method": "GET", "path": "/server/info"}}
+{"time": 1793702526.0472212, "method": "GET", "path": "/server/info", "query": {}, "body": ""}
+{"time": 1793702526.0475852, "request_received": {"method": "GET", "path": "/server/files/config/officiall_filas_list.cfg"}}
+{"time": 1793702526.0476046, "method": "GET", "path": "/server/files/config/officiall_filas_list.cfg", "query": {}, "body": ""}
+{"time": 1793702526.0478463, "request_received": {"method": "GET", "path": "/printer/objects/query"}}
+{"time": 1793702526.0478685, "method": "GET", "path": "/printer/objects/query", "query": {"save_variables": "variables", "multi_color_controller": "", "box_stepper slot0": "runout_button", "box_stepper slot1": "runout_button", "box_stepper slot2": "runout_button", "box_stepper slot3": "runout_button", "box_stepper slot4": "runout_button", "box_stepper slot5": "runout_button", "box_stepper slot6": "runout_button", "box_stepper slot7": "runout_button", "box_stepper slot8": "runout_button", "box_stepper slot9": "runout_button", "box_stepper slot10": "runout_button", "box_stepper slot11": "runout_button", "box_stepper slot12": "runout_button", "box_stepper slot13": "runout_button", "box_stepper slot14": "runout_button", "box_stepper slot15": "runout_button"}, "body": ""}
+{"time": 1793702579.8946147, "admin": {"delay": 15}}
+{"time": 1793702579.9352233, "request_received": {"method": "POST", "path": "/printer/gcode/script"}}
+{"time": 1793702598.2454565, "admin": {"replace": {"print_stats": {"state": "standby", "filename": "", "message": "", "print_duration": 0, "total_duration": 0, "filament_used": 0, "info": {"current_layer": 0, "total_layer": 20}}, "virtual_sdcard": {"progress": 0, "is_active": false, "file_position": 0, "file_size": 0}, "extruder": {"temperature": 23, "target": 0, "power": 0}, "heater_bed": {"temperature": 24, "target": 0, "power": 0}, "heater_generic chamber": {"temperature": 24, "target": 0, "power": 0}, "toolhead": {"homed_axes": "xyz", "position": [0, 0, 0, 0], "extruder": "extruder"}, "gcode_move": {"speed_factor": 1.0, "extrude_factor": 1.0}, "fan": {"speed": 0}, "fan_generic cooling_fan": {"speed": 0}, "fan_generic auxiliary_cooling_fan": {"speed": 0}, "fan_generic chamber_circulation_fan": {"speed": 0}, "output_pin caselight": {"value": 0}, "output_pin polar_cooler": {"value": 0}, "display_status": {"progress": 0, "message": "OFFLINE TEST FIXTURE"}, "pause_resume": {"is_paused": false}, "exclude_object": {"objects": [{"name": "fixture_cube"}, {"name": "fixture_tower"}], "excluded_objects": []}, "save_variables": {"variables": {"box_count": 2, "enable_noodle_detection": 1, "enable_pre_print_model_check": 1, "noodle_sensitivity_level": "MEDIUM"}}, "multi_color_controller": {"identity": "box_v1", "box": {"box_count": 2, "box0_aht20_temp": 24.0, "box0_aht20_humidity": 35, "box0_box_inserted_0": 1, "box0_filament_info_0_filament_type": "PLA", "box0_filament_info_0_filament_str": "PLA Rapido", "box0_filament_info_0_vendor_str": "QIDI", "box0_filament_info_0_color_rgb_str": ["FF0000"], "box0_box_inserted_1": 1, "box0_filament_info_1_filament_type": "PLA", "box0_filament_info_1_filament_str": "PLA Rapido", "box0_filament_info_1_vendor_str": "QIDI", "box0_filament_info_1_color_rgb_str": ["00FF00"], "box0_box_inserted_2": 1, "box0_filament_info_2_filament_type": "PLA", "box0_filament_info_2_filament_str": "PLA Rapido", "box0_filament_info_2_vendor_str": "QIDI", "box0_filament_info_2_color_rgb_str": ["0000FF"], "box0_box_inserted_3": 1, "box0_filament_info_3_filament_type": "PLA", "box0_filament_info_3_filament_str": "PLA Rapido", "box0_filament_info_3_vendor_str": "QIDI", "box0_filament_info_3_color_rgb_str": ["FFFFFF"], "box1_aht20_temp": 24.0, "box1_aht20_humidity": 35, "box1_box_inserted_0": 1, "box1_filament_info_0_filament_type": "PLA", "box1_filament_info_0_filament_str": "PLA Rapido", "box1_filament_info_0_vendor_str": "QIDI", "box1_filament_info_0_color_rgb_str": ["FF0000"], "box1_box_inserted_1": 1, "box1_filament_info_1_filament_type": "PLA", "box1_filament_info_1_filament_str": "PLA Rapido", "box1_filament_info_1_vendor_str": "QIDI", "box1_filament_info_1_color_rgb_str": ["00FF00"], "box1_box_inserted_2": 1, "box1_filament_info_2_filament_type": "PLA", "box1_filament_info_2_filament_str": "PLA Rapido", "box1_filament_info_2_vendor_str": "QIDI", "box1_filament_info_2_color_rgb_str": ["0000FF"], "box1_box_inserted_3": 1, "box1_filament_info_3_filament_type": "PLA", "box1_filament_info_3_filament_str": "PLA Rapido", "box1_filament_info_3_vendor_str": "QIDI", "box1_filament_info_3_color_rgb_str": ["FFFFFF"]}, "last_load_slot": "slot2", "auto_read_rfid": 1, "auto_init_detect": 1, "extra": {"filament_info": {"filament_type": "PETG", "filament_str": "PETG", "vendor_str": "Generic", "color_rgb_str": ["808080"]}}}}, "http_error": 0, "delay": 0, "invalid_camera_frame": false}}
+{"time": 1793702627.6805785, "request_received": {"method": "GET", "path": "/server/info"}}
+{"time": 1793702627.680677, "method": "GET", "path": "/server/info", "query": {}, "body": ""}
+{"time": 1793702627.6812272, "request_received": {"method": "GET", "path": "/printer/objects/query"}}
+{"time": 1793702627.6812673, "method": "GET", "path": "/printer/objects/query", "query": {"print_stats": "", "virtual_sdcard": "", "extruder": "", "heater_bed": "", "fan": ""}, "body": ""}
+{"time": 1793702627.681997, "request_received": {"method": "GET", "path": "/websocket"}}
+{"time": 1793702627.6823103, "websocket": {"id": 0, "jsonrpc": "2.0", "method": "server.connection.identify", "params": {"client_name": "OrcaSlicer", "type": "agent", "url": "https://github.com/SoftFever/OrcaSlicer", "version": "1.0.0"}}}
+{"time": 1793702627.6826186, "request_received": {"method": "GET", "path": "/printer/objects/list"}}
+{"time": 1793702627.6826518, "method": "GET", "path": "/printer/objects/list", "query": {}, "body": ""}
+{"time": 1793702627.6832247, "request_received": {"method": "GET", "path": "/server/files/directory"}}
+{"time": 1793702627.6832678, "method": "GET", "path": "/server/files/directory", "query": {"path": "gcodes"}, "body": ""}
+{"time": 1793702627.6835492, "websocket": {"id": 1, "jsonrpc": "2.0", "method": "printer.objects.subscribe", "params": {"objects": {"display_status": null, "exclude_object": null, "extruder": null, "fan": null, "fan_generic auxiliary_cooling_fan": null, "fan_generic chamber_circulation_fan": null, "fan_generic cooling_fan": null, "gcode_move": null, "heater_bed": null, "heater_generic chamber": null, "multi_color_controller": null, "output_pin caselight": null, "output_pin polar_cooler": null, "print_stats": null, "save_variables": null, "toolhead": null, "virtual_sdcard": null}}}}
+{"time": 1793702628.5886183, "request_received": {"method": "GET", "path": "/"}}
+{"time": 1793702628.5886896, "method": "GET", "path": "/", "query": {}, "body": ""}
+{"time": 1793702653.7751014, "request_received": {"method": "GET", "path": "/server/info"}}
+{"time": 1793702653.7751572, "method": "GET", "path": "/server/info", "query": {}, "body": ""}
+{"time": 1793702653.7754974, "request_received": {"method": "GET", "path": "/server/files/config/officiall_filas_list.cfg"}}
+{"time": 1793702653.7755146, "method": "GET", "path": "/server/files/config/officiall_filas_list.cfg", "query": {}, "body": ""}
+{"time": 1793702653.7757149, "request_received": {"method": "GET", "path": "/printer/objects/query"}}
+{"time": 1793702653.7757342, "method": "GET", "path": "/printer/objects/query", "query": {"save_variables": "variables", "multi_color_controller": "", "box_stepper slot0": "runout_button", "box_stepper slot1": "runout_button", "box_stepper slot2": "runout_button", "box_stepper slot3": "runout_button", "box_stepper slot4": "runout_button", "box_stepper slot5": "runout_button", "box_stepper slot6": "runout_button", "box_stepper slot7": "runout_button", "box_stepper slot8": "runout_button", "box_stepper slot9": "runout_button", "box_stepper slot10": "runout_button", "box_stepper slot11": "runout_button", "box_stepper slot12": "runout_button", "box_stepper slot13": "runout_button", "box_stepper slot14": "runout_button", "box_stepper slot15": "runout_button"}, "body": ""}
+{"time": 1793702678.048994, "request_received": {"method": "POST", "path": "/server/files/upload"}}
+{"time": 1793702678.0491073, "method": "POST", "path": "/server/files/upload", "query": {}, "body": ""}
+{"time": 1793702678.0495238, "upload_field": "root", "filename": null, "size": 6, "sha256": "d55d08b142884d1912141f11d038d226537734f973c707684bc49bb8a8a46e7e", "saved_file": null}
+{"time": 1793702678.0496607, "upload_field": "print", "filename": null, "size": 5, "sha256": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa", "saved_file": null}
+{"time": 1793702678.0501323, "upload_field": "file", "filename": "verify_job.gcode", "size": 16, "sha256": "d70762425aeea0a99d5d0822dd4746e0a2f4c46901a13d7aefdd633f1a2d8701", "saved_file": "upload-btnf9y5y.bin"}
+{"time": 1793702678.0520701, "request_received": {"method": "POST", "path": "/server/files/upload"}}
+{"time": 1793702678.0521016, "method": "POST", "path": "/server/files/upload", "query": {}, "body": ""}
+{"time": 1793702678.0522897, "upload_field": "root", "filename": null, "size": 6, "sha256": "d55d08b142884d1912141f11d038d226537734f973c707684bc49bb8a8a46e7e", "saved_file": null}
+{"time": 1793702678.0523849, "upload_field": "print", "filename": null, "size": 5, "sha256": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa", "saved_file": null}
+{"time": 1793702678.0526981, "upload_field": "file", "filename": "sparse-project.gcode", "size": 92234, "sha256": "6865821e6523b4664923dfd69358a3063f5459872718b0c0a35b7f857c6930ef", "saved_file": "upload-46_reg8w.bin"}
+{"time": 1793702678.053227, "request_received": {"method": "POST", "path": "/printer/gcode/script"}}
+{"time": 1793702678.0532594, "method": "POST", "path": "/printer/gcode/script", "query": {}, "body": "{\"script\":\"SAVE_VARIABLE VARIABLE=enable_box VALUE=1\\nSAVE_VARIABLE VARIABLE=value_t2 VALUE=\\\"'slot2'\\\"\"}"}
+{"time": 1793702678.053736, "request_received": {"method": "POST", "path": "/printer/gcode/script"}}
+{"time": 1793702678.0537598, "method": "POST", "path": "/printer/gcode/script", "query": {}, "body": "{\"script\":\"G32\"}"}
+{"time": 1793702678.054092, "request_received": {"method": "POST", "path": "/machine/timelapse/settings"}}
+{"time": 1793702678.0541158, "method": "POST", "path": "/machine/timelapse/settings", "query": {"enabled": "false"}, "body": "{}"}
+{"time": 1793702678.0543923, "request_received": {"method": "POST", "path": "/printer/gcode/script"}}
+{"time": 1793702678.0544105, "method": "POST", "path": "/printer/gcode/script", "query": {}, "body": "{\"script\":\"SAVE_VARIABLE VARIABLE=enable_polar_cooler VALUE=0\"}"}
+{"time": 1793702678.0546727, "request_received": {"method": "POST", "path": "/printer/print/start"}}
+{"time": 1793702678.0546887, "method": "POST", "path": "/printer/print/start", "query": {}, "body": "{\"filename\":\"sparse-project.gcode\"}"}
+{"time": 1793702696.8223827, "request_received": {"method": "GET", "path": "/server/info"}}
+{"time": 1793702696.822483, "method": "GET", "path": "/server/info", "query": {}, "body": ""}
+{"time": 1793702696.8230295, "request_received": {"method": "GET", "path": "/server/files/config/officiall_filas_list.cfg"}}
+{"time": 1793702696.8230462, "method": "GET", "path": "/server/files/config/officiall_filas_list.cfg", "query": {}, "body": ""}
+{"time": 1793702696.8234313, "request_received": {"method": "GET", "path": "/printer/objects/query"}}
+{"time": 1793702696.8234606, "method": "GET", "path": "/printer/objects/query", "query": {"save_variables": "variables", "multi_color_controller": "", "box_stepper slot0": "runout_button", "box_stepper slot1": "runout_button", "box_stepper slot2": "runout_button", "box_stepper slot3": "runout_button", "box_stepper slot4": "runout_button", "box_stepper slot5": "runout_button", "box_stepper slot6": "runout_button", "box_stepper slot7": "runout_button", "box_stepper slot8": "runout_button", "box_stepper slot9": "runout_button", "box_stepper slot10": "runout_button", "box_stepper slot11": "runout_button", "box_stepper slot12": "runout_button", "box_stepper slot13": "runout_button", "box_stepper slot14": "runout_button", "box_stepper slot15": "runout_button"}, "body": ""}

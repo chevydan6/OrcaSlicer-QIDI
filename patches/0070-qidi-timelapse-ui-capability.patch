@@ -1,0 +1,37 @@
+From 54d95481c2e88abba71bfd5b43889c75d40cb728 Mon Sep 17 00:00:00 2001
+From: chevydan6 <339888127+chevydan6@users.noreply.github.com>
+Date: Tue, 3 Nov 2026 19:45:45 +0900
+Subject: [PATCH] Use QIDI profile capability and available storage for
+ timelapse selection
+
+---
+ src/slic3r/GUI/SelectMachine.cpp | 13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
+
+diff --git a/src/slic3r/GUI/SelectMachine.cpp b/src/slic3r/GUI/SelectMachine.cpp
+index c06bafc2..243f6f00 100644
+--- a/src/slic3r/GUI/SelectMachine.cpp
++++ b/src/slic3r/GUI/SelectMachine.cpp
+@@ -3242,7 +3242,18 @@ void SelectMachineDialog::load_option_vals(MachineObject *obj)
+ 
+     /*STUDIO-9197*/
+     wxString error_messgae;
+-    if (obj->canEnableTimelapse(error_messgae) && !has_timelapse_warning(error_messgae)) {
++    bool can_enable_timelapse = obj->canEnableTimelapse(error_messgae);
++    if (obj->printer_agent_id == "qidi") {
++        // QIDI's capability comes from the selected machine profile, not Bambu
++        // firmware support flags. Keep the Moonraker storage availability gate.
++        const auto* bundle = wxGetApp().preset_bundle;
++        const auto* option = bundle ? bundle->printers.get_edited_preset().config.option<ConfigOptionBool>("is_support_timelapse") : nullptr;
++        can_enable_timelapse = option && option->value &&
++            obj->GetStorage()->get_sdcard_state() == DevStorage::SdcardState::HAS_SDCARD_NORMAL;
++        if (!can_enable_timelapse)
++            error_messgae = _L("Timelapse requires an enabled printer profile capability and available printer storage.");
++    }
++    if (can_enable_timelapse && !has_timelapse_warning(error_messgae)) {
+         m_checkbox_list["timelapse"]->enable(true);
+         m_checkbox_list["timelapse"]->update_tooltip(wxEmptyString);
+     } else {
+-- 
+2.43.0
+

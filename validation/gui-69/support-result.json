@@ -1,0 +1,19 @@
+{
+  "commands": [
+    "SAVE_VARIABLE VARIABLE=enable_box VALUE=1\nSAVE_VARIABLE VARIABLE=value_t0 VALUE=\"'slot5'\"\nSAVE_VARIABLE VARIABLE=value_t2 VALUE=\"'slot0'\"",
+    "G31",
+    "SAVE_VARIABLE VARIABLE=enable_polar_cooler VALUE=1"
+  ],
+  "gcode_commands": [
+    "BOX_TEMP_SET VT2=45 VT0=35",
+    "BOX_PRINT_START EXTRUDER=2 HOTENDTEMP=240",
+    "T0",
+    "T0",
+    "T2"
+  ],
+  "upload_sha256": "2d84ab205de182d450be0f075c84a567c8b196f1e2b65322961feeb8b2afb21f",
+  "mapping": {
+    "T0": 5,
+    "T2": 0
+  }
+}

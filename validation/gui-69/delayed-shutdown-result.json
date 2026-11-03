@@ -1,0 +1,14 @@
+{
+  "start": 1793702579.9005349,
+  "arrival": 1793702579.9352233,
+  "response_delay": 15,
+  "close_action": 1793702580.6201177,
+  "discard_action": 1793702585.734771,
+  "exit": {
+    "time": 1793702586.4725888,
+    "pid": 883101,
+    "exit_code": 0,
+    "appimage_sha256": "2bed31d5e66ad36a1cdd56ea0bbe4a500960ce112c23dc778f59f48e72bd5757"
+  },
+  "seconds_from_discard_to_exit": 0.7378177642822266
+}

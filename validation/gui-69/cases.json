@@ -33,7 +33,13 @@
         "18-QIDI-agents.png"
       ]
     },
-    "clean_restart_endpoint": "untested",
+    "clean_restart_endpoint": {
+      "result": "passed",
+      "note": "Restart restores full HTTP loopback endpoint including port and blank optional API key; live Box telemetry reconnects.",
+      "evidence": [
+        "122-restarted-device.png"
+      ]
+    },
     "tabs_resize_restore": "untested"
   },
   "materials": {
@@ -91,8 +97,24 @@
         "duplicate-result.json"
       ]
     },
-    "disconnect_open_dialog": "untested",
-    "reconnect_dialog": "untested",
+    "disconnect_open_dialog": {
+      "result": "passed",
+      "note": "Open editor survives WS disconnect; attempted confirm receives HTTP503, then new editor works after recovery.",
+      "evidence": [
+        "58-editor-before-disconnect.png",
+        "59-disconnected-confirm.png",
+        "61-reconnected-editor.png",
+        "requests.jsonl"
+      ]
+    },
+    "reconnect_dialog": {
+      "result": "passed",
+      "note": "Fresh editor after reconnection has correct QIDI PLA Rapido and current slot color.",
+      "evidence": [
+        "61-reconnected-editor.png",
+        "requests.jsonl"
+      ]
+    },
     "removed_slot_reject": {
       "result": "passed",
       "note": "A1 editor stayed open while reported Box count became zero; Confirm emitted no command.",
@@ -103,7 +125,16 @@
         "requests.jsonl"
       ]
     },
-    "close_with_pending_response": "untested"
+    "close_with_pending_response": {
+      "result": "passed",
+      "note": "Material request arrived before a subsequent editor closed; delayed response completed after close, then a fresh green-slot editor remained usable.",
+      "evidence": [
+        "62-editor-pending-confirm.png",
+        "63-editor-pending-close.png",
+        "64-editor-after-delay.png",
+        "delayed-editor-result.json"
+      ]
+    }
   },
   "controls": {
     "four_boxes_slot15": {
@@ -272,25 +303,155 @@
         "requests.jsonl"
       ]
     },
-    "http_error": "untested",
-    "delayed_repeated_controls": "untested",
-    "websocket_recovery": "untested",
-    "camera_valid": "untested",
-    "camera_invalid": "untested",
-    "camera_http_recovery": "untested",
-    "delayed_shutdown_restart": "untested"
+    "http_error": {
+      "result": "passed",
+      "note": "HTTP503 injected for controls; subsequent successful requests and telemetry recovered.",
+      "evidence": [
+        "57-http-fault.png",
+        "61-reconnected-editor.png",
+        "requests.jsonl"
+      ]
+    },
+    "delayed_repeated_controls": {
+      "result": "passed",
+      "note": "Three fast lamp clicks with two-second response delay left Prepare responsive; GUI may coalesce clicks. Successful MAX4 slice/preview followed.",
+      "evidence": [
+        "66-delayed-repeat.png",
+        "68-post-controls-preview.png",
+        "requests.jsonl"
+      ]
+    },
+    "websocket_recovery": {
+      "result": "passed",
+      "note": "Forced WebSocket disconnect followed by a new object subscription and displayed updated chamber31C telemetry.",
+      "evidence": [
+        "59-disconnected-confirm.png",
+        "61-reconnected-editor.png",
+        "requests.jsonl"
+      ]
+    },
+    "camera_valid": {
+      "result": "passed",
+      "note": "Valid labeled fixture JPEG renders in Device.",
+      "evidence": [
+        "55-camera-valid.png",
+        "requests.jsonl"
+      ]
+    },
+    "camera_invalid": {
+      "result": "passed",
+      "note": "Invalid JPEG response leaves GUI alive; subsequent camera recovery verified.",
+      "evidence": [
+        "56-camera-invalid.png",
+        "61-reconnected-editor.png",
+        "requests.jsonl"
+      ]
+    },
+    "camera_http_recovery": {
+      "result": "passed",
+      "note": "Camera recovers after HTTP503 and malformed image injection.",
+      "evidence": [
+        "57-http-fault.png",
+        "61-reconnected-editor.png",
+        "requests.jsonl"
+      ]
+    },
+    "delayed_shutdown_restart": {
+      "result": "passed",
+      "note": "POST arrival confirmed before shutdown with 15s injected latency; app exits0 less than1s after discard while request still pending, then restarts and reconnects.",
+      "evidence": [
+        "delayed-shutdown-result.json",
+        "118-restart.png",
+        "122-restarted-device.png"
+      ]
+    }
   },
   "jobs": {
-    "original_sparse_import_slice_preview": "untested",
-    "sparse_T2_slot5_submit": "untested",
-    "reversed_multiple_box_mapping": "untested",
-    "support_first_import_slice_preview": "untested",
-    "support_first_T2_T0_both_mapped": "untested",
-    "external_single_submit": "untested",
-    "incomplete_mapping_reject": "untested",
-    "mixed_external_reject": "untested",
-    "multicolor_external_reject": "untested",
-    "batch_qidi_reject": "untested",
+    "original_sparse_import_slice_preview": {
+      "result": "passed",
+      "note": "Original QIDI sparse project imports without editing its embedded machine, retains three project filaments and slices/preview tool2.",
+      "evidence": [
+        "71-original-open.png",
+        "73-original-sliced.png"
+      ]
+    },
+    "sparse_T2_slot5_submit": {
+      "result": "passed",
+      "note": "GUI filament3 maps B2; upload retains T2 and preparation tool2; pre-start sends enable_box1 and value_t2 slot5.",
+      "evidence": [
+        "76-sparse-B2.png",
+        "77-sparse-submitted.png",
+        "submission-results.json"
+      ]
+    },
+    "reversed_multiple_box_mapping": {
+      "result": "passed",
+      "note": "T0 maps B2 physical5 and T2 maps A1 physical0; both assignments precede start.",
+      "evidence": [
+        "99-support-reversed.png",
+        "support-result.json",
+        "requests.jsonl"
+      ]
+    },
+    "support_first_import_slice_preview": {
+      "result": "passed",
+      "note": "Original QIDI support-first project imports unchanged and previews both used logical filaments0 and2.",
+      "evidence": [
+        "94-support-sliced.png",
+        "requests.jsonl"
+      ]
+    },
+    "support_first_T2_T0_both_mapped": {
+      "result": "passed",
+      "note": "Preparation stays tool2; first deposition tool0 then tool2; both have physical mappings.",
+      "evidence": [
+        "100-support-submitted.png",
+        "support-result.json",
+        "requests.jsonl"
+      ]
+    },
+    "external_single_submit": {
+      "result": "passed",
+      "note": "Single-used-tool sparse job mapped Ext sends enable_box0 without Box assignments and starts only after configuration.",
+      "evidence": [
+        "79-external-selected.png",
+        "80-external-submitted.png",
+        "submission-results.json"
+      ]
+    },
+    "incomplete_mapping_reject": {
+      "result": "passed",
+      "note": "Missing support-tool mapping disables Send and emits no POST.",
+      "evidence": [
+        "95-incomplete-support.png",
+        "requests.jsonl"
+      ]
+    },
+    "mixed_external_reject": {
+      "result": "passed",
+      "note": "Mixed T0 Box and T2 external mapping disables Send and emits no POST.",
+      "evidence": [
+        "102-mixed-selected.png",
+        "103-mixed-attempt.png",
+        "requests.jsonl"
+      ]
+    },
+    "multicolor_external_reject": {
+      "result": "passed",
+      "note": "Both used tools mapped external; explanatory message and disabled Send persist across ten seconds of refresh and attempted click, with no POST.",
+      "evidence": [
+        "110-both-external.png",
+        "111-multicolor-held.png",
+        "multicolor-result.json"
+      ]
+    },
+    "batch_qidi_reject": {
+      "result": "passed",
+      "note": "Experimental batch action explicitly refuses QIDI before dispatch.",
+      "evidence": [
+        "121-batch-rejected.png"
+      ]
+    },
     "stale_object_reject": {
       "result": "passed",
       "note": "Object chooser opened on fixture.gcode; status changed to replacement.gcode before Confirm; no EXCLUDE_OBJECT dispatched.",
@@ -307,11 +468,44 @@
         "49-fresh-object.png",
         "requests.jsonl"
       ]
+    },
+    "timelapse_enable": {
+      "result": "failed",
+      "note": "Native timelapse On is disabled despite MAX4 profile is_support_timelapse=1 and available storage. Shared canEnableTimelapse reads a Bambu support flag never populated by QIDI. Patch70 uses QIDI profile capability with existing Moonraker storage gate.",
+      "evidence": [
+        "123-preprint-options.png",
+        "124-preprint-toggle.png",
+        "126-timelapse-tooltip.png"
+      ]
+    },
+    "bed_level_polar_options": {
+      "result": "passed",
+      "note": "Changing bed leveling and polar cooler to Off is captured with the job and dispatches G32 plus enable_polar_cooler0 before start; earlier On produced G31 and1.",
+      "evidence": [
+        "124-preprint-toggle.png",
+        "125-options-submit.png",
+        "requests.jsonl"
+      ]
     }
   },
   "persistence": {
-    "box_temperature_save_reload": "untested",
-    "slice_after_controls": "untested",
+    "box_temperature_save_reload": {
+      "result": "passed",
+      "note": "Saved GUI 3MF retains Box temperatures35/40/45 and QIDI identity; reopening and exporting emits VT2=45, prep2 and only T2.",
+      "evidence": [
+        "83-save-project.png",
+        "87-reload-sliced.png",
+        "90-export-confirm.png",
+        "persistence-result.json"
+      ]
+    },
+    "slice_after_controls": {
+      "result": "passed",
+      "note": "MAX4 cube slices and renders preview after all control, telemetry, HTTP, WebSocket and delayed-editor cases.",
+      "evidence": [
+        "68-post-controls-preview.png"
+      ]
+    },
     "non_qidi_profile_slice": {
       "result": "passed",
       "note": "Unmodified Bambu A1 profile imports local cube through native file chooser, slices and renders G-code preview on exact candidate69.",
@@ -320,7 +514,16 @@
         "16-slice-button.png"
       ]
     },
-    "file_chooser": "untested",
+    "file_chooser": {
+      "result": "passed",
+      "note": "Native import/open/save/export file choosers work with fresh isolated settings.",
+      "evidence": [
+        "10-cube-import.png",
+        "82-save-path.png",
+        "85-reload-path.png",
+        "89-export-path.png"
+      ]
+    },
     "close_discard_imported_project": "untested",
     "clean_exit": "untested"
   }
