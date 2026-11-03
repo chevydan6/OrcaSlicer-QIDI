@@ -183,7 +183,7 @@ and native-control activation remain part of the compiled GUI validation gate.
 `POST /__fixture__/state` accepts JSON with `update` (recursive status update),
 `replace` (whole status replacement), `notification` (arbitrary WebSocket JSON),
 `raw` (malformed message testing), `disconnect`, `http_error` (0 restores normal
-HTTP responses), and `delay` (0–60 seconds). These controls affect only the test
+HTTP responses), `delay` (0–60 seconds), and `invalid_camera_frame` (malformed JPEG response). These controls affect only the test
 fixture. For example:
 
 ```sh
@@ -191,6 +191,6 @@ curl -sS http://127.0.0.1:19025/__fixture__/state \
   -H 'Content-Type: application/json' --data '{"disconnect":true}'
 ```
 
-The fixture is intentionally incomplete: camera imagery, real RFID reads, thermal
-changes, motion and printing are not emulated. Unexpected GET endpoints return
+The fixture serves a clearly labeled synthetic camera JPEG. Real RFID reads,
+thermal changes, motion and printing are not emulated. Unexpected GET endpoints return
 404 so missing fixture coverage remains visible in the logs.

@@ -1,6 +1,7 @@
 # OrcaSlicer QIDI MAX4 / Box port
 
-Personal downstream integration project. Work in progress: no validated installable build yet.
+Personal downstream integration project. Integration builds pass; final GUI fixes
+and Linux release acceptance are still in progress.
 
 The source baseline is current official OrcaSlicer main. QIDI Studio is the reference
 for MAX4 profiles, Box workflows and communication. Local source checkouts are
@@ -16,10 +17,10 @@ will make the resulting build reproducible without duplicating upstream history.
 - [ ] Port filament selection, persistent slot mapping and Box operations.
 - [ ] Integrate start/end/change G-code and placeholder compatibility.
 - [ ] Integrate network submission, monitoring and supporting interface changes.
-- [ ] Build the general integration before the dedicated bug-fixing phase.
+- [x] Build the general integration before the dedicated bug-fixing phase.
 - [ ] Compare equivalent QIDI Studio workflows and fix initial-filament selection.
-- [ ] Validate compilation, profile loading, persistence, slicing and generated G-code.
-- [ ] Validate communication using mocks and read-only checks where available.
+- [x] Validate compilation, profile loading, persistence, slicing and generated G-code on the 42-patch build.
+- [x] Validate communication with loopback HTTP/WebSocket and native GUI tests; final-build retest pending.
 - [ ] Package Linux build with isolated settings and application identity.
 - [ ] Document reproducible builds, attribution and remaining limitations.
 - [ ] Obtain separately authorized physical-printer verification.

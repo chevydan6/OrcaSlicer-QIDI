@@ -21,7 +21,8 @@ still require review; wholesale replacement would change existing Orca behavior.
 
 Official QIDI Studio reference slices and their release checksum are recorded in
 `validation/qidi-reference/`. The unused-leading and support-first saved projects
-slice successfully in that release; comparison with the custom Orca binary is pending.
+slice successfully in that release and in the 38/42-patch custom builds. Generated
+initial-tool, temperature and Box macros are checked in the runtime results.
 
 ## Initial-filament path
 
@@ -33,7 +34,8 @@ Unused indices must stay in place: `[-1,-1,5]` means logical filament 2 uses slo
 QIDI Studio explicitly sets `enable_box` before saving mappings. Upstream Orca
 omits that mode selection. The port adds it and distinguishes external-spool jobs.
 This is a candidate contributor to the reported failure, not a hardware-confirmed
-root cause. Complete slicing/submission regression coverage is pending.
+root cause. The sparse logical-3/B2 path passes actual GUI slicing and loopback submission;
+final-build regression coverage and physical confirmation remain pending.
 
 The public MAX4 firmware reference at QIDITECH/QIDI_MAX4 revision
 `47fc14cefe064dbd30b90582429fe650883ae900` shows that a local
@@ -61,32 +63,24 @@ MQTT/tunnel stack are not implemented. Existing Orca backends remain available.
   run reported one failure in 2884 cases: `cli_malformed_input` crashed during
   project export. Some tests were skipped. This run lacked a virtual display;
   the current workflow supplies Xvfb and separates the RequiresApp tests.
-- The complete 28-patch build is running. Custom CTest, GUI profile loading and
-  persistence, slicing, HTTP integration and packaging validation remain pending.
+- The 42-patch build completes compilation, packaging, unit, CLI, profile and MAX4
+  slicing validation. CTest reports 2,910 cases, zero failures and five unavailable
+  locale skips. All seven upstream CLI regressions and 19 MAX4 slicing cases pass.
+- Offline GUI checks through patch 38 cover native controls, malformed telemetry,
+  connection failures, camera recovery and sparse initial-filament submission.
+  Material editor and stale object-selection defects found there are addressed in
+  later patches awaiting compiled GUI verification. See validation/gui-38.
 
-The baseline CLI failure also reproduces locally with X11 available. The core
-stack identifies `get_min_flush_volumes`; its caller has not supplied the default
-`filament_diameter` for the test's standalone filament preset. A control run with
-only that default added to the input passes every malformed-input regression
-case on the same binary. Patch 0029 creates the missing schema default before
-the calculation. It is queued for the subsequent integration run; the running
-general-port build contains patches 0001–0028. This fix is unrelated to the
-unverified physical starting-slot failure.
+The baseline CLI crash was caused by a missing default filament diameter before
+flush calculation. Patch 29 supplies the schema default; all seven CLI regressions
+pass on subsequent custom builds. This is unrelated to the unverified physical
+starting-slot failure.
 
-Baseline cross-application project checks found additional compatibility work for
-the dedicated validation pass. Overriding only the machine in a QIDI-exported
-reference project fails the Orca CLI process compatibility check because the
-embedded `print_compatible_printers` uses `X-Max 4` while Orca uses `Qidi X-Max 4`.
-A diagnostic copy adapting only that name then fails validation on QIDI's
-`raft_first_layer_expansion = -1` automatic mode, which Orca does not accept.
-The baseline log also reports no loaded objects. Orca's structured 3MF importer
-recognizes BambuStudio/OrcaSlicer application and format tags, but not QIDIStudio's
-tags; model and settings import need investigation with the integrated build.
-The original reference projects remain unchanged. The two cross-application
-cases in the runtime validation script must not be reported as passing until
-these import/settings differences are addressed or explicit matched inputs are
-documented and run in both slicers. No physical-slot conclusion follows from
-these pre-slicing failures.
+QIDI project comparison also exposed structured 3MF marker, printer compatibility
+name and automatic raft-expansion differences. Patch 34 recognizes QIDI metadata
+and migrates those settings. Both original, unmodified reference projects now
+import and slice, retaining object/tool assignments and temperatures. The 42-patch
+unit run also confirms the upstream G-code import compatibility correction.
 
 The user confirmed that no MAX4 is currently connected. No printer has been contacted.
 Physical slot selection, filament motion, heating,
@@ -95,8 +89,7 @@ printing and firmware compatibility remain unverified and require authorization.
 Additional general-port patches connect MAX4 bed leveling and QIDI timelapse
 submission options, and show Box temperature/humidity in the native enclosure
 display. The latter reuses QIDI Studio's enclosed four-slot UI classification;
-remote drying is not enabled by that classification. These patches are not yet
-in the running six-patch build.
+remote drying is not enabled by that classification. These paths are included in the integrated build.
 
 Case-light commands, three named fan channels and the Polar Cooler submission
 option are now implemented. Polar Cooler availability follows the firmware's
@@ -138,12 +131,12 @@ reported QIDI saved variables enable their controls; commands translate to
 using the same output pin as QIDI Studio; its job-start preference remains a
 separate setting, as in QIDI Studio.
 
-Modern slot synchronization now queries the complete multi_color_controller object and consumes QIDI Studio's box_inserted and decoded filament/color fields before legacy variables. Count validation prevents corrupt firmware values allocating unbounded slots. Live loaded-slot telemetry uses physical slot names, independent of logical tool numbers. Decoded RFID-driven updates now refresh native Box trays via a separate partial-update path. Material types resolve only against compatible visible presets; unchanged reports retain the identity chosen by explicit Sync. Unknown types remain slot placeholders. GUI execution and real firmware reports remain unverified.
+Modern slot synchronization now queries the complete multi_color_controller object and consumes QIDI Studio's box_inserted and decoded filament/color fields before legacy variables. Count validation prevents corrupt firmware values allocating unbounded slots. Live loaded-slot telemetry uses physical slot names, independent of logical tool numbers. Decoded RFID-driven updates now refresh native Box trays via a separate partial-update path. Material types resolve only against compatible visible presets; unchanged reports retain the identity chosen by explicit Sync. Unknown types remain slot placeholders. Offline GUI zero/four-Box transitions and external metadata display pass; real firmware remains unverified.
 
 Submission validation now captures used logical IDs from the plate's filament rows rather than deriving IDs from the compact list position. It preserves unused -1 holes and verifies each used tool has a physical Box slot. The inherited parser silently skipped malformed entries and narrowed unsigned values before validating them; this could retain stale value_t mappings. The downstream parser now rejects the whole malformed mapping. This is a demonstrated source risk, not proof that it caused the reported physical MAX4 failure. Mixed Box/external and multiple-material external-spool jobs are rejected pending a verified QIDI manual-change workflow.
 
 External-spool monitoring uses QIDI's slot16 metadata and Orca's main virtual tray (254), independently of Box count. The sync path now preserves decoded composite types such as PA6-CF instead of reducing them to PA, and resolves only compatible visible materials of that type. Unknown types stay placeholders. This avoids selecting an unrelated default material when an RFID material is not installed.
 
-Native integration review found that the Print Options button was still gated by unrelated Bambu capability flags; QIDI detection/cooler/object-exclusion reports now expose it. Box mode now follows the submitted slot selection rather than a transient HasAms status, and the transport rejects an external-mode request containing an active physical Box selection. These source-level safeguards still require integrated GUI/transport validation.
+Native integration review found that the Print Options button was still gated by unrelated Bambu capability flags; QIDI detection/cooler/object-exclusion reports now expose it. Box mode now follows the submitted slot selection rather than a transient HasAms status, and the transport rejects an external-mode request containing an active physical Box selection. The integrated transport tests and sparse-filament GUI submission pass; additional final-build GUI cases remain open.
 
-QIDI controller notifications can contain nested partial Box updates. The existing one-level Moonraker cache merge could discard a nested Box count when a temperature update arrived, suppressing subsequent monitoring. The QIDI controller now opts into recursive object merging; a control case confirms other Moonraker agents retain their existing replacement behavior. The production cache body passes isolated checks; full-library execution remains pending.
+QIDI controller notifications can contain nested partial Box updates. The existing one-level Moonraker cache merge could discard a nested Box count when a temperature update arrived, suppressing subsequent monitoring. The QIDI controller now opts into recursive object merging; a control case confirms other Moonraker agents retain their existing replacement behavior. The production cache body passes isolated checks and the 42-patch full-library tests.
