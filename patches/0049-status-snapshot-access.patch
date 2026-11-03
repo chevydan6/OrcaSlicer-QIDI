@@ -1,0 +1,58 @@
+From 7b83ecc1ccb040c360bbe7954ab37aee2dab8a1a Mon Sep 17 00:00:00 2001
+From: chevydan6 <339888127+chevydan6@users.noreply.github.com>
+Date: Tue, 3 Nov 2026 14:11:33 +0900
+Subject: [PATCH] Expose a locked status snapshot for QIDI stale-selection
+ checks
+
+---
+ src/slic3r/Utils/MoonrakerPrinterAgent.cpp | 6 ++++++
+ src/slic3r/Utils/MoonrakerPrinterAgent.hpp | 4 ++++
+ src/slic3r/Utils/QidiPrinterAgent.cpp      | 3 +--
+ 3 files changed, 11 insertions(+), 2 deletions(-)
+
+diff --git a/src/slic3r/Utils/MoonrakerPrinterAgent.cpp b/src/slic3r/Utils/MoonrakerPrinterAgent.cpp
+index 79b7a189..a8c596ff 100644
+--- a/src/slic3r/Utils/MoonrakerPrinterAgent.cpp
++++ b/src/slic3r/Utils/MoonrakerPrinterAgent.cpp
+@@ -2129,6 +2129,12 @@ bool MoonrakerPrinterAgent::refresh_storage(const std::string& base_url, const s
+     return has_storage.exchange(has_free) != has_free;
+ }
+ 
++nlohmann::json MoonrakerPrinterAgent::status_snapshot() const
++{
++    std::lock_guard<std::recursive_mutex> lock(payload_mutex);
++    return status_cache;
++}
++
+ void MoonrakerPrinterAgent::update_status_cache(const nlohmann::json& updates)
+ {
+     if (!updates.is_object()) {
+diff --git a/src/slic3r/Utils/MoonrakerPrinterAgent.hpp b/src/slic3r/Utils/MoonrakerPrinterAgent.hpp
+index b8add695..a8fb4611 100644
+--- a/src/slic3r/Utils/MoonrakerPrinterAgent.hpp
++++ b/src/slic3r/Utils/MoonrakerPrinterAgent.hpp
+@@ -78,6 +78,10 @@ public:
+     static int safe_array_int(const nlohmann::json& arr, int idx);
+ 
+ protected:
++    // Copy under the cache lock; derived agents must not retain references to
++    // status that the WebSocket thread can replace while a dialog is open.
++    nlohmann::json status_snapshot() const;
++
+     struct MoonrakerDeviceInfo
+     {
+         std::string dev_id;
+diff --git a/src/slic3r/Utils/QidiPrinterAgent.cpp b/src/slic3r/Utils/QidiPrinterAgent.cpp
+index 3ae7e164..109d8fa0 100644
+--- a/src/slic3r/Utils/QidiPrinterAgent.cpp
++++ b/src/slic3r/Utils/QidiPrinterAgent.cpp
+@@ -219,8 +219,7 @@ int QidiPrinterAgent::send_message(std::string dev_id, std::string json_str, int
+             if (request[section].is_object() && request[section].value("command", std::string()) == "qidi_exclude_objects") {
+                 // A native modal loop can delay GUI status callbacks. Validate
+                 // against the WebSocket cache before translating the selection.
+-                std::lock_guard<std::recursive_mutex> lock(payload_mutex);
+-                if (!object_selection_is_current(request[section], status_cache))
++                if (!object_selection_is_current(request[section], status_snapshot()))
+                     return BAMBU_NETWORK_ERR_INVALID_RESULT;
+             }
+             if (auto script = control_script(request[section])) {

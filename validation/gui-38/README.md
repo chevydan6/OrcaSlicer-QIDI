@@ -28,10 +28,18 @@ observed values therefore require an explicit status update. A command appearing
 here proves GUI routing, not printer acceptance or physical execution.
 
 A private-display file-opening attempt waited inside gtk_native_dialog_run with
-no file chooser displayed because the desktop portal was unavailable. The
-backtrace identified the GTK file-dialog wait. The disposable test instance was
-terminated, then relaunched with the project as a command-line argument. This
-run is not evidence of successful file-dialog operation or clean shutdown.
+no file chooser displayed because the host LXQt portal depended on an inactive
+graphical-session target. A separate D-Bus session with the GTK portal backend
+resolved this without changing desktop services. The native file chooser then
+opened a submitted G-code 3MF and displayed its preview. The installer provides
+an explicit private-session-bus option for this host. Earlier hung test instances
+were terminated and are not evidence of clean shutdown.
+
+The native camera displayed the fixture JPEG. Invalid JPEG data and HTTP 500
+responses left Preview/Device navigation usable; valid frames resumed after
+recovery. Lamp controls worked after malformed frames and recovery. See
+camera-results.json and camera-after-idle.png. Camera playback was stopped at
+the end of the test.
 
 The complete GUI path for a sparse logical filament selection also passes:
 filament 3 produces EXTRUDER=2/T2, selecting B2 sends value_t2=slot5 before

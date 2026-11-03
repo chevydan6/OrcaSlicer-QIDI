@@ -88,3 +88,11 @@ separately from implementation; a patch's presence does not certify hardware use
 44. `0044-refresh-layout-after-setup.patch` sends a main-window size event after the setup wizard. Both the unmodified upstream and first custom GUI had invisible page controls until a manual resize on the target GTK runtime. The baseline comparison is recorded under `validation/gui-layout`; compiled verification of the correction is pending.
 
 45. `0045-qidi-settings-dialog-stability.patch` replaces Bambu-specific RFID timing/spool instructions and imagery with QIDI Box wording. Shared material/settings actions recheck the selected device before accessing a retained device pointer, including after the material warning modal loop. Settings for other agents retain their labels. Found while exercising native controls; final compiled/device-switch verification is pending.
+
+46. `0046-layout-event-include.patch` includes the wx window declaration used by the deferred layout event. The no-precompiled-header check passes through patch 46.
+
+47. `0047-guard-object-exclusion-against-current-job.patch` validates the object chooser's job and object names against the communication cache. A native modal loop can delay GUI status delivery; the offline GUI reproduced an old selection being sent after the job changed. Compiled GUI regression remains pending.
+
+48. `0048-qidi-material-editor-profile-lookup.patch` resolves QIDI material choices through the printer's vendor display name and hides Bambu pressure-calibration/reset actions. The offline GUI exposed an empty material list. Final compiled GUI verification remains pending.
+
+49. `0049-status-snapshot-access.patch` provides a protected, locked copy of Moonraker status for the stale-selection check, preserving private cache ownership. The static check caught direct access to private members in patch 47.

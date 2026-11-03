@@ -1,0 +1,14 @@
+[
+  {
+    "case": "invalid JPEG",
+    "navigation_usable": true
+  },
+  {
+    "case": "HTTP failure",
+    "navigation_usable": true
+  },
+  {
+    "case": "valid camera recovery",
+    "navigation_usable": true
+  }
+]
