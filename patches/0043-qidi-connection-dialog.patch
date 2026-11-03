@@ -1,0 +1,184 @@
+From b96aa904e1e9fce7f76b031c6936e2231b5de761 Mon Sep 17 00:00:00 2001
+From: chevydan6 <339888127+chevydan6@users.noreply.github.com>
+Date: Tue, 3 Nov 2026 13:05:45 +0900
+Subject: [PATCH] Use local asynchronous agent connection for QIDI address
+ dialogs
+
+---
+ src/slic3r/GUI/ReleaseNote.cpp      | 78 +++++++++++++++++++++++++++++
+ src/slic3r/GUI/ReleaseNote.hpp      |  2 +
+ src/slic3r/GUI/SelectMachinePop.cpp | 10 +++-
+ 3 files changed, 89 insertions(+), 1 deletion(-)
+
+diff --git a/src/slic3r/GUI/ReleaseNote.cpp b/src/slic3r/GUI/ReleaseNote.cpp
+index e7b70ab8..acf71aa6 100644
+--- a/src/slic3r/GUI/ReleaseNote.cpp
++++ b/src/slic3r/GUI/ReleaseNote.cpp
+@@ -1436,6 +1436,8 @@ InputIpAddressDialog::InputIpAddressDialog(wxWindow *parent)
+                 wxDefaultSize,
+                 wxCAPTION | wxCLOSE_BOX)
+ {
++    if (auto* manager = wxGetApp().getDeviceManager())
++        m_qidi_connection = manager->get_current_printer_agent_id() == "qidi";
+     SetBackgroundColour(*wxWHITE);
+     m_result                       = -1;
+     wxBoxSizer *m_sizer_body       = new wxBoxSizer(wxVERTICAL);
+@@ -1738,6 +1740,17 @@ InputIpAddressDialog::InputIpAddressDialog(wxWindow *parent)
+ 
+     switch_input_panel(0);
+ 
++    if (m_qidi_connection) {
++        SetTitle(_L("Connect QIDI printer"));
++        m_tip0->SetLabel(_L("Enter the printer's Moonraker address, including its port if needed."));
++        m_tip1->SetLabel(_L("The printer must be reachable on your local network."));
++        m_tip2->SetLabel(_L("Leave the API key blank unless your Moonraker server requires one."));
++        m_tip4->Hide();
++        m_img_help->Hide();
++        m_tips_ip->SetLabel(_L("Address"));
++        m_tips_access_code->SetLabel(_L("API key (optional)"));
++    }
++
+     SetSizer(m_sizer_body);
+     Layout();
+     Fit();
+@@ -1890,6 +1903,10 @@ bool InputIpAddressDialog::isValidEndpoint(std::string endpoint)
+ 
+ void InputIpAddressDialog::on_ok(wxMouseEvent& evt)
+ {
++    if (m_qidi_connection) {
++        connect_qidi();
++        return;
++    }
+     if (!m_need_input_sn) {
+         on_send_retry();
+         return;
+@@ -1936,6 +1953,55 @@ void InputIpAddressDialog::on_ok(wxMouseEvent& evt)
+     m_thread = new boost::thread(boost::bind(&InputIpAddressDialog::workerThreadFunc, this, str_ip, str_access_code, str_sn, str_model_id, str_name));
+ }
+ 
++void InputIpAddressDialog::connect_qidi()
++{
++    auto* manager = wxGetApp().getDeviceManager();
++    auto* bundle = wxGetApp().preset_bundle;
++    if (!manager || !bundle || manager->get_current_printer_agent_id() != "qidi" ||
++        bundle->printers.get_edited_preset().config.opt_string("printer_agent") != "qidi") {
++        update_test_msg(_L("The selected printer changed. Close this dialog and connect again."), false);
++        return;
++    }
++    const std::string address = m_input_ip->GetTextCtrl()->GetValue().Strip(wxString::both).ToStdString();
++    const std::string api_key = m_input_access_code->GetTextCtrl()->GetValue().ToStdString();
++    if (!isValidEndpoint(address) || api_key.find_first_of("\r\n") != std::string::npos)
++        return;
++
++    m_button_ok->Disable();
++    try {
++        auto& config = bundle->printers.get_edited_preset().config;
++        std::string port;
++        Http::get_host_from_url(address, &port);
++        config.opt_string("print_host") = address;
++        config.opt_string("printhost_port") = port;
++        config.opt_string("printhost_apikey") = api_key;
++        if (Http::ca_file_supported())
++            config.opt_string("printhost_cafile") = m_input_cafile->GetValue().ToStdString();
++
++        BBLocalMachine machine;
++        machine.dev_id = MachineObject::dev_id_from_address(address, port);
++        machine.dev_ip = address;
++        machine.dev_name = machine.dev_id;
++        machine.printer_type = config.opt_string("printer_model");
++        auto* object = manager->insert_local_device(machine, "lan", "free", "", api_key);
++        if (object) {
++            object->set_dev_ip(address);
++            object->local_use_ssl = address.rfind("https://", 0) == 0;
++            manager->update_local_machine(*object);
++            // Moonraker connects asynchronously itself. Do not start the legacy
++            // detached dialog worker or a SendJob just to establish a connection.
++            if (manager->set_selected_machine(machine.dev_id)) {
++                EndModal(wxID_OK);
++                return;
++            }
++        }
++    } catch (const std::exception& error) {
++        BOOST_LOG_TRIVIAL(error) << "QIDI connection setup failed: " << error.what();
++    }
++    m_button_ok->Enable();
++    update_test_msg(_L("Unable to set up the printer connection."), false);
++}
++
+ void InputIpAddressDialog::on_send_retry()
+ {
+     m_test_right_msg->Hide();
+@@ -2170,6 +2236,14 @@ void InputIpAddressDialog::on_text(wxCommandEvent &evt)
+     auto str_ip              = m_input_ip->GetTextCtrl()->GetValue();
+     auto str_access_code     = m_input_access_code->GetTextCtrl()->GetValue();
+ 
++    if (m_qidi_connection) {
++        const bool valid = isValidEndpoint(str_ip.Strip(wxString::both).ToStdString()) &&
++                           str_access_code.ToStdString().find_first_of("\r\n") == std::string::npos;
++        m_button_ok->Enable(valid);
++        m_button_manual_setup->Hide();
++        return;
++    }
++
+     if (str_access_code.IsEmpty()) {
+         str_access_code = "88888888";
+     }
+@@ -2198,6 +2272,10 @@ void InputIpAddressDialog::on_text(wxCommandEvent &evt)
+ 
+ InputIpAddressDialog::~InputIpAddressDialog()
+ {
++    if (closeTimer) {
++        closeTimer->Stop();
++        delete closeTimer;
++    }
+ }
+ 
+ void InputIpAddressDialog::on_dpi_changed(const wxRect& suggested_rect)
+diff --git a/src/slic3r/GUI/ReleaseNote.hpp b/src/slic3r/GUI/ReleaseNote.hpp
+index fbb01ac0..a8c9a21b 100644
+--- a/src/slic3r/GUI/ReleaseNote.hpp
++++ b/src/slic3r/GUI/ReleaseNote.hpp
+@@ -346,6 +346,7 @@ public:
+     int     closeCount{3};
+     bool   m_show_access_code{ false };
+     bool   m_need_input_sn{true};
++    bool   m_qidi_connection{false};
+     int    m_result;
+     int    current_input_index {0};
+     std::shared_ptr<BBLStatusBarSend> m_status_bar;
+@@ -361,6 +362,7 @@ public:
+     void check_ip_address_failed(int result);
+     void on_check_ip_address_failed(wxCommandEvent& evt);
+     void on_ok(wxMouseEvent& evt);
++    void connect_qidi();
+     void on_send_retry();
+     void update_test_msg_event(wxCommandEvent &evt);
+     void post_update_test_msg(std::weak_ptr<InputIpAddressDialog> w, wxString text, bool beconnect);
+diff --git a/src/slic3r/GUI/SelectMachinePop.cpp b/src/slic3r/GUI/SelectMachinePop.cpp
+index ffc107ee..8f4fe44a 100644
+--- a/src/slic3r/GUI/SelectMachinePop.cpp
++++ b/src/slic3r/GUI/SelectMachinePop.cpp
+@@ -408,6 +408,10 @@ SelectMachinePopup::~SelectMachinePopup() { delete m_refresh_timer;}
+ 
+ void SelectMachinePopup::Popup(wxWindow *WXUNUSED(focus))
+ {
++    const auto* manager = wxGetApp().getDeviceManager();
++    const bool qidi = manager && manager->get_current_printer_agent_id() == "qidi";
++    m_panel_ping_code->Show(!qidi);
++    m_scrolledWindow->Layout();
+     BOOST_LOG_TRIVIAL(trace) << "get_print_info: start";
+     start_ssdp(true);
+     if (m_refresh_timer) {
+@@ -1074,7 +1078,11 @@ PinCodePanel::PinCodePanel(wxWindow* parent, int type, wxWindowID winid /*= wxID
+      dc.SetTextForeground(StateColor::darkModeColorFor(wxColour("#262E30"))); // ORCA fix text not visible on dark theme
+      wxString txt;
+      if (m_type == 0) {txt = _L("Bind with Pin Code");}
+-     else if (m_type == 1) {txt = _L("Bind with Access Code");}
++     else if (m_type == 1) {
++         const auto* manager = wxGetApp().getDeviceManager();
++         txt = manager && manager->get_current_printer_agent_id() == "qidi"
++                   ? _L("Connect by address") : _L("Bind with Access Code");
++     }
+ 
+      WxFontUtils::get_suitable_font_size(0.5 * size.GetHeight(), dc);
+      auto txt_size = dc.GetTextExtent(txt);

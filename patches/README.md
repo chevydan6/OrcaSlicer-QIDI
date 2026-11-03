@@ -82,3 +82,5 @@ separately from implementation; a patch's presence does not certify hardware use
 41. `0041-upstream-gcode-import-compatibility.patch` restores recognition of upstream Orca G-code alongside the custom application banner. Four existing import/preview regressions caught this in the first compiled test run; the settings-import case now exercises upstream, downstream, and legacy headers. Compiled rerun pending.
 
 42. `0042-downstream-window-title.patch` uses the downstream application name in project window titles, distinguishing the fork from an official Orca window without changing translation catalog or project identifiers.
+
+43. `0043-qidi-connection-dialog.patch` gives QIDI a local address/API-key dialog and hides inapplicable PIN binding. It retains blank or arbitrary non-newline API keys, normalizes the selected endpoint, and lets the existing agent perform the connection in its background thread. QIDI no longer starts the legacy detached dialog worker or a verification SendJob. The connection timer is released on dialog destruction. Found during first GUI validation; compiled and control-failure checks pending.
