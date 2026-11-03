@@ -1,0 +1,81 @@
+From 171f0274798a2e35c7f9a493ee0dae599a39b36d Mon Sep 17 00:00:00 2001
+From: chevydan6 <339888127+chevydan6@users.noreply.github.com>
+Date: Tue, 3 Nov 2026 17:47:00 +0900
+Subject: [PATCH] Allocate newly shown GTK notebook pages after setup
+
+---
+ src/slic3r/GUI/MainFrame.cpp |  4 ----
+ src/slic3r/GUI/Notebook.cpp  | 20 ++++++++++++++++++++
+ src/slic3r/GUI/Notebook.hpp  |  8 +-------
+ 3 files changed, 21 insertions(+), 11 deletions(-)
+
+diff --git a/src/slic3r/GUI/MainFrame.cpp b/src/slic3r/GUI/MainFrame.cpp
+index d78980e0..54b1efbe 100644
+--- a/src/slic3r/GUI/MainFrame.cpp
++++ b/src/slic3r/GUI/MainFrame.cpp
+@@ -598,10 +598,6 @@ DPIFrame(NULL, wxID_ANY, "", wxDefaultPosition, wxDefaultSize, BORDERLESS_FRAME_
+         Refresh();
+         Layout();
+ #ifdef __WXGTK__
+-        // A posted frame resize after setup may leave the book's dimensions
+-        // unchanged, so GTK emits no child size event to size its current page.
+-        if (m_tabpanel)
+-            m_tabpanel->SendSizeEvent();
+         update_edge_panels();
+ #endif
+         wxQueueEvent(wxGetApp().plater(), new SimpleEvent(EVT_NOTICE_CHILDE_SIZE_CHANGED));
+diff --git a/src/slic3r/GUI/Notebook.cpp b/src/slic3r/GUI/Notebook.cpp
+index bc713225..b524f63c 100644
+--- a/src/slic3r/GUI/Notebook.cpp
++++ b/src/slic3r/GUI/Notebook.cpp
+@@ -22,8 +22,28 @@
+ #include <wx/sizer.h>
+ #include <wx/window.h>
+ 
++#ifdef __WXGTK3__
++#include <gtk/gtk.h>
++#endif
++
+ wxDEFINE_EVENT(wxCUSTOMEVT_NOTEBOOK_SEL_CHANGED, wxCommandEvent);
+ 
++void Notebook::DoShowPage(wxWindow* page, bool show)
++{
++    if (show) {
++        page->ShowWithEffect(m_showEffect, m_showTimeout);
++#ifdef __WXGTK3__
++        // After initial setup wx may know the page's size while its GTK
++        // allocation is still 1x1. A synthetic wx resize does not repair it.
++        // Request allocation of the newly visible native child and its book.
++        gtk_widget_queue_resize(GTK_WIDGET(page->GetHandle()));
++        gtk_widget_queue_allocate(GTK_WIDGET(GetHandle()));
++#endif
++    } else {
++        page->HideWithEffect(m_hideEffect, m_hideTimeout);
++    }
++}
++
+ ButtonsListCtrl::ButtonsListCtrl(wxWindow *parent, wxBoxSizer* side_tools) :
+     wxControl(parent, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxBORDER_NONE | wxTAB_TRAVERSAL)
+ {
+diff --git a/src/slic3r/GUI/Notebook.hpp b/src/slic3r/GUI/Notebook.hpp
+index b7774c84..f6b4cbe3 100644
+--- a/src/slic3r/GUI/Notebook.hpp
++++ b/src/slic3r/GUI/Notebook.hpp
+@@ -490,13 +490,7 @@ protected:
+             page->SetSize(GetPageRect());
+     }
+ 
+-    virtual void DoShowPage(wxWindow * page, bool show) override
+-    {
+-        if (show)
+-            page->ShowWithEffect(m_showEffect, m_showTimeout);
+-        else
+-            page->HideWithEffect(m_hideEffect, m_hideTimeout);
+-    }
++    virtual void DoShowPage(wxWindow * page, bool show) override;
+ 
+ private:
+     void Init();
+-- 
+2.43.0
+

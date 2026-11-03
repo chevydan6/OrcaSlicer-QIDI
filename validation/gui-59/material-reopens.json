@@ -1,0 +1,42 @@
+[
+  {
+    "iteration": 1,
+    "slot": 0,
+    "geometry": "WINDOW=4199746\nX=2\nY=44\nWIDTH=2\nHEIGHT=5\nSCREEN=0\n"
+  },
+  {
+    "iteration": 2,
+    "slot": 2,
+    "geometry": "WINDOW=4199874\nX=2\nY=44\nWIDTH=2\nHEIGHT=5\nSCREEN=0\n"
+  },
+  {
+    "iteration": 3,
+    "slot": 0,
+    "geometry": "WINDOW=4200011\nX=2\nY=44\nWIDTH=2\nHEIGHT=5\nSCREEN=0\n"
+  },
+  {
+    "iteration": 4,
+    "slot": 2,
+    "geometry": "WINDOW=4200079\nX=2\nY=44\nWIDTH=2\nHEIGHT=5\nSCREEN=0\n"
+  },
+  {
+    "iteration": 5,
+    "slot": 0,
+    "geometry": "WINDOW=4200214\nX=2\nY=44\nWIDTH=2\nHEIGHT=5\nSCREEN=0\n"
+  },
+  {
+    "iteration": 6,
+    "slot": 2,
+    "geometry": "WINDOW=4200356\nX=2\nY=44\nWIDTH=2\nHEIGHT=5\nSCREEN=0\n"
+  },
+  {
+    "iteration": 7,
+    "slot": 0,
+    "geometry": "WINDOW=4200423\nX=2\nY=44\nWIDTH=2\nHEIGHT=5\nSCREEN=0\n"
+  },
+  {
+    "iteration": 8,
+    "slot": 2,
+    "geometry": "WINDOW=4200558\nX=2\nY=44\nWIDTH=2\nHEIGHT=5\nSCREEN=0\n"
+  }
+]

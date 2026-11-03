@@ -8,12 +8,12 @@ Feature expansion is frozen pending one complete software acceptance.
 
 - Integration repository: https://github.com/chevydan6/OrcaSlicer-QIDI, branch main.
 - Workspace: `/home/dan/qidi-orca-port`; recovered at `70d58fc17f0132d926424a5a74144bf80cb1dcfd`.
-- Current build input: `cd6d820543ddaabad4846b6eb053b4508e65c448`, **59 patches**.
+- Next candidate: **62 patches**, build dispatch pending. Latest evaluated build input: `cd6d820543ddaabad4846b6eb053b4508e65c448` (59 patches).
 - Orca pin: `896557bce5281553ee0c6210f2da301b3b3c262e`.
 - QIDI Studio pin: `403b619d56147160bb883e94f95a7951245bc6d0`.
-- Prepared source: `build/source`, local commit `0fbc2100`.
-- Exact downstream tree: `bb3b6757f4b3e11b65ae0970f715670c953c6869`.
-- All 59 patches reproduce that tree via `scripts/verify-patches.py`.
+- Prepared source: `build/source`, local commit `171f0274`.
+- Exact downstream tree: `8e41a9fe4e99edd185d7ddfa840eab0f97d6881b`.
+- All 62 patches reproduce that tree via `scripts/verify-patches.py`.
 - Original 56-patch recovery matched recorded tree `20f0b1398164ca1b5ab5bd44c6ecd6071aaaad3e`.
 - Pins remain fixed. Local recovery commits have fresh metadata; tree identity is verified.
 
@@ -21,9 +21,9 @@ Feature expansion is frozen pending one complete software acceptance.
 
 | Candidate | Integration | Static | Acceptance |
 | --- | --- | --- | --- |
-| 59 / cd6d820 | [41602372652](https://github.com/chevydan6/OrcaSlicer-QIDI/actions/runs/41602372652), dispatched | [41602379555](https://github.com/chevydan6/OrcaSlicer-QIDI/actions/runs/41602379555), dispatched | Matching artifact and full GUI checks pending |
-| 58 / c1aa8e5 | 41601936217, cancellation requested | 41601942066, cancellation requested | Superseded by fresh-connection fix; cancellation is not a pass |
-| 57 / 0b5a0e5 | 41600542116, compiled, last observed in unit tests | 41600547497, passed | GUI fresh setup and fresh connection failures; not accepted |
+| 59 / cd6d820 | [41602372652](https://github.com/chevydan6/OrcaSlicer-QIDI/actions/runs/41602372652), passed | [41602379555](https://github.com/chevydan6/OrcaSlicer-QIDI/actions/runs/41602379555), passed | Verified matching artifact; GUI failed layout, repeated material dialogs and restart |
+| 58 / c1aa8e5 | 41601936217, cancelled | 41601942066, cancelled | Superseded by fresh-connection fix; cancellation is not a pass |
+| 57 / 0b5a0e5 | 41600542116, passed | 41600547497, passed | GUI fresh setup and fresh connection failures; not accepted |
 | 56 / 111e328 | 41595285772, passed | 41595289239, failed direct include check | Not accepted |
 
 Check live results; these are observations, not promises of success. Required:
@@ -44,17 +44,26 @@ Its ZIP digest and 57-patch manifest match GitHub and build input 0b5a0e5.
   Static run 41600547497 verifies this correction.
 - GUI57 fresh setup left Prepare blank until manual maximization. Patch 44 alone
   is insufficient. Patch 58 forwards GTK frame sizing to the notebook's current
-  page even when the notebook's dimensions are unchanged. **Compiled retest pending.**
+  page even when the notebook's dimensions are unchanged. **GUI59 disproved this correction.**
 - GUI57 fresh native address connection stores printer_type `Qidi X-Max 4`, but
   the display lookup only recognized vendor ID `Qidi-XMax-4`, resulting in Unknown
   and an empty material dropdown. Patch 59 adds QIDI-only vendor name matching.
-  **Compiled fresh-connection material editing pending.**
+  **GUI59 verified populated choices and material/color dispatch.**
 - The patch-56 native RGB chooser appeared fully on-screen in GUI57.
 - A diagnostic manual substitution of the old model ID produced a tiny 2x5 editor;
   it was inconclusive, reverted and is not a workaround or accepted path.
 - GUI57 exited normally (status 0) in the observed setup/connection sessions.
 - Preserve failed GUI52 sizing evidence and all later failures. Earlier GUI passes
   do not accept later binaries. See `validation/gui-57` and the full checklist.
+
+Candidate 59 has 2,912 unit cases with zero failures/skips, seven CLI regressions,
+72 vendors and all 21 MAX4 cases passing. ZIP and manifest verification and test
+report summary are in `validation/recovery-2026-11-03/{artifact-59,ci-59}.json`.
+Its AppImage SHA256 is `be664d179a2209cd348fd14d2fb9e30f8f8dde60a0ad59e0d3e4d9f25cc5edc4`.
+`validation/gui-59` records **failed acceptance**, including eight 2x5 material
+reopens. Patches 60–62 address minimum sizing, lost endpoint scheme/port and
+native page allocation. Debugger interventions support these changes but do not
+accept them. Check the next matching binary without debugger intervention.
 
 ## Host and isolated GUI environment
 
@@ -69,7 +78,7 @@ Ignored helpers: `research/gui-control.py`, `research/fetch-artifact.py` (parall
 artifact ranges with digest verification and no credential/URL logging).
 Fixture venv: `research/printer-fixture-venv`; pinned requirements and self-tests pass.
 Fixture binds only `127.0.0.1:19025`, records/discards requests and never forwards.
-GUI files: `research/gui-57`; runtimes: `research/runtime-56`, `research/runtime-57`.
+GUI files: `research/gui-57`, `research/gui-59`, `research/gui-59-layout`; runtimes also include `research/runtime-59`.
 Raw downloads are under `artifacts/`; these ignored paths are not GitHub backups.
 
 ## Printer access boundary and observations
@@ -94,9 +103,9 @@ QIDI Studio/Orca comparisons must be sequential, with identical model/materials/
 
 ## Next steps
 
-1. Check candidate 59 integration/static results and fix actual failures.
+1. Build candidate 62, check actual integration/static results and fix failures.
 2. Download its matching AppImage and reports, verify GitHub ZIP digest, record ZIP
-   and AppImage hashes, compare packaged manifest against cd6d820 pins/patch hashes.
+   and AppImage hashes, compare packaged manifest against the new build input and all 62 patch hashes.
 3. Start with fresh settings: rerun setup/layout and native blank-key connection.
    Verify populated materials without hand-editing model identity; native color
    edits; repeated Box/external dialogs; slot switching; duplicate opens; disconnect

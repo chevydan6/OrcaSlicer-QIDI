@@ -1,0 +1,25 @@
+{
+  "integration_commit": "0b5a0e57608e4bf261dc5efe6c647a79c7911496",
+  "run": 41600542116,
+  "static_run": 41600547497,
+  "integration": "success",
+  "static": "success",
+  "unit_tests": {
+    "name": "(empty)",
+    "tests": "2912",
+    "failures": "0",
+    "disabled": "0",
+    "skipped": "0",
+    "hostname": "",
+    "time": "535",
+    "timestamp": "2026-11-03T08:10:55"
+  },
+  "cli_cases": 7,
+  "vendor_bundles": 72,
+  "max4_cases": 21,
+  "test_artifact": 13215800290,
+  "test_zip_sha256": "cd10c60ad78c83b86e260a14ca41f4bcc3ca16efe69961bf3ccd9437198ee7de",
+  "github_digest_matches": true,
+  "final_acceptance": false,
+  "reason": "GUI failures recorded in validation/gui-57"
+}

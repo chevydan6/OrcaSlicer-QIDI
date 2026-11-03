@@ -1,0 +1,70 @@
+From cf3282cfee58d8e1c5cefded5f03df3d71808b07 Mon Sep 17 00:00:00 2001
+From: chevydan6 <339888127+chevydan6@users.noreply.github.com>
+Date: Tue, 3 Nov 2026 17:44:33 +0900
+Subject: [PATCH] Preserve QIDI connection endpoint across discovery and
+ restart
+
+---
+ src/slic3r/Utils/MoonrakerPrinterAgent.cpp    |  5 ++++-
+ tests/slic3rutils/test_qidi_printer_agent.cpp | 22 +++++++++++++++++++
+ 2 files changed, 26 insertions(+), 1 deletion(-)
+
+diff --git a/src/slic3r/Utils/MoonrakerPrinterAgent.cpp b/src/slic3r/Utils/MoonrakerPrinterAgent.cpp
+index a8c596ff..3918a3e8 100644
+--- a/src/slic3r/Utils/MoonrakerPrinterAgent.cpp
++++ b/src/slic3r/Utils/MoonrakerPrinterAgent.cpp
+@@ -1597,7 +1597,10 @@ void MoonrakerPrinterAgent::announce_printhost_device()
+     nlohmann::json payload;
+     payload["dev_name"]     = dev_name;
+     payload["dev_id"]       = device_info.dev_id;
+-    payload["dev_ip"]       = device_info.dev_ip;
++    // QIDI's native connection dialog does not save a printer preset. Retain
++    // its complete endpoint in the bound device, including TLS and port, so
++    // discovery cannot overwrite it with a bare host before the next launch.
++    payload["dev_ip"]       = get_agent_info().id == "qidi" ? device_info.base_url : device_info.dev_ip;
+     payload["dev_type"]     = model_id.empty() ? dev_name : model_id;
+     payload["dev_signal"]   = "0";
+     payload["connect_type"] = "lan";
+diff --git a/tests/slic3rutils/test_qidi_printer_agent.cpp b/tests/slic3rutils/test_qidi_printer_agent.cpp
+index 1b2e1a77..fdc70165 100644
+--- a/tests/slic3rutils/test_qidi_printer_agent.cpp
++++ b/tests/slic3rutils/test_qidi_printer_agent.cpp
+@@ -50,6 +50,12 @@ TEST_CASE("Invalid QIDI control inputs return an error without escaping into the
+ namespace Slic3r {
+ struct QidiPrinterAgentTestAccess
+ {
++    static void discovery_endpoint(QidiPrinterAgent& agent, const std::string& url)
++    {
++        agent.device_info.dev_id = "127.0.0.1:19025";
++        agent.device_info.dev_ip = "127.0.0.1";
++        agent.device_info.base_url = url;
++    }
+     static void endpoint(QidiPrinterAgent& agent, const std::string& url)
+     {
+         agent.device_info.base_url = url;
+@@ -78,6 +84,22 @@ struct QidiPrinterAgentTestAccess
+ };
+ }
+ 
++TEST_CASE("QIDI discovery preserves the endpoint needed after restart", "[QidiPrinterAgent][Regression]")
++{
++    const auto endpoint = GENERATE(std::string("http://127.0.0.1:19025"),
++                                   std::string("https://127.0.0.1:19025"));
++    QidiPrinterAgent agent("");
++    QidiPrinterAgentTestAccess::discovery_endpoint(agent, endpoint);
++    nlohmann::json announcement;
++    agent.set_on_ssdp_msg_fn([&](std::string payload) {
++        announcement = nlohmann::json::parse(payload);
++    });
++    agent.start_discovery(true, false);
++    REQUIRE(announcement.is_object());
++    CHECK(announcement.at("dev_ip") == endpoint);
++    CHECK(announcement.at("dev_id") == "127.0.0.1:19025");
++}
++
+ TEST_CASE("QIDI object selection rejects a changed job before GUI status delivery", "[QidiPrinterAgent][Regression]")
+ {
+     const nlohmann::json command{{"command", "qidi_exclude_objects"}, {"expected_job", "first.gcode"}, {"objects", {"cube"}}};
+-- 
+2.43.0
+

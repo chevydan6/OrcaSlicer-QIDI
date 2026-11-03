@@ -116,3 +116,9 @@ separately from implementation; a patch's presence does not certify hardware use
 58. `0058-gtk-notebook-layout-after-setup.patch` forwards a GTK frame size notification to the notebook so its current page is sized even when the book dimensions have not changed. GUI57 disproved patch 44 alone: fresh setup left Prepare blank until manual maximization. This correction needs compiled fresh-setup and normal-resize acceptance; it affects shared GTK layout.
 
 59. `0059-qidi-bound-model-name.patch` resolves QIDI vendor model names as well as model IDs when displaying the bound printer type. Fresh native address connections store `Qidi X-Max 4`, whereas the older lookup recognized only `Qidi-XMax-4` and returned Unknown, leaving the material list empty. Other agents retain their lookup behavior. Compiled fresh-connection material editing remains required.
+
+60. `0060-qidi-material-minimum-size.patch` sets a layout-derived minimum for QIDI material editors. GUI59 still produced 2x5 windows despite patch 55; native decoration handling caused the shrink. A debugger minimum prevented the observed shrink, but compiled repeated-open/lifecycle acceptance is pending.
+
+61. `0061-qidi-persist-connection-endpoint.patch` retains the complete QIDI endpoint in discovery so the bound address keeps its port and HTTP/HTTPS scheme after restart. A protocol regression covers both schemes with a custom port; the existing non-QIDI discovery regression remains unchanged. Compiled restart acceptance is pending.
+
+62. `0062-gtk-native-page-allocation.patch` queues native allocation when showing a GTK notebook page. GUI59's visible Prepare page retained a 1x1 GTK allocation; a diagnostic native page/book allocation restored it without changing window dimensions. Removes patch 58's ineffective synthetic event forwarding. Shared GTK startup/tab/resize behavior needs compiled verification.

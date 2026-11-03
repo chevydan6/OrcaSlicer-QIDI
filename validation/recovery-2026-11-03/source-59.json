@@ -1,0 +1,8 @@
+{
+  "integration_commit": "cd6d820543ddaabad4846b6eb053b4508e65c448",
+  "tree": "bb3b6757f4b3e11b65ae0970f715670c953c6869",
+  "patch_count": 59,
+  "archive": "OrcaSlicer-QIDI-source-59-bb3b6757.tar.gz",
+  "sha256": "cde6c5914fa9ca96e58c4d3dbc1e64bdbdadd5d000a1138c317955de444137fc",
+  "status": "candidate; GUI acceptance pending"
+}

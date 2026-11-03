@@ -1,0 +1,25 @@
+{
+  "integration_commit": "cd6d820543ddaabad4846b6eb053b4508e65c448",
+  "run": 41602372652,
+  "static_run": 41602379555,
+  "integration": "success",
+  "static": "success",
+  "unit_tests": {
+    "name": "(empty)",
+    "tests": "2912",
+    "failures": "0",
+    "disabled": "0",
+    "skipped": "0",
+    "hostname": "",
+    "time": "526",
+    "timestamp": "2026-11-03T08:26:58"
+  },
+  "cli_cases": 7,
+  "vendor_bundles": 72,
+  "max4_cases": 21,
+  "test_artifact": 13214969290,
+  "test_zip_sha256": "615facb67469d83e9d3b5809f46efdafc950aed6c02ab0895f4bf3f7f7ea257b",
+  "github_digest_matches": true,
+  "final_acceptance": false,
+  "reason": "Fresh layout and material reopen failures; see validation/gui-59"
+}

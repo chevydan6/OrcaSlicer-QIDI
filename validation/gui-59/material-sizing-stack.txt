@@ -1,0 +1,39 @@
+SMALL GTK RESIZE 2 5
+#0  0x00007fffef776508 in gtk_window_resize () at /lib/x86_64-linux-gnu/libgtk-3.so.0
+#1  0x000055555d196277 in wxTopLevelWindowGTK::GTKUpdateDecorSize(wxTopLevelWindowGTK::DecorSize const&) ()
+#2  0x000055555d194dda in property_notify_event(_GtkWidget*, _GdkEventProperty*, wxTopLevelWindowGTK*) ()
+#3  0x00007fffef49d0a4 in ??? () at /lib/x86_64-linux-gnu/libgtk-3.so.0
+#4  0x00007fffee0b92fa in g_closure_invoke () at /lib/x86_64-linux-gnu/libgobject-2.0.so.0
+#5  0x00007fffee0e890c in ??? () at /lib/x86_64-linux-gnu/libgobject-2.0.so.0
+#6  0x00007fffee0d8ef2 in ??? () at /lib/x86_64-linux-gnu/libgobject-2.0.so.0
+#7  0x00007fffee0d97c1 in g_signal_emit_valist () at /lib/x86_64-linux-gnu/libgobject-2.0.so.0
+#8  0x00007fffee0d9883 in g_signal_emit () at /lib/x86_64-linux-gnu/libgobject-2.0.so.0
+#9  0x00007fffef766bf4 in ??? () at /lib/x86_64-linux-gnu/libgtk-3.so.0
+#10 0x00007fffef60433f in gtk_main_do_event () at /lib/x86_64-linux-gnu/libgtk-3.so.0
+#11 0x00007ffff770c407 in ??? () at /lib/x86_64-linux-gnu/libgdk-3.so.0
+#12 0x00007ffff7765e2e in ??? () at /lib/x86_64-linux-gnu/libgdk-3.so.0
+#13 0x00007fffecb44635 in ??? () at /lib/x86_64-linux-gnu/libglib-2.0.so.0
+#14 0x00007fffecba3bf7 in ??? () at /lib/x86_64-linux-gnu/libglib-2.0.so.0
+#15 0x00007fffecb44ff7 in g_main_loop_run () at /lib/x86_64-linux-gnu/libglib-2.0.so.0
+#16 0x00007fffef5febc5 in gtk_main () at /lib/x86_64-linux-gnu/libgtk-3.so.0
+#17 0x000055555d183065 in wxGUIEventLoop::DoRun() ()
+#18 0x000055555d24d938 in wxEventLoopBase::Run() ()
+#19 0x000055555d1d5c29 in wxDialog::ShowModal() ()
+SMALL GTK RESIZE 2 5
+#0  0x00007fffef776508 in gtk_window_resize () at /lib/x86_64-linux-gnu/libgtk-3.so.0
+#1  0x000055555d196277 in wxTopLevelWindowGTK::GTKUpdateDecorSize(wxTopLevelWindowGTK::DecorSize const&) ()
+#2  0x000055555d194dda in property_notify_event(_GtkWidget*, _GdkEventProperty*, wxTopLevelWindowGTK*) ()
+#3  0x00007fffef49d0a4 in ??? () at /lib/x86_64-linux-gnu/libgtk-3.so.0
+#4  0x00007fffee0b92fa in g_closure_invoke () at /lib/x86_64-linux-gnu/libgobject-2.0.so.0
+#5  0x00007fffee0e890c in ??? () at /lib/x86_64-linux-gnu/libgobject-2.0.so.0
+#6  0x00007fffee0d8ef2 in ??? () at /lib/x86_64-linux-gnu/libgobject-2.0.so.0
+#7  0x00007fffee0d97c1 in g_signal_emit_valist () at /lib/x86_64-linux-gnu/libgobject-2.0.so.0
+#8  0x00007fffee0d9883 in g_signal_emit () at /lib/x86_64-linux-gnu/libgobject-2.0.so.0
+#9  0x00007fffef766bf4 in ??? () at /lib/x86_64-linux-gnu/libgtk-3.so.0
+#10 0x00007fffef60433f in gtk_main_do_event () at /lib/x86_64-linux-gnu/libgtk-3.so.0
+#11 0x00007ffff770c407 in ??? () at /lib/x86_64-linux-gnu/libgdk-3.so.0
+#12 0x00007ffff7765e2e in ??? () at /lib/x86_64-linux-gnu/libgdk-3.so.0
+#13 0x00007fffecb44635 in ??? () at /lib/x86_64-linux-gnu/libglib-2.0.so.0
+#14 0x00007fffecba3bf7 in ??? () at /lib/x86_64-linux-gnu/libglib-2.0.so.0
+#15 0x00007fffecb44ff7 in g_main_loop_run () at /lib/x86_64-linux-gnu/libglib-2.0.so.0
+#16 0x00007fffef5febc5 in gtk_main () at /l
