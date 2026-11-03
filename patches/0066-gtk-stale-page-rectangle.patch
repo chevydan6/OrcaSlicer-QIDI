@@ -1,0 +1,54 @@
+From d05291c4a574960da7daabe151b0c58ddb505d35 Mon Sep 17 00:00:00 2001
+From: chevydan6 <339888127+chevydan6@users.noreply.github.com>
+Date: Tue, 3 Nov 2026 18:34:19 +0900
+Subject: [PATCH] Repair stale GTK page allocation from its existing wx
+ rectangle
+
+---
+ src/slic3r/GUI/Notebook.cpp | 29 +++++++++++++++++++----------
+ 1 file changed, 19 insertions(+), 10 deletions(-)
+
+diff --git a/src/slic3r/GUI/Notebook.cpp b/src/slic3r/GUI/Notebook.cpp
+index d4f2cf72..625e0b64 100644
+--- a/src/slic3r/GUI/Notebook.cpp
++++ b/src/slic3r/GUI/Notebook.cpp
+@@ -33,17 +33,26 @@ void Notebook::DoShowPage(wxWindow* page, bool show)
+     if (show) {
+         page->ShowWithEffect(m_showEffect, m_showTimeout);
+ #ifdef __WXGTK3__
+-        // After initial setup wx may know the page's size while its GTK
+-        // allocation is still 1x1. A synthetic wx resize does not repair it.
+-        // Request allocation of the newly visible native child and its book.
+-        // Book selection still adjusts page geometry after DoShowPage returns.
+-        // Queue this on the book so it runs after that work, and look up the
+-        // current page then: a removed page must not survive in the callback.
+-        // wx cancels this handler's pending callbacks when the book is deleted.
++        // GTK may retain a 1x1 allocation after initial setup even though wx
++        // already has the correct page rectangle. Queuing resize/allocation
++        // alone did not repair this on GTK3. Apply wx's rectangle after the
++        // selection completes, only when the native allocation is stale.
++        // The book owns this callback; never retain a removed page pointer.
+         CallAfter([this] {
+-            if (auto* current = GetCurrentPage(); current && current->IsShown()) {
+-                gtk_widget_queue_resize(GTK_WIDGET(current->GetHandle()));
+-                gtk_widget_queue_allocate(GTK_WIDGET(GetHandle()));
++            auto* current = GetCurrentPage();
++            if (!current || !current->IsShownOnScreen())
++                return;
++            const wxRect rect = current->GetRect();
++            auto* widget = GTK_WIDGET(current->GetHandle());
++            if (rect.width > 0 && rect.height > 0 &&
++                (gtk_widget_get_allocated_width(widget) != rect.width ||
++                 gtk_widget_get_allocated_height(widget) != rect.height)) {
++                // GTK requires a size request before direct allocation, as in
++                // wxWindowGTK::DoMoveWindow's native size-event path.
++                GtkRequisition requisition;
++                gtk_widget_get_preferred_size(widget, &requisition, nullptr);
++                GtkAllocation allocation{rect.x, rect.y, rect.width, rect.height};
++                gtk_widget_size_allocate(widget, &allocation);
+             }
+         });
+ #endif
+-- 
+2.43.0
+

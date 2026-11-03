@@ -1,0 +1,610 @@
+[
+  {
+    "ptr": 111099370048880,
+    "depth": 0,
+    "type": "GtkWindow",
+    "w": 1200,
+    "h": 800,
+    "visible": 1
+  },
+  {
+    "ptr": 111099379768816,
+    "depth": 1,
+    "type": "GtkBox",
+    "w": 1200,
+    "h": 800,
+    "visible": 1
+  },
+  {
+    "ptr": 111099360361856,
+    "depth": 2,
+    "type": "wxPizza",
+    "w": 1200,
+    "h": 800,
+    "visible": 1
+  },
+  {
+    "ptr": 111099362366592,
+    "depth": 3,
+    "type": "wxPizza",
+    "w": 1200,
+    "h": 5,
+    "visible": 1
+  },
+  {
+    "ptr": 111099362378320,
+    "depth": 3,
+    "type": "wxPizza",
+    "w": 5,
+    "h": 800,
+    "visible": 1
+  },
+  {
+    "ptr": 111099360648560,
+    "depth": 3,
+    "type": "wxPizza",
+    "w": 5,
+    "h": 800,
+    "visible": 1
+  },
+  {
+    "ptr": 111099365495536,
+    "depth": 3,
+    "type": "wxPizza",
+    "w": 1200,
+    "h": 34,
+    "visible": 1
+  },
+  {
+    "ptr": 111099363959648,
+    "depth": 4,
+    "type": "wxPizza",
+    "w": 737,
+    "h": 30,
+    "visible": 1
+  },
+  {
+    "ptr": 111099361677760,
+    "depth": 3,
+    "type": "wxPizza",
+    "w": 1200,
+    "h": 766,
+    "visible": 1
+  },
+  {
+    "ptr": 111099361682480,
+    "depth": 4,
+    "type": "wxPizza",
+    "w": 1200,
+    "h": 39,
+    "visible": 1
+  },
+  {
+    "ptr": 111099361836016,
+    "depth": 5,
+    "type": "wxPizza",
+    "w": 1,
+    "h": 1,
+    "visible": 1
+  },
+  {
+    "ptr": 111099361842080,
+    "depth": 6,
+    "type": "wxPizza",
+    "w": 1,
+    "h": 1,
+    "visible": 1
+  },
+  {
+    "ptr": 111099362237072,
+    "depth": 6,
+    "type": "wxPizza",
+    "w": 1,
+    "h": 1,
+    "visible": 1
+  },
+  {
+    "ptr": 111099361941104,
+    "depth": 5,
+    "type": "wxPizza",
+    "w": 1,
+    "h": 1,
+    "visible": 1
+  },
+  {
+    "ptr": 111099362252624,
+    "depth": 6,
+    "type": "wxPizza",
+    "w": 1,
+    "h": 1,
+    "visible": 1
+  },
+  {
+    "ptr": 111099362297440,
+    "depth": 6,
+    "type": "wxPizza",
+    "w": 1,
+    "h": 1,
+    "visible": 1
+  },
+  {
+    "ptr": 111099359659136,
+    "depth": 5,
+    "type": "wxPizza",
+    "w": 49,
+    "h": 39,
+    "visible": 1
+  },
+  {
+    "ptr": 111099429506688,
+    "depth": 5,
+    "type": "wxPizza",
+    "w": 149,
+    "h": 39,
+    "visible": 1
+  },
+  {
+    "ptr": 111099363116176,
+    "depth": 5,
+    "type": "wxPizza",
+    "w": 149,
+    "h": 39,
+    "visible": 1
+  },
+  {
+    "ptr": 111099365029024,
+    "depth": 5,
+    "type": "wxPizza",
+    "w": 149,
+    "h": 39,
+    "visible": 1
+  },
+  {
+    "ptr": 111099429475504,
+    "depth": 5,
+    "type": "wxPizza",
+    "w": 149,
+    "h": 39,
+    "visible": 1
+  },
+  {
+    "ptr": 111099359652304,
+    "depth": 4,
+    "type": "wxPizza",
+    "w": 1200,
+    "h": 727,
+    "visible": 0
+  },
+  {
+    "ptr": 111099432162176,
+    "depth": 5,
+    "type": "wxPizza",
+    "w": 1200,
+    "h": 727,
+    "visible": 0
+  },
+  {
+    "ptr": 111099430817536,
+    "depth": 6,
+    "type": "GtkInfoBar",
+    "w": 1,
+    "h": 1,
+    "visible": 0
+  },
+  {
+    "ptr": 111099360519856,
+    "depth": 6,
+    "type": "GtkScrolledWindow",
+    "w": 1,
+    "h": 1,
+    "visible": 1
+  },
+  {
+    "ptr": 111099429455600,
+    "depth": 4,
+    "type": "wxPizza",
+    "w": 1,
+    "h": 1,
+    "visible": 0
+  },
+  {
+    "ptr": 111099429481120,
+    "depth": 4,
+    "type": "wxPizza",
+    "w": 1,
+    "h": 1,
+    "visible": 0
+  },
+  {
+    "ptr": 111099527528016,
+    "depth": 5,
+    "type": "wxPizza",
+    "w": 1,
+    "h": 1,
+    "visible": 0
+  },
+  {
+    "ptr": 111099539208256,
+    "depth": 6,
+    "type": "GtkScrolledWindow",
+    "w": 1,
+    "h": 1,
+    "visible": 1
+  },
+  {
+    "ptr": 111099429488800,
+    "depth": 4,
+    "type": "wxPizza",
+    "w": 1,
+    "h": 1,
+    "visible": 0
+  },
+  {
+    "ptr": 111099429496912,
+    "depth": 4,
+    "type": "wxPizza",
+    "w": 1,
+    "h": 1,
+    "visible": 0
+  },
+  {
+    "ptr": 111099538806960,
+    "depth": 5,
+    "type": "wxPizza",
+    "w": 1,
+    "h": 1,
+    "visible": 0
+  },
+  {
+    "ptr": 111099525193024,
+    "depth": 6,
+    "type": "GtkScrolledWindow",
+    "w": 1,
+    "h": 1,
+    "visible": 1
+  },
+  {
+    "ptr": 111099527523136,
+    "depth": 6,
+    "type": "wxPizza",
+    "w": 1,
+    "h": 1,
+    "visible": 0
+  },
+  {
+    "ptr": 111099429527776,
+    "depth": 4,
+    "type": "wxPizza",
+    "w": 1,
+    "h": 1,
+    "visible": 0
+  },
+  {
+    "ptr": 111099359624896,
+    "depth": 4,
+    "type": "wxPizza",
+    "w": 1,
+    "h": 1,
+    "visible": 1
+  },
+  {
+    "ptr": 111099364047184,
+    "depth": 5,
+    "type": "wxPizza",
+    "w": 1,
+    "h": 1,
+    "visible": 1
+  },
+  {
+    "ptr": 111099364054304,
+    "depth": 6,
+    "type": "wxPizza",
+    "w": 1,
+    "h": 1,
+    "visible": 1
+  },
+  {
+    "ptr": 111099384702704,
+    "depth": 5,
+    "type": "wxPizza",
+    "w": 1,
+    "h": 1,
+    "visible": 1
+  },
+  {
+    "ptr": 111099384708960,
+    "depth": 6,
+    "type": "wxPizza",
+    "w": 1,
+    "h": 1,
+    "visible": 1
+  },
+  {
+    "ptr": 111099401265968,
+    "depth": 6,
+    "type": "wxPizza",
+    "w": 1,
+    "h": 1,
+    "visible": 0
+  },
+  {
+    "ptr": 111099415955216,
+    "depth": 6,
+    "type": "wxPizza",
+    "w": 1,
+    "h": 1,
+    "visible": 0
+  },
+  {
+    "ptr": 111099416000688,
+    "depth": 5,
+    "type": "wxPizza",
+    "w": 1,
+    "h": 1,
+    "visible": 0
+  },
+  {
+    "ptr": 111099416013760,
+    "depth": 6,
+    "type": "wxPizza",
+    "w": 1,
+    "h": 1,
+    "visible": 1
+  },
+  {
+    "ptr": 111099416019120,
+    "depth": 6,
+    "type": "GtkLabel",
+    "w": 1,
+    "h": 1,
+    "visible": 1
+  },
+  {
+    "ptr": 111099416044160,
+    "depth": 6,
+    "type": "GtkLabel",
+    "w": 1,
+    "h": 1,
+    "visible": 1
+  },
+  {
+    "ptr": 111099416053456,
+    "depth": 6,
+    "type": "wxPizza",
+    "w": 1,
+    "h": 1,
+    "visible": 1
+  },
+  {
+    "ptr": 111099416061248,
+    "depth": 6,
+    "type": "wxPizza",
+    "w": 1,
+    "h": 1,
+    "visible": 1
+  },
+  {
+    "ptr": 111099416068144,
+    "depth": 6,
+    "type": "wxPizza",
+    "w": 1,
+    "h": 1,
+    "visible": 1
+  },
+  {
+    "ptr": 111099416075232,
+    "depth": 6,
+    "type": "wxPizza",
+    "w": 1,
+    "h": 1,
+    "visible": 1
+  },
+  {
+    "ptr": 111099416087184,
+    "depth": 6,
+    "type": "wxPizza",
+    "w": 1,
+    "h": 1,
+    "visible": 1
+  },
+  {
+    "ptr": 111099416160624,
+    "depth": 6,
+    "type": "GtkLabel",
+    "w": 1,
+    "h": 1,
+    "visible": 1
+  },
+  {
+    "ptr": 111099416122592,
+    "depth": 6,
+    "type": "wxPizza",
+    "w": 1,
+    "h": 1,
+    "visible": 1
+  },
+  {
+    "ptr": 111099416265968,
+    "depth": 6,
+    "type": "GtkToggleButton",
+    "w": 1,
+    "h": 1,
+    "visible": 1
+  },
+  {
+    "ptr": 111099416293584,
+    "depth": 6,
+    "type": "GtkLabel",
+    "w": 1,
+    "h": 1,
+    "visible": 1
+  },
+  {
+    "ptr": 111099416257584,
+    "depth": 6,
+    "type": "wxPizza",
+    "w": 1,
+    "h": 1,
+    "visible": 1
+  },
+  {
+    "ptr": 111099416211072,
+    "depth": 6,
+    "type": "wxPizza",
+    "w": 1,
+    "h": 1,
+    "visible": 1
+  },
+  {
+    "ptr": 111099416255856,
+    "depth": 6,
+    "type": "wxPizza",
+    "w": 1,
+    "h": 1,
+    "visible": 1
+  },
+  {
+    "ptr": 111099416304624,
+    "depth": 6,
+    "type": "wxPizza",
+    "w": 1,
+    "h": 1,
+    "visible": 1
+  },
+  {
+    "ptr": 111099416316640,
+    "depth": 6,
+    "type": "wxPizza",
+    "w": 1,
+    "h": 1,
+    "visible": 1
+  },
+  {
+    "ptr": 111099416323136,
+    "depth": 6,
+    "type": "wxPizza",
+    "w": 1,
+    "h": 1,
+    "visible": 1
+  },
+  {
+    "ptr": 111099416330880,
+    "depth": 6,
+    "type": "wxPizza",
+    "w": 1,
+    "h": 1,
+    "visible": 1
+  },
+  {
+    "ptr": 111099416337664,
+    "depth": 6,
+    "type": "wxPizza",
+    "w": 1,
+    "h": 1,
+    "visible": 1
+  },
+  {
+    "ptr": 111099416350608,
+    "depth": 6,
+    "type": "wxPizza",
+    "w": 1,
+    "h": 1,
+    "visible": 1
+  },
+  {
+    "ptr": 111099416357040,
+    "depth": 6,
+    "type": "wxPizza",
+    "w": 1,
+    "h": 1,
+    "visible": 1
+  },
+  {
+    "ptr": 111099416365232,
+    "depth": 6,
+    "type": "wxPizza",
+    "w": 1,
+    "h": 1,
+    "visible": 1
+  },
+  {
+    "ptr": 111099416373344,
+    "depth": 6,
+    "type": "wxPizza",
+    "w": 1,
+    "h": 1,
+    "visible": 1
+  },
+  {
+    "ptr": 111099416381504,
+    "depth": 6,
+    "type": "wxPizza",
+    "w": 1,
+    "h": 1,
+    "visible": 1
+  },
+  {
+    "ptr": 111099416389520,
+    "depth": 6,
+    "type": "wxPizza",
+    "w": 1,
+    "h": 1,
+    "visible": 1
+  },
+  {
+    "ptr": 111099416398208,
+    "depth": 6,
+    "type": "wxPizza",
+    "w": 1,
+    "h": 1,
+    "visible": 1
+  },
+  {
+    "ptr": 111099416411312,
+    "depth": 6,
+    "type": "wxPizza",
+    "w": 1,
+    "h": 1,
+    "visible": 1
+  },
+  {
+    "ptr": 111099416418960,
+    "depth": 6,
+    "type": "wxPizza",
+    "w": 1,
+    "h": 1,
+    "visible": 1
+  },
+  {
+    "ptr": 111099416431744,
+    "depth": 6,
+    "type": "GtkLabel",
+    "w": 1,
+    "h": 1,
+    "visible": 1
+  },
+  {
+    "ptr": 111099416462176,
+    "depth": 6,
+    "type": "GtkLabel",
+    "w": 1,
+    "h": 1,
+    "visible": 1
+  },
+  {
+    "ptr": 111099416471392,
+    "depth": 6,
+    "type": "wxPizza",
+    "w": 1,
+    "h": 1,
+    "visible": 1
+  },
+  {
+    "ptr": 111099416482656,
+    "depth": 6,
+    "type": "wxPizza",
+    "w": 1,
+    "h": 1,
+    "visible": 1
+  }
+]

@@ -1,0 +1,78 @@
+{
+  "startup": {
+    "fresh_setup_layout": {
+      "result": "failed",
+      "note": "Fresh Prepare remains blank after setup and idle; patch 63 deferred allocation is insufficient.",
+      "time": 1793698205.4144063,
+      "evidence": [
+        "11-prepare.png",
+        "12-prepare-idle.png"
+      ]
+    },
+    "blank_key_connect": "untested",
+    "cancel_reopen_connect": "untested",
+    "no_printer_controls": "untested",
+    "clean_restart_endpoint": "untested"
+  },
+  "materials": {
+    "box_reopen_10": "untested",
+    "external_reopen_10": "untested",
+    "slot_switch_colors": "untested",
+    "material_and_rgb_edit": "untested",
+    "duplicate_open": "untested",
+    "disconnect_open_dialog": "untested",
+    "reconnect_dialog": "untested",
+    "removed_slot_reject": "untested"
+  },
+  "controls": {
+    "four_boxes_slot15": "untested",
+    "two_boxes_slot5": "untested",
+    "zero_boxes": "untested",
+    "external_display": "untested",
+    "load_unload_eject": "untested",
+    "rfid_refresh": "untested",
+    "rfid_preferences": "untested",
+    "chamber": "untested",
+    "part_aux_chamber_fans": "untested",
+    "lamp": "untested",
+    "speed": "untested",
+    "detection_sensitivity": "untested",
+    "polar_cooler": "untested",
+    "actual_telemetry_replay": "untested"
+  },
+  "faults": {
+    "malformed_json": "untested",
+    "wrong_type_box": "untested",
+    "null_slot_metadata": "untested",
+    "extreme_temperature": "untested",
+    "partial_metadata": "untested",
+    "http_error": "untested",
+    "delayed_repeated_controls": "untested",
+    "websocket_recovery": "untested",
+    "camera_valid": "untested",
+    "camera_invalid": "untested",
+    "camera_http_recovery": "untested"
+  },
+  "jobs": {
+    "original_sparse_import_slice_preview": "untested",
+    "sparse_T2_slot5_submit": "untested",
+    "reversed_multiple_box_mapping": "untested",
+    "support_first_import_slice_preview": "untested",
+    "support_first_T2_T0_both_mapped": "untested",
+    "external_single_submit": "untested",
+    "incomplete_mapping_reject": "untested",
+    "mixed_external_reject": "untested",
+    "multicolor_external_reject": "untested",
+    "batch_qidi_reject": "untested",
+    "stale_object_reject": "untested",
+    "fresh_object_accept": "untested"
+  },
+  "persistence": {
+    "box_temperature_save_reload": "untested",
+    "slice_after_controls": "untested",
+    "non_qidi_profile_slice": "untested",
+    "file_chooser": "untested",
+    "close_discard_imported_project": "untested",
+    "clean_exit": "untested"
+  }
+}

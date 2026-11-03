@@ -8,12 +8,12 @@ Feature expansion is frozen pending one complete software acceptance.
 
 - Integration repository: https://github.com/chevydan6/OrcaSlicer-QIDI, branch main.
 - Workspace: `/home/dan/qidi-orca-port`; recovered at `70d58fc17f0132d926424a5a74144bf80cb1dcfd`.
-- Current source: **65 patches**, pending matching build. Candidate 64 build input: `9b06cba3424e19e53a4235ce8b3bf9d455ea393a`. Latest evaluated build input: `b8ef9f8e4f3e27fda362401da9076d453e3cf06b` (62 patches), GUI rejected.
+- Current source: **66 patches**, pending matching build. Candidate 64 build input: `9b06cba3424e19e53a4235ce8b3bf9d455ea393a`. Latest evaluated build input: `b8ef9f8e4f3e27fda362401da9076d453e3cf06b` (62 patches), GUI rejected.
 - Orca pin: `896557bce5281553ee0c6210f2da301b3b3c262e`.
 - QIDI Studio pin: `403b619d56147160bb883e94f95a7951245bc6d0`.
-- Prepared source: `build/source`, local commit `285bd4b3`.
-- Exact downstream tree: `ae1aba508661fd0013223354e8f7fe567dd94b8b`.
-- All 65 patches reproduce that tree via `scripts/verify-patches.py`.
+- Prepared source: `build/source`, local commit `d05291c4`.
+- Exact downstream tree: `b178f2ce5e52f4389724cc30c7d576e131ca6351`.
+- All 66 patches reproduce that tree via `scripts/verify-patches.py`.
 - Original 56-patch recovery matched recorded tree `20f0b1398164ca1b5ab5bd44c6ecd6071aaaad3e`.
 - Pins remain fixed. Local recovery commits have fresh metadata; tree identity is verified.
 
@@ -21,7 +21,7 @@ Feature expansion is frozen pending one complete software acceptance.
 
 | Candidate | Integration | Static | Acceptance |
 | --- | --- | --- | --- |
-| 64 / 9b06cba | [41610127689](https://github.com/chevydan6/OrcaSlicer-QIDI/actions/runs/41610127689), running | [41610133489](https://github.com/chevydan6/OrcaSlicer-QIDI/actions/runs/41610133489), running | Fresh-layout/material retest pending; newly found import-agent defect not fixed here |
+| 64 / 9b06cba | [41610127689](https://github.com/chevydan6/OrcaSlicer-QIDI/actions/runs/41610127689), running | [41610133489](https://github.com/chevydan6/OrcaSlicer-QIDI/actions/runs/41610133489), running | Fresh layout failed; import-agent defect not fixed here |
 | 62 / b8ef9f8 | [41605999278](https://github.com/chevydan6/OrcaSlicer-QIDI/actions/runs/41605999278), passed | [41606004232](https://github.com/chevydan6/OrcaSlicer-QIDI/actions/runs/41606004232), passed | 2,913 unit / 7 CLI / 72 vendors / 21 MAX4 pass; GUI rejected |
 | 59 / cd6d820 | [41602372652](https://github.com/chevydan6/OrcaSlicer-QIDI/actions/runs/41602372652), passed | [41602379555](https://github.com/chevydan6/OrcaSlicer-QIDI/actions/runs/41602379555), passed | Verified matching artifact; GUI failed layout, repeated material dialogs and restart |
 | 58 / c1aa8e5 | 41601936217, cancelled | 41601942066, cancelled | Superseded by fresh-connection fix; cancellation is not a pass |
@@ -80,6 +80,13 @@ normalizes known MAX4 communication identity without replacing its embedded G-co
 A modified diagnostic project restores sparse T2/slot5 submission; the original
 project still requires compiled verification. See the GUI62 evidence.
 
+Candidate 64 compiled and static checks passed, but fresh setup remains blank.
+GDB confirms the deferred callback actually runs on the correct page; queuing
+allocation is insufficient. wx has rectangle (0,39,1200,727), GTK has 1x1.
+Diagnostic direct allocation restores it. Patch 66 uses the existing wx rectangle
+only on stale native dimensions. See `validation/gui-64`; diagnostic recovery is
+not acceptance. Patch 65 will first be compiled together with patch 66.
+
 ## Host and isolated GUI environment
 
 Ubuntu 24.04.5 x86_64, GNOME Wayland, GCC 13.3, 24 logical CPUs, 14 GiB RAM,
@@ -118,9 +125,9 @@ QIDI Studio/Orca comparisons must be sequential, with identical model/materials/
 
 ## Next steps
 
-1. Build candidate 65, check actual integration/static results and fix failures.
+1. Build candidate 66, check actual integration/static results and fix failures.
 2. Download its matching AppImage and reports, verify GitHub ZIP digest, record ZIP
-   and AppImage hashes, compare packaged manifest against the new build input and all 65 patch hashes.
+   and AppImage hashes, compare packaged manifest against the new build input and all 66 patch hashes.
 3. Start with fresh settings: rerun setup/layout and native blank-key connection.
    Verify populated materials without hand-editing model identity; native color
    edits; repeated Box/external dialogs; slot switching; duplicate opens; disconnect

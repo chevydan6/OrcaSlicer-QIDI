@@ -1,0 +1,267 @@
+0x650b5595a250  0 1 1
+0x650b55abf1d0  0 1 1
+0x650b567c8d70 *Untitled - OrcaSlicer QIDI 1 1200 800
+0x650b5684fc90 OrcaSlicer QIDI - Settings 0 1 1
+0x650b56910350 Print host upload queue 0 1 1
+0x650b5636f7f0  0 1 1
+0x650b561bf200  0 1 1
+0x650b560620e0  0 1 1
+0x650b5616f620  0 1 1
+0x650b55f99ea0  0 1 1
+0x650b55fb02f0  0 1 1
+0x650b56347530  0 1 1
+0x650b560a1ec0  0 1 1
+0x650b560c4dc0  0 1 1
+0x650b562626b0  0 1 1
+0x650b562850b0  0 1 1
+0x650b562b3960  0 1 1
+0x650b5712e230  0 1 1
+0x650b571d5540  0 1 1
+0x650b57207f10  0 1 1
+0x650b57209170  0 1 1
+0x650b5720a940  0 1 1
+0x650b5720c110  0 1 1
+0x650b5720d7a0  0 1 1
+0x650b5720ee30  0 1 1
+0x650b572104c0  0 1 1
+0x650b57211b50  0 1 1
+0x650b572131e0  0 1 1
+0x650b57214870  0 1 1
+0x650b57215f00  0 1 1
+0x650b572233e0  0 200 200
+0x650b572329b0 Import SLA archive 0 1 1
+0x650b5723af40 Choose SLA archive: 0 1 1
+0x650b5738fbb0  0 1 1
+0x650b57404010  0 1 1
+0x650b5740c5a0  0 1 1
+0x650b575162d0  0 1 1
+0x650b5755a2b0  0 1 1
+0x650b57587170  0 1 1
+0x650b575a3940  0 1 1
+0x650b575aef70  0 1 1
+0x650b59417d70  0 1 1
+0x650b594266b0  0 1 1
+0x650b5943cf70  0 1 1
+0x650b594449d0  0 1 1
+0x650b59458120  0 1 1
+0x650b5946c7e0  0 1 1
+0x650b59472fe0  0 1 1
+0x650b5947a870  0 1 1
+0x650b59489840  0 1 1
+0x650b594999d0  0 1 1
+0x650b594a0150  0 1 1
+0x650b594a7ae0  0 1 1
+0x650b594b54d0  0 1 1
+0x650b594c00b0  0 1 1
+0x650b594c86a0  0 1 1
+0x650b594d8670  0 1 1
+0x650b594e5070  0 1 1
+0x650b594f1a20  0 1 1
+0x650b594fe0d0  0 1 1
+0x650b5950a780  0 1 1
+0x650b595145b0  0 1 1
+0x650b5951e3f0  0 1 1
+0x650b59531100  0 1 1
+0x650b5953b330  0 1 1
+0x650b59543b30  0 1 1
+0x650b59553b00  0 1 1
+0x650b5955e610  0 1 1
+0x650b5956b3a0  0 1 1
+0x650b59572960  0 1 1
+0x650b59581b70  0 1 1
+0x650b595833c0  0 1 1
+0x650b5958f720  0 1 1
+0x650b59594900  0 1 1
+0x650b5959e940  0 1 1
+0x650b57448b40  0 1 1
+0x650b5960d720  0 1 1
+0x650b59637ca0  0 1 1
+0x650b59eba310  0 1 1
+0x650b59f49e00  0 1 1
+0x650b5a0d2800  0 1 1
+0x650b5606def0  0 1 1
+0x650b5a08ca60  0 1 1
+0x650b5a0bb020  0 1 1
+0x650b5a0c0540  0 1 1
+0x650b594df310  0 1 1
+0x650b5a0dae70  0 1 1
+0x650b5a0fa470  0 1 1
+0x650b5a359400  0 1 1
+0x650b5a2f0640  0 1 1
+0x650b5a56b0e0  0 1 1
+0x650b5a402710  0 1 1
+0x650b5a78c220  0 1 1
+0x650b5de10470  0 1 1
+0x650b5de35cc0  0 1 1
+0x650b5f42b270  0 1 1
+0x650b5f4d2b20  0 1 1
+0x650b5f4e3c20  0 1 1
+0x650b5f569610  0 1 1
+0x650b5f6170f0  0 1 1
+0x650b5f632550  0 1 1
+0x650b5f7f4460  0 1 1
+0x650b5f80a420  0 1 1
+0x650b5f81efb0  0 1 1
+0x650b6085c3f0  0 1 1
+0x650b62e9ca70  0 1 1
+0x650b62538de0  0 1 1
+0x650b62547d10  0 1 1
+0x650b6255b160  0 1 1
+0x650b625694a0  0 1 1
+0x650b6257c280  0 1 1
+0x650b6258a720  0 1 1
+0x650b6259d220  0 1 1
+0x650b625ab810  0 1 1
+0x650b625be150  0 1 1
+0x650b625cc4d0  0 1 1
+Python Exception <class 'gdb.error'>: Cannot convert value to long.
+research/gui-64/tree.gdb:19: Error in sourced command file:
+Error occurred in Python: Cannot convert value to long.
+Breakpoint 1 at 0x650b1d815bd0
+Type commands for breakpoint(s) 1, one per line.
+End with a line saying just "end".
+Continuing.
+SHOWPAGE book=0x650b55fcccb0 page=0x650b55f04960 show=0
+#0  0x0000650b1d815bd0 in Notebook::DoShowPage(wxWindow*, bool) ()
+#1  0x0000650b2186e9f7 in wxBookCtrlBase::DoSetSelection(unsigned long, int) ()
+#2  0x0000650b1d81899c in Notebook::SetSelection(unsigned long) ()
+#3  0x0000650b21b4146c in wxEvtHandler::SearchDynamicEventTable(wxEvent&) ()
+#4  0x0000650b21b411c0 in wxEvtHandler::ProcessEventLocally(wxEvent&) ()
+SHOWPAGE book=0x650b55fcccb0 page=0x650b55e6dc00 show=1
+#0  0x0000650b1d815bd0 in Notebook::DoShowPage(wxWindow*, bool) ()
+#1  0x0000650b2186ea55 in wxBookCtrlBase::DoSetSelection(unsigned long, int) ()
+#2  0x0000650b1d81899c in Notebook::SetSelection(unsigned long) ()
+#3  0x0000650b21b4146c in wxEvtHandler::SearchDynamicEventTable(wxEvent&) ()
+#4  0x0000650b21b411c0 in wxEvtHandler::ProcessEventLocally(wxEvent&) ()
+SHOWPAGE book=0x650b55fcccb0 page=0x650b55e6dc00 show=0
+#0  0x0000650b1d815bd0 in Notebook::DoShowPage(wxWindow*, bool) ()
+#1  0x0000650b2186e9f7 in wxBookCtrlBase::DoSetSelection(unsigned long, int) ()
+#2  0x0000650b1d81899c in Notebook::SetSelection(unsigned long) ()
+#3  0x0000650b21b4146c in wxEvtHandler::SearchDynamicEventTable(wxEvent&) ()
+#4  0x0000650b21b411c0 in wxEvtHandler::ProcessEventLocally(wxEvent&) ()
+SHOWPAGE book=0x650b55fcccb0 page=0x650b55f04960 show=1
+#0  0x0000650b1d815bd0 in Notebook::DoShowPage(wxWindow*, bool) ()
+#1  0x0000650b2186ea55 in wxBookCtrlBase::DoSetSelection(unsigned long, int) ()
+#2  0x0000650b1d81899c in Notebook::SetSelection(unsigned long) ()
+#3  0x0000650b21b4146c in wxEvtHandler::SearchDynamicEventTable(wxEvent&) ()
+#4  0x0000650b21b411c0 in wxEvtHandler::ProcessEventLocally(wxEvent&) ()
+
+Thread 1 "orcaslicer_main" received signal SIGINT, Interrupt.
+0x000075592211b79d in __GI___poll (fds=0x650b636ba7a0, nfds=14, timeout=324) at ../sysdeps/unix/sysv/linux/poll.c:29
+29	in ../sysdeps/unix/sysv/linux/poll.c
+bookhandle=0x650b55fcd1c0 pagehandle=0x650b55dd7ec0
+GTK tree recorded 76
+$1 = 1
+$2 = 1200
+Dump of assembler code for function _ZN29wxAsyncMethodCallEventFunctorIZN8Notebook10DoShowPageEP8wxWindowbE3$_0E7ExecuteEv:
+   0x0000650b1d817f10 <+0>:	push   %r14
+   0x0000650b1d817f12 <+2>:	push   %rbx
+   0x0000650b1d817f13 <+3>:	push   %rax
+   0x0000650b1d817f14 <+4>:	mov    0x58(%rdi),%rbx
+   0x0000650b1d817f18 <+8>:	mov    (%rbx),%rax
+   0x0000650b1d817f1b <+11>:	mov    %rbx,%rdi
+   0x0000650b1d817f1e <+14>:	call   *0x6b8(%rax)
+   0x0000650b1d817f24 <+20>:	cmp    $0xffffffff,%eax
+   0x0000650b1d817f27 <+23>:	je     0x650b1d817f7f <_ZN29wxAsyncMethodCallEventFunctorIZN8Notebook10DoShowPageEP8wxWindowbE3$_0E7ExecuteEv+111>
+   0x0000650b1d817f29 <+25>:	movslq %eax,%rsi
+   0x0000650b1d817f2c <+28>:	mov    (%rbx),%rax
+   0x0000650b1d817f2f <+31>:	mov    %rbx,%rdi
+   0x0000650b1d817f32 <+34>:	call   *0x6b0(%rax)
+   0x0000650b1d817f38 <+40>:	test   %rax,%rax
+   0x0000650b1d817f3b <+43>:	je     0x650b1d817f7f <_ZN29wxAsyncMethodCallEventFunctorIZN8Notebook10DoShowPageEP8wxWindowbE3$_0E7ExecuteEv+111>
+   0x0000650b1d817f3d <+45>:	mov    %rax,%r14
+   0x0000650b1d817f40 <+48>:	mov    (%rax),%rax
+   0x0000650b1d817f43 <+51>:	mov    %r14,%rdi
+   0x0000650b1d817f46 <+54>:	call   *0x1e8(%rax)
+   0x0000650b1d817f4c <+60>:	test   %al,%al
+   0x0000650b1d817f4e <+62>:	je     0x650b1d817f7f <_ZN29wxAsyncMethodCallEventFunctorIZN8Notebook10DoShowPageEP8wxWindowbE3$_0E7ExecuteEv+111>
+   0x0000650b1d817f50 <+64>:	mov    (%r14),%rax
+   0x0000650b1d817f53 <+67>:	mov    %r14,%rdi
+   0x0000650b1d817f56 <+70>:	call   *0x4b8(%rax)
+   0x0000650b1d817f5c <+76>:	mov    %rax,%rdi
+   0x0000650b1d817f5f <+79>:	call   0x650b21ea12c0 <gtk_widget_queue_resize@plt>
+   0x0000650b1d817f64 <+84>:	mov    (%rbx),%rax
+   0x0000650b1d817f67 <+87>:	mov    %rbx,%rdi
+   0x0000650b1d817f6a <+90>:	call   *0x4b8(%rax)
+   0x0000650b1d817f70 <+96>:	mov    %rax,%rdi
+   0x0000650b1d817f73 <+99>:	add    $0x8,%rsp
+   0x0000650b1d817f77 <+103>:	pop    %rbx
+   0x0000650b1d817f78 <+104>:	pop    %r14
+   0x0000650b1d817f7a <+106>:	jmp    0x650b21ea12d0 <gtk_widget_queue_allocate@plt>
+   0x0000650b1d817f7f <+111>:	add    $0x8,%rsp
+   0x0000650b1d817f83 <+115>:	pop    %rbx
+   0x0000650b1d817f84 <+116>:	pop    %r14
+   0x0000650b1d817f86 <+118>:	ret
+End of assembler dump.
+Breakpoint 2 at 0x650b1d817f10
+Continuing.
+SHOWPAGE book=0x650b55fcccb0 page=0x650b55f04960 show=0
+#0  0x0000650b1d815bd0 in Notebook::DoShowPage(wxWindow*, bool) ()
+#1  0x0000650b2186e9f7 in wxBookCtrlBase::DoSetSelection(unsigned long, int) ()
+#2  0x0000650b1d81899c in Notebook::SetSelection(unsigned long) ()
+#3  0x0000650b21b4146c in wxEvtHandler::SearchDynamicEventTable(wxEvent&) ()
+#4  0x0000650b21b411c0 in wxEvtHandler::ProcessEventLocally(wxEvent&) ()
+SHOWPAGE book=0x650b55fcccb0 page=0x650b55e6dc00 show=1
+#0  0x0000650b1d815bd0 in Notebook::DoShowPage(wxWindow*, bool) ()
+#1  0x0000650b2186ea55 in wxBookCtrlBase::DoSetSelection(unsigned long, int) ()
+#2  0x0000650b1d81899c in Notebook::SetSelection(unsigned long) ()
+#3  0x0000650b21b4146c in wxEvtHandler::SearchDynamicEventTable(wxEvent&) ()
+#4  0x0000650b21b411c0 in wxEvtHandler::ProcessEventLocally(wxEvent&) ()
+
+Thread 1 "orcaslicer_main" hit Breakpoint 2, 0x0000650b1d817f10 in wxAsyncMethodCallEventFunctor<Notebook::DoShowPage(wxWindow*, bool)::$_0>::Execute() ()
+Temporary breakpoint 3 at 0x650b1d817f38
+Continuing.
+
+Thread 1 "orcaslicer_main" hit Temporary breakpoint 3, 0x0000650b1d817f38 in wxAsyncMethodCallEventFunctor<Notebook::DoShowPage(wxWindow*, bool)::$_0>::Execute() ()
+$3 = 0x650b55e6dc00
+Continuing.
+SHOWPAGE book=0x650b55fcccb0 page=0x650b55e6dc00 show=0
+#0  0x0000650b1d815bd0 in Notebook::DoShowPage(wxWindow*, bool) ()
+#1  0x0000650b2186e9f7 in wxBookCtrlBase::DoSetSelection(unsigned long, int) ()
+#2  0x0000650b1d81899c in Notebook::SetSelection(unsigned long) ()
+#3  0x0000650b21b4146c in wxEvtHandler::SearchDynamicEventTable(wxEvent&) ()
+#4  0x0000650b21b411c0 in wxEvtHandler::ProcessEventLocally(wxEvent&) ()
+SHOWPAGE book=0x650b55fcccb0 page=0x650b55f04960 show=1
+#0  0x0000650b1d815bd0 in Notebook::DoShowPage(wxWindow*, bool) ()
+#1  0x0000650b2186ea55 in wxBookCtrlBase::DoSetSelection(unsigned long, int) ()
+#2  0x0000650b1d81899c in Notebook::SetSelection(unsigned long) ()
+#3  0x0000650b21b4146c in wxEvtHandler::SearchDynamicEventTable(wxEvent&) ()
+#4  0x0000650b21b411c0 in wxEvtHandler::ProcessEventLocally(wxEvent&) ()
+
+Thread 1 "orcaslicer_main" hit Breakpoint 2, 0x0000650b1d817f10 in wxAsyncMethodCallEventFunctor<Notebook::DoShowPage(wxWindow*, bool)::$_0>::Execute() ()
+Temporary breakpoint 4 at 0x650b1d817f5f
+Continuing.
+
+Thread 1 "orcaslicer_main" hit Temporary breakpoint 4, 0x0000650b1d817f5f in wxAsyncMethodCallEventFunctor<Notebook::DoShowPage(wxWindow*, bool)::$_0>::Execute() ()
+$4 = 0x650b55dd7ec0
+$5 = 1
+0x0000650b1d817f64 in wxAsyncMethodCallEventFunctor<Notebook::DoShowPage(wxWindow*, bool)::$_0>::Execute() ()
+Temporary breakpoint 5 at 0x650b1d817f7a
+Continuing.
+
+Thread 1 "orcaslicer_main" hit Temporary breakpoint 5, 0x0000650b1d817f7a in wxAsyncMethodCallEventFunctor<Notebook::DoShowPage(wxWindow*, bool)::$_0>::Execute() ()
+$6 = 0x650b55fcd1c0
+0x0000650b21ea12d0 in gtk_widget_queue_allocate@plt ()
+Continuing.
+
+Thread 1 "orcaslicer_main" received signal SIGINT, Interrupt.
+0x000075592211b79d in __GI___poll (fds=0x650b636ba7a0, nfds=14, timeout=1991) at ../sysdeps/unix/sysv/linux/poll.c:29
+29	in ../sysdeps/unix/sysv/linux/poll.c
+Continuing.
+
+Thread 1 "orcaslicer_main" received signal SIGINT, Interrupt.
+0x000075592211b79d in __GI___poll (fds=0x650b636ba7a0, nfds=14, timeout=1998) at ../sysdeps/unix/sysv/linux/poll.c:29
+29	in ../sysdeps/unix/sysv/linux/poll.c
+Continuing.
+
+Thread 1 "orcaslicer_main" received signal SIGINT, Interrupt.
+0x000075592211b79d in __GI___poll (fds=0x650b636ba7a0, nfds=14, timeout=954) at ../sysdeps/unix/sysv/linux/poll.c:29
+29	in ../sysdeps/unix/sysv/linux/poll.c
+0x650b6261f060:	0	39	1200	727
+Continuing.
+
+Thread 1 "orcaslicer_main" received signal SIGINT, Interrupt.
+0x000075592211b79d in __GI___poll (fds=0x650b636ba7a0, nfds=14, timeout=1999) at ../sysdeps/unix/sysv/linux/poll.c:29
+29	in ../sysdeps/unix/sysv/linux/poll.c
+Detaching from program: /home/dan/qidi-orca-port/research/runtime-64/squashfs-root/bin/orca-slicer, process 860860
+[Inferior 1 (process 860860) detached]
