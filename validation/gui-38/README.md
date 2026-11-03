@@ -33,5 +33,10 @@ backtrace identified the GTK file-dialog wait. The disposable test instance was
 terminated, then relaunched with the project as a command-line argument. This
 run is not evidence of successful file-dialog operation or clean shutdown.
 
-Further final-build GUI checks, complete submission mapping, disconnected-dialog
+The complete GUI path for a sparse logical filament selection also passes:
+filament 3 produces EXTRUDER=2/T2, selecting B2 sends value_t2=slot5 before
+the simulated start, and the submitted 3MF contains the identical sliced G-code.
+See starting-filament-submission.json and the mapping/preview screenshots.
+
+Further final-build GUI checks, additional submission cases, disconnected-dialog
 lifetime checks and physical MAX4 verification remain open.

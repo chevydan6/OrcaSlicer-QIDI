@@ -1,0 +1,62 @@
+{
+  "build": "93f7fca02c0fe575b3d964542980af6f375f2113",
+  "patch_count": 38,
+  "endpoint": "http://127.0.0.1:19025",
+  "hardware_contacted": false,
+  "gui_object_filament": 3,
+  "gui_mapped_slot": "B2",
+  "physical_slot_zero_based": 5,
+  "gcode_sha256": "48142fe2b3b1e5e945f092d7c4d6f0fdcec5d26dd627c00a771a6af7f22beccc",
+  "gcode_trace": [
+    "BOX_TEMP_SET VT2=0",
+    "BOX_PRINT_START EXTRUDER=2 HOTENDTEMP=240",
+    "M109 S210",
+    "M109.1 S180",
+    "M109.1 S150",
+    "M109 S210",
+    "T2",
+    "T2"
+  ],
+  "requests_recorded_not_executed": [
+    {
+      "time": 1793681140.732623,
+      "method": "POST",
+      "path": "/printer/gcode/script",
+      "query": {},
+      "body": "{\"script\":\"SAVE_VARIABLE VARIABLE=enable_box VALUE=1\\nSAVE_VARIABLE VARIABLE=value_t2 VALUE=\\\"'slot5'\\\"\"}"
+    },
+    {
+      "time": 1793681140.734691,
+      "method": "POST",
+      "path": "/printer/gcode/script",
+      "query": {},
+      "body": "{\"script\":\"G31\"}"
+    },
+    {
+      "time": 1793681140.7372186,
+      "method": "POST",
+      "path": "/machine/timelapse/settings",
+      "query": {
+        "enabled": "false"
+      },
+      "body": "{}"
+    },
+    {
+      "time": 1793681140.7388487,
+      "method": "POST",
+      "path": "/printer/gcode/script",
+      "query": {},
+      "body": "{\"script\":\"SAVE_VARIABLE VARIABLE=enable_polar_cooler VALUE=1\"}"
+    },
+    {
+      "time": 1793681140.7403994,
+      "method": "POST",
+      "path": "/printer/print/start",
+      "query": {},
+      "body": "{\"filename\":\"sparse-project.gcode.3mf\",\"plateindex\":\"1\"}"
+    }
+  ],
+  "setup": "10x10x4 mm cube, three logical filaments, only third used; MAX4 Offline Fixture printer and QIDI PLA Rapido profiles selected in GUI.",
+  "submission_archive_sha256": "deacc681ff94273d87071f157afb8574506ca823c1cccf20a377f6346fe6b776",
+  "archive_gcode_matches_gui_slice": true
+}
