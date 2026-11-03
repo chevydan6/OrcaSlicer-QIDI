@@ -26,8 +26,8 @@ is a separate acceptance stage and is not implied by software test success.
 - Official Orca pin: `896557bce5281553ee0c6210f2da301b3b3c262e`.
 - Official QIDI Studio pin: `403b619d56147160bb883e94f95a7951245bc6d0`.
 - Local downstream checkout: `OrcaSlicer`, branch `qidi-max4-port`,
-  commit `a9295a1a` (55 patches).
-- Latest build input: integration commit `2922327` (later commits add documentation).
+  commit `da74d6d6` (56 patches).
+- Latest build input: integration commit `111e328` (includes the corrected thermal-argument validator).
 - Numbered patches plus `sources.json` reproduce the downstream tree. The ignored
   full source checkouts are not needed to restore from GitHub: run
   `python3 scripts/prepare-source.py` into a fresh destination.
@@ -38,9 +38,11 @@ is a separate acceptance stage and is not implied by software test success.
 
 | Candidate | Run | State / significance |
 | --- | --- | --- |
-| 55 patches | [41593288187](https://github.com/chevydan6/OrcaSlicer-QIDI/actions/runs/41593288187) | Running; intended acceptance candidate |
-| 55 static checks | [41593291506](https://github.com/chevydan6/OrcaSlicer-QIDI/actions/runs/41593291506) | Running |
-| 54 patches | [41592928800](https://github.com/chevydan6/OrcaSlicer-QIDI/actions/runs/41592928800) | Running; lacks the fresh-editor lifecycle fix |
+| 56 patches | [41595285772](https://github.com/chevydan6/OrcaSlicer-QIDI/actions/runs/41595285772) | Running; intended acceptance candidate |
+| 56 static checks | [41595289239](https://github.com/chevydan6/OrcaSlicer-QIDI/actions/runs/41595289239) | Running |
+| 55 patches | [41593288187](https://github.com/chevydan6/OrcaSlicer-QIDI/actions/runs/41593288187) | Compiles; all slices execute; one thermal-parameter-order assertion fails, validator corrected in 4061021 |
+| 55 static checks | [41593291506](https://github.com/chevydan6/OrcaSlicer-QIDI/actions/runs/41593291506) | Pass |
+| 54 patches | [41592928800](https://github.com/chevydan6/OrcaSlicer-QIDI/actions/runs/41592928800) | Compiles; same parameter-order assertion failure, corrected validator |
 | 51 patches | [41590831679](https://github.com/chevydan6/OrcaSlicer-QIDI/actions/runs/41590831679) | Compiles; 2,912 unit cases pass with no skips; 19/21 MAX4 cases pass; two embedded-machine CLI cases fail, fixed in patch 54 |
 | 49 patches | [41589611367](https://github.com/chevydan6/OrcaSlicer-QIDI/actions/runs/41589611367) | Full pass: 2,911 unit cases, seven CLI regressions, 72 vendor bundles, 19 MAX4 cases |
 | 42 patches | [41574937523](https://github.com/chevydan6/OrcaSlicer-QIDI/actions/runs/41574937523) | Currently installed candidate; superseded, not final |
@@ -88,7 +90,7 @@ Software evidence includes:
 - GUI51: original QIDI support-first project slices with embedded machine G-code;
   closing/discarding exits with status 0. This fixes the chamber-placeholder error
   and shutdown modal/watchdog failure observed in the installed 42-patch build.
-- Static checks pass through patch 52. Exact source reproduction passes for 55.
+- Static checks pass through patch 55. Exact source reproduction passes for 56.
 - Isolated protocol sanitizer tests use production helper bodies, not the entire
   GUI. Complete GUI stability cannot be inferred from sanitizer/unit results alone.
 
@@ -103,16 +105,20 @@ Software evidence includes:
 5. Patch 52's initial material-window sizing hypothesis was disproved by GUI52:
    repeated opens still shrink 25 pixels each and clip buttons. Keep that failed
    evidence. Patch 55 instead creates a fresh QIDI Box/external editor after each
-   completed session and refuses duplicate opening while shown. Must retest.
+   completed session and refuses duplicate opening while shown. GUI55 passes five reopenings at identical 370x232 client size; Confirm remains usable.
 6. Patch 53 replaces clipped custom connection fields with native address/key/CA
-   and Connect/Cancel controls. Must verify connection, cancellation and reopening.
+   and Connect/Cancel controls. GUI54 verifies connection with blank API key, cancellation and reopening; exit 0.
 7. Patch 54 preserves the original QIDI printer compatibility name alongside its
    Orca alias. The new original-machine CLI cases failed with -17 before this fix;
-   both must pass without overriding the embedded machine.
+   both now slice without overriding the embedded machine. One test incorrectly required VT0 before VT2; named parameters are now compared independently of order, while values, completeness and duplicates remain strictly checked.
+
+8. Patch 56 replaces an off-screen QIDI color palette with a native single-RGB
+   dialog. GUI55 exposed the placement defect. This is the remaining source fix
+   awaiting compiled GUI validation.
 
 ## Next steps, in order
 
-1. Check run 41593288187 and static run 41593291506. Inspect failures; do not treat
+1. Check run 41595285772 and static run 41595289239. Inspect failures; do not treat
    packaging alone as a full pass. Required: compilation, zero failed unit/CLI
    regressions, 72 vendor bundles and all **21** MAX4 slicing/persistence cases.
 2. Download the AppImage artifact and verify the GitHub artifact ZIP digest before
@@ -166,7 +172,8 @@ Upstream refresh procedure: [docs/maintenance.md](docs/maintenance.md).
 - Latest corresponding source archive already generated locally:
   `artifacts/OrcaSlicer-QIDI-source-a9295a1a.tar.gz`, SHA256
   `73018f1a551395a82d3894e1cedb354bcde8b6061ae04418593031b6b4ddcd2c`.
-  Regenerate if source changes. This archive is not yet a final GitHub release asset.
+  This archive is superseded by patch 56; regenerate from da74d6d6 before delivery.
+  It is not a final GitHub release asset.
 
 Do not upload access tokens, API keys, signed artifact URLs or personal slicer
 settings. The committed fixture evidence contains synthetic loopback data only.
