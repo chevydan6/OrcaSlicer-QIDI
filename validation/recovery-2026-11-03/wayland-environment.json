@@ -1,0 +1,10 @@
+{
+  "time": 1793704170.1849086,
+  "purpose": "Optional isolated native-Wayland installed-launcher validation",
+  "command": "sudo -n apt-get install -y --no-install-recommends weston",
+  "apt_exit_code": 100,
+  "preexisting_pending_packages": 2,
+  "weston_installation": "installed; verify package status and compositor launch separately",
+  "reported_error": "Pending nvidia-dkms-615-open and linux-image-7.0.0-42-generic configuration failed because NVIDIA615.71.09 modules were already installed. No force/reinstall driver action taken.",
+  "scope": "Host package configuration; not an application or printer test failure"
+}
