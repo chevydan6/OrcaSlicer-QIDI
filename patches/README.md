@@ -108,3 +108,5 @@ separately from implementation; a patch's presence does not certify hardware use
 54. `0054-preserve-embedded-qidi-compatibility.patch` retains the original MAX4 name when adding Orca compatibility aliases. The new no-override CLI cases exposed that replacement allowed a new Orca machine but rejected the original embedded QIDI machine. The import regression checks both names; unrelated printers remain constrained.
 
 55. `0055-qidi-fresh-material-editor.patch` replaces a completed QIDI slot editor with a fresh window for Box and external slots. Runtime testing disproved patch 52's maximum-size hypothesis: five openings still shrank 25 pixels each. The new editor lifecycle avoids reuse of the affected GTK window and its old slot state; duplicate opening while shown is refused. Other agents keep their existing editor lifecycle.
+
+56. `0056-qidi-native-slot-color-dialog.patch` uses a native single-RGB chooser for QIDI slot metadata, revalidating the selected device before/after the modal loop. The shared palette opened off-screen when the material editor appeared at the left edge in GUI55. Other agents retain the shared multicolor palette.

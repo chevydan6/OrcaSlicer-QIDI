@@ -1,0 +1,54 @@
+From da74d6d6cbd8aa416d41f891ad351427f5374fbe Mon Sep 17 00:00:00 2001
+From: chevydan6 <339888127+chevydan6@users.noreply.github.com>
+Date: Tue, 3 Nov 2026 16:16:56 +0900
+Subject: [PATCH] Use a native single-color chooser for QIDI slot metadata
+
+---
+ src/slic3r/GUI/AMSMaterialsSetting.cpp | 20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
+
+diff --git a/src/slic3r/GUI/AMSMaterialsSetting.cpp b/src/slic3r/GUI/AMSMaterialsSetting.cpp
+index 392d7696..0a1ab38b 100644
+--- a/src/slic3r/GUI/AMSMaterialsSetting.cpp
++++ b/src/slic3r/GUI/AMSMaterialsSetting.cpp
+@@ -46,6 +46,7 @@
+ #include <wx/dcclient.h>
+ #include <wx/dc.h>
+ #include <wx/colour.h>
++#include <wx/colordlg.h>
+ #include <wx/brush.h>
+ #include <wx/pen.h>
+ #include <wx/window.h>
+@@ -1102,6 +1103,10 @@ void AMSMaterialsSetting::on_picker_color(wxCommandEvent& event)
+ 
+ void AMSMaterialsSetting::on_clr_picker(wxMouseEvent &event)
+ {
++    auto* manager = wxGetApp().getDeviceManager();
++    auto* current = manager ? manager->get_selected_machine() : nullptr;
++    if (!current || current != obj || !current->is_info_ready())
++        return;
+     if (m_view_only) return; // Orca: view-only disables color editing
+     if(!m_is_third)
+         return;
+@@ -1112,6 +1117,21 @@ void AMSMaterialsSetting::on_clr_picker(wxMouseEvent &event)
+         }
+     }
+ 
++    if (obj->printer_agent_id == "qidi") {
++        // QIDI stores one RGB value. The shared palette can open outside the
++        // display when this editor is near its left edge; use a native dialog.
++        wxColourData data;
++        data.SetColour(m_clr_picker->m_colour);
++        wxColourDialog dialog(this, &data);
++        if (dialog.ShowModal() == wxID_OK && manager->get_selected_machine() == current && obj == current) {
++            const wxColour color = dialog.GetColourData().GetColour();
++            set_ctype(2);
++            set_color(color);
++            set_colors({color});
++        }
++        return;
++    }
++
+     m_color_picker_popup.set_allow_multi_color(obj->is_support_filament_manual_multi_color);
+     m_color_picker_popup.set_ams_colours(collect_ams_color_items(obj->GetFilaSystem().get()));
+     m_color_picker_popup.set_preset_colours(collect_preset_color_items(ams_filament_id));
