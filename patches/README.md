@@ -112,3 +112,5 @@ separately from implementation; a patch's presence does not certify hardware use
 56. `0056-qidi-native-slot-color-dialog.patch` uses a native single-RGB chooser for QIDI slot metadata, revalidating the selected device before/after the modal loop. The shared palette opened off-screen when the material editor appeared at the left edge in GUI55. Other agents retain the shared multicolor palette.
 
 57. `0057-qidi-color-data-include.patch` directly includes the header defining `wxColourData`, as required by the failed 56-patch include-cleaner run. Runtime behavior is unchanged; a new matching integration/static build is required before acceptance.
+
+58. `0058-gtk-notebook-layout-after-setup.patch` forwards a GTK frame size notification to the notebook so its current page is sized even when the book dimensions have not changed. GUI57 disproved patch 44 alone: fresh setup left Prepare blank until manual maximization. This correction needs compiled fresh-setup and normal-resize acceptance; it affects shared GTK layout.

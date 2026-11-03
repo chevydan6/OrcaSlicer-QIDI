@@ -1,0 +1,28 @@
+From 79c76f4e1bc865b5d3e8ccac16ee6f3e1fcfbbfa Mon Sep 17 00:00:00 2001
+From: chevydan6 <339888127+chevydan6@users.noreply.github.com>
+Date: Tue, 3 Nov 2026 17:14:58 +0900
+Subject: [PATCH] Propagate GTK frame layout refresh to the current notebook
+ page
+
+---
+ src/slic3r/GUI/MainFrame.cpp | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/src/slic3r/GUI/MainFrame.cpp b/src/slic3r/GUI/MainFrame.cpp
+index 54b1efbe..d78980e0 100644
+--- a/src/slic3r/GUI/MainFrame.cpp
++++ b/src/slic3r/GUI/MainFrame.cpp
+@@ -598,6 +598,10 @@ DPIFrame(NULL, wxID_ANY, "", wxDefaultPosition, wxDefaultSize, BORDERLESS_FRAME_
+         Refresh();
+         Layout();
+ #ifdef __WXGTK__
++        // A posted frame resize after setup may leave the book's dimensions
++        // unchanged, so GTK emits no child size event to size its current page.
++        if (m_tabpanel)
++            m_tabpanel->SendSizeEvent();
+         update_edge_panels();
+ #endif
+         wxQueueEvent(wxGetApp().plater(), new SimpleEvent(EVT_NOTICE_CHILDE_SIZE_CHANGED));
+-- 
+2.43.0
+

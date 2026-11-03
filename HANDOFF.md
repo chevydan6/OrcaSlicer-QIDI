@@ -19,6 +19,24 @@ user authorization.** Simulated commands go only to `127.0.0.1:19025`; the fixtu
 records/discards requests and never executes or forwards them. Hardware testing
 is a separate acceptance stage and is not implied by software test success.
 
+## Latest acceptance failure
+
+The 57-patch build input is `0b5a0e57608e4bf261dc5efe6c647a79c7911496`.
+Integration run 41600542116 and static run 41600547497 were launched.
+Its compiled artifact and manifest were verified (see recovery artifact-57.json).
+Fresh GUI setup on Ubuntu leaves Prepare blank until manual maximize:
+see `validation/gui-57`. Patch 58 attempts to correct GTK notebook page sizing.
+Its exact reproduced source tree is `b99ca8416243c44dffb53c4c08d299045551976b`.
+This shared layout correction needs a matching build/static pass and GUI retest.
+Do not install candidate 57 as accepted or combine its evidence with candidate 58.
+
+Dan supplied printer LAN access and authorized read-only inspection. Sanitized
+telemetry is under validation/recovery-2026-11-03. One Box reports MCU 02.03.01.21;
+main MCU 02.01.01.12; overall MAX4 firmware version is still unconfirmed.
+Only GET requests were made; valid camera JPEG decoded. No heating, feeding,
+motion, RFID action, settings change or print was initiated. Active tests require
+an explicit approved supervised session after software acceptance.
+
 ## Recovery update
 
 Recovered integration revision `70d58fc17f0132d926424a5a74144bf80cb1dcfd` into
