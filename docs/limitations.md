@@ -11,7 +11,8 @@ and discards requests. A recorded heater, load, RFID or start request does not
 prove physical execution. Candidates 59, 62 and 64 passed build gates but failed GUI
 acceptance. Candidate 66 passed build gates and targeted layout/import checks;
 candidate 68 passed build gates but failed unsupported-job GUI status.
-Candidate 69 is undergoing a complete matching GUI rerun. No candidate is installed
+Candidate 69 passed CI and 61 GUI cases but failed timelapse selection.
+Candidate 70 corrects that check and is pending matching acceptance. No candidate is installed
 or accepted on the recovered Ubuntu computer yet. See ../HANDOFF.md.
 
 ## Supported scope and gaps
