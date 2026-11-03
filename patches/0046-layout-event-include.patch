@@ -1,0 +1,21 @@
+From db8d9fc60bc97219bd11202364520bd3208a89f4 Mon Sep 17 00:00:00 2001
+From: chevydan6 <339888127+chevydan6@users.noreply.github.com>
+Date: Tue, 3 Nov 2026 13:34:12 +0900
+Subject: [PATCH] gui: include window definitions for deferred layout refresh
+
+---
+ src/slic3r/GUI/GUI_App.cpp | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/src/slic3r/GUI/GUI_App.cpp b/src/slic3r/GUI/GUI_App.cpp
+index 29726973..ad49343c 100644
+--- a/src/slic3r/GUI/GUI_App.cpp
++++ b/src/slic3r/GUI/GUI_App.cpp
+@@ -117,6 +117,7 @@
+ #include <wx/localedefs.h>
+ #include <wx/eventfilter.h>
+ #include <wx/toplevel.h>
++#include <wx/window.h>
+ 
+ // Localization headers: include libslic3r version first so everything in this file
+ // uses the slic3r/GUI version (the macros will take precedence over the functions).
