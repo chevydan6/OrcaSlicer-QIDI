@@ -1,6 +1,8 @@
 # Linux build and installation
 
-Status: build workflow exists; no successful custom binary build is recorded yet.
+Status: the 32-patch custom application compiled and packaged successfully in run
+41567417124. Its tests are running; the newer 38-patch build is also running.
+Neither result yet establishes GUI stability or a validated installable release.
 
 The tested host is Fedora 44 x86_64. Builds target Ubuntu 24.04 x86_64 AppImage,
 using the official Orca build script and dependency recipes at the pinned source

@@ -9,7 +9,8 @@ Build update: all 38 patches passed the full changed-line C++ static/include
 checks (GitHub run 41569820617); the corresponding application build is still
 running. Prior compile failures exposed private-member
 access, an ambiguous HTTP overload and missing direct includes; those have been
-corrected. A successful custom application build has not yet been recorded.
+corrected. The earlier 32-patch revision compiled and produced an AppImage in run
+41567417124; its tests are running. That build does not validate later patches.
 
 Further stability validation reproduced a type-conversion exception for a null
 material name in the native tray updater. Patch 0032 preserves existing metadata
@@ -61,7 +62,7 @@ the build guide documents that setup. Compiled GUI activation is still pending.
 | QIDI cloud/MQTT | Different network architecture | Not implemented | Proprietary QIDI networking library/auth integration not bundled |
 | Coexistence | Upstream application identity | Linux default datadir, wrapper and desktop entry isolated | Compiled GUI coexistence test pending |
 | Reproducible source | Official commits pinned | Ordered patches; temporary-index tree verification | Patch tree verification passes; rerun after changes |
-| Installable Linux artifact | Build infrastructure available | AppImage CI and per-user installer | Builds running; no successful artifact yet |
+| Installable Linux artifact | Build infrastructure available | AppImage CI and per-user installer | Earlier 32-patch AppImage built; current build and release acceptance remain pending |
 
 ## Acceptance cases for the dedicated validation phase
 
