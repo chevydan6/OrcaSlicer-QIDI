@@ -1,0 +1,12 @@
+{
+  "source_commit": "171f0274798a2e35c7f9a493ee0dae599a39b36d",
+  "tree": "8e41a9fe4e99edd185d7ddfa840eab0f97d6881b",
+  "patch_count": 62,
+  "integration_build_input": "b8ef9f8e4f3e27fda362401da9076d453e3cf06b",
+  "patch_verification": "passed",
+  "pins_unchanged": true,
+  "protocol_helper_sanitizers": "passed",
+  "final_acceptance": false,
+  "archive": "OrcaSlicer-QIDI-source-62-8e41a9fe.tar.gz",
+  "sha256": "071aa670e89bdb0fbb88dcda1b31e086670c996c47321fddc4c9ff3e9cf307e8"
+}

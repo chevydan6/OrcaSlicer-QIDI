@@ -4,5 +4,5 @@
   "patch_count": 59,
   "archive": "OrcaSlicer-QIDI-source-59-bb3b6757.tar.gz",
   "sha256": "cde6c5914fa9ca96e58c4d3dbc1e64bdbdadd5d000a1138c317955de444137fc",
-  "status": "candidate; GUI acceptance pending"
+  "status": "GUI acceptance failed; source archive retained as previous candidate"
 }

@@ -210,3 +210,17 @@ and verify it with `xdpyinfo`; do not assume the old display number. Remove
 WAYLAND_DISPLAY and set GDK_BACKEND=x11 and XDG_SESSION_TYPE=x11 for the test
 process. Use a new `--datadir`, the tracked loopback fixture, and exact verified
 artifact. None of those fixture connections belongs in delivered settings.
+
+With GitHub CLI authenticated through the user's supported credentials, download
+a run's artifact by its artifact ID (not its run ID):
+
+```sh
+python3 scripts/fetch-github-artifact.py ARTIFACT_ID artifacts/candidate/appimage.zip
+```
+
+This helper verifies GitHub's SHA-256 ZIP digest before creating the output and
+refuses existing destinations. It does not log credentials or temporary URLs.
+Then record the AppImage SHA-256 and compare its packaged
+`resources/qidi-port-build.json` with the integration commit, source pins and
+every patch hash. Download and inspect the matching test-report artifact too;
+an AppImage upload alone does not establish that the run passed.
