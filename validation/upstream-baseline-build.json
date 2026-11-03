@@ -1,0 +1,23 @@
+{
+  "run_url": "https://github.com/chevydan6/OrcaSlicer-QIDI/actions/runs/41528867605",
+  "integration_commit": "cd35710f04b575866c4bcd87613f567057c6b22e",
+  "source_commit": "896557bce5281553ee0c6210f2da301b3b3c262e",
+  "patches_applied": 0,
+  "compilation": "passed",
+  "artifact_sha256": "594bdcfeada3c25c603d66f647534a95db7a92e04460bd7a14dcd8761aad16e6",
+  "artifact_download_digest": "sha256:1fa1527923da5fc4842a60bb03943d37650a29da3b91210fb9ac72776fcf8160",
+  "ctest_reported_total": 2884,
+  "ctest_failures": [
+    "cli_malformed_input: initial project export SIGSEGV; runner lacked Xvfb"
+  ],
+  "ctest_skips_present": true,
+  "validates_custom_port": false,
+  "hardware_contacted": false,
+  "local_reproduction": {
+    "runtime": "org.gnome.Platform/x86_64/50",
+    "display": "X11 available",
+    "original_test": "failed: SIGSEGV in Slic3r::GUI::get_min_flush_volumes",
+    "control": "same baseline binary; test filament supplies filament_diameter 1.75; all malformed-input test cases pass",
+    "source_fix": "patch 0029 creates missing default before calling get_min_flush_volumes; compiled verification pending"
+  }
+}

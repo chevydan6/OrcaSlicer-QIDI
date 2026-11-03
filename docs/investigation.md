@@ -64,6 +64,15 @@ MQTT/tunnel stack are not implemented. Existing Orca backends remain available.
 - The complete 28-patch build is running. Custom CTest, GUI profile loading and
   persistence, slicing, HTTP integration and packaging validation remain pending.
 
+The baseline CLI failure also reproduces locally with X11 available. The core
+stack identifies `get_min_flush_volumes`; its caller has not supplied the default
+`filament_diameter` for the test's standalone filament preset. A control run with
+only that default added to the input passes every malformed-input regression
+case on the same binary. Patch 0029 creates the missing schema default before
+the calculation. It is queued for the subsequent integration run; the running
+general-port build contains patches 0001–0028. This fix is unrelated to the
+unverified physical starting-slot failure.
+
 The user confirmed that no MAX4 is currently connected. No printer has been contacted.
 Physical slot selection, filament motion, heating,
 printing and firmware compatibility remain unverified and require authorization.

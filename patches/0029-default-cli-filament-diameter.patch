@@ -1,0 +1,28 @@
+From 06414cb11aa5e4473660316e90fa041c14e46c65 Mon Sep 17 00:00:00 2001
+From: chevydan6 <339888127+chevydan6@users.noreply.github.com>
+Date: Tue, 3 Nov 2026 09:04:51 +0900
+Subject: [PATCH] CLI: default missing filament diameter before flush
+ calculation
+
+---
+ src/OrcaSlicer.cpp | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/src/OrcaSlicer.cpp b/src/OrcaSlicer.cpp
+index 512506b0..fc7a9e1d 100644
+--- a/src/OrcaSlicer.cpp
++++ b/src/OrcaSlicer.cpp
+@@ -3924,6 +3924,10 @@ int CLI::run(int argc, char **argv)
+             //computing
+             ConfigOptionBools* filament_is_support = m_print_config.option<ConfigOptionBools>("filament_is_support", true);
+ 
++            // Standalone filament presets may omit diameter. Flush calculation
++            // runs before FullPrintConfig supplies defaults, so create that
++            // default here instead of dereferencing a missing option.
++            m_print_config.option<ConfigOptionFloats>("filament_diameter", true);
+             const std::vector<int> &min_flush_volumes = Slic3r::GUI::get_min_flush_volumes(m_print_config, 0);
+ 
+             if (filament_is_support->size() != project_filament_count)
+-- 
+2.56.0
+

@@ -51,3 +51,5 @@ separately from implementation; a patch's presence does not certify hardware use
 27. `0027-qidi-native-wiring.patch` makes reported QIDI capabilities expose the Print Options entry point, makes the submitted slot selection determine Box mode, rejects conflicting physical-slot/external-mode requests, and normalizes trailing slashes before removing the Moonraker camera port.
 
 28. `0028-qidi-nested-status-cache.patch` adds an opt-in cache merge policy for QIDI multi_color_controller only. Nested partial temperature updates retain the reported Box count and material fields; other Moonraker agents keep their existing field replacement semantics. Production cache-body isolation checks and full-library regression cases cover both policies.
+
+29. `0029-default-cli-filament-diameter.patch` fixes an upstream CLI crash found by the baseline regression run. A standalone filament preset may omit diameter; flush calculation runs before full defaults are applied. Create the schema default before that calculation. The existing `cli_malformed_input` test reproduces the crash without this change; compiled verification of the fix remains pending.
