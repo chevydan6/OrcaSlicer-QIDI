@@ -1,0 +1,156 @@
+From 73a03a8c31fc55c679aa14d00a3df6cd55d077e5 Mon Sep 17 00:00:00 2001
+From: chevydan6 <339888127+chevydan6@users.noreply.github.com>
+Date: Tue, 3 Nov 2026 11:22:32 +0900
+Subject: [PATCH] Guard QIDI controls against stale slots and dialog device
+ changes
+
+---
+ src/slic3r/GUI/DeviceManager.cpp              |  7 +++
+ src/slic3r/GUI/PrintOptionsDialog.cpp         | 52 +++++++++++++------
+ src/slic3r/GUI/PrintOptionsDialog.hpp         |  1 +
+ tests/slic3rutils/test_qidi_printer_agent.cpp | 15 ++++++
+ 4 files changed, 60 insertions(+), 15 deletions(-)
+
+diff --git a/src/slic3r/GUI/DeviceManager.cpp b/src/slic3r/GUI/DeviceManager.cpp
+index dfcb3196..0cefe8f6 100644
+--- a/src/slic3r/GUI/DeviceManager.cpp
++++ b/src/slic3r/GUI/DeviceManager.cpp
+@@ -8,6 +8,7 @@
+ #include "slic3r/Utils/Http.hpp"
+ #include "slic3r/Utils/NetworkAgent.hpp"
+ #include "slic3r/Utils/NetworkAgentFactory.hpp"
++#include "slic3r/Utils/bambu_networking.hpp"
+ 
+ #include "GUI_App.hpp"
+ #include "DeviceErrorDialog.hpp"
+@@ -1734,6 +1735,12 @@ int MachineObject::check_resume_condition()
+ }
+ int MachineObject::command_ams_change_filament(bool load, std::string ams_id, std::string slot_id, int old_temp, int new_temp, std::optional<int> extruder_id)
+ {
++    // QIDI Box controls require a selected physical slot. In particular, atoi
++    // would turn an empty or stale UI selection into slot zero.
++    if (printer_agent_id == "qidi" &&
++        (ams_id.size() != 1 || ams_id[0] < '0' || ams_id[0] > '3' ||
++         slot_id.size() != 1 || slot_id[0] < '0' || slot_id[0] > '3'))
++        return BAMBU_NETWORK_ERR_INVALID_RESULT;
+     json j;
+     try {
+         auto tray_id = 0;
+diff --git a/src/slic3r/GUI/PrintOptionsDialog.cpp b/src/slic3r/GUI/PrintOptionsDialog.cpp
+index 97c13ac4..35ea5ec7 100644
+--- a/src/slic3r/GUI/PrintOptionsDialog.cpp
++++ b/src/slic3r/GUI/PrintOptionsDialog.cpp
+@@ -30,6 +30,7 @@
+ #include <wx/msgdlg.h>
+ #include <wx/choicdlg.h>
+ #include <wx/arrstr.h>
++#include <wx/weakref.h>
+ #include "I18N.hpp"
+ #include "GUI_App.hpp"
+ #include "libslic3r/Utils.hpp"
+@@ -85,20 +86,41 @@ PrintOptionsDialog::PrintOptionsDialog(wxWindow* parent)
+     //this->Fit();
+ 
+     m_qidi_skip_objects->Bind(wxEVT_BUTTON, [this](wxCommandEvent&) {
+-        if (!obj || obj->printer_agent_id != "qidi" || !obj->is_in_printing() || obj->qidi_print_objects.empty()) return;
+-        auto* target = obj;
+-        const auto job = obj->subtask_name;
+-        const auto names = obj->qidi_print_objects;
+-        wxArrayString choices;
+-        for (const auto& name : names) choices.Add(wxString::FromUTF8(name));
+-        wxMultiChoiceDialog dialog(this, _L("Select objects to stop printing for the rest of this job."), _L("Skip objects"), choices);
+-        if (dialog.ShowModal() != wxID_OK || obj != target || obj->subtask_name != job || !obj->is_in_printing()) return;
+-        auto selected = nlohmann::json::array();
+-        for (int index : dialog.GetSelections())
+-            if (index >= 0 && static_cast<std::size_t>(index) < names.size()) selected.push_back(names[index]);
+-        if (!selected.empty())
+-            obj->publish_json({{"print", {{"command", "qidi_exclude_objects"}, {"objects", selected},
+-                {"sequence_id", std::to_string(MachineObject::m_sequence_id++)}}}});
++        if (m_qidi_skip_dialog_open) return;
++        m_qidi_skip_dialog_open = true;
++        wxWeakRef<PrintOptionsDialog> self(this);
++        CallAfter([self]() {
++            if (!self) return;
++            auto* manager = wxGetApp().getDeviceManager();
++            auto* target = manager ? manager->get_selected_machine() : nullptr;
++            if (!target || self->obj != target || target->printer_agent_id != "qidi" ||
++                !target->is_info_ready() || !target->is_in_printing() || target->qidi_print_objects.empty()) {
++                self->m_qidi_skip_dialog_open = false;
++                return;
++            }
++            const auto device_id = target->get_dev_id();
++            const auto job = target->subtask_name;
++            const auto names = target->qidi_print_objects;
++            wxArrayString choices;
++            for (const auto& name : names) choices.Add(wxString::FromUTF8(name));
++            wxMultiChoiceDialog dialog(self, _L("Select objects to stop printing for the rest of this job."), _L("Skip objects"), choices);
++            const int result = dialog.ShowModal();
++            if (!self) return;
++            self->m_qidi_skip_dialog_open = false;
++            // The nested dialog loop can process a disconnect, printer switch,
++            // or device removal. Reacquire the current device before dereferencing it.
++            manager = wxGetApp().getDeviceManager();
++            auto* current = manager ? manager->get_selected_machine() : nullptr;
++            if (result != wxID_OK || !current || self->obj != current || current->get_dev_id() != device_id ||
++                current->printer_agent_id != "qidi" || !current->is_info_ready() ||
++                current->subtask_name != job || !current->is_in_printing()) return;
++            auto selected = nlohmann::json::array();
++            for (int index : dialog.GetSelections())
++                if (index >= 0 && static_cast<std::size_t>(index) < names.size()) selected.push_back(names[index]);
++            if (!selected.empty())
++                current->publish_json({{"print", {{"command", "qidi_exclude_objects"}, {"objects", selected},
++                    {"sequence_id", std::to_string(MachineObject::m_sequence_id++)}}}});
++        });
+     });
+ 
+     m_cb_qidi_polar_cooler->Bind(wxEVT_TOGGLEBUTTON, [this](wxCommandEvent& evt) {
+@@ -401,7 +423,7 @@ void PrintOptionsDialog::update_options(MachineObject* obj_)
+     if (!obj_) return;
+ 
+     m_qidi_skip_objects->Show(obj_->printer_agent_id == "qidi" && !obj_->qidi_print_objects.empty());
+-    m_qidi_skip_objects->Enable(obj_->is_in_printing());
++    m_qidi_skip_objects->Enable(obj_->is_in_printing() && !m_qidi_skip_dialog_open);
+     const bool show_cooler = obj_->printer_agent_id == "qidi" && obj_->qidi_polar_cooler_available && obj_->qidi_polar_cooler_on.has_value();
+     m_qidi_polar_cooler_sizer->Show(show_cooler);
+     if (show_cooler)
+diff --git a/src/slic3r/GUI/PrintOptionsDialog.hpp b/src/slic3r/GUI/PrintOptionsDialog.hpp
+index 60b6fb6b..a621f07a 100644
+--- a/src/slic3r/GUI/PrintOptionsDialog.hpp
++++ b/src/slic3r/GUI/PrintOptionsDialog.hpp
+@@ -85,6 +85,7 @@ protected:
+     wxScrolledWindow* m_scrollwindow;
+     CheckBox* m_cb_first_layer;
+     Button* m_qidi_skip_objects{nullptr};
++    bool m_qidi_skip_dialog_open{false};
+     CheckBox* m_cb_qidi_polar_cooler{nullptr};
+     wxBoxSizer* m_qidi_polar_cooler_sizer{nullptr};
+     CheckBox *        m_cb_ai_monitoring;
+diff --git a/tests/slic3rutils/test_qidi_printer_agent.cpp b/tests/slic3rutils/test_qidi_printer_agent.cpp
+index dad422ea..227f6c83 100644
+--- a/tests/slic3rutils/test_qidi_printer_agent.cpp
++++ b/tests/slic3rutils/test_qidi_printer_agent.cpp
+@@ -31,6 +31,21 @@
+ 
+ using namespace Slic3r;
+ 
++TEST_CASE("Invalid QIDI control inputs return an error without escaping into the GUI", "[QidiPrinterAgent]")
++{
++    const auto command = GENERATE(
++        std::string(R"({"command":"ams_change_filament","ams_id":0,"slot_id":null,"target":255})"),
++        std::string(R"({"command":"ams_get_rfid","ams_id":0,"slot_id":18446744073709551615})"),
++        std::string(R"({"command":"qidi_set_fan","fan_index":1,"speed":"invalid"})"),
++        std::string(R"({"command":"qidi_polar_cooler","enabled":null})"),
++        std::string(R"({"command":"qidi_exclude_objects","objects":[null]})"));
++    QidiPrinterAgent agent("");
++    const auto request = nlohmann::json{{"print", nlohmann::json::parse(command)}};
++    int result = 0;
++    CHECK_NOTHROW(result = agent.send_message("offline-fixture", request.dump(), 0, 0));
++    CHECK(result == BAMBU_NETWORK_ERR_INVALID_RESULT);
++}
++
+ namespace Slic3r {
+ struct QidiPrinterAgentTestAccess
+ {
+-- 
+2.56.0
+

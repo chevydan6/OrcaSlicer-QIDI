@@ -1,0 +1,89 @@
+From 3527d32dc5e0655a63b29aca74b2db78c1aac3fe Mon Sep 17 00:00:00 2001
+From: chevydan6 <339888127+chevydan6@users.noreply.github.com>
+Date: Tue, 3 Nov 2026 11:17:53 +0900
+Subject: [PATCH] Fix native Box UI access and timelapse HTTP build errors
+
+---
+ src/slic3r/GUI/DeviceCore/DevFilaSystem.h     | 1 +
+ src/slic3r/GUI/StatusPanel.cpp                | 2 +-
+ src/slic3r/GUI/Widgets/AMSControl.cpp         | 4 ++--
+ src/slic3r/Utils/QidiPrinterAgent.cpp         | 3 ++-
+ tests/slic3rutils/test_qidi_printer_agent.cpp | 1 +
+ 5 files changed, 7 insertions(+), 4 deletions(-)
+
+diff --git a/src/slic3r/GUI/DeviceCore/DevFilaSystem.h b/src/slic3r/GUI/DeviceCore/DevFilaSystem.h
+index 144458e3..d8bcd0e6 100644
+--- a/src/slic3r/GUI/DeviceCore/DevFilaSystem.h
++++ b/src/slic3r/GUI/DeviceCore/DevFilaSystem.h
+@@ -210,6 +210,7 @@ public:
+ 
+ public:
+     std::string GetAmsId() const { return m_ams_id; }
++    const std::string& GetQidiBoxIdentity() const { return m_qidi_box_identity; }
+     wxString    GetDisplayName() const; // display
+ 
+     void     SetAmsType(int type) { m_ams_type = (AmsType)type; }
+diff --git a/src/slic3r/GUI/StatusPanel.cpp b/src/slic3r/GUI/StatusPanel.cpp
+index b19186fa..0ca98718 100644
+--- a/src/slic3r/GUI/StatusPanel.cpp
++++ b/src/slic3r/GUI/StatusPanel.cpp
+@@ -2616,7 +2616,7 @@ void StatusPanel::wire_controls()
+         const auto ams_id = m_ams_control->GetCurentAms();
+         const auto slot_id = m_ams_control->GetCurrentCan(ams_id);
+         const auto* unit = obj->GetFilaSystem()->GetAmsById(ams_id);
+-        if (!unit || unit->m_qidi_box_identity == "box_v2")
++        if (!unit || unit->GetQidiBoxIdentity() == "box_v2")
+             return;
+         try {
+             const int box = std::stoi(ams_id);
+diff --git a/src/slic3r/GUI/Widgets/AMSControl.cpp b/src/slic3r/GUI/Widgets/AMSControl.cpp
+index e80f9213..d6aaec17 100644
+--- a/src/slic3r/GUI/Widgets/AMSControl.cpp
++++ b/src/slic3r/GUI/Widgets/AMSControl.cpp
+@@ -974,8 +974,8 @@ void AMSControl::UpdateAms(const std::string   &series_name,
+ {
+     bool show_eject = obj && obj->printer_agent_id == "qidi" && !ams_info.empty();
+     if (show_eject) {
+-        for (const auto& unit : obj->GetFilaSystem()->amsList) {
+-            if (unit.second->m_qidi_box_identity == "box_v2") {
++        for (const auto& unit : obj->GetFilaSystem()->GetAmsList()) {
++            if (unit.second->GetQidiBoxIdentity() == "box_v2") {
+                 show_eject = false;
+                 break;
+             }
+diff --git a/src/slic3r/Utils/QidiPrinterAgent.cpp b/src/slic3r/Utils/QidiPrinterAgent.cpp
+index 3ae8208e..cbaed130 100644
+--- a/src/slic3r/Utils/QidiPrinterAgent.cpp
++++ b/src/slic3r/Utils/QidiPrinterAgent.cpp
+@@ -15,6 +15,7 @@
+ #include <boost/log/trivial.hpp>
+ #include <cctype>
+ #include <cstddef>
++#include <exception>
+ #include <algorithm>
+ #include <ios>
+ #include "libslic3r/Preset.hpp"
+@@ -622,7 +623,7 @@ bool QidiPrinterAgent::set_timelapse_enabled(bool enabled) const
+         http.header("X-Api-Key", device_info.api_key);
+     bool success = false;
+     http.header("Content-Type", "application/json")
+-        .set_post_body("{}")
++        .set_post_body(std::string("{}"))
+         .timeout_connect(5)
+         .timeout_max(10)
+         .on_complete([&](std::string, unsigned status) { success = status >= 200 && status < 300; })
+diff --git a/tests/slic3rutils/test_qidi_printer_agent.cpp b/tests/slic3rutils/test_qidi_printer_agent.cpp
+index 94ecf89f..dad422ea 100644
+--- a/tests/slic3rutils/test_qidi_printer_agent.cpp
++++ b/tests/slic3rutils/test_qidi_printer_agent.cpp
+@@ -26,6 +26,7 @@
+ #include <nlohmann/json.hpp>
+ 
+ #include "slic3r/Utils/QidiPrinterAgent.hpp"
++#include "slic3r/Utils/MoonrakerPrinterAgent.hpp"
+ #include "slic3r/Utils/bambu_networking.hpp"
+ 
+ using namespace Slic3r;
+-- 
+2.56.0
+

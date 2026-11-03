@@ -87,8 +87,40 @@ struct DevFilaSystemParser {
 """
 start=gui_source.index('void DevFilaSystemParser::UpdateQidiTray')
 code += gui_source[start:gui_source.index('void DevFilaSystemParser::ParseV1_0',start)]
+device_source = (root/'OrcaSlicer/src/slic3r/GUI/DeviceManager.cpp').read_text()
+code += '''
+#include <cstdlib>
+using json = nlohmann::json;
+constexpr int BAMBU_NETWORK_ERR_INVALID_RESULT = -999;
+struct MachineObject {
+ inline static int m_sequence_id=0;
+ std::string printer_agent_id="qidi";
+ int submissions=0;
+ json submitted;
+ int publish_json(const json& value) { ++submissions; submitted=value; return 0; }
+ int command_ams_change_filament(bool,std::string,std::string,int,int,std::optional<int>);
+};
+'''
+start=device_source.index('int MachineObject::command_ams_change_filament(')
+code += device_source[start:device_source.index('int MachineObject::command_ams_user_settings(',start)]
 code += r'''
 int main() {
+ MachineObject controls;
+ for (bool load : {false,true}) {
+  for (const std::string invalid : {"", "-1", "4", "254", "invalid", "1junk", "18446744073709551615"}) {
+   assert(controls.command_ams_change_filament(load,invalid,"0",0,0,{})==BAMBU_NETWORK_ERR_INVALID_RESULT);
+   assert(controls.command_ams_change_filament(load,"0",invalid,0,0,{})==BAMBU_NETWORK_ERR_INVALID_RESULT);
+   assert(controls.submissions==0);
+  }
+ }
+ assert(controls.command_ams_change_filament(true,"3","2",0,0,{})==0);
+ assert(controls.submitted["print"]["target"]==14);
+ assert(controls.command_ams_change_filament(false,"3","2",0,0,{})==0);
+ assert(controls.submitted["print"]["slot_id"]==2);
+ assert(controls.submitted["print"]["target"]==255);
+ controls.printer_agent_id="other";
+ assert(controls.command_ams_change_filament(true,"10","2",0,0,{})==0);
+ assert(controls.submitted["print"]["target"]==42);
  const nlohmann::json first{{"multi_color_controller",{{"box",{{"box_count",2},{"box1_filament_info_2_filament_type","PETG"}}}}}};
  const nlohmann::json second{{"multi_color_controller",{{"box",{{"box1_aht20_temp",32.5}}}}}};
  QidiCacheHarness cache;

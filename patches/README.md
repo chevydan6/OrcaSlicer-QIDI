@@ -53,3 +53,7 @@ separately from implementation; a patch's presence does not certify hardware use
 28. `0028-qidi-nested-status-cache.patch` adds an opt-in cache merge policy for QIDI multi_color_controller only. Nested partial temperature updates retain the reported Box count and material fields; other Moonraker agents keep their existing field replacement semantics. Production cache-body isolation checks and full-library regression cases cover both policies.
 
 29. `0029-default-cli-filament-diameter.patch` fixes an upstream CLI crash found by the baseline regression run. A standalone filament preset may omit diameter; flush calculation runs before full defaults are applied. Create the schema default before that calculation. The existing `cli_malformed_input` test reproduces the crash without this change; compiled verification of the fix remains pending.
+
+30. `0030-qidi-integration-build-fixes.patch` resolves full-build and static-check findings: expose Box identity through a const accessor, use the existing AMS collection accessor, select the HTTP string-body overload explicitly, and include the required exception/base-agent headers.
+
+31. `0031-qidi-control-stability.patch` rejects missing/malformed physical slot selections before native load/unload dispatch, defers the object chooser using a weak window reference, prevents duplicate chooser dialogs, and reacquires the selected device after the modal loop. Invalid-control regression cases exercise the agent error boundary without a printer connection.

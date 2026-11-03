@@ -5,6 +5,12 @@ The full integrated build and dedicated validation phase remain open.
 No MAX4 is connected during this work; communication tests use local fixtures,
 and printer-specific protocol/physical verification remains pending.
 
+Build update: the 29-patch run reached GUI compilation and failed on private
+member access. Static checks also found an ambiguous HTTP overload and missing
+direct includes. Patch 0030 addresses those findings; patch 0031 adds control
+stability guards. Neither correction is evidence of a passing integrated build
+until the subsequent run completes.
+
 | Workflow | Existing Orca | Downstream implementation | Validation / remaining work |
 | --- | --- | --- | --- |
 | MAX4 machine profiles | Four nozzle sizes and machine limits | Preserve profiles; height guards; pre-print capability | All 72 vendor bundles pass structure checks; runtime load pending |
@@ -56,3 +62,29 @@ and printer-specific protocol/physical verification remains pending.
 7. Only with explicit authorization: inspect the actual printer firmware/version
    and perform separately agreed physical checks. Do not conflate those checks
    with software validation or start an unsolicited print.
+
+## Required GUI stability gate
+
+The user explicitly requires QIDI controls to be stable in the slicer GUI. Run
+these cases against the compiled custom application with isolated settings and
+a loopback-only printer simulator. Commands must be recorded by the simulator;
+it must never forward requests or execute G-code. All GUI cases below are pending.
+
+| Case | Required behavior |
+| --- | --- |
+| No configured or connected printer | QIDI controls are hidden/disabled or safely refuse an action; no crash |
+| Box absent, external spool, zero/four Boxes | Slot display remains consistent and unsupported operations are unavailable |
+| Empty, malformed, removed or out-of-range slot selection | No command is sent for an unintended slot; no uncaught exception |
+| Load/unload/eject, RFID, material/color, chamber/fan/light and print-option controls | Expected request is recorded by the simulator; GUI remains responsive |
+| Repeated clicks and opening/closing dialogs | No duplicate object chooser, stale-window callback or process exit |
+| Disconnect/reconnect or switch/remove the selected device while a dialog is open | Action is cancelled or revalidated against the current device; no stale-pointer access |
+| New job/status arrives while object chooser is open | Old selection is not applied to a different job |
+| Missing, partial, wrong-type and malformed telemetry | Invalid data is rejected without crashing; valid subsequent updates still work |
+| HTTP error, timeout and dropped WebSocket | Error is handled, controls recover, and the GUI remains usable |
+| Save/reload profiles and restart | QIDI settings persist and other slicer settings remain untouched |
+| Slice and preview after using controls | Slicing and GUI rendering continue to work |
+| Existing non-QIDI workflow | Existing profile loading, slicing and controls retain their prior behavior |
+
+Record the build/artifact hash, exact cases, screenshots and failures. Source
+inspection and isolated helper checks do not satisfy this GUI gate. Hardware
+compatibility, actual motion/heating and print behavior remain separate checks.
