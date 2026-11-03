@@ -5,9 +5,9 @@ The full integrated build and dedicated validation phase remain open.
 No MAX4 is connected during this work; communication tests use local fixtures,
 and printer-specific protocol/physical verification remains pending.
 
-Build update: the 32-patch revision passed the full changed-line C++ static/include
-checks (GitHub run 41567422148); its application build is still running. Later
-patches require their own checks. Prior compile failures exposed private-member
+Build update: all 38 patches passed the full changed-line C++ static/include
+checks (GitHub run 41569820617); the corresponding application build is still
+running. Prior compile failures exposed private-member
 access, an ambiguous HTTP overload and missing direct includes; those have been
 corrected. A successful custom application build has not yet been recorded.
 
