@@ -1,0 +1,27 @@
+{
+  "integration_commit": "d1a35c855fd968125d39830f48328fdbd9eaf6b1",
+  "run": 41612448931,
+  "static_run": 41612454913,
+  "integration": "success",
+  "static": "success",
+  "unit_tests": {
+    "name": "(empty)",
+    "tests": "2914",
+    "failures": "0",
+    "disabled": "0",
+    "skipped": "0",
+    "hostname": "",
+    "time": "535",
+    "timestamp": "2026-11-03T09:45:09"
+  },
+  "cli_cases": 7,
+  "max4_cases": 21,
+  "max4_passed": 21,
+  "vendor_evidence": [
+    "linux\tProfile structure checks\t2026-11-03T09:54:42.8255868Z \u001b[94m[INFO]\u001b[0m Checked vendors     : 72"
+  ],
+  "test_artifact": 13220193615,
+  "test_zip_sha256": "a0a6b6c9b999bfec8973f8069bd2ee1db2ce781075a2be26b5dd90316a44888c",
+  "github_digest_matches": true,
+  "final_acceptance": false
+}
