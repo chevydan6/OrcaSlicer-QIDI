@@ -84,3 +84,5 @@ separately from implementation; a patch's presence does not certify hardware use
 42. `0042-downstream-window-title.patch` uses the downstream application name in project window titles, distinguishing the fork from an official Orca window without changing translation catalog or project identifiers.
 
 43. `0043-qidi-connection-dialog.patch` gives QIDI a local address/API-key dialog and hides inapplicable PIN binding. It retains blank or arbitrary non-newline API keys, normalizes the selected endpoint, and lets the existing agent perform the connection in its background thread. QIDI no longer starts the legacy detached dialog worker or a verification SendJob. The connection timer is released on dialog destruction. Found during first GUI validation; compiled and control-failure checks pending.
+
+44. `0044-refresh-layout-after-setup.patch` sends a main-window size event after the setup wizard. Both the unmodified upstream and first custom GUI had invisible page controls until a manual resize on the target GTK runtime. The baseline comparison is recorded under `validation/gui-layout`; compiled verification of the correction is pending.
