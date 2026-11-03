@@ -1,0 +1,149 @@
+From 5d723e5f16e10b6921fc351574f638048e016293 Mon Sep 17 00:00:00 2001
+From: chevydan6 <339888127+chevydan6@users.noreply.github.com>
+Date: Tue, 3 Nov 2026 12:02:16 +0900
+Subject: [PATCH] Invalidate delayed responses when callbacks or connections
+ are reset
+
+---
+ src/slic3r/Utils/MoonrakerPrinterAgent.cpp    | 20 ++++++++++++++--
+ src/slic3r/Utils/MoonrakerPrinterAgent.hpp    |  1 +
+ tests/slic3rutils/test_qidi_printer_agent.cpp | 24 +++++++++++++++++++
+ 3 files changed, 43 insertions(+), 2 deletions(-)
+
+diff --git a/src/slic3r/Utils/MoonrakerPrinterAgent.cpp b/src/slic3r/Utils/MoonrakerPrinterAgent.cpp
+index 21c7aabd..79b7a189 100644
+--- a/src/slic3r/Utils/MoonrakerPrinterAgent.cpp
++++ b/src/slic3r/Utils/MoonrakerPrinterAgent.cpp
+@@ -283,7 +283,10 @@ MoonrakerPrinterAgent::MoonrakerPrinterAgent(std::string log_dir) : m_cloud_agen
+ 
+ MoonrakerPrinterAgent::~MoonrakerPrinterAgent()
+ {
+-    callbacks_alive->store(false);
++    {
++        std::lock_guard<std::recursive_mutex> lock(state_mutex);
++        callbacks_alive->store(false);
++    }
+     {
+         std::lock_guard<std::recursive_mutex> lock(connect_mutex);
+         device_info = MoonrakerDeviceInfo{};
+@@ -340,6 +343,7 @@ int MoonrakerPrinterAgent::connect_printer(const PrinterConnectionParams& params
+ 
+     // Stop existing status stream and clear state
+     stop_status_stream();
++    reset_message_dispatchers();
+     {
+         std::lock_guard<std::recursive_mutex> lock(payload_mutex);
+         status_cache = nlohmann::json::object();
+@@ -380,6 +384,7 @@ int MoonrakerPrinterAgent::disconnect_printer()
+     }
+ 
+     stop_status_stream();
++    reset_message_dispatchers();
+     return BAMBU_NETWORK_SUCCESS;
+ }
+ 
+@@ -574,6 +579,7 @@ int MoonrakerPrinterAgent::set_on_subscribe_failure_fn(GetSubscribeFailureFn fn)
+ int MoonrakerPrinterAgent::set_on_message_fn(OnMessageFn fn)
+ {
+     std::lock_guard<std::recursive_mutex> lock(state_mutex);
++    reset_message_dispatchers();
+     on_message_fn = fn;
+     return BAMBU_NETWORK_SUCCESS;
+ }
+@@ -595,6 +601,7 @@ int MoonrakerPrinterAgent::set_on_local_connect_fn(OnLocalConnectedFn fn)
+ int MoonrakerPrinterAgent::set_on_local_message_fn(OnMessageFn fn)
+ {
+     std::lock_guard<std::recursive_mutex> lock(state_mutex);
++    reset_message_dispatchers();
+     on_local_message_fn = fn;
+     return BAMBU_NETWORK_SUCCESS;
+ }
+@@ -602,6 +609,7 @@ int MoonrakerPrinterAgent::set_on_local_message_fn(OnMessageFn fn)
+ int MoonrakerPrinterAgent::set_queue_on_main_fn(QueueOnMainFn fn)
+ {
+     std::lock_guard<std::recursive_mutex> lock(state_mutex);
++    reset_message_dispatchers();
+     queue_on_main_fn = fn;
+     return BAMBU_NETWORK_SUCCESS;
+ }
+@@ -2316,6 +2324,13 @@ nlohmann::json MoonrakerPrinterAgent::build_print_payload_locked() const
+     return payload;
+ }
+ 
++void MoonrakerPrinterAgent::reset_message_dispatchers()
++{
++    std::lock_guard<std::recursive_mutex> lock(state_mutex);
++    callbacks_alive->store(false);
++    callbacks_alive = std::make_shared<std::atomic<bool>>(true);
++}
++
+ void MoonrakerPrinterAgent::dispatch_message(const std::string& dev_id, const std::string& payload)
+ {
+     message_dispatcher(dev_id)(payload);
+@@ -2326,14 +2341,15 @@ std::function<void(const std::string&)> MoonrakerPrinterAgent::message_dispatche
+     OnMessageFn   local_fn;
+     OnMessageFn   cloud_fn;
+     QueueOnMainFn queue_fn;
++    std::shared_ptr<std::atomic<bool>> alive;
+     {
+         std::lock_guard<std::recursive_mutex> lock(state_mutex);
+         local_fn = on_local_message_fn;
+         cloud_fn = on_message_fn;
+         queue_fn = queue_on_main_fn;
++        alive = callbacks_alive;
+     }
+ 
+-    const auto alive = callbacks_alive;
+     return [dev_id, local_fn, cloud_fn, queue_fn, alive](const std::string& payload) {
+         if (!alive->load()) return;
+         if (!local_fn && !cloud_fn) {
+diff --git a/src/slic3r/Utils/MoonrakerPrinterAgent.hpp b/src/slic3r/Utils/MoonrakerPrinterAgent.hpp
+index a9b437c7..b8add695 100644
+--- a/src/slic3r/Utils/MoonrakerPrinterAgent.hpp
++++ b/src/slic3r/Utils/MoonrakerPrinterAgent.hpp
+@@ -189,6 +189,7 @@ private:
+     void dispatch_printer_connected(const std::string& dev_id);
+     void dispatch_message(const std::string& dev_id, const std::string& payload);
+     std::function<void(const std::string&)> message_dispatcher(const std::string& dev_id) const;
++    void reset_message_dispatchers();
+     // Joins a stream stopped from its own callback, so a new stream can start without waiting on it under connect_mutex
+     void join_stopped_status_stream();
+     void run_status_stream(std::string dev_id, std::string base_url, std::string api_key, StatusStreamTimings timings);
+diff --git a/tests/slic3rutils/test_qidi_printer_agent.cpp b/tests/slic3rutils/test_qidi_printer_agent.cpp
+index 7d9973b2..8fccb196 100644
+--- a/tests/slic3rutils/test_qidi_printer_agent.cpp
++++ b/tests/slic3rutils/test_qidi_printer_agent.cpp
+@@ -95,6 +95,30 @@ TEST_CASE("QIDI delayed responses stop dispatching when the agent is destroyed",
+     CHECK(received == 1);
+ }
+ 
++TEST_CASE("Resetting QIDI connections or callbacks invalidates delayed responses", "[QidiPrinterAgent][Regression]")
++{
++    int received = 0;
++    std::vector<std::function<void()>> queued;
++    QidiPrinterAgent agent("");
++    agent.set_on_local_message_fn([&](std::string, std::string) { ++received; });
++    agent.set_queue_on_main_fn([&](std::function<void()> callback) { queued.push_back(std::move(callback)); });
++    auto old_response = QidiPrinterAgentTestAccess::dispatcher(agent);
++    old_response("queued");
++    REQUIRE(queued.size() == 1);
++    if (GENERATE(false, true)) agent.disconnect_printer();
++    else agent.set_on_local_message_fn({});
++    queued.front()();
++    CHECK(received == 0);
++    queued.clear();
++    old_response("late HTTP completion");
++    CHECK(queued.empty());
++    agent.set_on_local_message_fn([&](std::string, std::string) { ++received; });
++    QidiPrinterAgentTestAccess::dispatcher(agent)("new registration");
++    REQUIRE(queued.size() == 1);
++    queued.front()();
++    CHECK(received == 1);
++}
++
+ namespace {
+ namespace net = boost::asio;
+ namespace http = boost::beast::http;
+-- 
+2.56.0
+

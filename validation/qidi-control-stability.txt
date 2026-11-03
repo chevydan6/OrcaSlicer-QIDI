@@ -23,6 +23,12 @@ regressions with ASan/UBSan. Both late paths drop the callback. The harness uses
 value-only state and a recording GUI queue; actual transport/UI shutdown is still
 part of the pending full-app gate.
 
+Patch 0038 extends invalidation to callback resets and connection changes. GUI
+shutdown clears callbacks before deleting the agent, so retaining a previously
+captured callback across that reset would be incorrect. The sanitized harness
+passes the production reset/dispatcher/destructor bodies with queued and late
+responses from the old registration; full-library disconnect cases await CI.
+
 Commands completed successfully:
 python3 scripts/check-protocol-helpers.py
 python3 scripts/check-protocol-helpers.py --sanitize --sanitizer-libs research/sanitizer-runtime/usr/lib64
