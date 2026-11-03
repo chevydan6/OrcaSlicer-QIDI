@@ -50,6 +50,7 @@ the build guide documents that setup. Compiled GUI activation is still pending.
 | Box monitoring | Filament sync only | Temperature/humidity/loaded physical slot; modern nested/flat slot sync and live material/presence updates; preserve partial metadata | Nested/flat firmware formats checked in isolation |
 | Start/end/change G-code | MAX4 macros present | Height guards and Box thermal preamble | Engine-generated G-code tests pending |
 | LAN printing | Moonraker upload, 3MF selected plate | Ordered Box mode/mapping/options before start | Loopback HTTP tests added; execution pending; no printer contacted |
+| Experimental batch/multi-device printing | Separate upstream submission path | Not validated for QIDI; its job builder does not capture the new QIDI options | Must validate per-device mapping or reject safely before release; use the single-printer path for current testing |
 | Bed leveling option | QIDI option ineffective/hidden | MAX4 G31/G32 selection | Recording-transport check passes |
 | Timelapse option | UI and frame macros exist | QIDI Moonraker settings request | Recording-transport check passes; actual HTTP pending |
 | Object skipping | Bambu numeric-ID interface only | QIDI named-object chooser and EXCLUDE_OBJECT translation | Isolated name/telemetry checks pass; GUI/hardware pending |
@@ -92,6 +93,7 @@ it must never forward requests or execute G-code. All GUI cases below are pendin
 | Case | Required behavior |
 | --- | --- |
 | No configured or connected printer | QIDI controls are hidden/disabled or safely refuse an action; no crash |
+| Experimental multi-device action | QIDI jobs have complete per-device mapping/options or are refused before submission |
 | Box absent, external spool, zero/four Boxes | Slot display remains consistent and unsupported operations are unavailable |
 | Empty, malformed, removed or out-of-range slot selection | No command is sent for an unintended slot; no uncaught exception |
 | Load/unload/eject, RFID, material/color, chamber/fan/light and print-option controls | Expected request is recorded by the simulator; GUI remains responsive |
