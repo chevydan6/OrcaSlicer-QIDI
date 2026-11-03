@@ -6,7 +6,8 @@ not complete: automatic refill and physical print validation remain unfinished.
 
 Release: [candidate70 deliverables](https://github.com/chevydan6/OrcaSlicer-QIDI/releases/tag/qidi-linux-2026-11-03-c70).
 The definitive identity/gate record is [accepted-70.json](validation/accepted-70.json).
-Release assets include AppImage, matching patched source, complete integration kit,
+[Publication verification](validation/release-70.json) confirms all8 GitHub asset
+digests match their local files. Release assets include AppImage, matching patched source, complete integration kit,
 manifest, checksums, test reports and GUI/installation evidence. Verify SHA256SUMS.
 
 ## Exact accepted input

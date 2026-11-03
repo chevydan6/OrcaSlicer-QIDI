@@ -1,0 +1,59 @@
+{
+  "tag": "qidi-linux-2026-11-03-c70",
+  "url": "https://github.com/chevydan6/OrcaSlicer-QIDI/releases/tag/qidi-linux-2026-11-03-c70",
+  "published_at": "2026-11-03T11:44:15Z",
+  "prerelease": true,
+  "kit_commit": "ad6270ac07dcc1100d0cf60547e63d16fbfefaec",
+  "binary_build_input": "7352b62f30804ecbeaa96c7996ff86614fadf7a8",
+  "assets": [
+    {
+      "name": "acceptance.json",
+      "size": 2016,
+      "sha256": "06a8c6b026d6ad43daf5fbca2d3c3d6f0905079fa3fa5d32f62352edee8f6b6c",
+      "github_digest_matches": true
+    },
+    {
+      "name": "OrcaSlicer-QIDI-c70-GUI-installation-evidence.tar.gz",
+      "size": 31416146,
+      "sha256": "8db1bbd682bbbefc69baf8769f59cf52908faa099bc3046541c03056b759c9f7",
+      "github_digest_matches": true
+    },
+    {
+      "name": "OrcaSlicer-QIDI-c70-test-reports.zip",
+      "size": 1511499,
+      "sha256": "b74e6cb5e6e8165dad57cd650c6dc4ffa88d59cd91f1299827feb737375b7cbc",
+      "github_digest_matches": true
+    },
+    {
+      "name": "OrcaSlicer-QIDI-integration-kit-ad6270ac.tar.gz",
+      "size": 88052701,
+      "sha256": "069cb2eb355d4538e52c586d8c054f0fbabae1ac436a802cce3397accede3082",
+      "github_digest_matches": true
+    },
+    {
+      "name": "OrcaSlicer-QIDI-Linux-x86_64-c70.AppImage",
+      "size": 215009784,
+      "sha256": "7614dd15d467d0bf08b9e8846111e29940da4c53248a1d238a35d53b1dff35a7",
+      "github_digest_matches": true
+    },
+    {
+      "name": "OrcaSlicer-QIDI-source-70-54d95481.tar.gz",
+      "size": 136662441,
+      "sha256": "70f5a306805a32144cb59ac3aac010d47fb417685b9b63d12e5e44e289d80e01",
+      "github_digest_matches": true
+    },
+    {
+      "name": "qidi-port-build.json",
+      "size": 8406,
+      "sha256": "71ff16787695b6371ba3cc0afbe0bb08fc6ff565d014ee356ab58f0b37303bb5",
+      "github_digest_matches": true
+    },
+    {
+      "name": "SHA256SUMS",
+      "size": 721,
+      "sha256": "ab6a434d240f491e9153d38b311718d6e04ee4abe994761ee023fd5b371def23",
+      "github_digest_matches": true
+    }
+  ],
+  "all_eight_github_asset_digests_verified": true
+}
