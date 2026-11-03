@@ -73,6 +73,21 @@ the calculation. It is queued for the subsequent integration run; the running
 general-port build contains patches 0001–0028. This fix is unrelated to the
 unverified physical starting-slot failure.
 
+Baseline cross-application project checks found additional compatibility work for
+the dedicated validation pass. Overriding only the machine in a QIDI-exported
+reference project fails the Orca CLI process compatibility check because the
+embedded `print_compatible_printers` uses `X-Max 4` while Orca uses `Qidi X-Max 4`.
+A diagnostic copy adapting only that name then fails validation on QIDI's
+`raft_first_layer_expansion = -1` automatic mode, which Orca does not accept.
+The baseline log also reports no loaded objects. Orca's structured 3MF importer
+recognizes BambuStudio/OrcaSlicer application and format tags, but not QIDIStudio's
+tags; model and settings import need investigation with the integrated build.
+The original reference projects remain unchanged. The two cross-application
+cases in the runtime validation script must not be reported as passing until
+these import/settings differences are addressed or explicit matched inputs are
+documented and run in both slicers. No physical-slot conclusion follows from
+these pre-slicing failures.
+
 The user confirmed that no MAX4 is currently connected. No printer has been contacted.
 Physical slot selection, filament motion, heating,
 printing and firmware compatibility remain unverified and require authorization.

@@ -7,7 +7,7 @@ patches and feature checklist.
 
 | Area | QIDI Studio source | Orca integration / dependency |
 | --- | --- | --- |
-| MAX4 machine/material/process profiles | `resources/profiles/Qidi` | Existing preset inheritance, OrcaFilamentLibrary IDs and profile validator |
+| MAX4 machine/material/process profiles | `resources/profiles/X 4 Series` | Existing Orca Qidi bundle, preset inheritance, OrcaFilamentLibrary IDs and profile validator |
 | Persistent Box settings and thermal G-code | `libslic3r/PrintConfig`, `Preset`, `GCode` | Orca static/dynamic config, serialization, invalidation and logical-tool ordering |
 | Print options and physical slot assignment | `GUI/SelectMachine`, `GUI/Jobs/PrintJob` | Existing Orca print dialog/job; immutable used-tool/options snapshot |
 | LAN commands | `GUI/PrinterTaskDispatcher`, QIDI print-host code | `Utils/QidiPrinterAgent` over existing `MoonrakerPrinterAgent` and `Http` |
