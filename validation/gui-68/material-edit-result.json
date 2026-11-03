@@ -1,0 +1,9 @@
+[
+  {
+    "time": 1793700321.954216,
+    "method": "POST",
+    "path": "/printer/gcode/script",
+    "query": {},
+    "body": "{\"script\":\"UPDATE_FILAMENT_INFORMATION SLOT=0 COLOR='123456' VENDOR='Generic' FILAMENT='ABS'\"}"
+  }
+]

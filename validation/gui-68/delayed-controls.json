@@ -1,0 +1,20 @@
+{
+  "clicks": 3,
+  "recorded_commands": 2,
+  "requests": [
+    {
+      "time": 1793700684.8924737,
+      "method": "POST",
+      "path": "/printer/gcode/script",
+      "query": {},
+      "body": "{\"script\":\"SET_PIN PIN=caselight VALUE=1\"}"
+    },
+    {
+      "time": 1793700685.1911092,
+      "method": "POST",
+      "path": "/printer/gcode/script",
+      "query": {},
+      "body": "{\"script\":\"SET_PIN PIN=caselight VALUE=0\"}"
+    }
+  ]
+}

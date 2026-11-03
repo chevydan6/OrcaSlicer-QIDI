@@ -8,12 +8,12 @@ Feature expansion is frozen pending one complete software acceptance.
 
 - Integration repository: https://github.com/chevydan6/OrcaSlicer-QIDI, branch main.
 - Workspace: `/home/dan/qidi-orca-port`; recovered at `70d58fc17f0132d926424a5a74144bf80cb1dcfd`.
-- Current source: **68 patches**, build input `8c258d62e15fded96b400782d7e6c5d150b92a07`, all matching CI gates passed; full GUI acceptance in progress. Candidate 66 (`d1a35c855fd968125d39830f48328fdbd9eaf6b1`) is undergoing targeted layout/import checks; it lacks the two later fixes and is not accepted.
+- Current source: **69 patches**, pending matching build. Candidate 68 passed all build gates but GUI acceptance failed: multicolor external jobs are safely rejected, yet Send is misleadingly re-enabled and its explanation disappears. See `validation/gui-68`.
 - Orca pin: `896557bce5281553ee0c6210f2da301b3b3c262e`.
 - QIDI Studio pin: `403b619d56147160bb883e94f95a7951245bc6d0`.
-- Prepared source: `build/source`, local commit `c2d5adf9`.
-- Exact downstream tree: `201334508eee83acb0968133b12a93649ba2fd08`.
-- All 68 patches reproduce that tree via `scripts/verify-patches.py`.
+- Prepared source: `build/source`, local commit `f73648d1`.
+- Exact downstream tree: `471d8870cb342690af8f3c4a2903f46b71c06047`.
+- All 69 patches reproduce that tree via `scripts/verify-patches.py`.
 - Original 56-patch recovery matched recorded tree `20f0b1398164ca1b5ab5bd44c6ecd6071aaaad3e`.
 - Pins remain fixed. Local recovery commits have fresh metadata; tree identity is verified.
 
@@ -21,7 +21,7 @@ Feature expansion is frozen pending one complete software acceptance.
 
 | Candidate | Integration | Static | Acceptance |
 | --- | --- | --- | --- |
-| 68 / 8c258d6 | [41614117101](https://github.com/chevydan6/OrcaSlicer-QIDI/actions/runs/41614117101), passed | [41614122533](https://github.com/chevydan6/OrcaSlicer-QIDI/actions/runs/41614122533), passed | 2,916 unit / 7 CLI / 72 vendors / 21 MAX4 pass; exact artifact verified; GUI matrix in progress |
+| 68 / 8c258d6 | [41614117101](https://github.com/chevydan6/OrcaSlicer-QIDI/actions/runs/41614117101), passed | [41614122533](https://github.com/chevydan6/OrcaSlicer-QIDI/actions/runs/41614122533), passed | 2,916 unit / 7 CLI / 72 vendors / 21 MAX4 pass; exact artifact verified; GUI rejected (unsupported-job status) |
 | 66 / d1a35c8 | [41612448931](https://github.com/chevydan6/OrcaSlicer-QIDI/actions/runs/41612448931), passed | [41612454913](https://github.com/chevydan6/OrcaSlicer-QIDI/actions/runs/41612454913), passed | 2,914 unit / 7 CLI / 72 vendors / 21 MAX4 pass; targeted GUI layout/import/submission/exit pass, not full acceptance |
 | 64 / 9b06cba | [41610127689](https://github.com/chevydan6/OrcaSlicer-QIDI/actions/runs/41610127689), passed | [41610133489](https://github.com/chevydan6/OrcaSlicer-QIDI/actions/runs/41610133489), passed | Fresh layout failed; import-agent defect not fixed here |
 | 62 / b8ef9f8 | [41605999278](https://github.com/chevydan6/OrcaSlicer-QIDI/actions/runs/41605999278), passed | [41606004232](https://github.com/chevydan6/OrcaSlicer-QIDI/actions/runs/41606004232), passed | 2,913 unit / 7 CLI / 72 vendors / 21 MAX4 pass; GUI rejected |
@@ -141,9 +141,9 @@ QIDI Studio/Orca comparisons must be sequential, with identical model/materials/
 
 ## Next steps
 
-1. Candidate 68 build/static gates passed. Finish the full matching GUI matrix and fix any observed failures.
+1. Build candidate69 and verify actual CI gates, artifact digest/manifest and complete GUI matrix. Preserve GUI68 failed evidence.
 2. Download its matching AppImage and reports, verify GitHub ZIP digest, record ZIP
-   and AppImage hashes, compare packaged manifest against the new build input and all 68 patch hashes.
+   and AppImage hashes, compare packaged manifest against the new build input and all 69 patch hashes.
 3. Start with fresh settings: rerun setup/layout and native blank-key connection.
    Verify populated materials without hand-editing model identity; native color
    edits; repeated Box/external dialogs; slot switching; duplicate opens; disconnect

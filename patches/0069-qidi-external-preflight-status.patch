@@ -1,0 +1,33 @@
+From f73648d1e6ccb95ad9580f86d494581855aef516 Mon Sep 17 00:00:00 2001
+From: chevydan6 <339888127+chevydan6@users.noreply.github.com>
+Date: Tue, 3 Nov 2026 19:22:18 +0900
+Subject: [PATCH] Keep QIDI multicolor external-spool rejection visible before
+ submission
+
+---
+ src/slic3r/GUI/SelectMachine.cpp | 9 +++++++++
+ 1 file changed, 9 insertions(+)
+
+diff --git a/src/slic3r/GUI/SelectMachine.cpp b/src/slic3r/GUI/SelectMachine.cpp
+index 31369812..c06bafc2 100644
+--- a/src/slic3r/GUI/SelectMachine.cpp
++++ b/src/slic3r/GUI/SelectMachine.cpp
+@@ -5077,6 +5077,15 @@ void SelectMachineDialog::update_show_status(MachineObject* obj_)
+         }
+     }
+ 
++    // Keep QIDI's external-spool restriction visible on every status refresh.
++    // The submission preflight also rejects this job, but its one-time message
++    // otherwise disappears when the generic mapping check enables Send again.
++    if (obj_->printer_agent_id == "qidi" && _HasExt(m_ams_mapping_result) && m_filaments.size() > 1) {
++        show_status(PrintDialogStatus::PrintStatusAmsMappingInvalid,
++            {_L("QIDI external-spool printing supports one filament per job. Use Box slots for multicolor jobs.")});
++        return;
++    }
++
+     if (obj_->GetFilaSystem()->IsAmsSettingUp()) {
+         show_status(PrintDialogStatus::PrintStatusAmsOnSettingup);
+         return;
+-- 
+2.43.0
+

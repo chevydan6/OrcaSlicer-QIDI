@@ -1,0 +1,14 @@
+{
+  "project_box_temperature": [
+    "35",
+    "40",
+    "45"
+  ],
+  "reloaded_export_sha256": "134c36cc5d1b2c3182c723c837244fa4036370344cfcdb27d781026055feaf80",
+  "reloaded_tool_commands": [
+    "BOX_TEMP_SET VT2=45",
+    "BOX_PRINT_START EXTRUDER=2 HOTENDTEMP=240",
+    "T2",
+    "T2"
+  ]
+}

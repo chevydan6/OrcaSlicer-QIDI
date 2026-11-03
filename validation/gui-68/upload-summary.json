@@ -1,0 +1,33 @@
+[
+  {
+    "file": "upload-_wmqz2oo.bin",
+    "sha256": "a47c11f87d051da82684eafa85a63285e7aea6c23ab6cc283a9e80ff1cd7f481",
+    "commands": [
+      "BOX_TEMP_SET VT2=45 VT0=35",
+      "BOX_PRINT_START EXTRUDER=2 HOTENDTEMP=240",
+      "T0",
+      "T0",
+      "T2"
+    ]
+  },
+  {
+    "file": "upload-vtw47gbo.bin",
+    "sha256": "d49fd935d15ca4bb5a1922eb177fc75a65bb0b2092a1c19215fe572c6e5375df",
+    "commands": [
+      "BOX_TEMP_SET VT2=45",
+      "BOX_PRINT_START EXTRUDER=2 HOTENDTEMP=240",
+      "T2",
+      "T2"
+    ]
+  },
+  {
+    "file": "upload-d3656t3r.bin",
+    "sha256": "d49fd935d15ca4bb5a1922eb177fc75a65bb0b2092a1c19215fe572c6e5375df",
+    "commands": [
+      "BOX_TEMP_SET VT2=45",
+      "BOX_PRINT_START EXTRUDER=2 HOTENDTEMP=240",
+      "T2",
+      "T2"
+    ]
+  }
+]

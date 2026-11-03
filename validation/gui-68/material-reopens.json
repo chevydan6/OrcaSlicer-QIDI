@@ -1,0 +1,262 @@
+[
+  {
+    "group": "box",
+    "cycle": 1,
+    "slot_x": 1051,
+    "geometry": {
+      "WINDOW": "4203478",
+      "X": "999",
+      "Y": "463",
+      "WIDTH": "374",
+      "HEIGHT": "259",
+      "SCREEN": "0"
+    }
+  },
+  {
+    "group": "box",
+    "cycle": 2,
+    "slot_x": 1174,
+    "geometry": {
+      "WINDOW": "4203632",
+      "X": "999",
+      "Y": "463",
+      "WIDTH": "374",
+      "HEIGHT": "259",
+      "SCREEN": "0"
+    }
+  },
+  {
+    "group": "box",
+    "cycle": 3,
+    "slot_x": 1113,
+    "geometry": {
+      "WINDOW": "4203791",
+      "X": "999",
+      "Y": "463",
+      "WIDTH": "374",
+      "HEIGHT": "259",
+      "SCREEN": "0"
+    }
+  },
+  {
+    "group": "box",
+    "cycle": 4,
+    "slot_x": 1236,
+    "geometry": {
+      "WINDOW": "4203993",
+      "X": "999",
+      "Y": "463",
+      "WIDTH": "374",
+      "HEIGHT": "259",
+      "SCREEN": "0"
+    }
+  },
+  {
+    "group": "box",
+    "cycle": 5,
+    "slot_x": 1051,
+    "geometry": {
+      "WINDOW": "4204130",
+      "X": "999",
+      "Y": "463",
+      "WIDTH": "374",
+      "HEIGHT": "259",
+      "SCREEN": "0"
+    }
+  },
+  {
+    "group": "box",
+    "cycle": 6,
+    "slot_x": 1174,
+    "geometry": {
+      "WINDOW": "4204282",
+      "X": "999",
+      "Y": "463",
+      "WIDTH": "374",
+      "HEIGHT": "259",
+      "SCREEN": "0"
+    }
+  },
+  {
+    "group": "box",
+    "cycle": 7,
+    "slot_x": 1113,
+    "geometry": {
+      "WINDOW": "4204440",
+      "X": "999",
+      "Y": "463",
+      "WIDTH": "374",
+      "HEIGHT": "259",
+      "SCREEN": "0"
+    }
+  },
+  {
+    "group": "box",
+    "cycle": 8,
+    "slot_x": 1236,
+    "geometry": {
+      "WINDOW": "4204608",
+      "X": "999",
+      "Y": "463",
+      "WIDTH": "374",
+      "HEIGHT": "259",
+      "SCREEN": "0"
+    }
+  },
+  {
+    "group": "box",
+    "cycle": 9,
+    "slot_x": 1051,
+    "geometry": {
+      "WINDOW": "4204760",
+      "X": "999",
+      "Y": "463",
+      "WIDTH": "374",
+      "HEIGHT": "259",
+      "SCREEN": "0"
+    }
+  },
+  {
+    "group": "box",
+    "cycle": 10,
+    "slot_x": 1174,
+    "geometry": {
+      "WINDOW": "4204914",
+      "X": "999",
+      "Y": "463",
+      "WIDTH": "374",
+      "HEIGHT": "259",
+      "SCREEN": "0"
+    }
+  },
+  {
+    "group": "external",
+    "cycle": 1,
+    "slot_x": 1354,
+    "geometry": {
+      "WINDOW": "4205151",
+      "X": "999",
+      "Y": "463",
+      "WIDTH": "374",
+      "HEIGHT": "259",
+      "SCREEN": "0"
+    }
+  },
+  {
+    "group": "external",
+    "cycle": 2,
+    "slot_x": 1354,
+    "geometry": {
+      "WINDOW": "4205315",
+      "X": "999",
+      "Y": "463",
+      "WIDTH": "374",
+      "HEIGHT": "259",
+      "SCREEN": "0"
+    }
+  },
+  {
+    "group": "external",
+    "cycle": 3,
+    "slot_x": 1354,
+    "geometry": {
+      "WINDOW": "4205546",
+      "X": "999",
+      "Y": "463",
+      "WIDTH": "374",
+      "HEIGHT": "259",
+      "SCREEN": "0"
+    }
+  },
+  {
+    "group": "external",
+    "cycle": 4,
+    "slot_x": 1354,
+    "geometry": {
+      "WINDOW": "4205710",
+      "X": "999",
+      "Y": "463",
+      "WIDTH": "374",
+      "HEIGHT": "259",
+      "SCREEN": "0"
+    }
+  },
+  {
+    "group": "external",
+    "cycle": 5,
+    "slot_x": 1354,
+    "geometry": {
+      "WINDOW": "4205943",
+      "X": "999",
+      "Y": "463",
+      "WIDTH": "374",
+      "HEIGHT": "259",
+      "SCREEN": "0"
+    }
+  },
+  {
+    "group": "external",
+    "cycle": 6,
+    "slot_x": 1354,
+    "geometry": {
+      "WINDOW": "4206100",
+      "X": "999",
+      "Y": "463",
+      "WIDTH": "374",
+      "HEIGHT": "259",
+      "SCREEN": "0"
+    }
+  },
+  {
+    "group": "external",
+    "cycle": 7,
+    "slot_x": 1354,
+    "geometry": {
+      "WINDOW": "4206266",
+      "X": "999",
+      "Y": "463",
+      "WIDTH": "374",
+      "HEIGHT": "259",
+      "SCREEN": "0"
+    }
+  },
+  {
+    "group": "external",
+    "cycle": 8,
+    "slot_x": 1354,
+    "geometry": {
+      "WINDOW": "4206471",
+      "X": "999",
+      "Y": "463",
+      "WIDTH": "374",
+      "HEIGHT": "259",
+      "SCREEN": "0"
+    }
+  },
+  {
+    "group": "external",
+    "cycle": 9,
+    "slot_x": 1354,
+    "geometry": {
+      "WINDOW": "4206641",
+      "X": "999",
+      "Y": "463",
+      "WIDTH": "374",
+      "HEIGHT": "259",
+      "SCREEN": "0"
+    }
+  },
+  {
+    "group": "external",
+    "cycle": 10,
+    "slot_x": 1354,
+    "geometry": {
+      "WINDOW": "4206867",
+      "X": "999",
+      "Y": "463",
+      "WIDTH": "374",
+      "HEIGHT": "259",
+      "SCREEN": "0"
+    }
+  }
+]

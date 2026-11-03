@@ -1,0 +1,27 @@
+[
+  {
+    "case": "malformed-json",
+    "lamp_request_after_fault": true,
+    "gui_process_alive": true
+  },
+  {
+    "case": "wrong-box-type",
+    "lamp_request_after_fault": true,
+    "gui_process_alive": true
+  },
+  {
+    "case": "null-material",
+    "lamp_request_after_fault": true,
+    "gui_process_alive": true
+  },
+  {
+    "case": "extreme-temperature",
+    "lamp_request_after_fault": true,
+    "gui_process_alive": true
+  },
+  {
+    "case": "partial-metadata",
+    "lamp_request_after_fault": true,
+    "gui_process_alive": true
+  }
+]

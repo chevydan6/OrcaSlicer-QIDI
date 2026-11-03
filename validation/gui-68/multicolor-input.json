@@ -1,0 +1,12 @@
+{
+  "original_sha256": "d0afa9c2c7fa964be6fe68efc0db17c900216077dca86ef3be3d224f3f259267",
+  "derived_sha256": "258a0d01241c2667630f822188176ad21ff641ba15095e5cc6b36c1b5161b986",
+  "change": {
+    "filament_is_support": [
+      "0",
+      "0",
+      "0"
+    ]
+  },
+  "purpose": "Keep two used logical tools with identical PLA material type to exercise multicolor external-spool rejection."
+}
