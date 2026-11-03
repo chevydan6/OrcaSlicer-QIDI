@@ -96,9 +96,15 @@ def check_case(tag, model_path, options, expected_temperature, expected_tool=0, 
         temperatures = expected_temperature if isinstance(expected_temperature, list) else [expected_temperature]
         box_tools = box_tools if box_tools is not None else [expected_tool]
         first_tool = expected_tool if first_tool is None else first_tool
-        thermal_command = 'BOX_TEMP_SET ' + ' '.join(f'VT{tool}={temperatures[tool]}' for tool in box_tools)
+        expected_thermal = sorted(f'VT{tool}={temperatures[tool]}' for tool in box_tools)
+        thermal_lines = re.findall(r'^BOX_TEMP_SET[ \t]+([^\r\n]+)', gcode, re.M)
+        # Named VT parameters have no positional meaning. Embedded QIDI machine
+        # code may visit used tools in a different order; keep values, completeness
+        # and duplicate detection strict while accepting that equivalent ordering.
+        if len(thermal_lines) != 1 or sorted(thermal_lines[0].split()) != expected_thermal:
+            entry['errors'].append(f'Box thermal parameters {thermal_lines!r}, expected {expected_thermal!r}')
         required = [rf'^BOX_PRINT_START EXTRUDER={expected_tool}\b', rf'^T{expected_tool}\s*$',
-                    '^' + re.escape(thermal_command) + r'\s*$', r'^PRINT_END\s*$']
+                    r'^PRINT_END\s*$']
         tool_commands = re.findall(r'^T(\d+)\s*$', gcode, re.M)
         if not tool_commands or int(tool_commands[0]) != first_tool:
             entry['errors'].append(f'First tool is {tool_commands[:1]}, expected {first_tool}')
