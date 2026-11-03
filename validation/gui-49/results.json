@@ -1,0 +1,18 @@
+{
+  "hardware_contacted": false,
+  "endpoint": "127.0.0.1:19025",
+  "commands": [
+    "UPDATE_FILAMENT_INFORMATION SLOT=5 COLOR='00FF00' VENDOR='QIDI' FILAMENT='PLA Rapido'",
+    "EXCLUDE_OBJECT NAME=fixture_cube",
+    "SET_ENABLE_RFID_READ ENABLE=\"1\"\nSET_ENABLE_INIT_READ_RFID ENABLE=\"0\"",
+    "SET_PIN PIN=caselight VALUE=1"
+  ],
+  "stale_job_rejection": [
+    "[error]\t2026-11-03 15:39:16.852948[Thread 0x00007f44091f79c0]:publish_json: {\"print\":{\"command\":\"qidi_exclude_objects\",\"expected_job\":\"fixture.gcode\",\"objects\":[\"fixture_cube\"],\"sequence_id\":\"20006\"}} code: -19"
+  ],
+  "exit": {
+    "exit_code": 0,
+    "elapsed_seconds": 567.4758987426758
+  },
+  "limitation": "Repeated-open dialog clipping found; fixed by patch 52, pending compiled check."
+}
