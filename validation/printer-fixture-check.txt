@@ -1,0 +1,2 @@
+PASS: loopback HTTP/WebSocket fixture, command recording, partial updates, malformed messages, HTTP failure recovery and disconnect.
+No commands executed or forwarded. Custom slicer GUI validation remains separate.
