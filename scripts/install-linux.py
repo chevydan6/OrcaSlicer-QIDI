@@ -15,10 +15,14 @@ APP_ID = 'io.github.chevydan6.OrcaSlicerQIDI'
 parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument('image', type=Path)
 parser.add_argument('--extract', action='store_true', help='Install an extracted AppDir; no FUSE required')
+parser.add_argument('--x11', action='store_true',
+                    help='Use the supported X11/XWayland backend for the native installation')
 parser.add_argument('--flatpak-runtime', help='Package and install a separate Flatpak app using an installed runtime, e.g. org.gnome.Platform//50')
 parser.add_argument('--private-session-bus', action='store_true',
                     help='Use a private D-Bus session with the GTK portal for a broken desktop portal session (Flatpak only)')
 args = parser.parse_args()
+if args.x11 and args.flatpak_runtime:
+    raise SystemExit('--x11 is supported by the native installation only')
 if args.private_session_bus and (not args.flatpak_runtime or not shutil.which('dbus-run-session')):
     raise SystemExit('--private-session-bus requires --flatpak-runtime and dbus-run-session')
 image = args.image.resolve()
@@ -52,6 +56,8 @@ if args.extract or args.flatpak_runtime:
             staged.rename(extracted)
 entrypoint = extracted / 'AppRun' if args.extract or args.flatpak_runtime else installed
 command = [str(entrypoint)]
+if args.x11:
+    command = ['env', 'GDK_BACKEND=x11', *command]
 if args.flatpak_runtime:
     # A registered application is required: GNOME image loaders use the portal
     # to create a nested sandbox, which rejects a bare runtime's metadata.

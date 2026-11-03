@@ -1,0 +1,11 @@
+{"time": 1793705473.1235588, "name": "x11-01-start", "action": ["sleep", "3"]}
+{"time": 1793705483.4649196, "name": "x11-02-cube", "action": ["mousemove", "554", "510", "click", "1", "sleep", "2", "mousemove", "1353", "130", "click", "1", "sleep", "1", "mousemove", "1320", "52", "click", "1", "sleep", "3"]}
+{"time": 1793705501.27933, "name": "x11-03-export-chooser", "action": ["mousemove", "1500", "52", "click", "1", "sleep", "1"]}
+{"time": 1793705511.4839897, "name": "x11-04-export-path", "action": ["key", "ctrl+a", "type", "--clearmodifiers", "/home/dan/qidi-orca-port/research/install-70/installed-cube.gcode.3mf"]}
+{"time": 1793705512.7194712, "name": "x11-05-exported", "action": ["key", "Return", "sleep", "2", "mousemove", "23", "52", "click", "1", "sleep", "1", "mousemove", "463", "266", "click", "1", "sleep", "1"]}
+{"time": 1793705524.0465672, "name": "x11-06-close", "action": ["mousemove", "1584", "17", "click", "1", "sleep", "1"]}
+{"time": 1793705549.926326, "name": "menu-01-start", "action": ["sleep", "2", "mousemove", "130", "52", "click", "1", "sleep", "1", "key", "ctrl+p", "sleep", "1"]}
+{"time": 1793705562.2128873, "name": "menu-02-agent-persisted", "action": ["mousemove", "517", "37", "click", "1"]}
+{"time": 1793705563.0911002, "name": "menu-03-updates-persisted", "action": ["mousemove", "432", "37", "click", "1"]}
+{"time": 1793705563.963244, "name": "menu-04-no-test-connections", "action": ["mousemove", "628", "10", "click", "1", "mousemove", "431", "52", "click", "1", "sleep", "1"]}
+{"time": 1793705574.0857725, "name": "menu-05-clean-close", "action": ["mousemove", "1584", "17", "click", "1", "sleep", "1"]}

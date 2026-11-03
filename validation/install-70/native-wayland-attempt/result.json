@@ -1,0 +1,6 @@
+{
+  "accepted": false,
+  "observations": "Fresh setup and file chooser worked; main-window clicks did not reliably select tabs, maximize or slice in isolated Weston13/llvmpipe.",
+  "termination": "Harness Alt+F4 reached outer Openbox and closed Weston; application exit1 reported broken display pipe. This is not an application crash.",
+  "followup": "Validate supported X11/XWayland backend for installed launcher; preserve native Wayland as unaccepted."
+}

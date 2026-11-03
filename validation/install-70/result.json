@@ -1,0 +1,29 @@
+{
+  "candidate": 70,
+  "appimage_sha256": "7614dd15d467d0bf08b9e8846111e29940da4c53248a1d238a35d53b1dff35a7",
+  "manifest_matches": true,
+  "install_options": [
+    "--extract",
+    "--x11"
+  ],
+  "launcher": "/home/dan/.local/bin/orca-slicer-qidi",
+  "menu": "OrcaSlicer QIDI (Custom)",
+  "settings": "/home/dan/.config/OrcaSlicer-QIDI",
+  "settings_persistence": true,
+  "printer_agents": true,
+  "automatic_preset_updates": false,
+  "test_connections_in_delivered_settings": false,
+  "launcher_exit": 0,
+  "desktop_entry_launch_exit": 0,
+  "actual_gnome_xwayland_launch_exit": 0,
+  "file_chooser_export": true,
+  "slice_preview": true,
+  "native_wayland": "Not accepted: isolated Weston main controls did not respond reliably. Subsequent exit1 was caused by harness closing compositor, not an app crash.",
+  "previous_candidate": {
+    "number": 69,
+    "sha256": "2bed31d5e66ad36a1cdd56ea0bbe4a500960ce112c23dc778f59f48e72bd5757",
+    "status": "Retained, GUI rejected"
+  },
+  "settings_backup": "/home/dan/.local/share/orca-slicer-qidi/backups/accepted-70-settings-2026-11-03.tar.gz",
+  "flatpak": "Not built or supported for this host milestone; historical packaging helper retained."
+}

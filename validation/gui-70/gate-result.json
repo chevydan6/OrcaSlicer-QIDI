@@ -1,0 +1,12 @@
+{
+  "candidate": 70,
+  "integration_commit": "7352b62f30804ecbeaa96c7996ff86614fadf7a8",
+  "appimage_sha256": "7614dd15d467d0bf08b9e8846111e29940da4c53248a1d238a35d53b1dff35a7",
+  "gui_cases": 63,
+  "gui_failed": 0,
+  "fixture_sha256": "8e259f6743630a2a224e1c7a54bd322288e8565dbbfef5c96382eb5dba56ff7b",
+  "isolated_display": ":2",
+  "fixture_endpoint": "127.0.0.1:19025",
+  "hardware_commands_sent": false,
+  "installation": "passed; see ../install-70/result.json"
+}

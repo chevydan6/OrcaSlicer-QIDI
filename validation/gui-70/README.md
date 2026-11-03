@@ -1,24 +1,29 @@
-# Candidate 70 GUI acceptance: in progress
+# Candidate 70 GUI gate: passed
 
-Build input `7352b62f30804ecbeaa96c7996ff86614fadf7a8`, AppImage SHA-256
-`7614dd15d467d0bf08b9e8846111e29940da4c53248a1d238a35d53b1dff35a7`. Matching ZIP digest, source pins and all 70 patch
-hashes verified. Ubuntu 24.04.5, private Xvfb :2/Openbox, fresh isolated settings.
-No debugger intervention. Every control/upload targets 127.0.0.1:19025; the
-fixture records and discards requests and cannot forward them.
+Build input `7352b62f30804ecbeaa96c7996ff86614fadf7a8`; AppImage SHA-256
+`7614dd15d467d0bf08b9e8846111e29940da4c53248a1d238a35d53b1dff35a7`.
+All **63 GUI cases passed** on this binary after its complete CI pass.
+Ubuntu 24.04.5, private Xvfb :2/Openbox, fresh isolated settings; no debugger.
+Every GUI request/upload targets the non-forwarding loopback fixture.
+No real printer controls were used. Installation passed separately with the X11 backend; see ../install-70.
 
-Cases.json records only observed checks on this exact binary. Untested cases
-remain open; this record does not accept or install the candidate.
-Previous failures remain preserved in ../gui-68 and ../gui-69.
+See `cases.json` for individual evidence, `core-checks.json` for measured command,
+mapping, G-code, persistence and callback assertions, and `gate-result.json` for
+binary/fixture identity. Both GUI processes exited0. Delayed shutdown completed
+before the response arrived. Twenty material reopens retained usable layout and
+selected-slot colors. Original sparse and support-first projects imported and
+sliced without editing their embedded machine definitions.
 
-Current core assertions pass: sparse T2→slot5, external single-tool mode,
-support-first preparation T2/deposition T0 then T2 with reversed Box mappings,
-submission ordering, Box temperature persistence, stale guards, twenty editor
-reopens, five malformed telemetry cases and delayed editor callbacks.
-Timelapse On and Off both reached the fixture. Delayed application shutdown
-exited zero before the pending response completed. Restart/storage/final exit
-and installation checks remain in progress.
+Timelapse On/Off dispatch, unavailable-storage rejection and recovery all pass.
+Bed leveling/polar options are captured with each job. Mixed and multicolor
+external jobs and experimental QIDI batch submission are explicitly rejected.
+The sanitized real-MAX4 telemetry is only replayed against the fixture.
 
-Harness-only interruptions are retained separately: an absent capture directory
-caused a fixture upload error; an unmoved dialog required coordinate alignment.
-Neither is a product fix or an accepted result for the ineffective actions.
-
+Harness interruptions remain visible: moving preliminary test data removed the
+fixture capture directory, causing an upload error; added early timelapse tests
+left the Send dialog at a different position, requiring replay alignment.
+Their failed/ineffective actions are preserved with harness-specific names and
+are not used as positive assertions. No product changes were needed.
+The preliminary wizard run was interrupted by the harness before this fresh
+acceptance session; it was not an application crash or acceptance pass.
+Previous product failures remain preserved in ../gui-68 and ../gui-69.

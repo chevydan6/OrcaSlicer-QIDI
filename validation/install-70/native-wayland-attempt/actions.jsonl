@@ -1,0 +1,23 @@
+{"time": 1793705138.4603055, "name": "01-first-launch", "action": ["sleep", "4"]}
+{"time": 1793705148.0917964, "name": "02-use-system-ca", "action": ["mousemove", "467", "885", "click", "1", "mousemove", "989", "886", "click", "1", "sleep", "5"]}
+{"time": 1793705168.4781942, "name": "03-wizard-region", "action": ["mousemove", "1184", "578", "click", "1", "sleep", "1"]}
+{"time": 1793705176.5686812, "name": "04-wizard-printers", "action": ["mousemove", "1495", "704", "click", "1", "sleep", "1"]}
+{"time": 1793705185.8925555, "name": "05-search-max4", "action": ["mousemove", "874", "195", "click", "1", "type", "--delay", "60", "X-Max4"]}
+{"time": 1793705191.9267998, "name": "06-search-result", "action": ["sleep", "2"]}
+{"time": 1793705203.5180795, "name": "07-search-qidi", "action": ["mousemove", "1010", "195", "click", "1", "key", "ctrl+a", "type", "--delay", "80", "Qidi"]}
+{"time": 1793705210.7667644, "name": "08-max4-selected", "action": ["mousemove", "1268", "530", "click", "1", "sleep", "1", "mousemove", "1495", "704", "click", "1", "sleep", "1"]}
+{"time": 1793705220.6918473, "name": "09-all-materials", "action": ["mousemove", "1430", "457", "click", "1", "mousemove", "1495", "704", "click", "1", "sleep", "1"]}
+{"time": 1793705227.6568592, "name": "10-stealth", "action": ["mousemove", "914", "473", "click", "1", "mousemove", "1495", "696", "click", "1", "sleep", "1"]}
+{"time": 1793705236.170794, "name": "11-setup-complete", "action": ["mousemove", "1495", "696", "click", "1", "sleep", "4", "mousemove", "350", "169", "click", "1", "sleep", "1"]}
+{"time": 1793705251.9300723, "name": "12-fresh-layout", "action": ["mousemove", "1318", "639", "click", "1", "sleep", "1"]}
+{"time": 1793705253.811744, "name": "13-preferences", "action": ["key", "ctrl+p", "sleep", "1"]}
+{"time": 1793705262.0739877, "name": "14-agent-preference", "action": ["mousemove", "663", "318", "click", "1", "sleep", "1"]}
+{"time": 1793705269.3438, "name": "15-agents-enabled", "action": ["mousemove", "465", "585", "click", "1", "mousemove", "580", "318", "click", "1", "sleep", "1"]}
+{"time": 1793705280.5997086, "name": "16-preset-updates-off", "action": ["mousemove", "465", "742", "click", "1", "mousemove", "465", "619", "click", "1", "mousemove", "718", "284", "click", "1", "key", "ctrl+i", "sleep", "1"]}
+{"time": 1793705287.6671252, "name": "17-file-chooser", "action": ["key", "ctrl+o", "sleep", "2"]}
+{"time": 1793705297.09937, "name": "18-cube-path", "action": ["key", "ctrl+l", "type", "--clearmodifiers", "/home/dan/qidi-orca-port/artifacts/candidate-70/tests/build/max4-slicing/cube.stl"]}
+{"time": 1793705298.4213674, "name": "19-cube-import", "action": ["key", "Return", "sleep", "2"]}
+{"time": 1793705308.8680165, "name": "20-installed-slice", "action": ["mousemove", "1040", "169", "click", "1", "sleep", "3", "mousemove", "535", "169", "click", "1", "sleep", "1"]}
+{"time": 1793705327.112926, "name": "21-maximize", "action": ["mousemove", "1321", "133", "click", "1", "sleep", "2"]}
+{"time": 1793705342.866245, "name": "22-keyboard-slice", "action": ["key", "Escape", "key", "ctrl+r", "sleep", "3", "key", "ctrl+p", "sleep", "1"]}
+{"time": 1793705384.3448367, "name": "23-close-wayland-preferences", "action": ["mousemove", "656", "379", "click", "1", "key", "alt+F4", "sleep", "1"]}

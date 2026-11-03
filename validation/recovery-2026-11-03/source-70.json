@@ -5,5 +5,6 @@
   "patches": 70,
   "archive": "OrcaSlicer-QIDI-source-70-54d95481.tar.gz",
   "sha256": "70f5a306805a32144cb59ac3aac010d47fb417685b9b63d12e5e44e289d80e01",
-  "final_acceptance": false
+  "final_acceptance": true,
+  "acceptance_record": "../accepted-70.json"
 }

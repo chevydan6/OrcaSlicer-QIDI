@@ -1,11 +1,11 @@
 # Linux build and installation
 
 The current acceptance candidate and CI state are recorded in [HANDOFF.md](../HANDOFF.md).
-No final release is accepted yet. Candidate 69 passed compilation, 2,916 unit
-cases without failures/skips, seven CLI regressions, 72 vendor bundles and all
-21 MAX4 cases, but failed timelapse GUI selection. Candidate 70's matching
-artifact is verified; its complete CI/GUI acceptance is pending. Software
-validation does not certify physical behavior.
+Candidate70 is accepted for personal Linux x86_64 X11/XWayland use. Compilation,
+2,916 unit cases without failures/skips, seven CLI regressions, 72 vendor bundles,
+21 MAX4 cases, static checks and63 GUI cases passed. The installed launcher/menu,
+chooser, settings and clean exits passed. See [the identity record](../validation/accepted-70.json).
+Software validation does not certify physical behavior.
 
 The recovered host is Ubuntu 24.04.5 x86_64 with GNOME/Wayland, 14 GiB RAM and
 23 GiB swap. Private GUI tests use Xvfb and Openbox. The native extracted AppImage
@@ -18,7 +18,9 @@ to available memory. Do not copy historical host assumptions without checking.
 ```sh
 git clone https://github.com/chevydan6/OrcaSlicer-QIDI.git
 cd OrcaSlicer-QIDI
+git checkout 7352b62f30804ecbeaa96c7996ff86614fadf7a8
 python3 scripts/prepare-source.py
+test "$(git -C build/source write-tree)" = dd5107b2ecaa9dc53d7c503ebf096ae11e8fc68b
 python3 scripts/write-build-manifest.py build/source
 cd build/source
 ./build_linux.sh -u
@@ -29,6 +31,8 @@ sudo locale-gen de_DE.UTF-8 fr_FR.UTF-8
 CTEST_PARALLEL_LEVEL=2 xvfb-run -a ./scripts/run_unit_tests.sh build/tests Release
 xvfb-run -a ctest --test-dir build/tests -C Release -L RequiresApp --no-tests=error --output-on-failure --timeout 300
 python3 scripts/orca_profile_tool.py check
+cd ../..
+xvfb-run -a python3 scripts/validate-max4-slicing.py --source build/source
 ```
 
 Use Ubuntu 24.04 with adequate disk and RAM; `-u` installs OS packages and needs
@@ -54,10 +58,10 @@ the applied patches, without precompiled headers. Dispatch it after a dependency
 cache is available; it deliberately fails on a cache miss rather than duplicating
 the dependency build. Static checks complement compilation and runtime tests.
 
-## Install once the custom artifact passes validation
+## Install the accepted build
 
 ```sh
-python3 scripts/install-linux.py /path/to/custom.AppImage
+python3 scripts/install-linux.py /path/to/custom.AppImage --extract --x11
 ~/.local/bin/orca-slicer-qidi
 ```
 
@@ -68,7 +72,16 @@ migrates existing slicer settings nor changes file associations. Installation
 does not launch the application or contact a printer. The AppImage path also
 gives it a distinct single-instance identity in Orca's Linux implementation.
 
-GUI coexistence and persistence must still be verified with the compiled build.
+Use the release integration kit for the current installer (--x11 was added after
+the binary build input). Its patches and pins are identical to the build input.
+The installer --x11 option selects GDK_BACKEND=x11 for the native launcher/menu;
+on GNOME Wayland this uses XWayland. Native Wayland was not accepted after an
+isolated Weston test exposed unreliable main-window controls. The actual GNOME
+XWayland launcher rendered and exited normally. See ../validation/install-70.
+Back up custom settings before changing an existing installation. The recovered
+host had no prior custom settings; accepted settings are backed up locally.
+
+Native settings isolation and persistence passed the installed-build checks.
 On hosts without FUSE, add `--extract` to install an AppDir. On the historical Fedora/LXQt host,
 WebKitGTK is supplied by the existing GNOME runtime used by the installed slicers:
 
@@ -76,7 +89,7 @@ WebKitGTK is supplied by the existing GNOME runtime used by the installed slicer
 python3 scripts/install-linux.py /path/to/custom.AppImage --flatpak-runtime org.gnome.Platform//50
 ```
 
-On this Fedora/LXQt session, the desktop portal cannot start because its
+On that historical Fedora/LXQt session, the desktop portal cannot start because its
 `graphical-session.target` prerequisite is inactive. The GUI test's file chooser
 works in a private D-Bus session with the GTK portal. For that specific host issue:
 
@@ -89,8 +102,7 @@ This option requires `dbus-run-session` and a working GTK portal backend. It use
 an application-specific session bus and a matching menu-entry override; it does
 not alter the desktop's systemd targets or other slicers. The normal Flatpak
 launch remains the default on desktops with working portals. The private-session
-mode has been tested with the registered validation runtime; final installation
-validation remains pending. It does not disable image-loader sandboxing.
+mode has been tested with the registered validation runtime; this historical Flatpak mode is not accepted for the current Ubuntu milestone. It does not disable image-loader sandboxing.
 
 This mode verifies that the runtime is installed, extracts the AppImage, packages
 and installs the separate Flatpak application `io.github.chevydan6.OrcaSlicerQIDI`.
@@ -105,8 +117,8 @@ slicer use. Installation does not launch it. Software validation overrides netwo
 access with `--unshare=network`. A registered application is necessary: launching
 directly inside a bare GNOME runtime fails when its sandboxed image loaders ask
 the portal to create a child sandbox without application metadata. This was
-reproduced and resolved using the official QIDI Studio reference binary on this
-host; validation of the custom Orca binary remains pending.
+reproduced and resolved using the official QIDI Studio reference binary on the historical
+host. No Flatpak bundle is built or accepted for the recovered Ubuntu milestone.
 
 To package an already extracted build independently, use:
 

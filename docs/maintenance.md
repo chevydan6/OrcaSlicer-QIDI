@@ -75,3 +75,16 @@ with a retained older custom AppImage to point the dedicated launcher at that
 version. Back up the custom `OrcaSlicer-QIDI` settings before downgrading across
 schema changes. Existing official Orca/Bambu/QIDI application directories and file
 associations are independent of this installation.
+
+## Accepted70 rollback baseline
+
+The first accepted installation on the recovered computer is70, SHA256
+`7614dd15d467d0bf08b9e8846111e29940da4c53248a1d238a35d53b1dff35a7`.
+Retain that image/checksum directory and the accepted settings backup recorded in
+HANDOFF.md. To return to it, close the application, back up current custom settings,
+and run the current installer against the retained70 image with --extract --x11.
+Restore the dedicated settings backup only when a schema downgrade requires it;
+never overwrite another slicer's settings. Candidate69 is also retained locally,
+but it failed timelapse acceptance and is only a comparison binary. There is no
+older accepted installation on this new computer. GitHub release assets back up
+the accepted binary/source/kit/evidence; personal settings backups stay local.

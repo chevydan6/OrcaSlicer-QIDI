@@ -1,0 +1,53 @@
+[
+  {
+    "time": 1793704980.67898,
+    "method": "POST",
+    "path": "/server/files/upload",
+    "query": {},
+    "body": ""
+  },
+  {
+    "time": 1793704980.681716,
+    "method": "POST",
+    "path": "/server/files/upload",
+    "query": {},
+    "body": ""
+  },
+  {
+    "time": 1793704980.6829827,
+    "method": "POST",
+    "path": "/printer/gcode/script",
+    "query": {},
+    "body": "{\"script\":\"SAVE_VARIABLE VARIABLE=enable_box VALUE=1\\nSAVE_VARIABLE VARIABLE=value_t2 VALUE=\\\"'slot2'\\\"\"}"
+  },
+  {
+    "time": 1793704980.6832864,
+    "method": "POST",
+    "path": "/printer/gcode/script",
+    "query": {},
+    "body": "{\"script\":\"G32\"}"
+  },
+  {
+    "time": 1793704980.683566,
+    "method": "POST",
+    "path": "/machine/timelapse/settings",
+    "query": {
+      "enabled": "true"
+    },
+    "body": "{}"
+  },
+  {
+    "time": 1793704980.6838174,
+    "method": "POST",
+    "path": "/printer/gcode/script",
+    "query": {},
+    "body": "{\"script\":\"SAVE_VARIABLE VARIABLE=enable_polar_cooler VALUE=0\"}"
+  },
+  {
+    "time": 1793704980.6840703,
+    "method": "POST",
+    "path": "/printer/print/start",
+    "query": {},
+    "body": "{\"filename\":\"sparse-project.gcode\"}"
+  }
+]

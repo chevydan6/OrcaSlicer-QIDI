@@ -35,8 +35,22 @@
         "20-connection-cancel.png"
       ]
     },
-    "clean_restart_endpoint": "untested",
-    "tabs_resize_restore": "untested"
+    "clean_restart_endpoint": {
+      "result": "passed",
+      "note": "Restart preserves loopback endpoint scheme and port and reconnects.",
+      "evidence": [
+        "118-restart.png",
+        "122-restarted-device.png"
+      ]
+    },
+    "tabs_resize_restore": {
+      "result": "passed",
+      "note": "Restored small window and maximized again; Prepare, Preview and Device remain rendered.",
+      "evidence": [
+        "127-end-dialog.png",
+        "128-resize-restored.png"
+      ]
+    }
   },
   "materials": {
     "box_reopen_10": {
@@ -215,7 +229,13 @@
         "requests.jsonl"
       ]
     },
-    "actual_telemetry_replay": "untested",
+    "actual_telemetry_replay": {
+      "result": "passed",
+      "note": "Sanitized read-only MAX4 telemetry replay renders one Box, blue ABS in A2, other slots empty and external PLA. No live hardware access in GUI.",
+      "evidence": [
+        "129-actual-telemetry.png"
+      ]
+    },
     "box_v2_hides_eject": {
       "result": "passed",
       "note": "Eject is hidden after box_v2 telemetry settles.",
@@ -313,7 +333,14 @@
         "61-reconnected-editor.png"
       ]
     },
-    "delayed_shutdown_restart": "untested"
+    "delayed_shutdown_restart": {
+      "result": "passed",
+      "note": "Exit0 occurred before injected15s response completed; restarted successfully.",
+      "evidence": [
+        "delayed-shutdown-result.json",
+        "118-restart.png"
+      ]
+    }
   },
   "jobs": {
     "original_sparse_import_slice_preview": {
@@ -389,7 +416,14 @@
         "multicolor-result.json"
       ]
     },
-    "batch_qidi_reject": "untested",
+    "batch_qidi_reject": {
+      "result": "passed",
+      "note": "Experimental multi-device action refuses QIDI explicitly, with zero POST.",
+      "evidence": [
+        "121-batch-rejected.png",
+        "storage-batch-proof.json"
+      ]
+    },
     "stale_object_reject": {
       "result": "passed",
       "note": "After fixture job changed, old chooser emitted no EXCLUDE_OBJECT.",
@@ -415,8 +449,24 @@
         "harness-upload-failure.json"
       ]
     },
-    "bed_level_polar_options": "untested",
-    "timelapse_storage_guard": "untested"
+    "bed_level_polar_options": {
+      "result": "passed",
+      "note": "On defaults recorded G31/polar1; Off options recorded G32/polar0 alongside Timelapse On before simulated start.",
+      "evidence": [
+        "124-preprint-toggle.png",
+        "preprint-options-proof.json"
+      ]
+    },
+    "timelapse_storage_guard": {
+      "result": "passed",
+      "note": "Absent/full storage disables Timelapse and Send with an explanatory message and no POST; restoring storage permits Timelapse On again.",
+      "time": 1793705036.4723728,
+      "evidence": [
+        "storage-03-unavailable.png",
+        "storage-05-restored.png",
+        "storage-batch-proof.json"
+      ]
+    }
   },
   "persistence": {
     "box_temperature_save_reload": {
@@ -451,7 +501,20 @@
         "89-export-path.png"
       ]
     },
-    "close_discard_imported_project": "untested",
-    "clean_exit": "untested"
+    "close_discard_imported_project": {
+      "result": "passed",
+      "note": "Closing imported sparse project offers preset discard and exits normally.",
+      "evidence": [
+        "130-final-close.png",
+        "131-final-discard.png"
+      ]
+    },
+    "clean_exit": {
+      "result": "passed",
+      "note": "Both exact candidate processes exited with status0.",
+      "evidence": [
+        "exits.jsonl"
+      ]
+    }
   }
 }

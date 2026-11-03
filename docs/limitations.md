@@ -12,8 +12,9 @@ prove physical execution. Candidates 59, 62 and 64 passed build gates but failed
 acceptance. Candidate 66 passed build gates and targeted layout/import checks;
 candidate 68 passed build gates but failed unsupported-job GUI status.
 Candidate 69 passed CI and 61 GUI cases but failed timelapse selection.
-Candidate 70 corrects that check and is pending matching acceptance. No candidate is installed
-or accepted on the recovered Ubuntu computer yet. See ../HANDOFF.md.
+Candidate70 passed its complete matching CI/63-case GUI gate and is installed
+with X11/XWayland; see [acceptance](../validation/accepted-70.json). These earlier
+failed records are retained and are not combined with70's positive evidence.
 
 ## Supported scope and gaps
 
@@ -39,8 +40,11 @@ or accepted on the recovered Ubuntu computer yet. See ../HANDOFF.md.
   catalog has no translation. Some shared upstream monitoring labels still say AMS.
 - This deliverable targets Linux x86_64. Other platforms have not been built.
   The old Fedora/LXQt host needed GNOME 50 Flatpak and a private session bus.
-  The recovered Ubuntu 24.04.5 host runs the native AppImage; installation and
-  file chooser acceptance are pending. Dependencies vary by distribution.
+  The recovered Ubuntu 24.04.5 host runs the native AppImage; launcher/menu/file chooser/settings/exit acceptance passed with --extract --x11.
+  Native Wayland is unaccepted: isolated Weston main controls were unreliable.
+  The later display-pipe exit came from the harness closing the compositor, not
+  an application crash. Actual GNOME/XWayland launch/render/exit passed.
+  No Flatpak bundle is supported for this milestone. Dependencies vary by distribution.
 - Official Orca application/preset updates do not include the downstream patches.
   Keep automatic preset updates disabled and rebuild this port for updates.
 

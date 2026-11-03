@@ -1,41 +1,31 @@
 # OrcaSlicer QIDI MAX4 / Box port
 
-Personal downstream integration project. Integration builds pass; final GUI fixes
-and Linux release acceptance are still in progress.
+Personal Linux x86_64 build based on pinned official OrcaSlicer, with QIDI Studio's
+MAX4/Box LAN functionality. **Candidate70 is software-accepted and installed using
+X11/XWayland.** Automatic refill and physical print validation remain unfinished.
 
-Start with [HANDOFF.md](HANDOFF.md) for the current candidate, build links,
-known failures, validation evidence and exact next steps.
+[Download the accepted build and source](https://github.com/chevydan6/OrcaSlicer-QIDI/releases/tag/qidi-linux-2026-11-03-c70) ·
+[Exact acceptance record](validation/accepted-70.json) ·
+[Current handoff](HANDOFF.md) · [Build/install](docs/build.md) ·
+[Using the build](docs/using-the-build.md)
 
-The source baseline is a pinned official OrcaSlicer main revision. QIDI Studio is the reference
-for MAX4 profiles, Box workflows and communication. Local source checkouts are
-excluded from this integration repository; pinned revisions and reviewable patches
-make the resulting source reproducible without duplicating upstream history.
+Compilation, 2,916 unit cases, seven CLI regressions, 72 vendor bundles, 21 MAX4
+cases, static checks and 63 exact-binary GUI cases passed. Actual launcher/menu,
+settings persistence, file chooser, slicing/preview and clean exit were verified.
+Hardware evidence is limited to read-only connectivity, telemetry, slots and camera.
 
-## Scope and acceptance checklist
+This is an integration kit, not a checked-in Orca source tree. `sources.json` pins
+both official baselines; `patches/` holds70 ordered patches. The release includes
+the matching patched source archive, manifest, checksums, reports and evidence.
+Orca's engine and supported existing behavior remain the base. Original AGPL,
+copyright and dependency notices are preserved.
 
-- [x] Pin both source baselines and inventory their licenses.
-- [x] Inventory printer/material/process profiles and inherited differences.
-- [ ] Review remaining tuning and workflow differences.
-- [ ] Port missing machine settings, chamber and Box controls.
-- [ ] Port filament selection, persistent slot mapping and Box operations.
-- [ ] Integrate start/end/change G-code and placeholder compatibility.
-- [ ] Integrate network submission, monitoring and supporting interface changes.
-- [x] Build the general integration before the dedicated bug-fixing phase.
-- [ ] Compare equivalent QIDI Studio workflows and fix initial-filament selection.
-- [x] Validate compilation, profile loading, persistence, slicing and generated G-code on the 42-patch build.
-- [x] Validate communication with loopback HTTP/WebSocket and native GUI tests; final-build retest pending.
-- [ ] Package Linux build with isolated settings and application identity.
-- [ ] Document reproducible builds, attribution and remaining limitations.
-- [ ] Obtain separately authorized physical-printer verification.
+Implemented controls, verified scope and gaps are distinguished in the
+[feature checklist](docs/feature-checklist.md) and [limitations](docs/limitations.md).
+Refill, manual drying, QIDI cloud/MQTT/tunnels and native Wayland acceptance are
+unfinished. Mixed Box/external, multicolor external and QIDI batch jobs are rejected.
+No supported Flatpak package was produced for this Ubuntu milestone.
 
-## Safety boundary
-
-No firmware flashes, printer configuration writes, heater activation, hardware
-movement or print starts are authorized. Software tests must not submit jobs to
-real printers. Hardware verification will be reported separately from software tests.
-
-## Progress
-
-See the [feature checklist](docs/feature-checklist.md), [investigation notes](docs/investigation.md), [dependency inventory](docs/dependencies.md),
-[build/install instructions](docs/build.md) and [upstream maintenance procedure](docs/maintenance.md). This repository is a progress
-backup, not a claim that the port is complete.
+No active hardware testing is authorized. Heating, feeding, motion, configuration
+writes and prints require a separately agreed [supervised session](docs/hardware-validation-plan.md).
+The general port is not claimed complete.

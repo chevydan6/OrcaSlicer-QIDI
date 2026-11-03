@@ -92,5 +92,6 @@
     "build_instructions": "docs/build.md in the integration repository",
     "physical_printer_verification": false
   },
-  "final_acceptance": false
+  "final_acceptance": true,
+  "acceptance_record": "../accepted-70.json"
 }

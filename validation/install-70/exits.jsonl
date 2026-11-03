@@ -1,0 +1,3 @@
+{"mode": "launcher", "pid": 936757, "exit_code": 0, "time": 1793705524.454566, "appimage_sha256": "7614dd15d467d0bf08b9e8846111e29940da4c53248a1d238a35d53b1dff35a7"}
+{"mode": "menu", "pid": 937407, "exit_code": 0, "time": 1793705574.4068606, "appimage_sha256": "7614dd15d467d0bf08b9e8846111e29940da4c53248a1d238a35d53b1dff35a7"}
+{"mode": "actual-gnome-launcher", "pid": 938066, "exit_code": 0, "time": 1793705718.8868637}

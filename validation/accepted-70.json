@@ -1,0 +1,53 @@
+{
+  "status": "software accepted for personal Linux x86_64 X11/XWayland use",
+  "date": "2026-11-03",
+  "integration_build_input": "7352b62f30804ecbeaa96c7996ff86614fadf7a8",
+  "sources": {
+    "orca": {
+      "repository": "https://github.com/OrcaSlicer/OrcaSlicer.git",
+      "commit": "896557bce5281553ee0c6210f2da301b3b3c262e"
+    },
+    "qidi": {
+      "repository": "https://github.com/QIDITECH/QIDIStudio.git",
+      "commit": "403b619d56147160bb883e94f95a7951245bc6d0"
+    }
+  },
+  "downstream_commit": "54d95481c2e88abba71bfd5b43889c75d40cb728",
+  "downstream_tree": "dd5107b2ecaa9dc53d7c503ebf096ae11e8fc68b",
+  "patch_count": 70,
+  "integration_run": 41622045346,
+  "static_run": 41622050016,
+  "appimage_sha256": "7614dd15d467d0bf08b9e8846111e29940da4c53248a1d238a35d53b1dff35a7",
+  "github_artifact_zip_sha256": "5a8b2e0b004f96278039321f4dff6b8d7cacb3e5b2bb4135cf5ea294bd442fcc",
+  "github_artifact_digest_verified": true,
+  "source_archive_sha256": "70f5a306805a32144cb59ac3aac010d47fb417685b9b63d12e5e44e289d80e01",
+  "test_reports_sha256": "b74e6cb5e6e8165dad57cd650c6dc4ffa88d59cd91f1299827feb737375b7cbc",
+  "unit_cases": 2916,
+  "unit_failures": 0,
+  "unit_skips": 0,
+  "cli_cases": 7,
+  "vendor_bundles": 72,
+  "max4_cases": 21,
+  "gui_cases": 63,
+  "gui_failed": 0,
+  "gui_evidence": "validation/gui-70",
+  "installation_evidence": "validation/install-70",
+  "installed_backend": "x11 (XWayland on GNOME)",
+  "fixture_sha256": "8e259f6743630a2a224e1c7a54bd322288e8565dbbfef5c96382eb5dba56ff7b",
+  "hardware": "Read-only inspection only; no physical control/print verification",
+  "unfinished": [
+    "automatic refill",
+    "manual drying",
+    "QIDI cloud/MQTT/tunnels",
+    "physical starting-filament comparison",
+    "physical thermal/feed/print validation",
+    "native Wayland acceptance",
+    "other platforms",
+    "Flatpak package"
+  ],
+  "rejected_workflows": [
+    "mixed Box/external jobs",
+    "multicolor external-spool jobs",
+    "QIDI experimental multi-device submission"
+  ]
+}

@@ -1,28 +1,35 @@
 # MAX4 and QIDI Box feature-port checklist
 
 Status describes source implementation, not completion or printer certification.
-The full integrated build and dedicated validation phase remain open.
+The candidate70 software milestone is accepted within the documented Linux backend scope.
 Read-only LAN inspection of Dan's MAX4 is recorded in
 [the recovery evidence](../validation/recovery-2026-11-03/printer-readonly.json).
 No physical control/print behavior is verified. Automated communication tests
 use only the non-forwarding loopback fixture.
 
-Build update: candidate 69 (`f8192f7`) passed compilation, 2,916 unit cases with
-zero failures/skips, seven CLI regressions, 72 vendor bundles, all 21 MAX4 cases
-and static checks. Its GUI record has 61 passes and one failure: Timelapse On
-remains disabled despite MAX4 profile support and available storage. See
-[GUI69](../validation/gui-69/README.md). Candidate 70 (`7352b62`) corrects the
-QIDI capability check; its artifact is verified and final CI/GUI acceptance is
-pending. No candidate is installed yet. See [HANDOFF](../HANDOFF.md).
+Current acceptance: candidate70 (`7352b62`) passed compilation, 2,916 unit cases
+without failures/skips, seven CLI regressions,72 vendor bundles,21 MAX4 cases,
+static checks and63 GUI cases on the matching binary. Installed launcher/menu,
+settings, chooser, slice/preview and exits passed using X11/XWayland. Native
+Wayland remains unaccepted. See [GUI70](../validation/gui-70/README.md),
+[installation70](../validation/install-70/README.md) and [exact identity](../validation/accepted-70.json).
+The following tables distinguish the accepted software scope from hardware and
+unfinished requirements.
 
-Actual GUI tests through patch 38 exercise Box load/unload/eject/RFID, four-Box and
-zero-Box transitions, external-spool display, lamp, chamber, fan, speed and print
-options against the loopback simulator. Malformed telemetry, HTTP failure,
-delayed requests and WebSocket reconnection leave the tested GUI usable. Camera
-JPEG failure and recovery also pass. The complete GUI submission preserves
-logical filament 3 as T2 and maps it to physical B2 (slot 5) before simulated start.
-See [the recorded GUI evidence](../validation/gui-38/README.md). Final-build
-acceptance and hardware verification remain open.
+| Current gate | Candidate70 result |
+| --- | --- |
+| Fresh setup, connection/cancel/reopen, blank key | Passed |
+| Material/color edit,20 reopens,slot switching,duplicates,disconnect/callback lifetime | Passed |
+| Load/unload/eject/RFID,chamber,three fans,light,speed,detection,polar controls | Expected fixture requests; GUI usable |
+| Zero/four Boxes,external spool,box_v2 eject visibility | Passed |
+| Sparse T2→slot5,reversed multi-Box mappings,support-first T2 preparation/T0 deposition | Original projects slice/preview and ordered simulated submission pass |
+| Box print temperature persistence,project save/reload,placeholder compatibility | Passed |
+| Missing/mixed/multicolor external mappings and experimental QIDI batch | Rejected before dispatch |
+| Timelapse On/Off,bed leveling/polar job options,storage availability guard | Passed |
+| Stale/fresh object exclusion,malformed telemetry,HTTP/delay/WebSocket/camera recovery | Passed |
+| Post-control slicing,non-QIDI A1,normal/pending shutdown | Passed |
+| Installed identity,menu/launcher,chooser,settings,actual GNOME/XWayland rendering | Passed; no loopback connection delivered |
+| Automatic refill,manual drying,cloud/MQTT/tunnels,physical prints | Unfinished/unverified |
 
 The stability fixes include typed telemetry validation, bounded chamber numbers,
 callback lifetime guards, stale dialog selection checks and QIDI-specific
@@ -37,31 +44,31 @@ documented in the build guide. Source checks alone do not validate GUI behavior.
 | Fan and speed controls | QIDI part-fan number mismatch; speed selection ignored | Named fan commands; speed commands/telemetry | Offline command checks pass; hardware pending |
 | Camera | No QIDI native stream mode | Local web-proxy snapshot endpoint | Offline GUI JPEG display, malformed frame, HTTP failure and recovery pass; read-only MAX4 JPEG GET verified; custom-app real-camera/authentication/proxy testing pending |
 | Chamber heat | Profile temperatures and start macros | Native command translation, heater capability and live current/target telemetry | Protocol and offline GUI target/telemetry checks pass; hardware pending |
-| Box temperature during printing | JSON values ignored by core | Persistent settings/UI; logical VT indices in generated code | Compiled slicing and save/reload pass; final-build rerun pending |
+| Box temperature during printing | JSON values ignored by core | Persistent settings/UI; logical VT indices in generated code | Candidate70 compiled slicing and GUI save/reload pass; physical temperatures unverified |
 | Box/external selection | Physical-slot mapping exists | Explicit enable_box; active-tool snapshot; reject missing/malformed mappings | Recording-transport submission order and stop-on-failure pass |
 | External spool monitoring | Generic virtual-tray interface | QIDI external material/color report and exact type resolution | Decoder/partial-update checks and external-spool GUI display pass; hardware pending |
-| Initial filament | Logical tool placeholders and mapping exist | Preserve sparse indices | Sparse initial-tool slicing and GUI logical-3 to B2 submission pass; final-build and physical checks pending |
-| QIDI saved projects | Unrecognized application marker; incompatible MAX4 names and automatic raft value | Recognize structured metadata; retain object/material assignments; migrate known settings | Both original QIDI projects import and slice on patch 38; GUI comparison ongoing |
-| Load/unload | Native UI lacks QIDI translation | QIDI macros, selected physical slot | Protocol and offline GUI checks pass; final-build and hardware pending |
-| Eject | Missing | QIDI-only control; hidden for box_v2 identity | Command and offline GUI checks pass; final-build and hardware pending |
+| Initial filament | Logical tool placeholders and mapping exist | Preserve sparse indices | Candidate70 sparse T2→slot5 submission passes; physical symptom unresolved |
+| QIDI saved projects | Unrecognized application marker; incompatible MAX4 names and automatic raft value | Recognize structured metadata; retain object/material assignments; migrate known settings | Candidate70 original sparse and support-first import/slice/preview pass |
+| Load/unload | Native UI lacks QIDI translation | QIDI macros, selected physical slot | Candidate70 expected slot requests recorded; hardware unverified |
+| Eject | Missing | QIDI-only control; hidden for box_v2 identity | Candidate70 physical-slot request and box_v2 hiding pass; hardware unverified |
 | RFID refresh | Dedicated agent method unsupported | Route native refresh to READ_RFID | Protocol and offline GUI refresh pass; no real RFID requests sent |
-| RFID settings | Native preferences lack QIDI translation | Insert/boot macros and telemetry flags | Source tests added; no printer settings changed |
-| Slot material/color editing | Native editor lacks QIDI translation | RGB/vendor/product command, guarded string literals | GUI59 fresh list and material/color request verified; repeated opens failed; patch 60 retest pending |
+| RFID settings | Native preferences lack QIDI translation | Insert/boot macros and telemetry flags | Candidate70 insertion/boot fixture requests pass; no real settings changed |
+| Slot material/color editing | Native editor lacks QIDI translation | RGB/vendor/product command, guarded string literals | Candidate70 material/RGB edits and20 reopens pass; previous failed sizing evidence retained |
 | Box monitoring | Filament sync only | Temperature/humidity/loaded physical slot; modern nested/flat slot sync and live material/presence updates; preserve partial metadata | Nested/flat firmware formats checked in isolation |
-| Start/end/change G-code | MAX4 macros present | Height guards and Box thermal preamble | 19 compiled slicing cases pass with generated G-code checks |
-| LAN printing | Moonraker upload, 3MF selected plate | Ordered Box mode/mapping/options before start | Compiled loopback HTTP tests and sparse-filament GUI submission pass; final-build rerun pending |
-| Experimental batch/multi-device printing | Separate upstream submission path | QIDI entry point refuses the job because this path lacks per-printer slot/options snapshots | Single-printer submission supported; batch limitation is explicit; compiled refusal/GUI check pending |
+| Start/end/change G-code | MAX4 macros present | Height guards and Box thermal preamble | All21 MAX4 slicing/persistence cases pass, including original embedded machines |
+| LAN printing | Moonraker upload, 3MF selected plate | Ordered Box mode/mapping/options before start | Candidate70 upload/configuration/start ordering and sparse/support-first GUI jobs pass |
+| Experimental batch/multi-device printing | Separate upstream submission path | QIDI entry point refuses the job because this path lacks per-printer slot/options snapshots | Candidate70 compiled and GUI refusal before dispatch verified |
 | Bed leveling option | QIDI option ineffective/hidden | MAX4 G31/G32 selection | Recording-transport check passes |
-| Timelapse option | UI and frame macros exist | QIDI Moonraker settings request | Recording transport and GUI loopback HTTP settings request pass; hardware pending |
-| Object skipping | Bambu numeric-ID interface only | QIDI named-object chooser and EXCLUDE_OBJECT translation | GUI exposed stale-job selection; patches 47/49 add cache validation; compiled regression pending |
+| Timelapse option | UI and frame macros exist | QIDI Moonraker settings request | Candidate70 On/Off request and storage-failure/recovery GUI checks pass; hardware unverified |
+| Object skipping | Bambu numeric-ID interface only | QIDI named-object chooser and EXCLUDE_OBJECT translation | Candidate70 stale selection rejects dispatch and fresh selection sends exactly once |
 | Detection settings | Existing spaghetti/FOD controls | QIDI variable commands, sensitivity and reported settings | Protocol and offline GUI toggles/sensitivity pass; hardware pending |
 | Polar cooler | QIDI flag not recognized | Firmware-gated print option and job snapshot | Offline dispatch and native Print Options toggle pass; hardware pending |
 | Auto refill | Native Bambu UI only | Incompatible dialog hidden | QIDI local dispatcher has an ambiguous command spelling; verify before porting |
 | Manual drying | Shared upstream Bambu classes | Not enabled for QIDI | Active QIDI source path and firmware protocol need verification |
 | QIDI cloud/MQTT | Different network architecture | Not implemented | Proprietary QIDI networking library/auth integration not bundled |
-| Coexistence | Upstream application identity | Linux default datadir, wrapper and desktop entry isolated | Compiled GUI coexistence test pending |
+| Coexistence | Upstream application identity | Linux default datadir, wrapper and desktop entry isolated | Installed native identity/settings/menu verified separate; no other slicer settings changed |
 | Reproducible source | Official commits pinned | Ordered patches; temporary-index tree verification | Patch tree verification passes; rerun after changes |
-| Installable Linux artifact | Build infrastructure available | AppImage CI and per-user installer | 42-patch AppImage and integration checks pass; final GUI fixes and release acceptance pending |
+| Installable Linux artifact | Build infrastructure available | AppImage CI and per-user installer | Accepted70 AppImage installed with --extract --x11; no supported Flatpak package here |
 
 ## Acceptance cases for the dedicated validation phase
 
@@ -73,7 +80,7 @@ documented in the build guide. Source checks alone do not validate GUI behavior.
 3. Trace each logical initial tool through BOX_PRINT_START, T commands and the
    print dialog's physical slot map. Check first-layer and change temperatures.
 4. Reject malformed/out-of-range mappings instead of silently using stale mappings.
-   Source guards and isolated checks now cover numeric overflow and partial mappings; integrated transport/GUI validation remains required.
+   Source guards and isolated checks now cover numeric overflow and partial mappings; candidate70 transport/GUI acceptance is recorded above.
 5. Use localhost HTTP/WebSocket fixtures for upload, mapping, pre-print options,
    selected 3MF plate, failure handling and telemetry updates. Do not use a real
    printer in automated software tests.
@@ -88,9 +95,8 @@ documented in the build guide. Source checks alone do not validate GUI behavior.
 The user explicitly requires QIDI controls to be stable in the slicer GUI. Run
 these cases against the compiled custom application with isolated settings and
 a loopback-only printer simulator. Commands must be recorded by the simulator;
-it must never forward requests or execute G-code. The table defines the final-build gate. Partial results on earlier compiled
-revisions are recorded in validation/gui-32 and validation/gui-38; they do not
-complete this gate.
+it must never forward requests or execute G-code. The table defines the gate completed by candidate70. Earlier partial records
+in validation/gui-32 and validation/gui-38 remain historical evidence only.
 
 | Case | Required behavior |
 | --- | --- |

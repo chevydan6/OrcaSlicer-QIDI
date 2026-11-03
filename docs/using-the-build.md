@@ -3,6 +3,9 @@
 Launch **OrcaSlicer QIDI (Custom)** from the application menu, or run
 `~/.local/bin/orca-slicer-qidi`. The custom application keeps its own settings.
 Your existing OrcaSlicer and Bambu Studio installations remain separate.
+The accepted native installation uses X11/XWayland (--extract --x11); native
+Wayland is not accepted. MAX4 0.4, QIDI materials and printer agents are already
+configured on the recovered computer. No test or real printer connection is saved.
 
 Select the Qidi vendor and the MAX4 nozzle size in the setup wizard. Existing
 Orca machine/process tuning is retained; the port adds missing QIDI materials

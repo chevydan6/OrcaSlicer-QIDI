@@ -23,6 +23,7 @@
   "test_artifact": 13224608733,
   "test_zip_sha256": "b74e6cb5e6e8165dad57cd650c6dc4ffa88d59cd91f1299827feb737375b7cbc",
   "github_digest_matches": true,
-  "final_acceptance": false,
-  "vendor_bundles": 72
+  "final_acceptance": true,
+  "vendor_bundles": 72,
+  "acceptance_record": "../accepted-70.json"
 }
