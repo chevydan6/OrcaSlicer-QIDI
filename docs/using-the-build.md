@@ -50,7 +50,9 @@ Keep automatic preset bundle updates disabled. Official Orca updates do not
 include these patches. Use the pinned integration repository and its workflow to
 produce updates, retaining the previous AppImage and custom settings backup.
 
-The installed Flatpak settings directory is
+The native installation stores settings in `~/.config/OrcaSlicer-QIDI` (or
+`$XDG_CONFIG_HOME/OrcaSlicer-QIDI` when configured). The optional historical
+Flatpak mode stores them in
 `~/.var/app/io.github.chevydan6.OrcaSlicerQIDI/config/OrcaSlicer-QIDI`.
 The checksum-based installation directories are under
 `~/.local/opt/orca-slicer-qidi`. Reinstall a retained custom AppImage with the same
