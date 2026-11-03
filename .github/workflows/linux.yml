@@ -72,6 +72,13 @@ jobs:
           images=(build/OrcaSlicer*.AppImage)
           test "${#images[@]}" -eq 1
           test -s "${images[0]}"
+      - name: Retain compiled AppImage for GUI validation
+        uses: actions/upload-artifact@v4
+        with:
+          name: linux-appimage-${{ github.sha }}
+          path: source/build/OrcaSlicer*.AppImage
+          if-no-files-found: error
+          retention-days: 30
       - name: Unit tests
         working-directory: source
         run: timeout 45m xvfb-run -a ./scripts/run_unit_tests.sh build/tests Release
@@ -92,7 +99,6 @@ jobs:
         with:
           name: linux-integration-${{ github.sha }}
           path: |
-            source/build/OrcaSlicer*.AppImage
             source/build/Testing/Temporary/*.log
             source/build/tests/Testing/Temporary/*.log
             source/ctest_results.xml

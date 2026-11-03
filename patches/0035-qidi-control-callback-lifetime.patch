@@ -1,0 +1,217 @@
+From f49ea23fc11723b6f9ed075f3bf6ac003ef28eab Mon Sep 17 00:00:00 2001
+From: chevydan6 <339888127+chevydan6@users.noreply.github.com>
+Date: Tue, 3 Nov 2026 11:49:55 +0900
+Subject: [PATCH] Detach control completion callbacks from printer-agent
+ lifetime
+
+---
+ src/slic3r/GUI/PrintOptionsDialog.cpp         |  7 +++-
+ src/slic3r/GUI/StatusPanel.cpp                |  9 ++--
+ src/slic3r/Utils/MoonrakerPrinterAgent.cpp    | 41 +++++++++++--------
+ src/slic3r/Utils/MoonrakerPrinterAgent.hpp    |  3 ++
+ tests/slic3rutils/test_qidi_printer_agent.cpp | 27 ++++++++++++
+ 5 files changed, 64 insertions(+), 23 deletions(-)
+
+diff --git a/src/slic3r/GUI/PrintOptionsDialog.cpp b/src/slic3r/GUI/PrintOptionsDialog.cpp
+index 72cfad93..312057f0 100644
+--- a/src/slic3r/GUI/PrintOptionsDialog.cpp
++++ b/src/slic3r/GUI/PrintOptionsDialog.cpp
+@@ -125,11 +125,14 @@ PrintOptionsDialog::PrintOptionsDialog(wxWindow* parent)
+     });
+ 
+     m_cb_qidi_polar_cooler->Bind(wxEVT_TOGGLEBUTTON, [this](wxCommandEvent& evt) {
+-        if (obj && obj->printer_agent_id == "qidi" && obj->qidi_polar_cooler_available && obj->qidi_polar_cooler_on.has_value()) {
++        auto* manager = wxGetApp().getDeviceManager();
++        auto* current = manager ? manager->get_selected_machine() : nullptr;
++        if (current && obj == current && current->printer_agent_id == "qidi" && current->is_info_ready() &&
++            current->qidi_polar_cooler_available && current->qidi_polar_cooler_on.has_value()) {
+             const nlohmann::json request{{"print", {{"command", "qidi_polar_cooler"},
+                 {"enabled", m_cb_qidi_polar_cooler->GetValue()},
+                 {"sequence_id", std::to_string(MachineObject::m_sequence_id++)}}}};
+-            obj->publish_json(request);
++            current->publish_json(request);
+         }
+         evt.Skip();
+     });
+diff --git a/src/slic3r/GUI/StatusPanel.cpp b/src/slic3r/GUI/StatusPanel.cpp
+index 0ca98718..fe96983a 100644
+--- a/src/slic3r/GUI/StatusPanel.cpp
++++ b/src/slic3r/GUI/StatusPanel.cpp
+@@ -2611,11 +2611,14 @@ void StatusPanel::wire_controls()
+     Bind(EVT_AMS_LOAD, &StatusPanel::on_ams_load, this);
+     Bind(EVT_AMS_UNLOAD, &StatusPanel::on_ams_unload, this);
+     Bind(EVT_QIDI_BOX_EJECT, [this](SimpleEvent&) {
+-        if (!obj || obj->printer_agent_id != "qidi" || obj->is_in_printing())
++        auto* manager = wxGetApp().getDeviceManager();
++        auto* current = manager ? manager->get_selected_machine() : nullptr;
++        if (!current || obj != current || current->printer_agent_id != "qidi" ||
++            !current->is_info_ready() || current->is_in_printing())
+             return;
+         const auto ams_id = m_ams_control->GetCurentAms();
+         const auto slot_id = m_ams_control->GetCurrentCan(ams_id);
+-        const auto* unit = obj->GetFilaSystem()->GetAmsById(ams_id);
++        const auto* unit = current->GetFilaSystem()->GetAmsById(ams_id);
+         if (!unit || unit->GetQidiBoxIdentity() == "box_v2")
+             return;
+         try {
+@@ -2624,7 +2627,7 @@ void StatusPanel::wire_controls()
+             if (box < 0 || box > 3 || slot < 0 || slot > 3)
+                 return;
+             nlohmann::json request{{"print", {{"command", "ams_eject_filament"}, {"ams_id", box}, {"slot_id", slot}}}};
+-            obj->publish_json(request);
++            current->publish_json(request);
+         } catch (const std::exception&) {
+             // No physical slot is selected (for example the external spool).
+         }
+diff --git a/src/slic3r/Utils/MoonrakerPrinterAgent.cpp b/src/slic3r/Utils/MoonrakerPrinterAgent.cpp
+index f7d025f8..21c7aabd 100644
+--- a/src/slic3r/Utils/MoonrakerPrinterAgent.cpp
++++ b/src/slic3r/Utils/MoonrakerPrinterAgent.cpp
+@@ -283,6 +283,7 @@ MoonrakerPrinterAgent::MoonrakerPrinterAgent(std::string log_dir) : m_cloud_agen
+ 
+ MoonrakerPrinterAgent::~MoonrakerPrinterAgent()
+ {
++    callbacks_alive->store(false);
+     {
+         std::lock_guard<std::recursive_mutex> lock(connect_mutex);
+         device_info = MoonrakerDeviceInfo{};
+@@ -1249,9 +1250,10 @@ int MoonrakerPrinterAgent::handle_request(const std::string& dev_id, const std::
+             }
+             response["print"]["param"] = gcode;
+ 
+-            send_gcode_async(dev_id, gcode, [this, dev_id, response](bool success) mutable {
++            const auto dispatch = message_dispatcher(dev_id);
++            send_gcode_async(dev_id, gcode, [dispatch, response](bool success) mutable {
+                 response["print"]["result"] = success ? "success" : "failed";
+-                dispatch_message(dev_id, response.dump());
++                dispatch(response.dump());
+             });
+             return BAMBU_NETWORK_SUCCESS;
+         }
+@@ -2315,6 +2317,11 @@ nlohmann::json MoonrakerPrinterAgent::build_print_payload_locked() const
+ }
+ 
+ void MoonrakerPrinterAgent::dispatch_message(const std::string& dev_id, const std::string& payload)
++{
++    message_dispatcher(dev_id)(payload);
++}
++
++std::function<void(const std::string&)> MoonrakerPrinterAgent::message_dispatcher(const std::string& dev_id) const
+ {
+     OnMessageFn   local_fn;
+     OnMessageFn   cloud_fn;
+@@ -2326,26 +2333,24 @@ void MoonrakerPrinterAgent::dispatch_message(const std::string& dev_id, const st
+         queue_fn = queue_on_main_fn;
+     }
+ 
+-    if (!local_fn && !cloud_fn) {
+-        BOOST_LOG_TRIVIAL(warning) << "MoonrakerPrinterAgent: dispatch_message - no message callback registered!";
+-        return;
+-    }
+-
+-    auto dispatch = [dev_id, payload, local_fn, cloud_fn]() {
+-        if (local_fn) {
+-            local_fn(dev_id, payload);
++    const auto alive = callbacks_alive;
++    return [dev_id, local_fn, cloud_fn, queue_fn, alive](const std::string& payload) {
++        if (!alive->load()) return;
++        if (!local_fn && !cloud_fn) {
++            BOOST_LOG_TRIVIAL(warning) << "MoonrakerPrinterAgent: dispatch_message - no message callback registered!";
+             return;
+         }
+-        if (cloud_fn) {
+-            cloud_fn(dev_id, payload);
++        auto dispatch = [dev_id, payload, local_fn, cloud_fn, alive]() {
++            if (!alive->load()) return;
++            if (local_fn) local_fn(dev_id, payload);
++            else if (cloud_fn) cloud_fn(dev_id, payload);
++        };
++        if (queue_fn) {
++            queue_fn(dispatch);
++        } else {
++            dispatch();
+         }
+     };
+-
+-    if (queue_fn) {
+-        queue_fn(dispatch);
+-    } else {
+-        dispatch();
+-    }
+ }
+ 
+ bool MoonrakerPrinterAgent::upload_gcode(const std::string& local_path,
+diff --git a/src/slic3r/Utils/MoonrakerPrinterAgent.hpp b/src/slic3r/Utils/MoonrakerPrinterAgent.hpp
+index 8a178209..a9b437c7 100644
+--- a/src/slic3r/Utils/MoonrakerPrinterAgent.hpp
++++ b/src/slic3r/Utils/MoonrakerPrinterAgent.hpp
+@@ -188,6 +188,7 @@ private:
+     void dispatch_local_connect(int state, const std::string& dev_id, const std::string& msg);
+     void dispatch_printer_connected(const std::string& dev_id);
+     void dispatch_message(const std::string& dev_id, const std::string& payload);
++    std::function<void(const std::string&)> message_dispatcher(const std::string& dev_id) const;
+     // Joins a stream stopped from its own callback, so a new stream can start without waiting on it under connect_mutex
+     void join_stopped_status_stream();
+     void run_status_stream(std::string dev_id, std::string base_url, std::string api_key, StatusStreamTimings timings);
+@@ -235,6 +236,8 @@ private:
+     OnLocalConnectedFn   on_local_connect_fn;
+     OnMessageFn          on_local_message_fn;
+     QueueOnMainFn        queue_on_main_fn;
++    // Detached HTTP completions and queued GUI work can outlive this agent.
++    std::shared_ptr<std::atomic<bool>> callbacks_alive = std::make_shared<std::atomic<bool>>(true);
+     OnServerErrFn        on_server_err_fn;
+ 
+     mutable std::recursive_mutex payload_mutex;
+diff --git a/tests/slic3rutils/test_qidi_printer_agent.cpp b/tests/slic3rutils/test_qidi_printer_agent.cpp
+index e5b13b15..7d9973b2 100644
+--- a/tests/slic3rutils/test_qidi_printer_agent.cpp
++++ b/tests/slic3rutils/test_qidi_printer_agent.cpp
+@@ -9,6 +9,7 @@
+ #include <utility>
+ #include <vector>
+ #include <cstddef>
++#include <functional>
+ #include <boost/asio/io_context.hpp>
+ #include <boost/asio/ip/address.hpp>
+ #include <boost/asio/ip/tcp.hpp>
+@@ -63,11 +64,37 @@ struct QidiPrinterAgentTestAccess
+     }
+     static bool submit(QidiPrinterAgent& agent, const PrintParams& params)
+     { return agent.print_uploaded_file(params, "two plates.gcode.3mf"); }
++    static std::function<void(const std::string&)> dispatcher(QidiPrinterAgent& agent)
++    { return agent.message_dispatcher("offline-fixture"); }
+     static bool upload(QidiPrinterAgent& agent, const std::string& path)
+     { return agent.upload_gcode(path, "offline cube.gcode", agent.device_info.base_url, agent.device_info.api_key, {}, {}); }
+ };
+ }
+ 
++TEST_CASE("QIDI delayed responses stop dispatching when the agent is destroyed", "[QidiPrinterAgent][Regression]")
++{
++    int received = 0;
++    std::vector<std::function<void()>> queued;
++    auto agent = std::make_unique<QidiPrinterAgent>("");
++    agent->set_on_local_message_fn([&](std::string, std::string) { ++received; });
++    agent->set_queue_on_main_fn([&](std::function<void()> callback) { queued.push_back(std::move(callback)); });
++    auto delayed_response = QidiPrinterAgentTestAccess::dispatcher(*agent);
++    delayed_response("first");
++    REQUIRE(queued.size() == 1);
++    queued.front()();
++    CHECK(received == 1);
++    queued.clear();
++    delayed_response("queued before destruction");
++    REQUIRE(queued.size() == 1);
++    agent.reset();
++    queued.front()();
++    CHECK(received == 1);
++    queued.clear();
++    CHECK_NOTHROW(delayed_response("HTTP completed after destruction"));
++    CHECK(queued.empty());
++    CHECK(received == 1);
++}
++
+ namespace {
+ namespace net = boost::asio;
+ namespace http = boost::beast::http;
+-- 
+2.56.0
+

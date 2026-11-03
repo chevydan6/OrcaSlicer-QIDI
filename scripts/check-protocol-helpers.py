@@ -67,7 +67,28 @@ cache_source = (source_root/'src/slic3r/Utils/MoonrakerPrinterAgent.cpp').read_t
 qidi_header = (source_root/'src/slic3r/Utils/QidiPrinterAgent.hpp').read_text()
 code += """
 #include <mutex>
+#include <atomic>
+#include <functional>
+#include <memory>
+#include <thread>
+#include <iostream>
+#define BOOST_LOG_TRIVIAL(level) std::cerr
+using OnMessageFn = std::function<void(std::string,std::string)>;
+using QueueOnMainFn = std::function<void(std::function<void()>)>;
+struct MoonrakerDeviceInfo {};
 struct MoonrakerCacheHarness {
+ ~MoonrakerCacheHarness();
+ mutable std::recursive_mutex state_mutex;
+ std::recursive_mutex connect_mutex;
+ std::thread connect_thread;
+ int connect_generation=0;
+ MoonrakerDeviceInfo device_info;
+ void stop_status_stream() {}
+ OnMessageFn on_local_message_fn, on_message_fn;
+ QueueOnMainFn queue_on_main_fn;
+ std::shared_ptr<std::atomic<bool>> callbacks_alive=std::make_shared<std::atomic<bool>>(true);
+ void dispatch_message(const std::string&,const std::string&);
+ std::function<void(const std::string&)> message_dispatcher(const std::string&) const;
  std::recursive_mutex payload_mutex;
  nlohmann::json status_cache;
  virtual bool merge_status_object_recursively(const std::string&) const { return false; }
@@ -79,6 +100,10 @@ start=qidi_header.index('    bool merge_status_object_recursively')
 code += qidi_header[start:qidi_header.index('    void append_status_payload',start)] + '};\n'
 start=cache_source.index('void MoonrakerPrinterAgent::update_status_cache')
 code += cache_source[start:cache_source.index('nlohmann::json MoonrakerPrinterAgent::build_print_payload_locked',start)].replace('MoonrakerPrinterAgent::','MoonrakerCacheHarness::')
+for first,last in [('MoonrakerPrinterAgent::~MoonrakerPrinterAgent()', 'AgentInfo MoonrakerPrinterAgent::get_agent_info_static'),
+                   ('void MoonrakerPrinterAgent::dispatch_message', 'bool MoonrakerPrinterAgent::upload_gcode')]:
+ start=cache_source.index(first)
+ code += cache_source[start:cache_source.index(last,start)].replace('MoonrakerPrinterAgent','MoonrakerCacheHarness')
 gui_source = (source_root/'src/slic3r/GUI/DeviceCore/DevFilaSystem.cpp').read_text()
 code += """
 struct DevAmsTray {
@@ -113,6 +138,18 @@ start=device_source.index('int MachineObject::command_ams_change_filament(')
 code += device_source[start:device_source.index('int MachineObject::command_ams_user_settings(',start)]
 code += r'''
 int main() {
+ {
+ int received=0;
+ std::vector<std::function<void()>> queued;
+ auto agent=std::make_unique<MoonrakerCacheHarness>();
+ agent->on_local_message_fn=[&](std::string,std::string) { ++received; };
+ agent->queue_on_main_fn=[&](std::function<void()> fn) { queued.push_back(std::move(fn)); };
+ auto delayed=agent->message_dispatcher("offline-fixture");
+ delayed("first"); assert(queued.size()==1); queued.front()(); assert(received==1); queued.clear();
+ delayed("queued before destruction"); assert(queued.size()==1);
+ agent.reset(); queued.front()(); assert(received==1); queued.clear();
+ delayed("completed after destruction"); assert(queued.empty() && received==1);
+ }
  for (const auto& invalid : nlohmann::json::array({nullptr,false,"bad",-1e300,1e300,nlohmann::json::array(),nlohmann::json::object()})) {
   nlohmann::json payload=nlohmann::json::object();
   QidiPrinterAgent::append_chamber_status({{"heater_generic chamber",{{"temperature",invalid},{"target",invalid}}}},payload);

@@ -16,6 +16,13 @@ Patch 0033 also rejects malformed chamber fields and extreme numeric magnitudes
 measurement remains visible when its accompanying target is malformed. The
 sanitized production-body harness passed these additional cases.
 
+Patch 0035 removes the inherited raw `this` capture from asynchronous G-code
+completion. Extracted production destructor/dispatcher bodies pass live delivery,
+already-queued delivery after destruction, and late-response-after-destruction
+regressions with ASan/UBSan. Both late paths drop the callback. The harness uses
+value-only state and a recording GUI queue; actual transport/UI shutdown is still
+part of the pending full-app gate.
+
 Commands completed successfully:
 python3 scripts/check-protocol-helpers.py
 python3 scripts/check-protocol-helpers.py --sanitize --sanitizer-libs research/sanitizer-runtime/usr/lib64
