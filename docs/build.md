@@ -120,3 +120,39 @@ the development checkout at `OrcaSlicer/`. It compiles actual helper/dispatch
 method bodies with a recording transport, not the complete slicer or its HTTP
 implementation. `python3 scripts/verify-patches.py` verifies source reproduction
 without modifying the developer checkout's index or working tree.
+
+## Offline GUI communication fixture
+
+The loopback server records requests and supplies synthetic MAX4/Box status. It
+never executes or forwards G-code, changes a real printer, or simulates a successful
+physical operation. Its tests validate the fixture itself; the GUI stability gate
+in `feature-checklist.md` still requires the compiled application.
+
+```sh
+python3 -m venv research/printer-fixture-venv
+research/printer-fixture-venv/bin/pip install -r scripts/requirements-fixture.txt
+research/printer-fixture-venv/bin/python scripts/check-printer-fixture.py
+research/printer-fixture-venv/bin/python scripts/qidi-printer-fixture.py \
+  --port 19025 --boxes 2 --log logs/gui-fixture-requests.jsonl
+```
+
+In an isolated custom-slicer configuration, add the QIDI device at
+`http://127.0.0.1:19025`. The fixture binds only `127.0.0.1`; it has no discovery or
+outbound connection code. Use the native app or a Flatpak with network sharing
+for this test so the app can reach host loopback. Configure only this fixture
+address in the isolated settings directory.
+
+`POST /__fixture__/state` accepts JSON with `update` (recursive status update),
+`replace` (whole status replacement), `notification` (arbitrary WebSocket JSON),
+`raw` (malformed message testing), `disconnect`, `http_error` (0 restores normal
+HTTP responses), and `delay` (0–60 seconds). These controls affect only the test
+fixture. For example:
+
+```sh
+curl -sS http://127.0.0.1:19025/__fixture__/state \
+  -H 'Content-Type: application/json' --data '{"disconnect":true}'
+```
+
+The fixture is intentionally incomplete: camera imagery, real RFID reads, thermal
+changes, motion and printing are not emulated. Unexpected GET endpoints return
+404 so missing fixture coverage remains visible in the logs.
