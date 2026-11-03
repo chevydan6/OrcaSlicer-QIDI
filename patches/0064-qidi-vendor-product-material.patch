@@ -1,0 +1,109 @@
+From f9aa5cee6f980d20102dceb0a9e14e5182fdb585 Mon Sep 17 00:00:00 2001
+From: chevydan6 <339888127+chevydan6@users.noreply.github.com>
+Date: Tue, 3 Nov 2026 18:14:07 +0900
+Subject: [PATCH] Resolve QIDI slot presets from reported vendor and product
+
+---
+ src/slic3r/GUI/DeviceCore/DevFilaSystem.cpp   | 15 ++++++-
+ tests/slic3rutils/test_qidi_printer_agent.cpp | 39 +++++++++++++++++++
+ 2 files changed, 52 insertions(+), 2 deletions(-)
+
+diff --git a/src/slic3r/GUI/DeviceCore/DevFilaSystem.cpp b/src/slic3r/GUI/DeviceCore/DevFilaSystem.cpp
+index b68f1570..3b16ce7c 100644
+--- a/src/slic3r/GUI/DeviceCore/DevFilaSystem.cpp
++++ b/src/slic3r/GUI/DeviceCore/DevFilaSystem.cpp
+@@ -394,13 +394,21 @@ std::string DevFilaSystemParser::ResolveQidiFilament(const nlohmann::json& updat
+     const auto type = update["filament_type"].get<std::string>();
+     const auto name = update.contains("filament_str") && update["filament_str"].is_string()
+         ? update["filament_str"].get<std::string>() : std::string();
++    const auto vendor = update.contains("vendor_str") && update["vendor_str"].is_string()
++        ? update["vendor_str"].get<std::string>() : std::string();
++    const auto full_name = vendor.empty() || name.empty() ? name : vendor + " " + name;
+     std::string resolved_id;
+     for (const auto& preset : filaments.get_presets()) {
+         if (!preset.is_visible || !preset.is_compatible) continue;
+         const auto* types = preset.config.option<ConfigOptionStrings>("filament_type");
+         if (!types || types->values.empty() || types->values.front() != type) continue;
+         if (resolved_id.empty()) resolved_id = preset.filament_id;
+-        if (!name.empty() && (preset.alias == name || preset.name == name)) return preset.filament_id;
++        // Firmware sends vendor and product separately (QIDI / PLA Rapido),
++        // while Orca aliases normally include both. Preserve exact product
++        // matches before falling back to another material of the same type.
++        if (!name.empty() && (preset.alias == name || preset.name == name ||
++                              preset.alias == full_name || preset.name == full_name))
++            return preset.filament_id;
+     }
+     return resolved_id;
+ }
+@@ -418,7 +426,10 @@ void DevFilaSystemParser::UpdateQidiTray(DevAmsTray& tray, const nlohmann::json&
+         const auto type = update["filament_type"].get<std::string>();
+         const auto name = update.contains("filament_str") && update["filament_str"].is_string()
+             ? update["filament_str"].get<std::string>() : tray.sub_brands;
+-        if (type != tray.m_fila_type || name != tray.sub_brands || tray.setting_id.empty())
++        const bool complete_product = update.contains("filament_str") && update["filament_str"].is_string() &&
++            !name.empty() && update.contains("vendor_str") && update["vendor_str"].is_string();
++        if (type != tray.m_fila_type || name != tray.sub_brands || tray.setting_id.empty() ||
++            (complete_product && !resolved_filament_id.empty()))
+             tray.setting_id = resolved_filament_id;
+         tray.m_fila_type = type;
+         tray.sub_brands = name;
+diff --git a/tests/slic3rutils/test_qidi_printer_agent.cpp b/tests/slic3rutils/test_qidi_printer_agent.cpp
+index fdc70165..e32ba3fb 100644
+--- a/tests/slic3rutils/test_qidi_printer_agent.cpp
++++ b/tests/slic3rutils/test_qidi_printer_agent.cpp
+@@ -22,6 +22,9 @@
+ #include <boost/beast/http/write.hpp>
+ #include <boost/filesystem/fstream.hpp>
+ #include "test_utils.hpp"
++#include "libslic3r/Config.hpp"
++#include "libslic3r/Preset.hpp"
++#include "libslic3r/PrintConfig.hpp"
+ #include "slic3r/GUI/DeviceCore/DevFilaSystem.h"
+ 
+ #include <nlohmann/json.hpp>
+@@ -583,6 +586,42 @@ TEST_CASE("QIDI loaded slot does not interpret malformed firmware names", "[Qidi
+         CHECK(payload.empty());
+ }
+ 
++TEST_CASE("QIDI vendor and product metadata select the matching visible compatible material", "[QidiPrinterAgent][Regression]")
++{
++    PresetCollection filaments(Preset::TYPE_FILAMENT, Preset::filament_options(),
++                              static_cast<const PrintRegionConfig&>(FullPrintConfig::defaults()));
++    auto add = [&](const std::string& alias, const std::string& id, bool compatible = true, bool visible = true) {
++        DynamicPrintConfig config(filaments.default_preset().config);
++        config.set_key_value("filament_type", new ConfigOptionStrings({"PLA"}));
++        auto& preset = filaments.load_preset("", alias, config, false);
++        preset.alias = alias;
++        preset.filament_id = id;
++        preset.is_compatible = compatible;
++        preset.is_visible = visible;
++    };
++    add("Generic PLA", "generic");
++    add("QIDI PLA Rapido", "rapido");
++    add("QIDI Hidden PLA", "hidden", true, false);
++    add("QIDI Other Printer PLA", "incompatible", false);
++    CHECK(DevFilaSystemParser::ResolveQidiFilament(
++        {{"filament_type", "PLA"}, {"vendor_str", "QIDI"}, {"filament_str", "PLA Rapido"}}, filaments) == "rapido");
++    CHECK(DevFilaSystemParser::ResolveQidiFilament(
++        {{"filament_type", "PLA"}, {"vendor_str", "QIDI"}, {"filament_str", "QIDI PLA Rapido"}}, filaments) == "rapido");
++    CHECK(DevFilaSystemParser::ResolveQidiFilament(
++        {{"filament_type", "PLA"}, {"vendor_str", "QIDI"}, {"filament_str", "Hidden PLA"}}, filaments) == "generic");
++    CHECK(DevFilaSystemParser::ResolveQidiFilament(
++        {{"filament_type", "PLA"}, {"vendor_str", "QIDI"}, {"filament_str", "Other Printer PLA"}}, filaments) == "generic");
++    CHECK(DevFilaSystemParser::ResolveQidiFilament(
++        {{"filament_type", "PETG"}, {"vendor_str", "QIDI"}, {"filament_str", "PLA Rapido"}}, filaments).empty());
++    DevAmsTray tray("0");
++    tray.m_fila_type = "PLA";
++    tray.sub_brands = "PLA Rapido";
++    tray.setting_id = "generic";
++    DevFilaSystemParser::UpdateQidiTray(tray,
++        {{"filament_type", "PLA"}, {"vendor_str", "QIDI"}, {"filament_str", "PLA Rapido"}}, "rapido");
++    CHECK(tray.setting_id == "rapido");
++}
++
+ TEST_CASE("Malformed QIDI material names preserve existing tray metadata", "[QidiPrinterAgent]")
+ {
+     for (const auto& invalid : nlohmann::json::array({nullptr, false, 42, nlohmann::json::array(), nlohmann::json::object()})) {
+-- 
+2.43.0
+

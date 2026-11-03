@@ -122,3 +122,7 @@ separately from implementation; a patch's presence does not certify hardware use
 61. `0061-qidi-persist-connection-endpoint.patch` retains the complete QIDI endpoint in discovery so the bound address keeps its port and HTTP/HTTPS scheme after restart. A protocol regression covers both schemes with a custom port; the existing non-QIDI discovery regression remains unchanged. Compiled restart acceptance is pending.
 
 62. `0062-gtk-native-page-allocation.patch` queues native allocation when showing a GTK notebook page. GUI59's visible Prepare page retained a 1x1 GTK allocation; a diagnostic native page/book allocation restored it without changing window dimensions. Removes patch 58's ineffective synthetic event forwarding. Shared GTK startup/tab/resize behavior needs compiled verification.
+
+63. `0063-defer-gtk-page-allocation.patch` defers native allocation until notebook selection and its callbacks finish, reacquiring the current page at delivery. GUI62 disproved patch 62 alone. The book owns the callback; removed pages are not captured. Compiled fresh setup, rapid tab switching and shutdown verification remain required.
+
+64. `0064-qidi-vendor-product-material.patch` resolves a reported QIDI / PLA Rapido against the full preset alias QIDI PLA Rapido and replaces a previously generic tray ID when complete product metadata arrives. Adds visible/compatible/type/fallback regressions. GUI62 selected Generic PLA; compiled material synchronization and editor verification remain required.

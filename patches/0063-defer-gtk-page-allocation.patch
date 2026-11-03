@@ -1,0 +1,36 @@
+From b392617a4479b968627558ae3abcde214a6a4beb Mon Sep 17 00:00:00 2001
+From: chevydan6 <339888127+chevydan6@users.noreply.github.com>
+Date: Tue, 3 Nov 2026 18:13:29 +0900
+Subject: [PATCH] Defer native page allocation until notebook selection
+ completes
+
+---
+ src/slic3r/GUI/Notebook.cpp | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
+
+diff --git a/src/slic3r/GUI/Notebook.cpp b/src/slic3r/GUI/Notebook.cpp
+index b524f63c..d4f2cf72 100644
+--- a/src/slic3r/GUI/Notebook.cpp
++++ b/src/slic3r/GUI/Notebook.cpp
+@@ -36,8 +36,16 @@ void Notebook::DoShowPage(wxWindow* page, bool show)
+         // After initial setup wx may know the page's size while its GTK
+         // allocation is still 1x1. A synthetic wx resize does not repair it.
+         // Request allocation of the newly visible native child and its book.
+-        gtk_widget_queue_resize(GTK_WIDGET(page->GetHandle()));
+-        gtk_widget_queue_allocate(GTK_WIDGET(GetHandle()));
++        // Book selection still adjusts page geometry after DoShowPage returns.
++        // Queue this on the book so it runs after that work, and look up the
++        // current page then: a removed page must not survive in the callback.
++        // wx cancels this handler's pending callbacks when the book is deleted.
++        CallAfter([this] {
++            if (auto* current = GetCurrentPage(); current && current->IsShown()) {
++                gtk_widget_queue_resize(GTK_WIDGET(current->GetHandle()));
++                gtk_widget_queue_allocate(GTK_WIDGET(GetHandle()));
++            }
++        });
+ #endif
+     } else {
+         page->HideWithEffect(m_hideEffect, m_hideTimeout);
+-- 
+2.43.0
+

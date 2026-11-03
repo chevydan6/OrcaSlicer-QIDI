@@ -8,14 +8,17 @@ configuration writes or print requests were sent to the printer.
 
 Automated communication tests use only 127.0.0.1:19025, whose fixture records
 and discards requests. A recorded heater, load, RFID or start request does not
-prove physical execution. Candidate 59 passed build gates but failed GUI
-acceptance; candidate 62 fixes are under evaluation. No candidate is installed
+prove physical execution. Candidates 59 and 62 passed build gates but failed GUI
+acceptance; candidate 64 fixes await compilation. No candidate is installed
 or accepted on the recovered Ubuntu computer yet. See ../HANDOFF.md.
 
 ## Supported scope and gaps
 
 - Public LAN/Moonraker communication is implemented. QIDI account login, cloud
   discovery, proprietary networking, MQTT and remote tunnels are not bundled.
+- HTTPS/WSS is not accepted as verified secure transport: the inherited WebSocket
+  TLS path disables peer certificate verification. Current acceptance uses trusted
+  local HTTP. The CA field alone does not establish end-to-end TLS verification.
 - Single-printer jobs support Box mappings and single-material external-spool
   mode. Mixed Box/external jobs, multicolor external-spool jobs and incomplete
   mappings are rejected. Experimental multi-device submission refuses QIDI jobs

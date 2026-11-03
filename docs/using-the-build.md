@@ -18,8 +18,10 @@ print-host path does not provide the port's full Box workflow.
 With a QIDI printer profile selected, **Device → printer selector → Connect by
 address** accepts a Moonraker endpoint such as `http://printer-address:7125`.
 Use the actual address and port from your printer/network. An API key is optional
-unless the server requires one. HTTPS certificate verification remains enabled;
-a CA file can be supplied for a private certificate authority. Connecting is not
+unless the server requires one. The dialog accepts a CA file for HTTP requests,
+but the inherited secure WebSocket path disables certificate verification.
+HTTPS/WSS is not accepted as a verified secure transport for this milestone;
+current acceptance targets a trusted local HTTP connection. Connecting is not
 necessary for offline slicing. No actual printer address was configured by the
 software validation work.
 

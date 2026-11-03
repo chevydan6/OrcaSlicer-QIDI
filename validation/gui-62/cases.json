@@ -1,0 +1,150 @@
+{
+  "startup": {
+    "fresh_setup_layout": {
+      "result": "failed",
+      "note": "Prepare stays blank after fresh setup and idle; patch 62 alone is insufficient.",
+      "time": 1793696830.1118147,
+      "evidence": [
+        "15-prepare.png",
+        "16-prepare-idle.png"
+      ]
+    },
+    "blank_key_connect": {
+      "result": "passed",
+      "note": "Native address connection with empty API key reached two-Box fixture telemetry.",
+      "time": 1793696992.716979,
+      "evidence": [
+        "31-connect.png"
+      ]
+    },
+    "cancel_reopen_connect": {
+      "result": "passed",
+      "note": "Native blank connection dialog cancels and reopens with usable controls.",
+      "time": 1793696905.8193085,
+      "evidence": [
+        "27-connection.png",
+        "29-reopen.png"
+      ]
+    },
+    "no_printer_controls": {
+      "result": "passed",
+      "note": "Controls disabled with no printer; lamp click sent no fixture command.",
+      "time": 1793696905.8390896,
+      "evidence": [
+        "24-no-printer.png",
+        "25-disabled-lamp.png"
+      ]
+    },
+    "clean_restart_endpoint": {
+      "result": "passed",
+      "note": "Clean exit saved http://127.0.0.1:19025; restarted GUI connected automatically without re-entry.",
+      "time": 1793697163.9094734,
+      "evidence": [
+        "exits.jsonl",
+        "41-restarted-device.png"
+      ]
+    }
+  },
+  "materials": {
+    "box_reopen_10": {
+      "result": "passed",
+      "note": "Ten Box material sessions retained usable dialog size and visible buttons.",
+      "time": 1793696992.674207,
+      "evidence": [
+        "material-reopens.json",
+        "box-reopen-1.png",
+        "box-reopen-10.png"
+      ]
+    },
+    "external_reopen_10": {
+      "result": "passed",
+      "note": "Ten external sessions retained usable size, Generic PETG and gray color.",
+      "time": 1793696992.6955013,
+      "evidence": [
+        "material-reopens.json",
+        "external-reopen-1.png",
+        "external-reopen-10.png"
+      ]
+    },
+    "slot_switch_colors": "untested",
+    "material_and_rgb_edit": "untested",
+    "duplicate_open": {
+      "result": "passed",
+      "note": "Rapid double click yielded one usable modal editor.",
+      "time": 1793697027.4031534,
+      "evidence": [
+        "37-duplicate-open.png"
+      ]
+    },
+    "disconnect_open_dialog": {
+      "result": "passed",
+      "note": "During injected WS disconnect and HTTP 503, Confirm attempted a request that the fixture rejected; GUI remained responsive and exited zero. This is not proof of no-dispatch on telemetry loss.",
+      "time": 1793697163.9309874,
+      "evidence": [
+        "38-disconnected-dialog.png",
+        "39-disconnected-confirm.png",
+        "requests.jsonl"
+      ]
+    },
+    "reconnect_dialog": "untested",
+    "removed_slot_reject": "untested"
+  },
+  "controls": {
+    "four_boxes_slot15": "untested",
+    "two_boxes_slot5": "untested",
+    "zero_boxes": "untested",
+    "external_display": "untested",
+    "load_unload_eject": "untested",
+    "rfid_refresh": "untested",
+    "rfid_preferences": "untested",
+    "chamber": "untested",
+    "part_aux_chamber_fans": "untested",
+    "lamp": "untested",
+    "speed": "untested",
+    "detection_sensitivity": "untested",
+    "polar_cooler": "untested",
+    "actual_telemetry_replay": {
+      "result": "passed",
+      "note": "Sanitized MAX4 snapshot replayed only through loopback: one Box, blue ABS in A2, three empty slots, 23% humidity and recorded temperatures displayed. Fresh-cache replay remains part of final candidate retest.",
+      "time": 1793697305.8236783,
+      "evidence": [
+        "44-actual-telemetry-idle.png"
+      ]
+    }
+  },
+  "faults": {
+    "malformed_json": "untested",
+    "wrong_type_box": "untested",
+    "null_slot_metadata": "untested",
+    "extreme_temperature": "untested",
+    "partial_metadata": "untested",
+    "http_error": "untested",
+    "delayed_repeated_controls": "untested",
+    "websocket_recovery": "untested",
+    "camera_valid": "untested",
+    "camera_invalid": "untested",
+    "camera_http_recovery": "untested"
+  },
+  "jobs": {
+    "original_sparse_import_slice_preview": "untested",
+    "sparse_T2_slot5_submit": "untested",
+    "reversed_multiple_box_mapping": "untested",
+    "support_first_import_slice_preview": "untested",
+    "support_first_T2_T0_both_mapped": "untested",
+    "external_single_submit": "untested",
+    "incomplete_mapping_reject": "untested",
+    "mixed_external_reject": "untested",
+    "multicolor_external_reject": "untested",
+    "batch_qidi_reject": "untested",
+    "stale_object_reject": "untested",
+    "fresh_object_accept": "untested"
+  },
+  "persistence": {
+    "box_temperature_save_reload": "untested",
+    "slice_after_controls": "untested",
+    "non_qidi_profile_slice": "untested",
+    "file_chooser": "untested",
+    "close_discard_imported_project": "untested",
+    "clean_exit": "untested"
+  }
+}

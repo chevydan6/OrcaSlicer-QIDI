@@ -1,0 +1,25 @@
+{
+  "integration_commit": "b8ef9f8e4f3e27fda362401da9076d453e3cf06b",
+  "run": 41605999278,
+  "static_run": 41606004232,
+  "integration": "success",
+  "static": "success",
+  "unit_tests": {
+    "name": "(empty)",
+    "tests": "2913",
+    "failures": "0",
+    "disabled": "0",
+    "skipped": "0",
+    "hostname": "",
+    "time": "550",
+    "timestamp": "2026-11-03T09:04:36"
+  },
+  "cli_cases": 7,
+  "vendor_bundles": 72,
+  "max4_cases": 21,
+  "test_artifact": 13217279927,
+  "test_zip_sha256": "29ae9d6c8d53d88985c55e9760270facd42df8116273a7ddc7a52d99cb8c0c88",
+  "github_digest_matches": true,
+  "final_acceptance": false,
+  "reason": "Fresh setup remains blank and QIDI vendor/product selects Generic PLA; see validation/gui-62"
+}

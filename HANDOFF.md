@@ -8,12 +8,12 @@ Feature expansion is frozen pending one complete software acceptance.
 
 - Integration repository: https://github.com/chevydan6/OrcaSlicer-QIDI, branch main.
 - Workspace: `/home/dan/qidi-orca-port`; recovered at `70d58fc17f0132d926424a5a74144bf80cb1dcfd`.
-- Current candidate: **62 patches**, build input `b8ef9f8e4f3e27fda362401da9076d453e3cf06b`. Latest evaluated build input: `cd6d820543ddaabad4846b6eb053b4508e65c448` (59 patches).
+- Current source: **64 patches**, next build input is the integration commit adding patches 63/64. Latest evaluated build input: `b8ef9f8e4f3e27fda362401da9076d453e3cf06b` (62 patches), GUI rejected.
 - Orca pin: `896557bce5281553ee0c6210f2da301b3b3c262e`.
 - QIDI Studio pin: `403b619d56147160bb883e94f95a7951245bc6d0`.
-- Prepared source: `build/source`, local commit `171f0274`.
-- Exact downstream tree: `8e41a9fe4e99edd185d7ddfa840eab0f97d6881b`.
-- All 62 patches reproduce that tree via `scripts/verify-patches.py`.
+- Prepared source: `build/source`, local commit `f9aa5cee6f980d20102dceb0a9e14e5182fdb585`.
+- Exact downstream tree: `22c2c250fd023a3540186e4655da31cd8a1f5446`.
+- All 64 patches reproduce that tree via `scripts/verify-patches.py`.
 - Original 56-patch recovery matched recorded tree `20f0b1398164ca1b5ab5bd44c6ecd6071aaaad3e`.
 - Pins remain fixed. Local recovery commits have fresh metadata; tree identity is verified.
 
@@ -21,7 +21,7 @@ Feature expansion is frozen pending one complete software acceptance.
 
 | Candidate | Integration | Static | Acceptance |
 | --- | --- | --- | --- |
-| 62 / b8ef9f8 | [41605999278](https://github.com/chevydan6/OrcaSlicer-QIDI/actions/runs/41605999278), running | [41606004232](https://github.com/chevydan6/OrcaSlicer-QIDI/actions/runs/41606004232), running | Exact artifact/GUI retest pending |
+| 62 / b8ef9f8 | [41605999278](https://github.com/chevydan6/OrcaSlicer-QIDI/actions/runs/41605999278), passed | [41606004232](https://github.com/chevydan6/OrcaSlicer-QIDI/actions/runs/41606004232), passed | 2,913 unit / 7 CLI / 72 vendors / 21 MAX4 pass; GUI rejected |
 | 59 / cd6d820 | [41602372652](https://github.com/chevydan6/OrcaSlicer-QIDI/actions/runs/41602372652), passed | [41602379555](https://github.com/chevydan6/OrcaSlicer-QIDI/actions/runs/41602379555), passed | Verified matching artifact; GUI failed layout, repeated material dialogs and restart |
 | 58 / c1aa8e5 | 41601936217, cancelled | 41601942066, cancelled | Superseded by fresh-connection fix; cancellation is not a pass |
 | 57 / 0b5a0e5 | 41600542116, passed | 41600547497, passed | GUI fresh setup and fresh connection failures; not accepted |
@@ -66,6 +66,14 @@ reopens. Patches 60–62 address minimum sizing, lost endpoint scheme/port and
 native page allocation. Debugger interventions support these changes but do not
 accept them. Check the next matching binary without debugger intervention.
 
+Candidate 62 passed integration and static gates. Its exact AppImage hash is
+`62f4071879834c2381d605bedcea3eb55f2d2a810c8b906c8a82b81508aa35e2`.
+GUI62 verifies twenty material reopens and endpoint restart, but fresh setup remains
+blank and QIDI / PLA Rapido incorrectly selects Generic PLA. See `validation/gui-62`.
+Patch 63 defers GTK allocation until notebook selection callbacks finish; patch 64
+matches the reported vendor plus product and refreshes a stale generic preset ID.
+Both are attempted corrections pending compiled acceptance.
+
 ## Host and isolated GUI environment
 
 Ubuntu 24.04.5 x86_64, GNOME Wayland, GCC 13.3, 24 logical CPUs, 14 GiB RAM,
@@ -104,9 +112,9 @@ QIDI Studio/Orca comparisons must be sequential, with identical model/materials/
 
 ## Next steps
 
-1. Build candidate 62, check actual integration/static results and fix failures.
+1. Build candidate 64, check actual integration/static results and fix failures.
 2. Download its matching AppImage and reports, verify GitHub ZIP digest, record ZIP
-   and AppImage hashes, compare packaged manifest against the new build input and all 62 patch hashes.
+   and AppImage hashes, compare packaged manifest against the new build input and all 64 patch hashes.
 3. Start with fresh settings: rerun setup/layout and native blank-key connection.
    Verify populated materials without hand-editing model identity; native color
    edits; repeated Box/external dialogs; slot switching; duplicate opens; disconnect
