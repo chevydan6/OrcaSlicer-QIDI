@@ -1,0 +1,7 @@
+{
+  "time": 1793698651.4365604,
+  "method": "POST",
+  "path": "/printer/gcode/script",
+  "query": {},
+  "body": "{\"script\":\"UPDATE_FILAMENT_INFORMATION SLOT=0 COLOR='FF0000' VENDOR='QIDI' FILAMENT='PLA Rapido'\"}"
+}

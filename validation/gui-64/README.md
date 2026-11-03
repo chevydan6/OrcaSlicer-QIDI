@@ -26,3 +26,15 @@ required preferred-size request first. Fresh binary verification remains require
 
 The diagnostic session exited normally with status 0. This does not establish a
 full clean-exit or lifecycle gate. No final acceptance or installation follows.
+
+## Clean restart material checks and removed-Box failure
+
+A subsequent process started normally without debugger attachment. Manual
+maximization was used for the control checks. QIDI / PLA Rapido now selects the
+correct QIDI PLA Rapido preset (31); ten Box and ten external opens remain usable.
+
+**Failed:** while the A1 editor was open, the fixture published zero Boxes. Confirm
+still sent UPDATE_FILAMENT_INFORMATION SLOT=0 (33/34 and stale-material-request.json).
+This is a stale GUI selection, not hardware testing. Patch 67 checks the latest
+locked protocol snapshot before material/load/unload/eject/RFID dispatch; external
+slot 16 remains independent of Box count. Compiled/GUI retesting is pending.

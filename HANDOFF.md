@@ -8,12 +8,12 @@ Feature expansion is frozen pending one complete software acceptance.
 
 - Integration repository: https://github.com/chevydan6/OrcaSlicer-QIDI, branch main.
 - Workspace: `/home/dan/qidi-orca-port`; recovered at `70d58fc17f0132d926424a5a74144bf80cb1dcfd`.
-- Current source: **66 patches**, pending matching build. Candidate 64 build input: `9b06cba3424e19e53a4235ce8b3bf9d455ea393a`. Latest evaluated build input: `b8ef9f8e4f3e27fda362401da9076d453e3cf06b` (62 patches), GUI rejected.
+- Current source: **67 patches**, pending matching build. Candidate 64 build input: `9b06cba3424e19e53a4235ce8b3bf9d455ea393a`. Latest evaluated build input: `b8ef9f8e4f3e27fda362401da9076d453e3cf06b` (62 patches), GUI rejected.
 - Orca pin: `896557bce5281553ee0c6210f2da301b3b3c262e`.
 - QIDI Studio pin: `403b619d56147160bb883e94f95a7951245bc6d0`.
-- Prepared source: `build/source`, local commit `d05291c4`.
-- Exact downstream tree: `b178f2ce5e52f4389724cc30c7d576e131ca6351`.
-- All 66 patches reproduce that tree via `scripts/verify-patches.py`.
+- Prepared source: `build/source`, local commit `b917eadf`.
+- Exact downstream tree: `a25d2d0d6bf104a78c2271799463241ab94e4e5c`.
+- All 67 patches reproduce that tree via `scripts/verify-patches.py`.
 - Original 56-patch recovery matched recorded tree `20f0b1398164ca1b5ab5bd44c6ecd6071aaaad3e`.
 - Pins remain fixed. Local recovery commits have fresh metadata; tree identity is verified.
 
@@ -87,6 +87,14 @@ Diagnostic direct allocation restores it. Patch 66 uses the existing wx rectangl
 only on stale native dimensions. See `validation/gui-64`; diagnostic recovery is
 not acceptance. Patch 65 will first be compiled together with patch 66.
 
+Candidate 66 input `d1a35c855fd968125d39830f48328fdbd9eaf6b1` is building:
+[41612448931 integration](https://github.com/chevydan6/OrcaSlicer-QIDI/actions/runs/41612448931),
+[41612454913 static](https://github.com/chevydan6/OrcaSlicer-QIDI/actions/runs/41612454913).
+GUI64 clean restart verifies material product resolution and twenty usable dialog
+reopens, but an open A1 editor still dispatched after zero Boxes was reported.
+Patch 67 adds latest-status Box validation for physical-slot controls. It is not
+in candidate 66 and requires a new compiled candidate. See `validation/gui-64`.
+
 ## Host and isolated GUI environment
 
 Ubuntu 24.04.5 x86_64, GNOME Wayland, GCC 13.3, 24 logical CPUs, 14 GiB RAM,
@@ -125,9 +133,9 @@ QIDI Studio/Orca comparisons must be sequential, with identical model/materials/
 
 ## Next steps
 
-1. Build candidate 66, check actual integration/static results and fix failures.
+1. Build candidate 67, check actual integration/static results and fix failures.
 2. Download its matching AppImage and reports, verify GitHub ZIP digest, record ZIP
-   and AppImage hashes, compare packaged manifest against the new build input and all 66 patch hashes.
+   and AppImage hashes, compare packaged manifest against the new build input and all 67 patch hashes.
 3. Start with fresh settings: rerun setup/layout and native blank-key connection.
    Verify populated materials without hand-editing model identity; native color
    edits; repeated Box/external dialogs; slot switching; duplicate opens; disconnect

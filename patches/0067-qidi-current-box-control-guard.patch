@@ -1,0 +1,97 @@
+From b917eadfa648d349f0c689ec70bdedcd06399394 Mon Sep 17 00:00:00 2001
+From: chevydan6 <339888127+chevydan6@users.noreply.github.com>
+Date: Tue, 3 Nov 2026 18:39:13 +0900
+Subject: [PATCH] Reject stale QIDI physical-slot controls after Box removal
+
+---
+ src/slic3r/Utils/QidiPrinterAgent.cpp         | 14 +++++++
+ tests/slic3rutils/test_qidi_printer_agent.cpp | 41 +++++++++++++++++++
+ 2 files changed, 55 insertions(+)
+
+diff --git a/src/slic3r/Utils/QidiPrinterAgent.cpp b/src/slic3r/Utils/QidiPrinterAgent.cpp
+index 109d8fa0..28c18970 100644
+--- a/src/slic3r/Utils/QidiPrinterAgent.cpp
++++ b/src/slic3r/Utils/QidiPrinterAgent.cpp
+@@ -223,6 +223,20 @@ int QidiPrinterAgent::send_message(std::string dev_id, std::string json_str, int
+                     return BAMBU_NETWORK_ERR_INVALID_RESULT;
+             }
+             if (auto script = control_script(request[section])) {
++                const auto& command = request[section];
++                const auto name = command["command"].get<std::string>();
++                if (name == "ams_filament_setting" || name == "ams_change_filament" ||
++                    name == "ams_get_rfid" || name == "ams_eject_filament") {
++                    // The modal GUI can still hold a tray after its Box disappears.
++                    // control_script has validated the integer fields; now check
++                    // the latest communication snapshot before dispatching it.
++                    const int ams_id = command["ams_id"].get<int>();
++                    if (ams_id != 255) {
++                        const auto count = reported_box_count(status_snapshot());
++                        if (!count || ams_id >= *count)
++                            return BAMBU_NETWORK_ERR_INVALID_RESULT;
++                    }
++                }
+                 request["print"] = request[section];
+                 request.erase("system");
+                 request.erase("xcam");
+diff --git a/tests/slic3rutils/test_qidi_printer_agent.cpp b/tests/slic3rutils/test_qidi_printer_agent.cpp
+index e32ba3fb..742f019a 100644
+--- a/tests/slic3rutils/test_qidi_printer_agent.cpp
++++ b/tests/slic3rutils/test_qidi_printer_agent.cpp
+@@ -3,6 +3,7 @@
+ #include <catch2/generators/catch_generators.hpp>
+ 
+ #include <string>
++#include <chrono>
+ #include <memory>
+ #include <mutex>
+ #include <thread>
+@@ -233,6 +234,46 @@ private:
+ };
+ }
+ 
++TEST_CASE("QIDI slot actions reject a removed Box before GUI status delivery", "[QidiPrinterAgent][Http][Regression]")
++{
++    const auto name = GENERATE("ams_filament_setting", "ams_change_filament", "ams_get_rfid", "ams_eject_filament");
++    QidiHttpFixture printer(0);
++    QidiPrinterAgent agent("");
++    QidiPrinterAgentTestAccess::endpoint(agent, printer.url());
++    const nlohmann::json first{{"multi_color_controller", {{"box", {{"box_count", 2}}}}}};
++    const nlohmann::json command{{"command", name}, {"ams_id", 1}, {"slot_id", 1}, {"target", 5},
++        {"tray_color", "00FF00FF"}, {"tray_vendor", "QIDI"}, {"tray_type", "PLA Rapido"}};
++    const auto request = nlohmann::json{{"print", command}}.dump();
++    for (const auto& count : nlohmann::json::array({0, 1, nullptr, "2", 5})) {
++        QidiPrinterAgentTestAccess::merge(agent, first,
++            {{"multi_color_controller", {{"box", {{"box_count", count}}}}}});
++        CHECK(agent.send_message("offline-fixture", request, 0, 0) == BAMBU_NETWORK_ERR_INVALID_RESULT);
++    }
++    CHECK(printer.requests().empty());
++    QidiPrinterAgentTestAccess::merge(agent, first, nlohmann::json::object());
++    CHECK(agent.send_message("offline-fixture", request, 0, 0) == BAMBU_NETWORK_SUCCESS);
++    for (int i = 0; i < 200 && printer.requests().empty(); ++i)
++        std::this_thread::sleep_for(std::chrono::milliseconds(10));
++    REQUIRE(printer.requests().size() == 1);
++    CHECK(nlohmann::json::parse(printer.requests().front().body)["script"].get<std::string>().find("SLOT=5") != std::string::npos);
++}
++
++TEST_CASE("QIDI external material edits remain available with zero Boxes", "[QidiPrinterAgent][Http][Regression]")
++{
++    QidiHttpFixture printer(0);
++    QidiPrinterAgent agent("");
++    QidiPrinterAgentTestAccess::endpoint(agent, printer.url());
++    QidiPrinterAgentTestAccess::merge(agent,
++        {{"multi_color_controller", {{"box", {{"box_count", 0}}}}}}, nlohmann::json::object());
++    const nlohmann::json command{{"command", "ams_filament_setting"}, {"ams_id", 255}, {"slot_id", 0},
++        {"tray_color", "808080FF"}, {"tray_vendor", "Generic"}, {"tray_type", "PETG"}};
++    CHECK(agent.send_message("offline-fixture", nlohmann::json{{"print", command}}.dump(), 0, 0) == BAMBU_NETWORK_SUCCESS);
++    for (int i = 0; i < 200 && printer.requests().empty(); ++i)
++        std::this_thread::sleep_for(std::chrono::milliseconds(10));
++    REQUIRE(printer.requests().size() == 1);
++    CHECK(nlohmann::json::parse(printer.requests().front().body)["script"].get<std::string>().find("SLOT=16") != std::string::npos);
++}
++
+ TEST_CASE("QIDI legacy slot indexes reject corrupt numeric values before conversion", "[QidiPrinterAgent][Http][Regression]")
+ {
+     const std::string key = GENERATE("color_slot0", "filament_slot0", "vendor_slot0");
+-- 
+2.43.0
+

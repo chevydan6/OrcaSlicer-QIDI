@@ -1,0 +1,25 @@
+{
+  "integration_commit": "9b06cba3424e19e53a4235ce8b3bf9d455ea393a",
+  "run": 41610127689,
+  "static_run": 41610133489,
+  "integration": "success",
+  "static": "success",
+  "unit_tests": {
+    "name": "(empty)",
+    "tests": "2914",
+    "failures": "0",
+    "disabled": "0",
+    "skipped": "0",
+    "hostname": "",
+    "time": "553",
+    "timestamp": "2026-11-03T09:27:21"
+  },
+  "cli_cases": 7,
+  "vendor_bundles": 72,
+  "max4_cases": 21,
+  "test_artifact": 13219911433,
+  "test_zip_sha256": "8fe4b7f0956bd5abe615160dc40b2666053b918e244582036971c37f6de2bef3",
+  "github_digest_matches": true,
+  "final_acceptance": false,
+  "reason": "Fresh layout failed and removed-Box material dialog sent a stale slot edit. See validation/gui-64."
+}
