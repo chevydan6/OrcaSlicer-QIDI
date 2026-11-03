@@ -1,0 +1,80 @@
+From 285bd4b3b271b16e07a41d66d08587afea24932f Mon Sep 17 00:00:00 2001
+From: chevydan6 <339888127+chevydan6@users.noreply.github.com>
+Date: Tue, 3 Nov 2026 18:26:49 +0900
+Subject: [PATCH] Retain QIDI agent when importing MAX4 project profiles
+
+---
+ src/libslic3r/Format/bbs_3mf.cpp | 19 +++++++++++++++++++
+ tests/libslic3r/test_3mf.cpp     | 12 +++++++++++-
+ 2 files changed, 30 insertions(+), 1 deletion(-)
+
+diff --git a/src/libslic3r/Format/bbs_3mf.cpp b/src/libslic3r/Format/bbs_3mf.cpp
+index a8ff991b..247282ef 100644
+--- a/src/libslic3r/Format/bbs_3mf.cpp
++++ b/src/libslic3r/Format/bbs_3mf.cpp
+@@ -2789,6 +2789,22 @@ void PlateData::parse_filament_info(GCodeProcessorResult *result)
+         }
+     }
+ 
++    // QIDI Studio stores its MAX4 model name without Orca's vendor prefix and
++    // has no Orca printer-agent field. Normalize communication identity in both
++    // the project config and embedded printer preset, without replacing G-code.
++    static void normalize_qidi_max4_connection(DynamicPrintConfig& config)
++    {
++        auto* model = config.option<ConfigOptionString>("printer_model");
++        if (!model || (model->value != "X-Max 4" && model->value != "Qidi X-Max 4"))
++            return;
++        model->value = "Qidi X-Max 4";
++        const auto* agent = config.option<ConfigOptionString>("printer_agent");
++        if (!agent || agent->value.empty())
++            config.set_key_value("printer_agent", new ConfigOptionString("qidi"));
++        if (!config.has("qidi_preprint_bed_leveling"))
++            config.set_key_value("qidi_preprint_bed_leveling", new ConfigOptionBool(true));
++    }
++
+     //BBS: extract project config from json files
+     void _BBS_3MF_Importer::_extract_project_config_from_archive(mz_zip_archive& archive, const mz_zip_archive_file_stat& stat, DynamicPrintConfig& config, ConfigSubstitutionContext& config_substitutions, Model& model)
+     {
+@@ -2813,6 +2829,7 @@ void PlateData::parse_filament_info(GCodeProcessorResult *result)
+             BOOST_LOG_TRIVIAL(info) << __FUNCTION__ << boost::format(", load project config file successfully from %1%\n") %dest_file;
+ 
+             if (m_is_qidi_3mf) {
++                normalize_qidi_max4_connection(config);
+                 // QIDI's auto expansion resolves to 2 mm in both raft and
+                 // ordinary support generation (SupportCommon.cpp).
+                 if (auto* expansion = config.option<ConfigOptionFloat>("raft_first_layer_expansion");
+@@ -2877,6 +2894,8 @@ void PlateData::parse_filament_info(GCodeProcessorResult *result)
+                 //skip this file
+                 return;
+             }
++            if (m_is_qidi_3mf && type == Preset::TYPE_PRINTER)
++                normalize_qidi_max4_connection(config);
+             ConfigOptionString* print_name;
+             ConfigOptionStrings* filament_names;
+             std::string preset_name;
+diff --git a/tests/libslic3r/test_3mf.cpp b/tests/libslic3r/test_3mf.cpp
+index 5817cd2d..310f845c 100644
+--- a/tests/libslic3r/test_3mf.cpp
++++ b/tests/libslic3r/test_3mf.cpp
+@@ -270,7 +270,17 @@ TEST_CASE("QIDI projects preserve object and filament assignments", "[3mf][Qidi]
+     const bool loaded = load_bbs_3mf(path.c_str(), &config, &substitutions, &model, &plates,
+         &presets, &structured, &orca, &version, nullptr, LoadStrategy::LoadModel | LoadStrategy::LoadConfig);
+     release_PlateData_list(plates);
+-    for (auto* preset : presets) delete preset;
++    for (auto* preset : presets) {
++        if (preset->type == Preset::TYPE_PRINTER) {
++            CHECK(preset->config.opt_string("printer_agent") == "qidi");
++            CHECK(preset->config.opt_string("printer_model") == "Qidi X-Max 4");
++            CHECK_FALSE(preset->config.opt_string("machine_start_gcode").empty());
++        }
++        delete preset;
++    }
++    CHECK(config.opt_string("printer_agent") == "qidi");
++    CHECK(config.opt_string("printer_model") == "Qidi X-Max 4");
++    CHECK(config.opt_bool("qidi_preprint_bed_leveling"));
+     REQUIRE(loaded);
+     CHECK(structured);
+     CHECK_FALSE(orca);
+-- 
+2.43.0
+

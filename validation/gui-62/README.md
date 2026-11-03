@@ -16,3 +16,17 @@ A disconnect while the editor was open plus HTTP 503 left the GUI responsive and
 Sanitized real MAX4 telemetry replayed through the fixture renders one Box, A2 blue ABS and three empty slots (44). A fresh-cache replay remains pending because prior two-Box fixture data can persist in the merged cache. No real control requests occurred.
 
 `cases.json` retains untested cases. Passing partial checks from this rejected binary do not accept a future binary. Next candidate must rerun the complete matrix, including fresh setup and metadata selection.
+
+## Original-project submission defect
+
+The unmodified reference sparse project imports and slices with T2, but its
+embedded configuration omits Orca's `printer_agent`. The GUI switches away from
+QIDI, and Send print job shows No available printers (56-open-submit.png).
+
+Diagnostic only: a separate project copy adding `printer_agent=qidi`, normalizing
+`printer_model` to Qidi X-Max 4 and adding the known MAX4 bed-leveling capability
+restores the loopback printer and mapping chooser (66). Selecting B2 sends
+`SAVE_VARIABLE VARIABLE=value_t2 VALUE="'slot5'"` before simulated start. The
+captured G-code preserves `BOX_TEMP_SET VT2=45`, `BOX_PRINT_START EXTRUDER=2`
+and T2. This modified input supports patch 65; it does not validate import of the
+original project in a future binary. Original reference files remain unchanged.
