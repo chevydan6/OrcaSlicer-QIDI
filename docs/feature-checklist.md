@@ -2,14 +2,18 @@
 
 Status describes source implementation, not completion or printer certification.
 The full integrated build and dedicated validation phase remain open.
-No MAX4 is connected during this work; communication tests use local fixtures,
-and printer-specific protocol/physical verification remains pending.
+Read-only LAN inspection of Dan's MAX4 is recorded in
+[the recovery evidence](../validation/recovery-2026-11-03/printer-readonly.json).
+No physical control/print behavior is verified. Automated communication tests
+use only the non-forwarding loopback fixture.
 
-Build update: the 42-patch integration run compiled and packaged successfully.
-CTest reports 2,910 cases, zero failures and five locale-dependent skips. All
-seven upstream CLI regressions, 72 vendor bundles and 19 MAX4 slicing/persistence
-cases pass. The final workflow now installs the missing test locales. Later GUI
-fixes remain under compilation and validation; static checks pass through 46.
+Build update: candidate 59 (`cd6d820`) passed compilation, 2,912 unit cases with
+zero failures/skips, seven CLI regressions, 72 vendor bundles, all 21 MAX4 cases
+and static checks. Its GUI acceptance **failed** fresh layout and repeated
+material dialogs; restart also lost the custom endpoint port. See
+[GUI59](../validation/gui-59/README.md). Candidate 62 (`b8ef9f8`) addresses these
+observed failures and is awaiting matching build/GUI acceptance. The table's
+historical passes below do not establish candidate 62 acceptance.
 
 Actual GUI tests through patch 38 exercise Box load/unload/eject/RFID, four-Box and
 zero-Box transitions, external-spool display, lamp, chamber, fan, speed and print
@@ -31,7 +35,7 @@ documented in the build guide. Source checks alone do not validate GUI behavior.
 | MAX4 materials | 234 of QIDI's 247 files | 13 missing files; Orca IDs and inheritance | All 268 relevant profile entries resolve; tuning differences under review |
 | Process profiles | All 16 source files have counterparts | Preserve current Orca tuning | Compare resolved differences and actual slicing |
 | Fan and speed controls | QIDI part-fan number mismatch; speed selection ignored | Named fan commands; speed commands/telemetry | Offline command checks pass; hardware pending |
-| Camera | No QIDI native stream mode | Local web-proxy snapshot endpoint | Offline GUI JPEG display, malformed frame, HTTP failure and recovery pass; real camera/authentication/proxy pending |
+| Camera | No QIDI native stream mode | Local web-proxy snapshot endpoint | Offline GUI JPEG display, malformed frame, HTTP failure and recovery pass; read-only MAX4 JPEG GET verified; custom-app real-camera/authentication/proxy testing pending |
 | Chamber heat | Profile temperatures and start macros | Native command translation, heater capability and live current/target telemetry | Protocol and offline GUI target/telemetry checks pass; hardware pending |
 | Box temperature during printing | JSON values ignored by core | Persistent settings/UI; logical VT indices in generated code | Compiled slicing and save/reload pass; final-build rerun pending |
 | Box/external selection | Physical-slot mapping exists | Explicit enable_box; active-tool snapshot; reject missing/malformed mappings | Recording-transport submission order and stop-on-failure pass |
@@ -42,7 +46,7 @@ documented in the build guide. Source checks alone do not validate GUI behavior.
 | Eject | Missing | QIDI-only control; hidden for box_v2 identity | Command and offline GUI checks pass; final-build and hardware pending |
 | RFID refresh | Dedicated agent method unsupported | Route native refresh to READ_RFID | Protocol and offline GUI refresh pass; no real RFID requests sent |
 | RFID settings | Native preferences lack QIDI translation | Insert/boot macros and telemetry flags | Source tests added; no printer settings changed |
-| Slot material/color editing | Native editor lacks QIDI translation | RGB/vendor/product command, guarded string literals | Empty GUI list found and fixed in patch 48; compiled editor/re-sync verification pending |
+| Slot material/color editing | Native editor lacks QIDI translation | RGB/vendor/product command, guarded string literals | GUI59 fresh list and material/color request verified; repeated opens failed; patch 60 retest pending |
 | Box monitoring | Filament sync only | Temperature/humidity/loaded physical slot; modern nested/flat slot sync and live material/presence updates; preserve partial metadata | Nested/flat firmware formats checked in isolation |
 | Start/end/change G-code | MAX4 macros present | Height guards and Box thermal preamble | 19 compiled slicing cases pass with generated G-code checks |
 | LAN printing | Moonraker upload, 3MF selected plate | Ordered Box mode/mapping/options before start | Compiled loopback HTTP tests and sparse-filament GUI submission pass; final-build rerun pending |

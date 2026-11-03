@@ -1,9 +1,16 @@
 # Remaining limitations and physical verification
 
-No MAX4 is connected to this workstation. All recorded communication tests use
-127.0.0.1:19025, whose fixture records and discards requests. A recorded heater,
-load, RFID or start request does not prove that a printer accepts or executes it.
-The final acceptance record identifies which software revision passed each test.
+Dan's MAX4 was inspected with authorized read-only LAN requests on 2026-11-03.
+One Box, main MCU 02.01.01.12, Box MCU 02.03.01.21, slot metadata and a valid
+1920x1080 camera JPEG were observed. The overall release version and physical
+loaded materials still need Dan's confirmation. No heating, feeding, motion,
+configuration writes or print requests were sent to the printer.
+
+Automated communication tests use only 127.0.0.1:19025, whose fixture records
+and discards requests. A recorded heater, load, RFID or start request does not
+prove physical execution. Candidate 59 passed build gates but failed GUI
+acceptance; candidate 62 fixes are under evaluation. No candidate is installed
+or accepted on the recovered Ubuntu computer yet. See ../HANDOFF.md.
 
 ## Supported scope and gaps
 
@@ -20,13 +27,14 @@ The final acceptance record identifies which software revision passed each test.
 - Current Orca process and material tuning is retained where a counterpart
   already exists. Missing QIDI profiles are imported with attribution. Matching
   controls and G-code does not make the engines or print quality identical.
-- Native camera uses the reported local HTTP snapshot endpoint. Actual MAX4
-  camera URLs, authentication and proxies still need printer-side verification.
+- Native camera uses the reported local HTTP snapshot endpoint. A read-only GET to the MAX4 web-proxy snapshot worked; the custom GUI on a real
+  connection, authentication and other proxy configurations remain unverified.
 - New QIDI-specific interface strings fall back to English when a translation
   catalog has no translation. Some shared upstream monitoring labels still say AMS.
 - This deliverable targets Linux x86_64. Other platforms have not been built.
-  The Fedora/LXQt host uses the GNOME 50 Flatpak runtime and a private session bus
-  for file chooser support. Native AppImage dependencies vary by distribution.
+  The old Fedora/LXQt host needed GNOME 50 Flatpak and a private session bus.
+  The recovered Ubuntu 24.04.5 host runs the native AppImage; installation and
+  file chooser acceptance are pending. Dependencies vary by distribution.
 - Official Orca application/preset updates do not include the downstream patches.
   Keep automatic preset updates disabled and rebuild this port for updates.
 

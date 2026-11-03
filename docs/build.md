@@ -69,7 +69,7 @@ does not launch the application or contact a printer. The AppImage path also
 gives it a distinct single-instance identity in Orca's Linux implementation.
 
 GUI coexistence and persistence must still be verified with the compiled build.
-On hosts without FUSE, add `--extract` to install an AppDir. On this Fedora host,
+On hosts without FUSE, add `--extract` to install an AppDir. On the historical Fedora/LXQt host,
 WebKitGTK is supplied by the existing GNOME runtime used by the installed slicers:
 
 ```sh
@@ -134,7 +134,7 @@ newly imported materials, checks emitted macros, and saves/reloads a custom Box
 temperature through 3MF. It never uploads files or sends printer commands.
 Use `--binary PATH` for another executable layout and `--output NEW_DIRECTORY`
 for subsequent runs. The output directory must not already exist.
-For offline validation on this Fedora host, point `--binary` at the extracted
+For offline validation on the historical Fedora/LXQt host, point `--binary` at the extracted
 `AppDir/AppRun`, add `--flatpak-app io.github.chevydan6.OrcaSlicerQIDI`, and use
 `--artifact /path/to/custom.AppImage` to record the original package checksum.
 This validation mode disables networking and uses fresh datadirs; it is separate
@@ -197,3 +197,16 @@ curl -sS http://127.0.0.1:19025/__fixture__/state \
 The fixture serves a clearly labeled synthetic camera JPEG. Real RFID reads,
 thermal changes, motion and printing are not emulated. Unexpected GET endpoints return
 404 so missing fixture coverage remains visible in the logs.
+
+## Recovered Ubuntu host (2026-11-03)
+
+Ubuntu 24.04.5 x86_64/GNOME Wayland, GCC 13.3, 14 GiB RAM and 23 GiB swap.
+Keep compilation and CTest parallelism at 2. The native extracted AppImage runs
+here; Flatpak is not installed. Do not inherit the old Fedora portal workaround.
+See HANDOFF.md for the current candidate and outstanding acceptance failures.
+
+For isolated X11 validation, allocate a private Xvfb display with `-displayfd`
+and verify it with `xdpyinfo`; do not assume the old display number. Remove
+WAYLAND_DISPLAY and set GDK_BACKEND=x11 and XDG_SESSION_TYPE=x11 for the test
+process. Use a new `--datadir`, the tracked loopback fixture, and exact verified
+artifact. None of those fixture connections belongs in delivered settings.

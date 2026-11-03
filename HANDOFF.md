@@ -8,7 +8,7 @@ Feature expansion is frozen pending one complete software acceptance.
 
 - Integration repository: https://github.com/chevydan6/OrcaSlicer-QIDI, branch main.
 - Workspace: `/home/dan/qidi-orca-port`; recovered at `70d58fc17f0132d926424a5a74144bf80cb1dcfd`.
-- Next candidate: **62 patches**, build dispatch pending. Latest evaluated build input: `cd6d820543ddaabad4846b6eb053b4508e65c448` (59 patches).
+- Current candidate: **62 patches**, build input `b8ef9f8e4f3e27fda362401da9076d453e3cf06b`. Latest evaluated build input: `cd6d820543ddaabad4846b6eb053b4508e65c448` (59 patches).
 - Orca pin: `896557bce5281553ee0c6210f2da301b3b3c262e`.
 - QIDI Studio pin: `403b619d56147160bb883e94f95a7951245bc6d0`.
 - Prepared source: `build/source`, local commit `171f0274`.
@@ -21,6 +21,7 @@ Feature expansion is frozen pending one complete software acceptance.
 
 | Candidate | Integration | Static | Acceptance |
 | --- | --- | --- | --- |
+| 62 / b8ef9f8 | [41605999278](https://github.com/chevydan6/OrcaSlicer-QIDI/actions/runs/41605999278), running | [41606004232](https://github.com/chevydan6/OrcaSlicer-QIDI/actions/runs/41606004232), running | Exact artifact/GUI retest pending |
 | 59 / cd6d820 | [41602372652](https://github.com/chevydan6/OrcaSlicer-QIDI/actions/runs/41602372652), passed | [41602379555](https://github.com/chevydan6/OrcaSlicer-QIDI/actions/runs/41602379555), passed | Verified matching artifact; GUI failed layout, repeated material dialogs and restart |
 | 58 / c1aa8e5 | 41601936217, cancelled | 41601942066, cancelled | Superseded by fresh-connection fix; cancellation is not a pass |
 | 57 / 0b5a0e5 | 41600542116, passed | 41600547497, passed | GUI fresh setup and fresh connection failures; not accepted |
