@@ -12,6 +12,7 @@ args = parser.parse_args()
 source_root = args.source.resolve()
 source = (source_root/'src/slic3r/Utils/QidiPrinterAgent.cpp').read_text()
 functions = [
+ ('bool QidiPrinterAgent::object_selection_is_current', 'int QidiPrinterAgent::send_message'),
  ('std::optional<std::string> QidiPrinterAgent::control_script', 'int QidiPrinterAgent::command_ams_refresh_rfid'),
  ('void QidiPrinterAgent::append_chamber_status', 'AgentInfo QidiPrinterAgent::get_agent_info_static'),
  ('void QidiPrinterAgent::append_accessory_status', 'nlohmann::json QidiPrinterAgent::configuration_notification'),
@@ -50,6 +51,7 @@ struct QidiPrinterAgent {
  { return record("start:" + request["filename"].get<std::string>()); }
  bool print_uploaded_file(const PrintParams&, const std::string&);
  static std::optional<std::string> control_script(const nlohmann::json&);
+ static bool object_selection_is_current(const nlohmann::json&, const nlohmann::json&);
  static std::string camera_url_for_host(std::string);
  static nlohmann::json configuration_notification(const nlohmann::json&);
  static void append_accessory_status(const nlohmann::json&, nlohmann::json&);
@@ -145,6 +147,15 @@ start=device_source.index('int MachineObject::command_ams_change_filament(')
 code += device_source[start:device_source.index('int MachineObject::command_ams_user_settings(',start)]
 code += r'''
 int main() {
+ const nlohmann::json selected_objects{{"expected_job","first.gcode"},{"objects",{"cube"}}};
+ nlohmann::json selection_status{{"print_stats",{{"filename","first.gcode"},{"state","printing"}}},
+                              {"exclude_object",{{"objects",{{{"name","cube"}}}}}}};
+ assert(QidiPrinterAgent::object_selection_is_current(selected_objects,selection_status));
+ selection_status["print_stats"]["filename"]="second.gcode";
+ assert(!QidiPrinterAgent::object_selection_is_current(selected_objects,selection_status));
+ selection_status["print_stats"]["filename"]="first.gcode";
+ selection_status["exclude_object"]["objects"]=nullptr;
+ assert(!QidiPrinterAgent::object_selection_is_current(selected_objects,selection_status));
  for (const char* key : {"color_slot0","filament_slot0","vendor_slot0"}) {
   for (const auto& value : nlohmann::json::array({1e300,-1e300,-1,1.5,18446744073709551615ULL}))
    assert(!legacy_slot({{key,value}},nlohmann::json::object()));

@@ -1,0 +1,92 @@
+From fc00a1d6749e09bbfd81fe5a5143d3747f750dd0 Mon Sep 17 00:00:00 2001
+From: chevydan6 <339888127+chevydan6@users.noreply.github.com>
+Date: Tue, 3 Nov 2026 13:53:49 +0900
+Subject: [PATCH] qidi: populate slot material editor from vendor printer
+ profiles
+
+---
+ src/slic3r/GUI/AMSMaterialsSetting.cpp | 25 +++++++++++++++++++++----
+ 1 file changed, 21 insertions(+), 4 deletions(-)
+
+diff --git a/src/slic3r/GUI/AMSMaterialsSetting.cpp b/src/slic3r/GUI/AMSMaterialsSetting.cpp
+index c5f9ff91..dfea8e8c 100644
+--- a/src/slic3r/GUI/AMSMaterialsSetting.cpp
++++ b/src/slic3r/GUI/AMSMaterialsSetting.cpp
+@@ -643,10 +643,13 @@ void AMSMaterialsSetting::update_filament_editing(bool is_printing)
+         m_button_confirm->Hide();
+         m_button_reset->Hide();
+     }
++    if (obj && obj->printer_agent_id == "qidi")
++        m_button_reset->Hide(); // QIDI has no equivalent Bambu calibration/reset transaction.
+ }
+ 
+ void AMSMaterialsSetting::on_select_reset(wxCommandEvent& event) {
+     if (m_view_only) return; // Orca: view-only never commits
++    if (obj && obj->printer_agent_id == "qidi") return;
+     MessageDialog msg_dlg(nullptr, _L("Are you sure you want to clear the filament information?"), wxEmptyString, wxICON_WARNING | wxOK | wxCANCEL);
+     auto result = msg_dlg.ShowModal();
+     if (result != wxID_OK)
+@@ -922,6 +925,11 @@ void AMSMaterialsSetting::on_select_ok(wxCommandEvent &event)
+         }
+     }
+ 
++    if (obj->printer_agent_id == "qidi") {
++        Close();
++        return; // Only slot metadata is supported; no Bambu PA calibration request.
++    }
++
+     //reset param
+     wxString k_text = m_input_k_val->GetTextCtrl()->GetValue();
+     wxString n_text = m_input_n_val->GetTextCtrl()->GetValue();
+@@ -1123,7 +1131,11 @@ bool AMSMaterialsSetting::is_virtual_tray()
+ 
+ void AMSMaterialsSetting::update_widgets()
+ {
+-    if (obj && obj->get_printer_series() == PrinterSeries::SERIES_X1 && obj->cali_version <= -1) {
++    if (obj && obj->printer_agent_id == "qidi") {
++        m_panel_normal->Show();
++        m_panel_kn->Hide();
++    }
++    else if (obj && obj->get_printer_series() == PrinterSeries::SERIES_X1 && obj->cali_version <= -1) {
+         // Low version firmware does not display k value
+         m_panel_kn->Hide();
+     }
+@@ -1302,6 +1314,7 @@ void AMSMaterialsSetting::on_toggle_favorite_filament(wxCommandEvent& evt)
+ void AMSMaterialsSetting::Popup(wxString filament, wxString sn, wxString temp_min, wxString temp_max, wxString k, wxString n)
+ {
+     if (!obj) return;
++    SetTitle(obj->printer_agent_id == "qidi" ? _L("QIDI filament settings") : _L("AMS Materials Setting"));
+     update_widgets();
+     // set default value
+     if (k.IsEmpty())
+@@ -1340,7 +1353,9 @@ void AMSMaterialsSetting::Popup(wxString filament, wxString sn, wxString temp_mi
+     if (preset_bundle) {
+         BOOST_LOG_TRIVIAL(trace) << "system_preset_bundle filament number=" << preset_bundle->filaments.size();
+         for (Preset *filament_it : preset_bundle->get_filament_presets_for_machine(
+-                 DevPrinterConfigUtil::get_printer_display_name(obj->printer_type), nozzle_diameter_str, obj->is_support_user_preset)) {
++                 obj->printer_agent_id == "qidi" ? std::string(obj->get_printer_type_display_str().utf8_str())
++                                                 : DevPrinterConfigUtil::get_printer_display_name(obj->printer_type),
++                 nozzle_diameter_str, obj->printer_agent_id == "qidi" || obj->is_support_user_preset)) {
+             if (!filament_id_set.insert(filament_it->filament_id).second)
+                 continue;
+             const std::string alias = preset_bundle->filaments.get_preset_alias(*filament_it, true);
+@@ -1419,7 +1434,7 @@ void AMSMaterialsSetting::Popup(wxString filament, wxString sn, wxString temp_mi
+             m_input_k_val->Enable();
+         }
+ 
+-        m_button_reset->Show();
++        m_button_reset->Show(obj->printer_agent_id != "qidi");
+         //m_button_confirm->Show();
+     }
+ 
+@@ -1611,7 +1626,9 @@ void AMSMaterialsSetting::on_select_filament(wxCommandEvent &evt)
+         if (selected_info) {
+             const std::string& filament_id = selected_info->filament_id;
+             for (Preset *it : preset_bundle->get_filament_presets_for_machine(
+-                     DevPrinterConfigUtil::get_printer_display_name(obj->printer_type), nozzle_diameter_str, obj->is_support_user_preset)) {
++                     obj->printer_agent_id == "qidi" ? std::string(obj->get_printer_type_display_str().utf8_str())
++                                                     : DevPrinterConfigUtil::get_printer_display_name(obj->printer_type),
++                     nozzle_diameter_str, obj->printer_agent_id == "qidi" || obj->is_support_user_preset)) {
+                 if (it->filament_id != filament_id)
+                     continue;
+                 // ) if nozzle_temperature_range is found

@@ -1,0 +1,118 @@
+From 316543d6b8f628973d313d248a062114593749cc Mon Sep 17 00:00:00 2001
+From: chevydan6 <339888127+chevydan6@users.noreply.github.com>
+Date: Tue, 3 Nov 2026 13:50:15 +0900
+Subject: [PATCH] qidi: reject stale object selections against latest protocol
+ status
+
+---
+ src/slic3r/GUI/PrintOptionsDialog.cpp         |  2 +-
+ src/slic3r/Utils/QidiPrinterAgent.cpp         | 30 +++++++++++++++++++
+ src/slic3r/Utils/QidiPrinterAgent.hpp         |  1 +
+ tests/slic3rutils/test_qidi_printer_agent.cpp | 21 +++++++++++++
+ 4 files changed, 53 insertions(+), 1 deletion(-)
+
+diff --git a/src/slic3r/GUI/PrintOptionsDialog.cpp b/src/slic3r/GUI/PrintOptionsDialog.cpp
+index 312057f0..059e4b40 100644
+--- a/src/slic3r/GUI/PrintOptionsDialog.cpp
++++ b/src/slic3r/GUI/PrintOptionsDialog.cpp
+@@ -119,7 +119,7 @@ PrintOptionsDialog::PrintOptionsDialog(wxWindow* parent)
+             for (int index : dialog.GetSelections())
+                 if (index >= 0 && static_cast<std::size_t>(index) < names.size()) selected.push_back(names[index]);
+             if (!selected.empty())
+-                current->publish_json({{"print", {{"command", "qidi_exclude_objects"}, {"objects", selected},
++                current->publish_json({{"print", {{"command", "qidi_exclude_objects"}, {"objects", selected}, {"expected_job", job},
+                     {"sequence_id", std::to_string(MachineObject::m_sequence_id++)}}}});
+         });
+     });
+diff --git a/src/slic3r/Utils/QidiPrinterAgent.cpp b/src/slic3r/Utils/QidiPrinterAgent.cpp
+index 6d3e5c78..3ae7e164 100644
+--- a/src/slic3r/Utils/QidiPrinterAgent.cpp
++++ b/src/slic3r/Utils/QidiPrinterAgent.cpp
+@@ -186,6 +186,29 @@ int QidiPrinterAgent::command_ams_refresh_rfid(std::string dev_id, int ams_id, i
+     return send_message(std::move(dev_id), request.dump(), 0, 0);
+ }
+ 
++bool QidiPrinterAgent::object_selection_is_current(const nlohmann::json& command, const nlohmann::json& status)
++{
++    if (!command.is_object() || !status.is_object()) return false;
++    const auto job = command.find("expected_job");
++    const auto selected = command.find("objects");
++    const auto stats = status.find("print_stats");
++    const auto exclusion = status.find("exclude_object");
++    if (job == command.end() || !job->is_string() || job->get_ref<const std::string&>().empty() ||
++        selected == command.end() || !selected->is_array() || selected->empty() ||
++        stats == status.end() || !stats->is_object() ||
++        exclusion == status.end() || !exclusion->is_object()) return false;
++    const auto filename = stats->find("filename");
++    const auto state = stats->find("state");
++    const auto objects = exclusion->find("objects");
++    if (filename == stats->end() || *filename != *job || state == stats->end() ||
++        (*state != "printing" && *state != "paused") || objects == exclusion->end() || !objects->is_array()) return false;
++    return std::all_of(selected->begin(), selected->end(), [&](const nlohmann::json& name) {
++        return name.is_string() && std::any_of(objects->begin(), objects->end(), [&](const nlohmann::json& object) {
++            return object.is_object() && object.contains("name") && object["name"] == name;
++        });
++    });
++}
++
+ int QidiPrinterAgent::send_message(std::string dev_id, std::string json_str, int qos, int flag)
+ {
+     auto request = nlohmann::json::parse(json_str, nullptr, false);
+@@ -193,6 +216,13 @@ int QidiPrinterAgent::send_message(std::string dev_id, std::string json_str, int
+         if (!request.is_object() || !request.contains(section))
+             continue;
+         try {
++            if (request[section].is_object() && request[section].value("command", std::string()) == "qidi_exclude_objects") {
++                // A native modal loop can delay GUI status callbacks. Validate
++                // against the WebSocket cache before translating the selection.
++                std::lock_guard<std::recursive_mutex> lock(payload_mutex);
++                if (!object_selection_is_current(request[section], status_cache))
++                    return BAMBU_NETWORK_ERR_INVALID_RESULT;
++            }
+             if (auto script = control_script(request[section])) {
+                 request["print"] = request[section];
+                 request.erase("system");
+diff --git a/src/slic3r/Utils/QidiPrinterAgent.hpp b/src/slic3r/Utils/QidiPrinterAgent.hpp
+index e232587d..8dd84874 100644
+--- a/src/slic3r/Utils/QidiPrinterAgent.hpp
++++ b/src/slic3r/Utils/QidiPrinterAgent.hpp
+@@ -24,6 +24,7 @@ public:
+     int send_message(std::string dev_id, std::string json_str, int qos, int flag) override;
+     int send_message_to_printer(std::string dev_id, std::string json_str, int qos, int flag) override;
+     static std::optional<std::string> control_script(const nlohmann::json& command);
++    static bool object_selection_is_current(const nlohmann::json& command, const nlohmann::json& status);
+     static void append_chamber_status(const nlohmann::json& status, nlohmann::json& payload);
+     static void append_box_status(const nlohmann::json& status, nlohmann::json& payload);
+     static std::optional<int> reported_box_count(const nlohmann::json& status, bool legacy_default = false);
+diff --git a/tests/slic3rutils/test_qidi_printer_agent.cpp b/tests/slic3rutils/test_qidi_printer_agent.cpp
+index 08a5174d..1b2e1a77 100644
+--- a/tests/slic3rutils/test_qidi_printer_agent.cpp
++++ b/tests/slic3rutils/test_qidi_printer_agent.cpp
+@@ -78,6 +78,27 @@ struct QidiPrinterAgentTestAccess
+ };
+ }
+ 
++TEST_CASE("QIDI object selection rejects a changed job before GUI status delivery", "[QidiPrinterAgent][Regression]")
++{
++    const nlohmann::json command{{"command", "qidi_exclude_objects"}, {"expected_job", "first.gcode"}, {"objects", {"cube"}}};
++    const nlohmann::json first{{"print_stats", {{"filename", "first.gcode"}, {"state", "printing"}}},
++                              {"exclude_object", {{"objects", {{{"name", "cube"}}}}}}};
++    CHECK(QidiPrinterAgent::object_selection_is_current(command, first));
++    const auto update = GENERATE(
++        nlohmann::json{{"print_stats", {{"filename", "second.gcode"}}}},
++        nlohmann::json{{"print_stats", {{"state", "standby"}}}},
++        nlohmann::json{{"exclude_object", {{"objects", {{{"name", "other"}}}}}}},
++        nlohmann::json{{"exclude_object", {{"objects", nullptr}}}});
++    QidiPrinterAgent agent("");
++    const auto latest = QidiPrinterAgentTestAccess::merge(agent, first, update);
++    CHECK_FALSE(QidiPrinterAgent::object_selection_is_current(command, latest));
++    // No GUI callback has run: the protocol cache alone must reject the command.
++    CHECK(agent.send_message("offline-fixture", nlohmann::json{{"print", command}}.dump(), 0, 0) == BAMBU_NETWORK_ERR_INVALID_RESULT);
++    auto missing_job = command;
++    missing_job.erase("expected_job");
++    CHECK_FALSE(QidiPrinterAgent::object_selection_is_current(missing_job, first));
++}
++
+ TEST_CASE("QIDI delayed responses stop dispatching when the agent is destroyed", "[QidiPrinterAgent][Regression]")
+ {
+     int received = 0;
