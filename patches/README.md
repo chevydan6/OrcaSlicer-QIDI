@@ -114,3 +114,5 @@ separately from implementation; a patch's presence does not certify hardware use
 57. `0057-qidi-color-data-include.patch` directly includes the header defining `wxColourData`, as required by the failed 56-patch include-cleaner run. Runtime behavior is unchanged; a new matching integration/static build is required before acceptance.
 
 58. `0058-gtk-notebook-layout-after-setup.patch` forwards a GTK frame size notification to the notebook so its current page is sized even when the book dimensions have not changed. GUI57 disproved patch 44 alone: fresh setup left Prepare blank until manual maximization. This correction needs compiled fresh-setup and normal-resize acceptance; it affects shared GTK layout.
+
+59. `0059-qidi-bound-model-name.patch` resolves QIDI vendor model names as well as model IDs when displaying the bound printer type. Fresh native address connections store `Qidi X-Max 4`, whereas the older lookup recognized only `Qidi-XMax-4` and returned Unknown, leaving the material list empty. Other agents retain their lookup behavior. Compiled fresh-connection material editing remains required.

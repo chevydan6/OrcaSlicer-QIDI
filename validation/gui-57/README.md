@@ -16,3 +16,19 @@ This disproves patch 44's sufficiency on this host; candidate is not accepted.
 Patch 58 forwards the frame size event to the notebook, whose DoSize sizes its
 current page. This is an attempted correction requiring fresh compiled validation.
 No printer was configured in this GUI and no physical command was sent.
+
+## Fresh connection and material editor
+
+After normal exit (status 0), enabled the printer-agent preference in isolated
+settings and restarted. Native address dialog connected to http://127.0.0.1:19025
+with blank optional API key/CA. Both Boxes and external telemetry rendered.
+The material editor for A2 had an empty dropdown. Saved local_machines contained
+printer_type `Qidi X-Max 4`. get_printer_type_display_str only matched vendor
+model_id `Qidi-XMax-4`, so the profile lookup received Unknown. Patch 59 adds
+QIDI-only model.name matching. The native RGB dialog was entirely on-screen.
+
+A diagnostic settings substitution to the historical model ID was inconclusive:
+the editor appeared at 2x5 pixels and could not be resized via the window manager.
+That substitution is not the user-facing path and has been reverted; retain this
+finding for lifecycle testing rather than calling it a successful workaround.
+No real printer address was added to these settings.

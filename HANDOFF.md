@@ -19,6 +19,16 @@ user authorization.** Simulated commands go only to `127.0.0.1:19025`; the fixtu
 records/discards requests and never executes or forwards them. Hardware testing
 is a separate acceptance stage and is not implied by software test success.
 
+## Current source candidate: 59 patches
+
+Patch 57 static checks passed (41600547497). GUI57 also exposed an empty
+material list after a fresh native connection: the stored vendor model name
+was not recognized by the display-name lookup. Patch 59 accepts QIDI model
+names as well as model IDs, preserving other agents. See validation/gui-57.
+Exact source tree: `bb3b6757f4b3e11b65ae0970f715670c953c6869`.
+Patches 58 and 59 remain attempted fixes requiring matching CI and GUI validation.
+The 58-patch runs are 41601936217 (integration), 41601942066 (static).
+
 ## Latest acceptance failure
 
 The 57-patch build input is `0b5a0e57608e4bf261dc5efe6c647a79c7911496`.

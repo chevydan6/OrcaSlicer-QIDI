@@ -1,0 +1,29 @@
+From 0fbc2100ef021f64c6bc75450143b2601c49455d Mon Sep 17 00:00:00 2001
+From: chevydan6 <339888127+chevydan6@users.noreply.github.com>
+Date: Tue, 3 Nov 2026 17:18:29 +0900
+Subject: [PATCH] Resolve QIDI address bindings by vendor model name as well as
+ ID
+
+---
+ src/slic3r/GUI/DeviceManager.cpp | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/src/slic3r/GUI/DeviceManager.cpp b/src/slic3r/GUI/DeviceManager.cpp
+index 6e837861..e48586ec 100644
+--- a/src/slic3r/GUI/DeviceManager.cpp
++++ b/src/slic3r/GUI/DeviceManager.cpp
+@@ -444,7 +444,10 @@ wxString MachineObject::get_printer_type_display_str() const
+     if (display_name.empty()) {
+         for (const auto& [vendor_id, vendor] : GUI::wxGetApp().preset_bundle->vendors) {
+             for (const auto& model : vendor.models) {
+-                if (printer_type == model.model_id)
++                // QIDI's address dialog stores printer_model (the vendor name),
++                // while older bindings may carry the vendor model_id.
++                if (printer_type == model.model_id ||
++                    (printer_agent_id == "qidi" && printer_type == model.name))
+                     display_name = model.name;
+             }
+         }
+-- 
+2.43.0
+
