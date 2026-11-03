@@ -25,7 +25,16 @@ runtime. Use `flatpak run --unshare=network --filesystem=PROJECT_DIRECTORY
 --command=ABSOLUTE_APP_RUN org.gnome.Platform//50 ...`, with XDG configuration,
 cache and data directories redirected into the validation workspace. The QIDI
 release does not accept Orca's `--datadir` option. No existing slicer profile or
-printer connection is needed. GUI/thumbnail rendering is not validated here.
+printer connection is needed. These command-line results do not validate GUI rendering.
+
+Additional GUI reference check on 2026-11-03: a temporary registered Flatpak app
+using the same runtime and isolated XDG directories opened the setup wizard,
+loaded `sparse-project.3mf` with MAX4 0.4 mm and all three filament entries,
+displayed the model in filament 3, and sliced it. The preview reports filament 3
+only, zero filament changes and 20 layers. Networking was disabled throughout.
+The temporary app registration is required for GNOME's sandboxed image loaders;
+bare-runtime GUI launch fails at that portal boundary. Custom Orca GUI comparison
+is still pending. Screenshots/logs remain in the local reference workspace.
 
 Unused-leading expected startup: `BOX_TEMP_SET VT2=45`,
 `BOX_PRINT_START EXTRUDER=2`, then `T2`.

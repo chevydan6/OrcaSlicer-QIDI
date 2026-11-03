@@ -67,7 +67,7 @@ jobs:
           set -o pipefail
           ./build_linux.sh -sitrlL -j 2 2>&1 | tee ../compile.log
           shopt -s nullglob
-          images=(build/*.AppImage)
+          images=(build/OrcaSlicer*.AppImage)
           test "${#images[@]}" -eq 1
           test -s "${images[0]}"
       - name: Unit tests
@@ -90,7 +90,7 @@ jobs:
         with:
           name: linux-integration-${{ github.sha }}
           path: |
-            source/build/*.AppImage
+            source/build/OrcaSlicer*.AppImage
             source/build/Testing/Temporary/*.log
             source/build/tests/Testing/Temporary/*.log
             source/ctest_results.xml

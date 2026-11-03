@@ -5,6 +5,7 @@ import json
 from pathlib import Path
 import subprocess
 import sys
+import shutil
 
 root = Path(__file__).resolve().parents[1]
 source = Path(sys.argv[1]).resolve()
@@ -18,4 +19,5 @@ manifest = {
     'physical_printer_verification': False,
 }
 (source / 'resources/qidi-port-build.json').write_text(json.dumps(manifest, indent=2) + '\n')
+shutil.copyfile(root / 'LICENSE', source / 'resources/LICENSE')
 print('Recorded source pins and', len(manifest['patches']), 'patch checksums in packaged resources.')

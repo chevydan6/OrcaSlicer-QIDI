@@ -57,9 +57,12 @@ MQTT/tunnel stack are not implemented. Existing Orca backends remain available.
 - Production protocol helper bodies compile in isolation with C++17 and warnings
   treated as errors; sparse mappings, Box mode, chamber, RFID and load/unload
   assertions pass. This harness does not compile the full application.
-- Full baseline and patched Linux builds are running on GitHub Actions. No full
-  compilation, CTest, GUI profile loading/persistence or custom-build slicing success
-  is recorded yet. HTTP integration tests and packaging validation are pending.
+- Unpatched baseline run 41528867605 compiled and produced an AppImage. Its CTest
+  run reported one failure in 2884 cases: `cli_malformed_input` crashed during
+  project export. Some tests were skipped. This run lacked a virtual display;
+  the current workflow supplies Xvfb and separates the RequiresApp tests.
+- The complete 28-patch build is running. Custom CTest, GUI profile loading and
+  persistence, slicing, HTTP integration and packaging validation remain pending.
 
 The user confirmed that no MAX4 is currently connected. No printer has been contacted.
 Physical slot selection, filament motion, heating,
