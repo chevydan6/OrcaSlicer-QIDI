@@ -1,0 +1,12 @@
+{
+  "start": 1793704916.5041025,
+  "arrival": 1793704916.5358858,
+  "response_delay": 15,
+  "exit": {
+    "time": 1793704927.9961016,
+    "pid": 894590,
+    "exit_code": 0,
+    "appimage_sha256": "7614dd15d467d0bf08b9e8846111e29940da4c53248a1d238a35d53b1dff35a7"
+  },
+  "pending_at_exit": true
+}

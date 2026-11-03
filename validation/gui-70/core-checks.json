@@ -1,0 +1,117 @@
+{
+  "expected_controls": [
+    "SET_FAN_SPEED FAN=cooling_fan SPEED=0.09803921568627451",
+    "SET_FAN_SPEED FAN=auxiliary_cooling_fan SPEED=0.09803921568627451",
+    "SET_FAN_SPEED FAN=chamber_circulation_fan SPEED=0.09803921568627451",
+    "UPDATE_FILAMENT_INFORMATION SLOT=16 COLOR='808080' VENDOR='Generic' FILAMENT='PETG'",
+    "UPDATE_FILAMENT_INFORMATION SLOT=0 COLOR='123456' VENDOR='Generic' FILAMENT='ABS'",
+    "LOAD_FILAMENT_CONTROL SLOT=15",
+    "UNLOAD_FILAMENT_CONTROL SLOT=15",
+    "EJECT_FILAMENT_CONTROL SLOT=15",
+    "READ_RFID SLOT=15",
+    "SET_ENABLE_RFID_READ ENABLE=\"1\"\nSET_ENABLE_INIT_READ_RFID ENABLE=\"0\"",
+    "SET_ENABLE_RFID_READ ENABLE=\"0\"\nSET_ENABLE_INIT_READ_RFID ENABLE=\"0\"",
+    "SET_HEATER_TEMPERATURE HEATER=chamber TARGET=50",
+    "SET_PIN PIN=caselight VALUE=1",
+    "SET_PIN PIN=polar_cooler VALUE=1",
+    "M220 S124",
+    "EXCLUDE_OBJECT NAME=fixture_cube",
+    "LOAD_FILAMENT_CONTROL SLOT=5",
+    "SAVE_VARIABLE VARIABLE=enable_pre_print_model_check VALUE=0"
+  ],
+  "submissions": [
+    {
+      "case": "sparse",
+      "commands": [
+        "SAVE_VARIABLE VARIABLE=enable_box VALUE=1\nSAVE_VARIABLE VARIABLE=value_t2 VALUE=\"'slot5'\"",
+        "G31",
+        "SAVE_VARIABLE VARIABLE=enable_polar_cooler VALUE=1"
+      ],
+      "upload_sha256": "c80da53a5fde6072db2318b1701bc2499e41d726e164dbe283b5bb250b5a6f5e",
+      "gcode_tools": [
+        "T2",
+        "T2"
+      ],
+      "prep_tool": 2,
+      "start": {
+        "filename": "sparse-project.gcode"
+      }
+    },
+    {
+      "case": "external",
+      "commands": [
+        "SAVE_VARIABLE VARIABLE=enable_box VALUE=0",
+        "G31",
+        "SAVE_VARIABLE VARIABLE=enable_polar_cooler VALUE=1"
+      ],
+      "upload_sha256": "c80da53a5fde6072db2318b1701bc2499e41d726e164dbe283b5bb250b5a6f5e",
+      "gcode_tools": [
+        "T2",
+        "T2"
+      ],
+      "prep_tool": 2,
+      "start": {
+        "filename": "sparse-project.gcode"
+      }
+    },
+    {
+      "case": "support_first",
+      "commands": [
+        "SAVE_VARIABLE VARIABLE=enable_box VALUE=1\nSAVE_VARIABLE VARIABLE=value_t0 VALUE=\"'slot5'\"\nSAVE_VARIABLE VARIABLE=value_t2 VALUE=\"'slot0'\"",
+        "G31",
+        "SAVE_VARIABLE VARIABLE=enable_polar_cooler VALUE=1"
+      ],
+      "upload_sha256": "eec2e4c9104bedb9c45201547fa4922b47a0f17832cbb670c18cd9d7af081547",
+      "gcode_tools": [
+        "T0",
+        "T0",
+        "T2"
+      ],
+      "prep_tool": 2,
+      "start": {
+        "filename": "support-first-project.gcode"
+      }
+    }
+  ],
+  "material_cycles": 20,
+  "fault_cases": [
+    {
+      "case": "malformed-json",
+      "lamp_request_after_fault": true,
+      "gui_process_alive": true
+    },
+    {
+      "case": "wrong-box-type",
+      "lamp_request_after_fault": true,
+      "gui_process_alive": true
+    },
+    {
+      "case": "null-material",
+      "lamp_request_after_fault": true,
+      "gui_process_alive": true
+    },
+    {
+      "case": "extreme-temperature",
+      "lamp_request_after_fault": true,
+      "gui_process_alive": true
+    },
+    {
+      "case": "partial-metadata",
+      "lamp_request_after_fault": true,
+      "gui_process_alive": true
+    }
+  ],
+  "roundtrip_box_temperatures": [
+    "35",
+    "40",
+    "45"
+  ],
+  "roundtrip_gcode_sha256": "bcec729be07da95b2b269e85ab7015945eb43363f3eb0b43908c80831949ff8c",
+  "delayed_editor": {
+    "arrival": 1793704639.7038908,
+    "close": 1793704642.4892848,
+    "response": 1793704643.7080708,
+    "reopened": 1793704651.1624763
+  },
+  "scope": "Exact candidate70 runtime; visual cases reviewed separately."
+}

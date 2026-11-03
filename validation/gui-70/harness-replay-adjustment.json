@@ -1,0 +1,5 @@
+{
+  "cause": "Send dialog retained its initial top-left placement from added timelapse test. Recorded click coordinates assumed centered placement.",
+  "correction": "Stopped replay, preserved ineffective screenshots/actions with harness-unmoved-dialog prefix, moved dialog to recorded position, reran sparse mapping onward.",
+  "product_source_changed": false
+}

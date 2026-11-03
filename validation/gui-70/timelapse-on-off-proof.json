@@ -1,0 +1,20 @@
+[
+  {
+    "time": 1793704449.647718,
+    "method": "POST",
+    "path": "/machine/timelapse/settings",
+    "query": {
+      "enabled": "true"
+    },
+    "body": "{}"
+  },
+  {
+    "time": 1793704461.092732,
+    "method": "POST",
+    "path": "/machine/timelapse/settings",
+    "query": {
+      "enabled": "false"
+    },
+    "body": "{}"
+  }
+]

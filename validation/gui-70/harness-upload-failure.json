@@ -1,0 +1,4 @@
+{
+  "cause": "Moving preliminary test directory also moved fixture upload capture directory; fixture raised FileNotFoundError. App correctly displayed upload failure.",
+  "correction": "Recreated capture directory before retry; no product source change."
+}

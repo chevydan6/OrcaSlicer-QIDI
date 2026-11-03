@@ -1,0 +1,457 @@
+{
+  "startup": {
+    "fresh_setup_layout": {
+      "result": "passed",
+      "note": "Fresh setup completed after explicit wizard readiness checks; Prepare renders at initial dimensions before maximization.",
+      "time": 1793704074.2260995,
+      "evidence": [
+        "01-wizard-wait.png",
+        "02-wizard-region.png",
+        "08-fresh-layout-visible.png",
+        "09-maximize.png"
+      ]
+    },
+    "blank_key_connect": {
+      "result": "passed",
+      "note": "Blank optional key and CA accepted for fixture LAN endpoint.",
+      "evidence": [
+        "22-address.png",
+        "23-connected.png"
+      ]
+    },
+    "cancel_reopen_connect": {
+      "result": "passed",
+      "note": "Cancel dismissed native fields; reopening starts fresh, then Connect succeeds.",
+      "evidence": [
+        "20-connection-cancel.png",
+        "21-connection-reopen.png",
+        "23-connected.png"
+      ]
+    },
+    "no_printer_controls": {
+      "result": "passed",
+      "note": "Before connection controls were disabled and no Box was offered.",
+      "evidence": [
+        "20-connection-cancel.png"
+      ]
+    },
+    "clean_restart_endpoint": "untested",
+    "tabs_resize_restore": "untested"
+  },
+  "materials": {
+    "box_reopen_10": {
+      "result": "passed",
+      "note": "Ten fresh Box editors retained usable geometry and the selected slot color.",
+      "evidence": [
+        "material-reopens.json",
+        "box-reopen-1.png",
+        "box-reopen-10.png"
+      ]
+    },
+    "external_reopen_10": {
+      "result": "passed",
+      "note": "Ten external editors retained usable geometry and gray external material color.",
+      "evidence": [
+        "material-reopens.json",
+        "external-reopen-1.png",
+        "external-reopen-10.png"
+      ]
+    },
+    "slot_switch_colors": {
+      "result": "passed",
+      "note": "Pixel assertions matched red, blue, green and white selected slots across ten Box opens.",
+      "evidence": [
+        "material-reopens.json"
+      ]
+    },
+    "material_and_rgb_edit": {
+      "result": "passed",
+      "note": "Native RGB chooser and material list emitted Generic ABS/#123456 for physical slot0.",
+      "evidence": [
+        "35-native-color.png",
+        "37-material-confirm.png",
+        "requests.jsonl"
+      ]
+    },
+    "duplicate_open": {
+      "result": "passed",
+      "note": "Triple-click opening produced exactly one visible material editor.",
+      "evidence": [
+        "duplicate-count-check.png",
+        "duplicate-result.json"
+      ]
+    },
+    "disconnect_open_dialog": {
+      "result": "passed",
+      "note": "Open material editor survived socket disconnection and Confirm safely completed without a crash.",
+      "evidence": [
+        "58-editor-before-disconnect.png",
+        "59-disconnected-confirm.png"
+      ]
+    },
+    "reconnect_dialog": {
+      "result": "passed",
+      "note": "Fresh material editor opens after WebSocket recovery, with updated telemetry visible.",
+      "evidence": [
+        "61-reconnected-editor.png"
+      ]
+    },
+    "removed_slot_reject": {
+      "result": "passed",
+      "note": "Removing Boxes while editor is open causes Confirm to close without a POST.",
+      "evidence": [
+        "29-box-removed.png",
+        "30-removed-confirm.png",
+        "requests.jsonl"
+      ]
+    },
+    "close_with_pending_response": {
+      "result": "passed",
+      "note": "Confirmed material request arrived before closing editor; delayed response followed close; new editor remained usable.",
+      "evidence": [
+        "core-checks.json",
+        "63-editor-pending-close.png",
+        "64-editor-after-delay.png"
+      ]
+    }
+  },
+  "controls": {
+    "four_boxes_slot15": {
+      "result": "passed",
+      "note": "Current candidate fixture recorded LOAD_FILAMENT_CONTROL SLOT=15",
+      "evidence": [
+        "requests.jsonl"
+      ]
+    },
+    "two_boxes_slot5": {
+      "result": "passed",
+      "note": "Current candidate fixture recorded LOAD_FILAMENT_CONTROL SLOT=5",
+      "evidence": [
+        "requests.jsonl"
+      ]
+    },
+    "zero_boxes": {
+      "result": "passed",
+      "note": "Current candidate fixture recorded UPDATE_FILAMENT_INFORMATION SLOT=16 COLOR='808080' VENDOR='Generic' FILAMENT='PETG'",
+      "evidence": [
+        "requests.jsonl"
+      ]
+    },
+    "external_display": {
+      "result": "passed",
+      "note": "External PETG/gray is distinct from Box slots, including zero-Box mode.",
+      "evidence": [
+        "31-zero-external-editor.png",
+        "23-connected.png"
+      ]
+    },
+    "load_unload_eject": {
+      "result": "passed",
+      "note": "Physical slot15 requests recorded; four-Box GUI remains usable.",
+      "evidence": [
+        "39-slot15-controls.png",
+        "requests.jsonl"
+      ]
+    },
+    "rfid_refresh": {
+      "result": "passed",
+      "note": "Physical slot15 requests recorded; four-Box GUI remains usable.",
+      "evidence": [
+        "39-slot15-controls.png",
+        "requests.jsonl"
+      ]
+    },
+    "rfid_preferences": {
+      "result": "passed",
+      "note": "Insertion toggled on then off, boot disabled, matching fixture requests.",
+      "evidence": [
+        "41-rfid-options.png",
+        "requests.jsonl"
+      ]
+    },
+    "chamber": {
+      "result": "passed",
+      "note": "Current candidate fixture recorded SET_HEATER_TEMPERATURE HEATER=chamber TARGET=50",
+      "evidence": [
+        "requests.jsonl"
+      ]
+    },
+    "part_aux_chamber_fans": {
+      "result": "passed",
+      "note": "Three visible sliders dispatched the named fan commands.",
+      "evidence": [
+        "24-fan.png",
+        "25-fans-set.png",
+        "requests.jsonl"
+      ]
+    },
+    "lamp": {
+      "result": "passed",
+      "note": "Current candidate fixture recorded SET_PIN PIN=caselight VALUE=1",
+      "evidence": [
+        "requests.jsonl"
+      ]
+    },
+    "speed": {
+      "result": "passed",
+      "note": "Current candidate fixture recorded M220 S124",
+      "evidence": [
+        "requests.jsonl"
+      ]
+    },
+    "detection_sensitivity": {
+      "result": "passed",
+      "note": "Spaghetti high sensitivity and disable, plus foreign-object disable recorded.",
+      "evidence": [
+        "44-print-options.png",
+        "45-options-values.png",
+        "requests.jsonl"
+      ]
+    },
+    "polar_cooler": {
+      "result": "passed",
+      "note": "Current candidate fixture recorded SET_PIN PIN=polar_cooler VALUE=1",
+      "evidence": [
+        "requests.jsonl"
+      ]
+    },
+    "actual_telemetry_replay": "untested",
+    "box_v2_hides_eject": {
+      "result": "passed",
+      "note": "Eject is hidden after box_v2 telemetry settles.",
+      "evidence": [
+        "54-box-v2-settled.png"
+      ]
+    }
+  },
+  "faults": {
+    "malformed_json": {
+      "result": "passed",
+      "note": "Injection followed by a recorded lamp request and living GUI.",
+      "evidence": [
+        "fault-malformed-json.png",
+        "fault-results.json"
+      ]
+    },
+    "wrong_type_box": {
+      "result": "passed",
+      "note": "Injection followed by a recorded lamp request and living GUI.",
+      "evidence": [
+        "fault-wrong-box-type.png",
+        "fault-results.json"
+      ]
+    },
+    "null_slot_metadata": {
+      "result": "passed",
+      "note": "Injection followed by a recorded lamp request and living GUI.",
+      "evidence": [
+        "fault-null-material.png",
+        "fault-results.json"
+      ]
+    },
+    "extreme_temperature": {
+      "result": "passed",
+      "note": "Injection followed by a recorded lamp request and living GUI.",
+      "evidence": [
+        "fault-extreme-temperature.png",
+        "fault-results.json"
+      ]
+    },
+    "partial_metadata": {
+      "result": "passed",
+      "note": "Injection followed by a recorded lamp request and living GUI.",
+      "evidence": [
+        "fault-partial-metadata.png",
+        "fault-results.json"
+      ]
+    },
+    "http_error": {
+      "result": "passed",
+      "note": "HTTP503 handled; controls and telemetry recover.",
+      "evidence": [
+        "57-http-fault.png",
+        "61-reconnected-editor.png",
+        "requests.jsonl"
+      ]
+    },
+    "delayed_repeated_controls": {
+      "result": "passed",
+      "note": "Repeated lamp clicks under delayed responses left GUI usable; subsequent original MAX4 project slices and previews.",
+      "evidence": [
+        "66-delayed-repeat.png",
+        "73-original-sliced.png"
+      ]
+    },
+    "websocket_recovery": {
+      "result": "passed",
+      "note": "Disconnected socket reconnects and subscribes; updated chamber31C visible.",
+      "evidence": [
+        "61-reconnected-editor.png",
+        "requests.jsonl"
+      ]
+    },
+    "camera_valid": {
+      "result": "passed",
+      "note": "Labeled fixture JPEG renders.",
+      "evidence": [
+        "55-camera-valid.png"
+      ]
+    },
+    "camera_invalid": {
+      "result": "passed",
+      "note": "Invalid JPEG leaves GUI alive; later camera recovers.",
+      "evidence": [
+        "56-camera-invalid.png",
+        "61-reconnected-editor.png"
+      ]
+    },
+    "camera_http_recovery": {
+      "result": "passed",
+      "note": "Camera displays again after HTTP503.",
+      "evidence": [
+        "57-http-fault.png",
+        "61-reconnected-editor.png"
+      ]
+    },
+    "delayed_shutdown_restart": "untested"
+  },
+  "jobs": {
+    "original_sparse_import_slice_preview": {
+      "result": "passed",
+      "note": "Original unmodified embedded machine imports, slices and previews three project identities with only filament3 used.",
+      "evidence": [
+        "71-original-open.png",
+        "73-original-sliced.png"
+      ]
+    },
+    "sparse_T2_slot5_submit": {
+      "result": "passed",
+      "note": "Actual upload retains T2; enable_box1/value_t2 slot5 precede simulated start.",
+      "evidence": [
+        "76-sparse-B2.png",
+        "core-checks.json"
+      ]
+    },
+    "reversed_multiple_box_mapping": {
+      "result": "passed",
+      "note": "T0 maps B2/slot5 and T2 maps A1/slot0 before simulated start.",
+      "evidence": [
+        "99-support-reversed.png",
+        "core-checks.json"
+      ]
+    },
+    "support_first_import_slice_preview": {
+      "result": "passed",
+      "note": "Original support-first project imports unchanged and renders both used logical filaments.",
+      "evidence": [
+        "94-support-sliced.png"
+      ]
+    },
+    "support_first_T2_T0_both_mapped": {
+      "result": "passed",
+      "note": "Uploaded G-code prepares with tool2 and deposits with tool0 before tool2; both mappings captured.",
+      "evidence": [
+        "core-checks.json"
+      ]
+    },
+    "external_single_submit": {
+      "result": "passed",
+      "note": "Same single-used-tool sparse job mapped external sends enable_box0 without slot assignments.",
+      "evidence": [
+        "79-external-selected.png",
+        "core-checks.json"
+      ]
+    },
+    "incomplete_mapping_reject": {
+      "result": "passed",
+      "note": "Missing support mapping disables Send; no POST occurred in recorded interval.",
+      "evidence": [
+        "95-incomplete-support.png",
+        "core-checks.json"
+      ]
+    },
+    "mixed_external_reject": {
+      "result": "passed",
+      "note": "Mixed external/Box mapping disables Send; attempted click emitted no POST.",
+      "evidence": [
+        "102-mixed-selected.png",
+        "103-mixed-attempt.png",
+        "core-checks.json"
+      ]
+    },
+    "multicolor_external_reject": {
+      "result": "passed",
+      "note": "Both used tools mapped external; disabled Send and explanatory message persist through ten-second refresh and attempted submission; no POST.",
+      "time": 1793704906.4992175,
+      "evidence": [
+        "110-both-external.png",
+        "111-multicolor-held.png",
+        "multicolor-result.json"
+      ]
+    },
+    "batch_qidi_reject": "untested",
+    "stale_object_reject": {
+      "result": "passed",
+      "note": "After fixture job changed, old chooser emitted no EXCLUDE_OBJECT.",
+      "evidence": [
+        "48-stale-object-confirm.png",
+        "requests.jsonl"
+      ]
+    },
+    "fresh_object_accept": {
+      "result": "passed",
+      "note": "Fresh selection emitted exactly one EXCLUDE_OBJECT NAME=fixture_cube.",
+      "evidence": [
+        "49-fresh-object.png",
+        "requests.jsonl"
+      ]
+    },
+    "timelapse_enable": {
+      "result": "passed",
+      "note": "On is enabled with supported profile and available storage. Two fixture jobs recorded enabled=true then false. Initial upload capture directory failure was corrected in harness; product unchanged.",
+      "evidence": [
+        "timelapse-02-enabled.png",
+        "timelapse-on-off-proof.json",
+        "harness-upload-failure.json"
+      ]
+    },
+    "bed_level_polar_options": "untested",
+    "timelapse_storage_guard": "untested"
+  },
+  "persistence": {
+    "box_temperature_save_reload": {
+      "result": "passed",
+      "note": "GUI saved and reopened 3MF retains temperatures35/40/45 and QIDI identity; exported G-code uses VT2=45 and T2.",
+      "evidence": [
+        "83-save-project.png",
+        "87-reload-sliced.png",
+        "core-checks.json"
+      ]
+    },
+    "slice_after_controls": {
+      "result": "passed",
+      "note": "Original MAX4 sparse project slices and previews after control, callback and network tests. The earlier cube screenshot68 remained in Prepare and is not used as preview proof.",
+      "evidence": [
+        "73-original-sliced.png"
+      ]
+    },
+    "non_qidi_profile_slice": {
+      "result": "passed",
+      "note": "Unmodified Bambu A1 cube sliced and rendered preview.",
+      "evidence": [
+        "16-slice-button.png"
+      ]
+    },
+    "file_chooser": {
+      "result": "passed",
+      "note": "Native file chooser imported, opened, saved and exported successfully.",
+      "evidence": [
+        "10-cube-import.png",
+        "82-save-path.png",
+        "89-export-path.png"
+      ]
+    },
+    "close_discard_imported_project": "untested",
+    "clean_exit": "untested"
+  }
+}
