@@ -42,6 +42,12 @@ async def check():
             assert upload['sha256'] == hashlib.sha256(payload).hexdigest()
             assert (fixture.upload_dir / upload['saved_file']).read_bytes() == payload
             assert '/' not in upload['saved_file'] and not (Path(temporary)/'outside.gcode').exists()
+            for available in (False, True):
+                async with client.post(base+'/__fixture__/state', json={'storage_available': available}) as response:
+                    assert response.status == 200
+                async with client.get(base+'/server/files/directory?path=gcodes') as response:
+                    free = (await response.json())['result']['disk_usage']['free']
+                    assert (free > 0) == available
             async with client.post(base+'/__fixture__/state', json={'raw': 'invalid-json', 'http_error': 503}) as response:
                 assert response.status == 200
             assert (await ws.receive(timeout=3)).data == 'invalid-json'

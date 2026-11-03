@@ -186,7 +186,8 @@ and native-control activation remain part of the compiled GUI validation gate.
 `POST /__fixture__/state` accepts JSON with `update` (recursive status update),
 `replace` (whole status replacement), `notification` (arbitrary WebSocket JSON),
 `raw` (malformed message testing), `disconnect`, `http_error` (0 restores normal
-HTTP responses), `delay` (0–60 seconds), and `invalid_camera_frame` (malformed JPEG response). These controls affect only the test
+HTTP responses), `delay` (0–60 seconds), `storage_available` (reported free space), and
+`invalid_camera_frame` (malformed JPEG response). These controls affect only the test
 fixture. For example:
 
 ```sh

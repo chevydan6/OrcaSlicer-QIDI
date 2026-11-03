@@ -1,0 +1,9 @@
+{
+  "integration_commit": "7352b62f30804ecbeaa96c7996ff86614fadf7a8",
+  "downstream_commit": "54d95481c2e88abba71bfd5b43889c75d40cb728",
+  "downstream_tree": "dd5107b2ecaa9dc53d7c503ebf096ae11e8fc68b",
+  "patches": 70,
+  "archive": "OrcaSlicer-QIDI-source-70-54d95481.tar.gz",
+  "sha256": "70f5a306805a32144cb59ac3aac010d47fb417685b9b63d12e5e44e289d80e01",
+  "final_acceptance": false
+}

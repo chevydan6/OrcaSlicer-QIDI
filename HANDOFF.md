@@ -21,6 +21,7 @@ Feature expansion is frozen pending one complete software acceptance.
 
 | Candidate | Integration | Static | Acceptance |
 | --- | --- | --- | --- |
+| 70 / 7352b62 | [41622045346](https://github.com/chevydan6/OrcaSlicer-QIDI/actions/runs/41622045346), running | [41622050016](https://github.com/chevydan6/OrcaSlicer-QIDI/actions/runs/41622050016), running | Matching source tree reproduced; build/GUI acceptance pending |
 | 69 / f8192f7 | [41618831360](https://github.com/chevydan6/OrcaSlicer-QIDI/actions/runs/41618831360), passed | [41618837779](https://github.com/chevydan6/OrcaSlicer-QIDI/actions/runs/41618837779), passed | 2,916 unit / 7 CLI / 72 vendors / 21 MAX4 pass; GUI rejected (timelapse On disabled) |
 | 68 / 8c258d6 | [41614117101](https://github.com/chevydan6/OrcaSlicer-QIDI/actions/runs/41614117101), passed | [41614122533](https://github.com/chevydan6/OrcaSlicer-QIDI/actions/runs/41614122533), passed | 2,916 unit / 7 CLI / 72 vendors / 21 MAX4 pass; exact artifact verified; GUI rejected (unsupported-job status) |
 | 66 / d1a35c8 | [41612448931](https://github.com/chevydan6/OrcaSlicer-QIDI/actions/runs/41612448931), passed | [41612454913](https://github.com/chevydan6/OrcaSlicer-QIDI/actions/runs/41612454913), passed | 2,914 unit / 7 CLI / 72 vendors / 21 MAX4 pass; targeted GUI layout/import/submission/exit pass, not full acceptance |
@@ -189,3 +190,7 @@ in-flight request followed by clean restart. Expanded pre-print checks found
 Timelapse On disabled despite profile support and available storage. Patch70
 uses QIDI profile support plus the existing storage gate; new matching acceptance
 is required. Candidate69 was not installed.
+
+A proposed supervised physical comparison sequence is in
+[docs/hardware-validation-plan.md](docs/hardware-validation-plan.md). It is not
+authorization; finish software acceptance before requesting the active session.

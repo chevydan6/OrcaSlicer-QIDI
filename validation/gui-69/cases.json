@@ -40,7 +40,14 @@
         "122-restarted-device.png"
       ]
     },
-    "tabs_resize_restore": "untested"
+    "tabs_resize_restore": {
+      "result": "passed",
+      "note": "Prepare/Preview/Device remain usable after unmaximizing and maximizing.",
+      "evidence": [
+        "127-end-dialog.png",
+        "128-resize-restored.png"
+      ]
+    }
   },
   "materials": {
     "box_reopen_10": {
@@ -247,7 +254,13 @@
         "requests.jsonl"
       ]
     },
-    "actual_telemetry_replay": "untested",
+    "actual_telemetry_replay": {
+      "result": "passed",
+      "note": "Sanitized read-only MAX4 response replay shows one Box, blue ABS in A2, other slots empty and external PLA.",
+      "evidence": [
+        "129-actual-telemetry.png"
+      ]
+    },
     "box_v2_hides_eject": {
       "result": "passed",
       "note": "After box_v2 telemetry settles, Eject is hidden; restored box_v1 permits physical B2 operations.",
@@ -524,7 +537,20 @@
         "89-export-path.png"
       ]
     },
-    "close_discard_imported_project": "untested",
-    "clean_exit": "untested"
+    "close_discard_imported_project": {
+      "result": "passed",
+      "note": "Imported-project closing offers preset discard and exits normally.",
+      "evidence": [
+        "130-final-close.png",
+        "131-final-discard.png"
+      ]
+    },
+    "clean_exit": {
+      "result": "passed",
+      "note": "Both recorded application processes exit with status0.",
+      "evidence": [
+        "exits.jsonl"
+      ]
+    }
   }
 }

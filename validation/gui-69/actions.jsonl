@@ -130,3 +130,8 @@
 {"time": 1793702669.1326842, "screenshot": "124-preprint-toggle", "action": ["mousemove", "723", "681", "click", "1", "mousemove", "769", "714", "click", "1", "mousemove", "1107", "681", "click", "1", "sleep", "1"]}
 {"time": 1793702678.0139394, "screenshot": "125-options-submit", "action": ["mousemove", "1073", "774", "click", "1", "sleep", "3"]}
 {"time": 1793702696.505405, "screenshot": "126-timelapse-tooltip", "action": ["mousemove", "285", "52", "click", "1", "mousemove", "1500", "52", "click", "1", "sleep", "2", "mousemove", "723", "681", "sleep", "3"]}
+{"time": 1793702807.7527623, "screenshot": "127-end-dialog", "action": ["mousemove", "1138", "147", "click", "1", "mousemove", "130", "52", "click", "1", "mousemove", "1554", "17", "click", "1", "sleep", "1"]}
+{"time": 1793702831.0302203, "screenshot": "128-resize-restored", "action": ["mousemove", "790", "17", "click", "1", "mousemove", "285", "52", "click", "1", "sleep", "1", "mousemove", "431", "52", "click", "1", "sleep", "1"]}
+{"time": 1793702834.0498054, "screenshot": "129-actual-telemetry", "action": ["sleep", "3"]}
+{"time": 1793702874.1805108, "screenshot": "130-final-close", "action": ["key", "alt+F4", "sleep", "1"]}
+{"time": 1793702875.793995, "screenshot": "131-final-discard", "action": ["mousemove", "885", "743", "click", "1", "sleep", "1"]}

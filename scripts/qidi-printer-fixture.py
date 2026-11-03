@@ -65,6 +65,7 @@ class Fixture:
         self.http_error = 0
         self.delay = 0
         self.invalid_camera_frame = False
+        self.storage_available = True
         self.upload_dir = upload_dir
         if upload_dir is not None:
             upload_dir.mkdir(parents=True, exist_ok=True)
@@ -92,6 +93,8 @@ class Fixture:
             self.delay = max(0, min(60, float(data['delay'])))
         if 'invalid_camera_frame' in data:
             self.invalid_camera_frame = bool(data['invalid_camera_frame'])
+        if 'storage_available' in data:
+            self.storage_available = bool(data['storage_available'])
         if 'replace' in data:
             self.status = data['replace']
         if 'update' in data:
@@ -166,7 +169,8 @@ class Fixture:
         elif path == '/printer/objects/query':
             result = {'status': self.status, 'eventtime': time.monotonic()}
         elif path == '/server/files/directory':
-            result = {'dirs': [], 'files': [], 'disk_usage': {'total': 10**9, 'used': 0, 'free': 10**9}}
+            free = 10**9 if self.storage_available else 0
+            result = {'dirs': [], 'files': [], 'disk_usage': {'total': 10**9, 'used': 10**9 - free, 'free': free}}
         elif path == '/server/files/list':
             result = []
         elif path == '/server/files/metadata':
