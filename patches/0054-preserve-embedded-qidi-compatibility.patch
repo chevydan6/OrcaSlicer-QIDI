@@ -1,0 +1,51 @@
+From 6a71d763f8dc2a55c0608de21db68aa01fd62c31 Mon Sep 17 00:00:00 2001
+From: chevydan6 <339888127+chevydan6@users.noreply.github.com>
+Date: Tue, 3 Nov 2026 15:55:14 +0900
+Subject: [PATCH] Preserve embedded QIDI printer compatibility alongside Orca
+ alias
+
+---
+ src/libslic3r/Format/bbs_3mf.cpp | 12 ++++++++----
+ tests/libslic3r/test_3mf.cpp     |  2 +-
+ 2 files changed, 9 insertions(+), 5 deletions(-)
+
+diff --git a/src/libslic3r/Format/bbs_3mf.cpp b/src/libslic3r/Format/bbs_3mf.cpp
+index a4599948..a8ff991b 100644
+--- a/src/libslic3r/Format/bbs_3mf.cpp
++++ b/src/libslic3r/Format/bbs_3mf.cpp
+@@ -2818,14 +2818,18 @@ void PlateData::parse_filament_info(GCodeProcessorResult *result)
+                 if (auto* expansion = config.option<ConfigOptionFloat>("raft_first_layer_expansion");
+                     expansion && expansion->value == -1.0)
+                     expansion->value = 2.0;
+-                // The same MAX4 profiles have a vendor prefix in Orca. Keep
+-                // compatibility checks enabled when replacing the machine.
++                // Orca adds a vendor prefix to the same MAX4 profiles. Accept
++                // that alias while preserving the embedded QIDI machine name.
++                // Replacing the original name breaks CLI slices without overrides.
+                 for (const char* key : {"print_compatible_printers", "compatible_printers"}) {
+                     if (auto* printers = config.option<ConfigOptionStrings>(key)) {
+-                        for (auto& printer : printers->values) {
++                        const auto original_names = printers->values;
++                        for (const auto& printer : original_names) {
+                             for (const char* nozzle : {"0.2", "0.4", "0.6", "0.8"}) {
+                                 if (printer == std::string("X-Max 4 ") + nozzle + " nozzle") {
+-                                    printer = "Qidi " + printer;
++                                    const std::string alias = "Qidi " + printer;
++                                    if (std::find(printers->values.begin(), printers->values.end(), alias) == printers->values.end())
++                                        printers->values.push_back(alias);
+                                     break;
+                                 }
+                             }
+diff --git a/tests/libslic3r/test_3mf.cpp b/tests/libslic3r/test_3mf.cpp
+index e2640ee6..5817cd2d 100644
+--- a/tests/libslic3r/test_3mf.cpp
++++ b/tests/libslic3r/test_3mf.cpp
+@@ -292,7 +292,7 @@ TEST_CASE("QIDI projects preserve object and filament assignments", "[3mf][Qidi]
+     CHECK_THAT(expansion->value, Catch::Matchers::WithinAbs(2.0, 1e-9));
+     const auto* compatible = config.option<ConfigOptionStrings>("print_compatible_printers");
+     REQUIRE(compatible != nullptr);
+-    CHECK(compatible->values == std::vector<std::string>{"Qidi X-Max 4 0.4 nozzle"});
++    CHECK(compatible->values == std::vector<std::string>{"X-Max 4 0.4 nozzle", "Qidi X-Max 4 0.4 nozzle"});
+ }
+ 
+ SCENARIO("Mirrored instance transforms survive 3mf round trips", "[3mf][Regression]") {

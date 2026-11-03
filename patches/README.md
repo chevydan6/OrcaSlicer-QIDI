@@ -104,3 +104,5 @@ separately from implementation; a patch's presence does not certify hardware use
 52. `0052-qidi-material-dialog-sizing.patch` clears the stale GTK fixed-dialog maximum before fitting the QIDI material editor on reopening. Repeated GUI opens clipped its action buttons by shrinking the window each time. Also hides the unrelated pressure-advance wiki link. Compiled repeated-open regression is required.
 
 53. `0053-qidi-native-connection-dialog.patch` uses standard native address/key/CA and connect/cancel controls for QIDI. The shared custom inputs rendered clipped on the target GTK runtime. This path skips legacy Bambu dialog widgets and workers, validates the current agent, and retains the asynchronous local connection behavior. Compiled connection/cancellation verification is required.
+
+54. `0054-preserve-embedded-qidi-compatibility.patch` retains the original MAX4 name when adding Orca compatibility aliases. The new no-override CLI cases exposed that replacement allowed a new Orca machine but rejected the original embedded QIDI machine. The import regression checks both names; unrelated printers remain constrained.
