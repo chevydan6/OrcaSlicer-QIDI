@@ -1,7 +1,8 @@
 # Project handoff
 
-Last updated: 2026-11-03. **Work is in progress; the latest candidate has not yet
-passed final acceptance.** This file is the resumption point for another developer.
+Last updated: 2026-11-03 07:22 UTC. **Paused at the user's request. The project is
+unfinished; the latest candidate has not yet passed final acceptance.** Resume
+only when the user asks. This file is the resumption point for another developer.
 Update it when the candidate, validation result, installation or remaining work changes.
 
 ## Goal and authorization
@@ -18,6 +19,19 @@ activate heaters, move/feed hardware or start a real print without explicit
 user authorization.** Simulated commands go only to `127.0.0.1:19025`; the fixture
 records/discards requests and never executes or forwards them. Hardware testing
 is a separate acceptance stage and is not implied by software test success.
+
+## Pause state
+
+The user requested: "ok you can pause. create a github handoff". Development and
+new validation are paused. The already-started GitHub builds may finish; their
+states below are a snapshot, not a promise of success. Check their live results
+first on resumption. No new build was launched for this handoff.
+
+The isolated GUI55 closed normally with exit code 0. Its loopback simulator,
+private Openbox and Xvfb :99 were stopped. No local build or GUI test is being
+left running. The installed 42-patch candidate remains unchanged. The user's
+desktop session was not stopped. Historical sleep-prevention settings remain as
+the user requested; this pause does not restore system sleep.
 
 ## Repository and source state
 
@@ -40,7 +54,7 @@ is a separate acceptance stage and is not implied by software test success.
 | --- | --- | --- |
 | 56 patches | [41595285772](https://github.com/chevydan6/OrcaSlicer-QIDI/actions/runs/41595285772) | Running; intended acceptance candidate |
 | 56 static checks | [41595289239](https://github.com/chevydan6/OrcaSlicer-QIDI/actions/runs/41595289239) | Running |
-| 55 patches | [41593288187](https://github.com/chevydan6/OrcaSlicer-QIDI/actions/runs/41593288187) | Compiles; all slices execute; one thermal-parameter-order assertion fails, validator corrected in 4061021 |
+| 55 patches | [41593288187](https://github.com/chevydan6/OrcaSlicer-QIDI/actions/runs/41593288187) | Compiles; 2,912 unit cases pass without skips, seven CLI checks and 72 vendor bundles pass; all 21 slices execute, 20 assertions pass; one parameter-order assertion fails, validator corrected in 4061021 |
 | 55 static checks | [41593291506](https://github.com/chevydan6/OrcaSlicer-QIDI/actions/runs/41593291506) | Pass |
 | 54 patches | [41592928800](https://github.com/chevydan6/OrcaSlicer-QIDI/actions/runs/41592928800) | Compiles; same parameter-order assertion failure, corrected validator |
 | 51 patches | [41590831679](https://github.com/chevydan6/OrcaSlicer-QIDI/actions/runs/41590831679) | Compiles; 2,912 unit cases pass with no skips; 19/21 MAX4 cases pass; two embedded-machine CLI cases fail, fixed in patch 54 |
@@ -90,6 +104,10 @@ Software evidence includes:
 - GUI51: original QIDI support-first project slices with embedded machine G-code;
   closing/discarding exits with status 0. This fixes the chamber-placeholder error
   and shutdown modal/watchdog failure observed in the installed 42-patch build.
+- GUI55: five material editor reopenings retain identical dimensions, B2 metadata
+  uses SLOT=5, and malformed telemetry/HTTP errors/delay/WebSocket reconnect recover
+  in the tested scenarios. See `validation/gui-55`. The color palette placement
+  defect remains pending compiled validation of patch 56.
 - Static checks pass through patch 55. Exact source reproduction passes for 56.
 - Isolated protocol sanitizer tests use production helper bodies, not the entire
   GUI. Complete GUI stability cannot be inferred from sanitizer/unit results alone.
@@ -118,7 +136,7 @@ Software evidence includes:
 
 ## Next steps, in order
 
-1. Check run 41595285772 and static run 41595289239. Inspect failures; do not treat
+1. After the user requests resumption, check run 41595285772 and static run 41595289239. Inspect failures; do not treat
    packaging alone as a full pass. Required: compilation, zero failed unit/CLI
    regressions, 72 vendor bundles and all **21** MAX4 slicing/persistence cases.
 2. Download the AppImage artifact and verify the GitHub artifact ZIP digest before

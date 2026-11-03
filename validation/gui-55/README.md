@@ -9,4 +9,12 @@ Five material editor reopenings retain the same 370x232 client size. QIDI PLA
 Rapido remains selectable and Confirm sends the correct B2 SLOT=5 metadata.
 The shared color palette opens outside the left edge when the editor is at the
 screen edge; patch 56 replaces this QIDI path with a native RGB dialog.
-Further fault-recovery evidence is being collected against the loopback fixture.
+Fault recovery completed before the user requested a pause. See `faults.json`:
+malformed WebSocket JSON, null material name, extreme chamber numbers, invalid
+Box object types and complete-status recovery leave the lamp control responsive.
+HTTP 500 is handled; four delayed requests are recorded while Prepare/Device
+navigation remains responsive; WebSocket reconnection restores the lamp control.
+These are software checks against a recording/discarding loopback fixture only.
+They do not establish crash freedom or physical printer behavior.
+
+On pause, normal empty-project shutdown completed with exit code 0; see `exit.json`.

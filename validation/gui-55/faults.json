@@ -1,0 +1,55 @@
+{
+  "hardware_contacted": false,
+  "endpoint": "127.0.0.1:19025",
+  "cases": [
+    {
+      "case": "malformed WebSocket JSON",
+      "responsive": true,
+      "request": {
+        "script": "SET_PIN PIN=caselight VALUE=1"
+      }
+    },
+    {
+      "case": "null material name",
+      "responsive": true,
+      "request": {
+        "script": "SET_PIN PIN=caselight VALUE=0"
+      }
+    },
+    {
+      "case": "extreme chamber number",
+      "responsive": true,
+      "request": {
+        "script": "SET_PIN PIN=caselight VALUE=1"
+      }
+    },
+    {
+      "case": "wrong Box object type",
+      "responsive": true,
+      "request": {
+        "script": "SET_PIN PIN=caselight VALUE=0"
+      }
+    },
+    {
+      "case": "complete status recovery",
+      "responsive": true,
+      "request": {
+        "script": "SET_PIN PIN=caselight VALUE=1"
+      }
+    },
+    {
+      "case": "HTTP 500",
+      "request_recorded": true
+    },
+    {
+      "case": "delayed requests and repeated clicks",
+      "requests_recorded": 4,
+      "navigation_worked": true
+    },
+    {
+      "case": "WebSocket reconnect",
+      "clients": 1,
+      "lamp_recovered": true
+    }
+  ]
+}
