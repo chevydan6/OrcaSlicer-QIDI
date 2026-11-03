@@ -1,0 +1,66 @@
+{"time": 1793701950.4484396, "screenshot": "00-fresh-start", "action": []}
+{"time": 1793701950.572518, "screenshot": "01-certificate", "action": []}
+{"time": 1793701951.6367705, "screenshot": "02-printer-search", "action": ["mousemove", "514", "570", "click", "1", "mousemove", "1034", "570", "click", "1", "sleep", "3", "mousemove", "800", "620", "click", "1", "sleep", "1", "mousemove", "1144", "798", "click", "1", "sleep", "1", "mousemove", "473", "222", "click", "1", "type", "--clearmodifiers", "X-Max 4"]}
+{"time": 1793701958.7513223, "screenshot": "03-selected-MAX4", "action": ["mousemove", "510", "373", "click", "1"]}
+{"time": 1793701960.424484, "screenshot": "04-other-printer-search", "action": ["mousemove", "600", "222", "click", "1", "key", "ctrl+a", "type", "--clearmodifiers", "A1"]}
+{"time": 1793701962.1390572, "screenshot": "05-materials", "action": ["mousemove", "510", "373", "click", "1", "mousemove", "1144", "798", "click", "1", "sleep", "1"]}
+{"time": 1793701964.9119148, "screenshot": "06-finish-setup", "action": ["mousemove", "1081", "490", "click", "1", "mousemove", "1144", "798", "click", "1", "sleep", "1", "mousemove", "521", "480", "click", "1", "mousemove", "1144", "784", "click", "1", "sleep", "1", "mousemove", "1144", "784", "click", "1", "sleep", "3"]}
+{"time": 1793701971.986076, "screenshot": "07-fresh-layout", "action": ["mousemove", "941", "768", "click", "1", "sleep", "1", "mousemove", "335", "152", "click", "1", "sleep", "2"]}
+{"time": 1793701976.7841437, "screenshot": "08-fresh-layout-visible", "action": ["mousemove", "941", "768", "click", "1", "sleep", "1", "mousemove", "335", "152", "click", "1"]}
+{"time": 1793701979.5712357, "screenshot": "09-maximize", "action": ["mousemove", "1355", "117", "click", "1"]}
+{"time": 1793701997.235831, "screenshot": "10-cube-import", "action": ["key", "ctrl+i", "sleep", "1", "key", "ctrl+l", "type", "--clearmodifiers", "/home/dan/qidi-orca-port/artifacts/candidate-66/tests/build/max4-slicing/cube.stl"]}
+{"time": 1793702000.3753643, "screenshot": "11-non-qidi-slice", "action": ["key", "Return", "sleep", "2", "mousemove", "1298", "52", "click", "1", "sleep", "4"]}
+{"time": 1793702008.0653443, "screenshot": "12-non-qidi-preview", "action": ["key", "Escape", "mousemove", "1360", "52", "click", "1", "sleep", "4"]}
+{"time": 1793702013.7541857, "screenshot": "13-printer-switch", "action": ["mousemove", "130", "52", "click", "1", "mousemove", "151", "165", "click", "1"]}
+{"time": 1793702015.5376835, "screenshot": "14-slice-shortcut", "action": ["key", "Escape", "key", "ctrl+r", "sleep", "4"]}
+{"time": 1793702021.1523497, "screenshot": "15-dismiss-printer-list", "action": ["mousemove", "800", "300", "click", "1", "sleep", "1"]}
+{"time": 1793702023.8422863, "screenshot": "16-slice-button", "action": ["mousemove", "1360", "52", "click", "1", "sleep", "4"]}
+{"time": 1793702029.5304766, "screenshot": "17-QIDI-select", "action": ["mousemove", "130", "52", "click", "1", "mousemove", "151", "165", "click", "1", "mousemove", "140", "255", "click", "1", "sleep", "1", "key", "ctrl+p", "sleep", "1"]}
+{"time": 1793702033.4497902, "screenshot": "18-QIDI-agents", "action": ["search", "--onlyvisible", "--name", "^Preferences$", "windowmove", "480", "180", "mousemove", "995", "217", "click", "1", "mousemove", "798", "484", "click", "1", "sleep", "1", "mousemove", "1107", "191", "click", "1", "mousemove", "431", "52", "click", "1", "sleep", "1"]}
+{"time": 1793702037.4746754, "screenshot": "19-connection-dialog", "action": ["mousemove", "200", "97", "click", "1", "mousemove", "110", "177", "click", "1", "sleep", "1", "type", "--clearmodifiers", "http://127.0.0.1:19025"]}
+{"time": 1793702040.4216506, "screenshot": "20-connection-cancel", "action": ["mousemove", "874", "657", "click", "1", "sleep", "1"]}
+{"time": 1793702043.1498399, "screenshot": "21-connection-reopen", "action": ["mousemove", "200", "97", "click", "1", "mousemove", "110", "177", "click", "1", "sleep", "1"]}
+{"time": 1793702045.9564455, "screenshot": "22-address", "action": ["type", "--clearmodifiers", "http://127.0.0.1:19025"]}
+{"time": 1793702047.6953669, "screenshot": "23-connected", "action": ["mousemove", "968", "657", "click", "1", "sleep", "2"]}
+{"time": 1793702051.367367, "screenshot": "24-fan", "action": ["mousemove", "1015", "328", "click", "1"]}
+{"time": 1793702053.0427732, "screenshot": "25-fans-set", "action": ["mousemove", "1019", "532", "click", "1", "mousemove", "1219", "532", "click", "1", "mousemove", "1019", "625", "click", "1", "sleep", "1"]}
+{"time": 1793702055.9182794, "screenshot": "26-fan-closed", "action": ["mousemove", "1267", "347", "click", "1"]}
+{"time": 1793702057.5949676, "screenshot": "27-material-open", "action": ["mousemove", "1051", "610", "click", "1", "mousemove", "1051", "637", "click", "1"]}
+{"time": 1793702108.6352139, "screenshot": "28-duplicate-open", "action": ["key", "alt+F4", "mousemove", "1051", "637", "click", "--repeat", "3", "--delay", "50", "1"]}
+{"time": 1793702112.4424086, "screenshot": "29-box-removed", "action": ["sleep", "1"]}
+{"time": 1793702115.0221424, "screenshot": "30-removed-confirm", "action": ["mousemove", "1193", "668", "click", "1", "sleep", "1"]}
+{"time": 1793702117.7035968, "screenshot": "31-zero-external-editor", "action": ["mousemove", "1222", "566", "click", "1", "mousemove", "1222", "593", "click", "1"]}
+{"time": 1793702119.4844806, "screenshot": "32-zero-external-confirm", "action": ["mousemove", "1193", "668", "click", "1", "sleep", "1"]}
+{"time": 1793702124.2123837, "screenshot": "33-material-edit", "action": ["mousemove", "1051", "610", "click", "1", "mousemove", "1051", "637", "click", "1", "mousemove", "1112", "474", "click", "1"]}
+{"time": 1793702126.0918148, "screenshot": "34-material-choices", "action": ["mousemove", "1051", "637", "click", "1", "mousemove", "1112", "474", "click", "1"]}
+{"time": 1793702127.8758035, "screenshot": "35-native-color", "action": ["mousemove", "1190", "733", "click", "1", "mousemove", "1112", "517", "click", "1"]}
+{"time": 1793702129.6694114, "screenshot": "36-color-value", "action": ["mousemove", "1219", "595", "click", "1", "key", "ctrl+a", "type", "--clearmodifiers", "#123456"]}
+{"time": 1793702131.4249697, "screenshot": "37-material-confirm", "action": ["mousemove", "1457", "717", "click", "1", "mousemove", "1193", "668", "click", "1", "sleep", "1"]}
+{"time": 1793702136.2679627, "screenshot": "38-four-boxes", "action": ["sleep", "1", "mousemove", "1355", "482", "click", "1", "sleep", "1", "mousemove", "1236", "610", "click", "1"]}
+{"time": 1793702140.0469785, "screenshot": "39-slot15-controls", "action": ["mousemove", "1518", "713", "click", "1", "mousemove", "1418", "713", "click", "1", "mousemove", "1048", "713", "click", "1", "mousemove", "1236", "556", "click", "1", "sleep", "1"]}
+{"time": 1793702143.023304, "screenshot": "40-rfid-preferences", "action": ["mousemove", "1129", "713", "click", "1"]}
+{"time": 1793702144.696957, "screenshot": "41-rfid-options", "action": ["mousemove", "32", "170", "click", "1", "mousemove", "32", "96", "click", "1", "mousemove", "428", "10", "click", "1"]}
+{"time": 1793702146.5745797, "screenshot": "42-chamber-value", "action": ["mousemove", "1073", "276", "click", "1", "key", "ctrl+a", "type", "--clearmodifiers", "50"]}
+{"time": 1793702148.2838063, "screenshot": "43-chamber-lamp", "action": ["key", "Return", "mousemove", "1090", "373", "click", "1", "sleep", "1"]}
+{"time": 1793702150.9803662, "screenshot": "44-print-options", "action": ["mousemove", "1440", "101", "click", "1"]}
+{"time": 1793702152.6619086, "screenshot": "45-options-values", "action": ["mousemove", "713", "362", "click", "1", "mousemove", "896", "532", "click", "1", "mousemove", "896", "622", "click", "1", "mousemove", "714", "477", "click", "1", "mousemove", "717", "687", "click", "1", "sleep", "1", "mousemove", "1151", "287", "click", "1"]}
+{"time": 1793702157.913579, "screenshot": "46-speed", "action": ["sleep", "1", "mousemove", "1025", "373", "click", "1", "mousemove", "1239", "459", "click", "1", "mousemove", "1400", "445", "click", "1"]}
+{"time": 1793702160.8083787, "screenshot": "47-object-chooser", "action": ["mousemove", "1440", "101", "click", "1", "mousemove", "756", "315", "click", "1", "mousemove", "773", "519", "click", "1"]}
+{"time": 1793702164.7536826, "screenshot": "48-stale-object-confirm", "action": ["mousemove", "1034", "637", "click", "1", "sleep", "1"]}
+{"time": 1793702167.4288244, "screenshot": "49-fresh-object", "action": ["mousemove", "756", "315", "click", "1", "mousemove", "773", "519", "click", "1", "mousemove", "1034", "637", "click", "1", "sleep", "1"]}
+{"time": 1793702170.316362, "screenshot": "50-close-options", "action": ["mousemove", "1151", "287", "click", "1"]}
+{"time": 1793702176.093679, "screenshot": "51-box-v2", "action": ["sleep", "1"]}
+{"time": 1793702180.731538, "screenshot": "52-B2-selected", "action": ["sleep", "1", "mousemove", "1238", "482", "click", "1", "sleep", "1", "mousemove", "1113", "610", "click", "1", "sleep", "1"]}
+{"time": 1793702185.5197124, "screenshot": "53-B2-load", "action": ["mousemove", "1518", "713", "click", "1", "sleep", "1"]}
+{"time": 1793702190.2705698, "screenshot": "54-box-v2-settled", "action": ["sleep", "3"]}
+{"time": 1793702204.958089, "screenshot": "fault-malformed-json", "action": ["mousemove", "1090", "373", "click", "1", "sleep", "1"]}
+{"time": 1793702208.560425, "screenshot": "fault-wrong-box-type", "action": ["mousemove", "1090", "373", "click", "1", "sleep", "1"]}
+{"time": 1793702212.0120728, "screenshot": "fault-null-material", "action": ["mousemove", "1090", "373", "click", "1", "sleep", "1"]}
+{"time": 1793702215.4724917, "screenshot": "fault-extreme-temperature", "action": ["mousemove", "1090", "373", "click", "1", "sleep", "1"]}
+{"time": 1793702218.9292226, "screenshot": "fault-partial-metadata", "action": ["mousemove", "1090", "373", "click", "1", "sleep", "1"]}
+{"time": 1793702229.6152647, "screenshot": "duplicate-count", "action": ["mousemove", "1178", "482", "click", "1", "sleep", "1", "mousemove", "1051", "610", "click", "1", "mousemove", "1051", "637", "click", "--repeat", "3", "--delay", "50", "1"]}
+{"time": 1793702231.5866647, "screenshot": "duplicate-close", "action": ["key", "alt+F4"]}
+{"time": 1793702240.1279142, "screenshot": "55-camera-valid", "action": ["mousemove", "273", "738", "click", "1", "sleep", "3"]}
+{"time": 1793702246.8663619, "screenshot": "56-camera-invalid", "action": ["sleep", "4"]}
+{"time": 1793702254.493369, "screenshot": "57-http-fault", "action": ["sleep", "2", "mousemove", "1090", "373", "click", "1", "sleep", "1"]}
+{"time": 1793702259.1720808, "screenshot": "58-editor-before-disconnect", "action": ["mousemove", "1051", "637", "click", "1"]}

@@ -10,7 +10,8 @@ Automated communication tests use only 127.0.0.1:19025, whose fixture records
 and discards requests. A recorded heater, load, RFID or start request does not
 prove physical execution. Candidates 59, 62 and 64 passed build gates but failed GUI
 acceptance. Candidate 66 passed build gates and targeted layout/import checks;
-candidate 68 is building with later control fixes. No candidate is installed
+candidate 68 passed build gates but failed unsupported-job GUI status.
+Candidate 69 is undergoing a complete matching GUI rerun. No candidate is installed
 or accepted on the recovered Ubuntu computer yet. See ../HANDOFF.md.
 
 ## Supported scope and gaps

@@ -7,14 +7,14 @@ Read-only LAN inspection of Dan's MAX4 is recorded in
 No physical control/print behavior is verified. Automated communication tests
 use only the non-forwarding loopback fixture.
 
-Build update: candidate 64 (`9b06cba`) passed compilation, 2,914 unit cases with
+Build update: candidate 68 (`8c258d6`) passed compilation, 2,916 unit cases with
 zero failures/skips, seven CLI regressions, 72 vendor bundles, all 21 MAX4 cases
-and static checks. Its GUI acceptance **failed** fresh layout, stale Box material
-dispatch and fan sizing; see [GUI64](../validation/gui-64/README.md).
-Candidate 68 (`8c258d6`) contains corrections and is building. Targeted candidate
-66 checks verify fresh layout and original sparse-project import/submission.
-No binary has completed the full GUI gate; historical passes below are not final
-acceptance. See [HANDOFF](../HANDOFF.md) for current exact revisions and evidence.
+and static checks. Its GUI acceptance **failed** because an unsupported multicolor
+external-spool job lost its explanation and re-enabled Send, despite correctly
+blocking upload. See [GUI68](../validation/gui-68/README.md). Candidate 69
+(`f8192f7`) contains a QIDI-only status-refresh correction. Its matching artifact
+is verified and the complete fresh GUI gate is in progress. No binary has yet
+completed that gate. See [HANDOFF](../HANDOFF.md) for exact revisions and evidence.
 
 Actual GUI tests through patch 38 exercise Box load/unload/eject/RFID, four-Box and
 zero-Box transitions, external-spool display, lamp, chamber, fan, speed and print

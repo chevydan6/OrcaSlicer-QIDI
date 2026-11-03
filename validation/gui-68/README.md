@@ -27,5 +27,8 @@ filament_is_support; multicolor-input.json records hashes and purpose.
 Patch 69 adds the QIDI-only external restriction to periodic preflight so Send
 stays disabled with an explanatory message. Protocol validation remains in place.
 A matching new build and complete GUI rerun are required; partial passes here do
-not accept the next candidate. Remaining restart, batch and replay checks are
-still pending at this record's creation.
+not accept the next candidate. Follow-up checks 118–131 verify endpoint restart, batch refusal, sanitized real
+telemetry replay, resize/tab recovery and normal imported-project discard/exit.
+Delayed shutdown remains inconclusive: this fixture version logged requests
+only after the injected delay, so an in-flight arrival was not established.
+The candidate remains rejected for the unsupported-job status defect.

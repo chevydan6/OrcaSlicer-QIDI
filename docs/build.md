@@ -1,10 +1,11 @@
 # Linux build and installation
 
 The current acceptance candidate and CI state are recorded in [HANDOFF.md](../HANDOFF.md).
-No final release is accepted yet. Candidate 64 passed compilation, 2,914 unit
+No final release is accepted yet. Candidate 68 passed compilation, 2,916 unit
 cases without failures/skips, seven CLI regressions, 72 vendor bundles and all
-21 MAX4 cases, but failed GUI acceptance. Later corrections require matching
-build and GUI evidence. Software validation does not certify physical behavior.
+21 MAX4 cases, but failed one GUI status case. Candidate 69's matching artifact
+is verified and its complete GUI gate is in progress. Software validation does
+not certify physical behavior.
 
 The recovered host is Ubuntu 24.04.5 x86_64 with GNOME/Wayland, 14 GiB RAM and
 23 GiB swap. Private GUI tests use Xvfb and Openbox. The native extracted AppImage

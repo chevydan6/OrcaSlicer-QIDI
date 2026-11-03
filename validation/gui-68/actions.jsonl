@@ -115,3 +115,22 @@
 {"time": 1793701209.1798508, "screenshot": "110-both-external", "action": ["mousemove", "622", "894", "click", "1"]}
 {"time": 1793701209.88449, "screenshot": "111-multicolor-attempt", "action": ["mousemove", "1073", "796", "click", "1", "sleep", "2"]}
 {"time": 1793701233.0303605, "screenshot": "112-multicolor-retry", "action": ["mousemove", "1073", "796", "click", "1", "sleep", "4"]}
+{"time": 1793701445.9864342, "screenshot": "113-batch-preference", "action": ["mousemove", "1138", "169", "click", "1", "key", "ctrl+p", "sleep", "1"]}
+{"time": 1793701447.7037156, "screenshot": "114-enable-batch", "action": ["search", "--onlyvisible", "--name", "^Preferences$", "windowmove", "480", "180", "mousemove", "521", "217", "click", "1", "mousemove", "798", "550", "click", "1"]}
+{"time": 1793701478.8398907, "screenshot": "115-before-shutdown", "action": ["mousemove", "1107", "191", "click", "1", "mousemove", "431", "52", "click", "1"]}
+{"time": 1793701479.6579392, "screenshot": "116-pending-shutdown", "action": ["mousemove", "1090", "373", "click", "1", "key", "alt+F4", "sleep", "1"]}
+{"time": 1793701488.330059, "screenshot": "117-discard-exit", "action": ["mousemove", "884", "754", "click", "1", "sleep", "1"]}
+{"time": 1793701525.3905833, "screenshot": "118-restart", "action": ["sleep", "2"]}
+{"time": 1793701584.1558585, "screenshot": "119-restart-project", "action": ["mousemove", "1050", "405", "click", "1", "sleep", "2", "mousemove", "1177", "604", "click", "1", "sleep", "1", "mousemove", "1110", "594", "click", "1", "sleep", "2", "mousemove", "1320", "52", "click", "1", "sleep", "3"]}
+{"time": 1793701617.9144342, "screenshot": "120-batch-menu", "action": ["mousemove", "1389", "52", "click", "1", "sleep", "1"]}
+{"time": 1793701828.1282136, "screenshot": "121-open-original", "action": ["mousemove", "951", "403", "click", "1", "sleep", "3"]}
+{"time": 1793701837.751287, "screenshot": "122-conversion", "action": ["mousemove", "1176", "582", "click", "1", "sleep", "2"]}
+{"time": 1793701846.8898234, "screenshot": "123-batch-options", "action": ["mousemove", "1110", "594", "click", "1", "sleep", "2", "mousemove", "1320", "52", "click", "1", "sleep", "4", "mousemove", "1389", "52", "click", "1", "sleep", "1"]}
+{"time": 1793701861.638812, "screenshot": "124-batch-reject", "action": ["mousemove", "1491", "198", "click", "1", "sleep", "1", "mousemove", "1490", "52", "click", "1", "sleep", "2"]}
+{"time": 1793701876.3910627, "screenshot": "125-restart-device", "action": ["mousemove", "1176", "590", "click", "1", "mousemove", "430", "52", "click", "1", "sleep", "3"]}
+{"time": 1793701887.5536573, "screenshot": "126-resize-tabs", "action": ["mousemove", "130", "52", "click", "1", "mousemove", "1554", "17", "click", "1", "sleep", "1", "mousemove", "1355", "117", "click", "1", "sleep", "1", "mousemove", "285", "52", "click", "1", "sleep", "1"]}
+{"time": 1793701891.6415555, "screenshot": "127-actual-telemetry", "action": ["mousemove", "431", "52", "click", "1", "sleep", "3"]}
+{"time": 1793701900.46412, "screenshot": "128-actual-restored", "action": ["mousemove", "790", "17", "click", "1", "sleep", "3"]}
+{"time": 1793701912.5539107, "screenshot": "129-resize-preview", "action": ["mousemove", "285", "52", "click", "1", "sleep", "1"]}
+{"time": 1793701914.274528, "screenshot": "130-close-import", "action": ["key", "alt+F4", "sleep", "1"]}
+{"time": 1793701924.9572432, "screenshot": "131-discard-final", "action": ["mousemove", "885", "743", "click", "1", "sleep", "1"]}

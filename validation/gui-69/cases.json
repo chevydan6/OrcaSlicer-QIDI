@@ -1,0 +1,327 @@
+{
+  "startup": {
+    "fresh_setup_layout": {
+      "result": "passed",
+      "note": "Fresh isolated setup selected MAX4 and Bambu A1; Prepare visible at original window dimensions before maximization, without debugger or resize recovery.",
+      "time": 1793702010.8279352,
+      "evidence": [
+        "08-fresh-layout-visible.png",
+        "09-maximize.png"
+      ]
+    },
+    "blank_key_connect": {
+      "result": "passed",
+      "note": "Native address dialog accepts blank optional API key; connected fixture reports two Boxes.",
+      "evidence": [
+        "19-connection-dialog.png",
+        "23-connected.png"
+      ]
+    },
+    "cancel_reopen_connect": {
+      "result": "passed",
+      "note": "Cancel returns to Device; reopening presents usable native address/key/CA fields before successful connect.",
+      "evidence": [
+        "20-connection-cancel.png",
+        "21-connection-reopen.png",
+        "23-connected.png"
+      ]
+    },
+    "no_printer_controls": {
+      "result": "passed",
+      "note": "Device controls disabled with no configured printer.",
+      "evidence": [
+        "18-QIDI-agents.png"
+      ]
+    },
+    "clean_restart_endpoint": "untested",
+    "tabs_resize_restore": "untested"
+  },
+  "materials": {
+    "box_reopen_10": {
+      "result": "passed",
+      "note": "Ten Box editor cycles, usable geometry and one visible editor each.",
+      "evidence": [
+        "material-reopens.json",
+        "box-reopen-1.png",
+        "box-reopen-2.png",
+        "box-reopen-3.png",
+        "box-reopen-4.png",
+        "external-reopen-10.png"
+      ]
+    },
+    "external_reopen_10": {
+      "result": "passed",
+      "note": "Ten external editor cycles, usable geometry and one visible editor each.",
+      "evidence": [
+        "material-reopens.json",
+        "box-reopen-1.png",
+        "box-reopen-2.png",
+        "box-reopen-3.png",
+        "box-reopen-4.png",
+        "external-reopen-10.png"
+      ]
+    },
+    "slot_switch_colors": {
+      "result": "passed",
+      "note": "Each Box reopen switches slots; red/blue/green/white swatches match the selected slot. External swatch is gray.",
+      "evidence": [
+        "material-reopens.json",
+        "box-reopen-1.png",
+        "box-reopen-2.png",
+        "box-reopen-3.png",
+        "box-reopen-4.png",
+        "external-reopen-10.png"
+      ]
+    },
+    "material_and_rgb_edit": {
+      "result": "passed",
+      "note": "Fixture recorded expected command: UPDATE_FILAMENT_INFORMATION SLOT=0 COLOR='123456' VENDOR='Generic' FILAMENT='ABS'",
+      "evidence": [
+        "34-material-choices.png",
+        "36-color-value.png",
+        "37-material-confirm.png",
+        "requests.jsonl"
+      ]
+    },
+    "duplicate_open": {
+      "result": "passed",
+      "note": "Three rapid open clicks leave exactly one visible material editor.",
+      "evidence": [
+        "duplicate-count.png",
+        "duplicate-result.json"
+      ]
+    },
+    "disconnect_open_dialog": "untested",
+    "reconnect_dialog": "untested",
+    "removed_slot_reject": {
+      "result": "passed",
+      "note": "A1 editor stayed open while reported Box count became zero; Confirm emitted no command.",
+      "evidence": [
+        "28-duplicate-open.png",
+        "29-box-removed.png",
+        "30-removed-confirm.png",
+        "requests.jsonl"
+      ]
+    },
+    "close_with_pending_response": "untested"
+  },
+  "controls": {
+    "four_boxes_slot15": {
+      "result": "passed",
+      "note": "Fixture recorded expected command: LOAD_FILAMENT_CONTROL SLOT=15",
+      "evidence": [
+        "38-four-boxes.png",
+        "39-slot15-controls.png",
+        "requests.jsonl"
+      ]
+    },
+    "two_boxes_slot5": {
+      "result": "passed",
+      "note": "Recorded LOAD_FILAMENT_CONTROL SLOT=5",
+      "evidence": [
+        "52-B2-selected.png",
+        "53-B2-load.png",
+        "requests.jsonl"
+      ]
+    },
+    "zero_boxes": {
+      "result": "passed",
+      "note": "Zero Boxes hides Box slots; external-spool material editor remains available.",
+      "evidence": [
+        "31-zero-external-editor.png",
+        "requests.jsonl"
+      ]
+    },
+    "external_display": {
+      "result": "passed",
+      "note": "External Generic PETG gray swatch shown with zero Boxes; material Confirm dispatched SLOT=16.",
+      "evidence": [
+        "31-zero-external-editor.png",
+        "32-zero-external-confirm.png",
+        "requests.jsonl"
+      ]
+    },
+    "load_unload_eject": {
+      "result": "passed",
+      "note": "Fixture recorded expected command: EJECT_FILAMENT_CONTROL SLOT=15",
+      "evidence": [
+        "39-slot15-controls.png",
+        "requests.jsonl"
+      ]
+    },
+    "rfid_refresh": {
+      "result": "passed",
+      "note": "Fixture recorded expected command: READ_RFID SLOT=15",
+      "evidence": [
+        "39-slot15-controls.png",
+        "requests.jsonl"
+      ]
+    },
+    "rfid_preferences": {
+      "result": "passed",
+      "note": "Startup and insertion RFID toggles recorded their respective setting commands, ending both off.",
+      "evidence": [
+        "40-rfid-preferences.png",
+        "41-rfid-options.png",
+        "requests.jsonl"
+      ]
+    },
+    "chamber": {
+      "result": "passed",
+      "note": "Fixture recorded expected command: SET_HEATER_TEMPERATURE HEATER=chamber TARGET=50",
+      "evidence": [
+        "43-chamber-lamp.png",
+        "requests.jsonl"
+      ]
+    },
+    "part_aux_chamber_fans": {
+      "result": "passed",
+      "note": "Usable fan popup; three individual fan edits dispatched expected named fan commands.",
+      "evidence": [
+        "24-fan.png",
+        "25-fans-set.png",
+        "requests.jsonl"
+      ]
+    },
+    "lamp": {
+      "result": "passed",
+      "note": "Fixture recorded expected command: SET_PIN PIN=caselight VALUE=1",
+      "evidence": [
+        "43-chamber-lamp.png",
+        "requests.jsonl"
+      ]
+    },
+    "speed": {
+      "result": "passed",
+      "note": "Recorded M220 S124",
+      "evidence": [
+        "46-speed.png",
+        "requests.jsonl"
+      ]
+    },
+    "detection_sensitivity": {
+      "result": "passed",
+      "note": "Spaghetti high-sensitivity and disable plus foreign-object disable requests recorded.",
+      "evidence": [
+        "44-print-options.png",
+        "45-options-values.png",
+        "requests.jsonl"
+      ]
+    },
+    "polar_cooler": {
+      "result": "passed",
+      "note": "Recorded SET_PIN PIN=polar_cooler VALUE=1",
+      "evidence": [
+        "45-options-values.png",
+        "requests.jsonl"
+      ]
+    },
+    "actual_telemetry_replay": "untested",
+    "box_v2_hides_eject": {
+      "result": "passed",
+      "note": "After box_v2 telemetry settles, Eject is hidden; restored box_v1 permits physical B2 operations.",
+      "evidence": [
+        "54-box-v2-settled.png",
+        "53-B2-load.png"
+      ]
+    }
+  },
+  "faults": {
+    "malformed_json": {
+      "result": "passed",
+      "note": "Injected malformed-json followed by responsive GUI and a recorded lamp request.",
+      "evidence": [
+        "fault-malformed-json.png",
+        "fault-results.json",
+        "requests.jsonl"
+      ]
+    },
+    "wrong_type_box": {
+      "result": "passed",
+      "note": "Injected wrong-box-type followed by responsive GUI and a recorded lamp request.",
+      "evidence": [
+        "fault-wrong-box-type.png",
+        "fault-results.json",
+        "requests.jsonl"
+      ]
+    },
+    "null_slot_metadata": {
+      "result": "passed",
+      "note": "Injected null-material followed by responsive GUI and a recorded lamp request.",
+      "evidence": [
+        "fault-null-material.png",
+        "fault-results.json",
+        "requests.jsonl"
+      ]
+    },
+    "extreme_temperature": {
+      "result": "passed",
+      "note": "Injected extreme-temperature followed by responsive GUI and a recorded lamp request.",
+      "evidence": [
+        "fault-extreme-temperature.png",
+        "fault-results.json",
+        "requests.jsonl"
+      ]
+    },
+    "partial_metadata": {
+      "result": "passed",
+      "note": "Injected partial-metadata followed by responsive GUI and a recorded lamp request.",
+      "evidence": [
+        "fault-partial-metadata.png",
+        "fault-results.json",
+        "requests.jsonl"
+      ]
+    },
+    "http_error": "untested",
+    "delayed_repeated_controls": "untested",
+    "websocket_recovery": "untested",
+    "camera_valid": "untested",
+    "camera_invalid": "untested",
+    "camera_http_recovery": "untested",
+    "delayed_shutdown_restart": "untested"
+  },
+  "jobs": {
+    "original_sparse_import_slice_preview": "untested",
+    "sparse_T2_slot5_submit": "untested",
+    "reversed_multiple_box_mapping": "untested",
+    "support_first_import_slice_preview": "untested",
+    "support_first_T2_T0_both_mapped": "untested",
+    "external_single_submit": "untested",
+    "incomplete_mapping_reject": "untested",
+    "mixed_external_reject": "untested",
+    "multicolor_external_reject": "untested",
+    "batch_qidi_reject": "untested",
+    "stale_object_reject": {
+      "result": "passed",
+      "note": "Object chooser opened on fixture.gcode; status changed to replacement.gcode before Confirm; no EXCLUDE_OBJECT dispatched.",
+      "evidence": [
+        "47-object-chooser.png",
+        "48-stale-object-confirm.png",
+        "requests.jsonl"
+      ]
+    },
+    "fresh_object_accept": {
+      "result": "passed",
+      "note": "Fresh chooser on replacement job dispatched exactly one EXCLUDE_OBJECT NAME=fixture_cube.",
+      "evidence": [
+        "49-fresh-object.png",
+        "requests.jsonl"
+      ]
+    }
+  },
+  "persistence": {
+    "box_temperature_save_reload": "untested",
+    "slice_after_controls": "untested",
+    "non_qidi_profile_slice": {
+      "result": "passed",
+      "note": "Unmodified Bambu A1 profile imports local cube through native file chooser, slices and renders G-code preview on exact candidate69.",
+      "evidence": [
+        "10-cube-import.png",
+        "16-slice-button.png"
+      ]
+    },
+    "file_chooser": "untested",
+    "close_discard_imported_project": "untested",
+    "clean_exit": "untested"
+  }
+}

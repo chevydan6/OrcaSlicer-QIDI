@@ -139,6 +139,9 @@ class Fixture:
         path = request.path
         if path == '/__fixture__/state':
             return await self.admin(request)
+        # Record arrival before injected latency, including requests cancelled
+        # while the client closes. Keep completion/body records separate.
+        self.record(request_received={'method': request.method, 'path': path})
         if self.delay:
             await asyncio.sleep(self.delay)
         if self.http_error:
