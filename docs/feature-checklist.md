@@ -5,11 +5,11 @@ The full integrated build and dedicated validation phase remain open.
 No MAX4 is connected during this work; communication tests use local fixtures,
 and printer-specific protocol/physical verification remains pending.
 
-Build update: the 29-patch run reached GUI compilation and failed on private
-member access. Static checks also found an ambiguous HTTP overload and missing
-direct includes. Patch 0030 addresses those findings; patch 0031 adds control
-stability guards. Neither correction is evidence of a passing integrated build
-until the subsequent run completes.
+Build update: the 32-patch revision passed the full changed-line C++ static/include
+checks (GitHub run 41567422148); its application build is still running. Later
+patches require their own checks. Prior compile failures exposed private-member
+access, an ambiguous HTTP overload and missing direct includes; those have been
+corrected. A successful custom application build has not yet been recorded.
 
 Further stability validation reproduced a type-conversion exception for a null
 material name in the native tray updater. Patch 0032 preserves existing metadata
@@ -17,6 +17,12 @@ for wrongly typed names, adds the missing device-manager definition identified
 by the next static-check run, and rejects deferred dialog work during window
 destruction. The isolated control harness passes with address/undefined-behavior
 sanitizers; full GUI acceptance remains pending.
+
+Patches 0033 and 0035 reject corrupt chamber numeric values and remove a raw agent
+capture from delayed network-control responses. Their isolated production-body
+regressions pass ASan/UBSan. Patch 0034 addresses QIDI structured-project import,
+including material assignment and MAX4 compatibility migration; its compiled
+import tests and full-GUI comparison remain pending.
 
 | Workflow | Existing Orca | Downstream implementation | Validation / remaining work |
 | --- | --- | --- | --- |
@@ -30,6 +36,7 @@ sanitizers; full GUI acceptance remains pending.
 | Box/external selection | Physical-slot mapping exists | Explicit enable_box; active-tool snapshot; reject missing/malformed mappings | Recording-transport submission order and stop-on-failure pass |
 | External spool monitoring | Generic virtual-tray interface | QIDI external material/color report and exact type resolution | Isolated decoder/partial-update checks pass; GUI/hardware pending |
 | Initial filament | Logical tool placeholders and mapping exist | Preserve sparse indices | Dedicated slicing/submission regression and physical check pending |
+| QIDI saved projects | Unrecognized application marker; incompatible MAX4 names and automatic raft value | Recognize structured metadata; retain object/material assignments; migrate known settings | Diagnostic baseline copy slices correctly; patched import regression and GUI checks pending |
 | Load/unload | Native UI lacks QIDI translation | QIDI macros, selected physical slot | Isolated command checks pass; GUI/hardware pending |
 | Eject | Missing | QIDI-only control; hidden for box_v2 identity | Command checks pass; GUI/hardware pending |
 | RFID refresh | Dedicated agent method unsupported | Route native refresh to READ_RFID | Isolated checks pass; no real RFID requests sent |

@@ -1,0 +1,28 @@
+From 9014a78d8149d9be70a245cf35d8c8e4014595e4 Mon Sep 17 00:00:00 2001
+From: chevydan6 <339888127+chevydan6@users.noreply.github.com>
+Date: Tue, 3 Nov 2026 11:53:39 +0900
+Subject: [PATCH] Use ModelConfig accessors in QIDI project regression
+
+---
+ tests/libslic3r/test_3mf.cpp | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
+
+diff --git a/tests/libslic3r/test_3mf.cpp b/tests/libslic3r/test_3mf.cpp
+index 56f7ab3a..e2640ee6 100644
+--- a/tests/libslic3r/test_3mf.cpp
++++ b/tests/libslic3r/test_3mf.cpp
+@@ -279,9 +279,8 @@ TEST_CASE("QIDI projects preserve object and filament assignments", "[3mf][Qidi]
+     REQUIRE(model.objects.front()->volumes.size() == 1);
+     REQUIRE(model.objects.front()->instances.size() == 1);
+     CHECK(model.objects.front()->volumes.front()->mesh().facets_count() == 12);
+-    const auto* extruder = model.objects.front()->config.option<ConfigOptionInt>("extruder");
+-    REQUIRE(extruder != nullptr);
+-    CHECK(extruder->value == 3);
++    REQUIRE(model.objects.front()->config.option("extruder") != nullptr);
++    CHECK(model.objects.front()->config.opt_int("extruder") == 3);
+     const auto* colours = config.option<ConfigOptionStrings>("filament_colour");
+     REQUIRE(colours != nullptr);
+     CHECK(colours->values.size() == 3);
+-- 
+2.56.0
+
