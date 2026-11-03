@@ -1,0 +1,209 @@
+From 6c5e528e448eb3ca32c1ff1cd8608c6986b901fb Mon Sep 17 00:00:00 2001
+From: chevydan6 <339888127+chevydan6@users.noreply.github.com>
+Date: Tue, 3 Nov 2026 15:52:38 +0900
+Subject: [PATCH] Use native controls for the QIDI local connection dialog
+
+---
+ src/slic3r/GUI/ReleaseNote.cpp | 97 ++++++++++++++++++++++------------
+ src/slic3r/GUI/ReleaseNote.hpp |  4 +-
+ 2 files changed, 65 insertions(+), 36 deletions(-)
+
+diff --git a/src/slic3r/GUI/ReleaseNote.cpp b/src/slic3r/GUI/ReleaseNote.cpp
+index acf71aa6..a47af764 100644
+--- a/src/slic3r/GUI/ReleaseNote.cpp
++++ b/src/slic3r/GUI/ReleaseNote.cpp
+@@ -13,6 +13,10 @@
+ #include "Jobs/PlaterWorker.hpp"
+ 
+ #include <wx/event.h>
++#include <wx/button.h>
++#include <wx/sizer.h>
++#include <wx/stattext.h>
++#include <wx/textctrl.h>
+ #include <wx/gdicmn.h>
+ #include <wx/panel.h>
+ #include "slic3r/GUI/wxExtensions.hpp"
+@@ -1438,6 +1442,52 @@ InputIpAddressDialog::InputIpAddressDialog(wxWindow *parent)
+ {
+     if (auto* manager = wxGetApp().getDeviceManager())
+         m_qidi_connection = manager->get_current_printer_agent_id() == "qidi";
++    if (m_qidi_connection) {
++        SetTitle(_L("Connect QIDI printer"));
++        auto* layout = new wxBoxSizer(wxVERTICAL);
++        auto* explanation = new wxStaticText(this, wxID_ANY,
++            _L("Enter the printer's Moonraker address, including its port if needed."));
++        explanation->Wrap(FromDIP(420));
++        layout->Add(explanation, 0, wxALL, FromDIP(12));
++        auto add_field = [this, layout](const wxString& label, long style = 0) {
++            layout->Add(new wxStaticText(this, wxID_ANY, label), 0, wxLEFT | wxRIGHT | wxTOP, FromDIP(12));
++            auto* input = new wxTextCtrl(this, wxID_ANY, wxEmptyString, wxDefaultPosition,
++                                         wxSize(FromDIP(420), -1), style);
++            layout->Add(input, 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, FromDIP(12));
++            return input;
++        };
++        m_qidi_address = add_field(_L("Address"));
++        m_qidi_key = add_field(_L("API key (optional)"), wxTE_PASSWORD);
++        m_input_cafile = add_field(_L("HTTPS CA file (optional)"));
++        m_input_cafile->Enable(Http::ca_file_supported());
++        auto* error = new wxStaticText(this, wxID_ANY, wxEmptyString);
++        layout->Add(error, 0, wxEXPAND | wxLEFT | wxRIGHT, FromDIP(12));
++        auto* buttons = new wxBoxSizer(wxHORIZONTAL);
++        buttons->AddStretchSpacer();
++        auto* cancel = new wxButton(this, wxID_CANCEL);
++        auto* connect = new wxButton(this, wxID_OK, _L("Connect"));
++        connect->Disable();
++        buttons->Add(cancel, 0, wxRIGHT, FromDIP(8));
++        buttons->Add(connect);
++        layout->Add(buttons, 0, wxEXPAND | wxALL, FromDIP(12));
++        m_qidi_address->Bind(wxEVT_TEXT, [this, connect](wxCommandEvent&) {
++            connect->Enable(isValidEndpoint(m_qidi_address->GetValue().Strip(wxString::both).ToStdString()));
++        });
++        connect->Bind(wxEVT_BUTTON, [this, error](wxCommandEvent&) {
++            if (connect_qidi(m_qidi_address->GetValue().Strip(wxString::both).ToStdString(),
++                             m_qidi_key->GetValue().ToStdString())) {
++                EndModal(wxID_OK);
++            } else {
++                error->SetLabel(_L("Unable to connect. Check the address and selected printer profile."));
++                error->Wrap(FromDIP(420));
++                Layout();
++                Fit();
++            }
++        });
++        SetSizerAndFit(layout);
++        CentreOnParent();
++        return;
++    }
+     SetBackgroundColour(*wxWHITE);
+     m_result                       = -1;
+     wxBoxSizer *m_sizer_body       = new wxBoxSizer(wxVERTICAL);
+@@ -1740,17 +1790,6 @@ InputIpAddressDialog::InputIpAddressDialog(wxWindow *parent)
+ 
+     switch_input_panel(0);
+ 
+-    if (m_qidi_connection) {
+-        SetTitle(_L("Connect QIDI printer"));
+-        m_tip0->SetLabel(_L("Enter the printer's Moonraker address, including its port if needed."));
+-        m_tip1->SetLabel(_L("The printer must be reachable on your local network."));
+-        m_tip2->SetLabel(_L("Leave the API key blank unless your Moonraker server requires one."));
+-        m_tip4->Hide();
+-        m_img_help->Hide();
+-        m_tips_ip->SetLabel(_L("Address"));
+-        m_tips_access_code->SetLabel(_L("API key (optional)"));
+-    }
+-
+     SetSizer(m_sizer_body);
+     Layout();
+     Fit();
+@@ -1825,6 +1864,11 @@ void InputIpAddressDialog::update_title(wxString title)
+ void InputIpAddressDialog::set_machine_obj(MachineObject* obj)
+ {
+     m_obj = obj;
++    if (m_qidi_connection) {
++        m_qidi_address->SetValue(m_obj->get_dev_ip());
++        m_qidi_key->SetValue(m_obj->get_access_code());
++        return;
++    }
+     m_input_ip->GetTextCtrl()->ChangeValue(m_obj->get_dev_ip());
+     m_input_access_code->GetTextCtrl()->ChangeValue(m_obj->get_access_code());
+     m_input_printer_name->GetTextCtrl()->ChangeValue(m_obj->get_dev_name());
+@@ -1903,10 +1947,6 @@ bool InputIpAddressDialog::isValidEndpoint(std::string endpoint)
+ 
+ void InputIpAddressDialog::on_ok(wxMouseEvent& evt)
+ {
+-    if (m_qidi_connection) {
+-        connect_qidi();
+-        return;
+-    }
+     if (!m_need_input_sn) {
+         on_send_retry();
+         return;
+@@ -1953,21 +1993,17 @@ void InputIpAddressDialog::on_ok(wxMouseEvent& evt)
+     m_thread = new boost::thread(boost::bind(&InputIpAddressDialog::workerThreadFunc, this, str_ip, str_access_code, str_sn, str_model_id, str_name));
+ }
+ 
+-void InputIpAddressDialog::connect_qidi()
++bool InputIpAddressDialog::connect_qidi(const std::string& address, const std::string& api_key)
+ {
+     auto* manager = wxGetApp().getDeviceManager();
+     auto* bundle = wxGetApp().preset_bundle;
+     if (!manager || !bundle || manager->get_current_printer_agent_id() != "qidi" ||
+         bundle->printers.get_edited_preset().config.opt_string("printer_agent") != "qidi") {
+-        update_test_msg(_L("The selected printer changed. Close this dialog and connect again."), false);
+-        return;
++        return false;
+     }
+-    const std::string address = m_input_ip->GetTextCtrl()->GetValue().Strip(wxString::both).ToStdString();
+-    const std::string api_key = m_input_access_code->GetTextCtrl()->GetValue().ToStdString();
+     if (!isValidEndpoint(address) || api_key.find_first_of("\r\n") != std::string::npos)
+-        return;
++        return false;
+ 
+-    m_button_ok->Disable();
+     try {
+         auto& config = bundle->printers.get_edited_preset().config;
+         std::string port;
+@@ -1991,15 +2027,13 @@ void InputIpAddressDialog::connect_qidi()
+             // Moonraker connects asynchronously itself. Do not start the legacy
+             // detached dialog worker or a SendJob just to establish a connection.
+             if (manager->set_selected_machine(machine.dev_id)) {
+-                EndModal(wxID_OK);
+-                return;
++                return true;
+             }
+         }
+     } catch (const std::exception& error) {
+         BOOST_LOG_TRIVIAL(error) << "QIDI connection setup failed: " << error.what();
+     }
+-    m_button_ok->Enable();
+-    update_test_msg(_L("Unable to set up the printer connection."), false);
++    return false;
+ }
+ 
+ void InputIpAddressDialog::on_send_retry()
+@@ -2236,14 +2270,6 @@ void InputIpAddressDialog::on_text(wxCommandEvent &evt)
+     auto str_ip              = m_input_ip->GetTextCtrl()->GetValue();
+     auto str_access_code     = m_input_access_code->GetTextCtrl()->GetValue();
+ 
+-    if (m_qidi_connection) {
+-        const bool valid = isValidEndpoint(str_ip.Strip(wxString::both).ToStdString()) &&
+-                           str_access_code.ToStdString().find_first_of("\r\n") == std::string::npos;
+-        m_button_ok->Enable(valid);
+-        m_button_manual_setup->Hide();
+-        return;
+-    }
+-
+     if (str_access_code.IsEmpty()) {
+         str_access_code = "88888888";
+     }
+@@ -2280,7 +2306,8 @@ InputIpAddressDialog::~InputIpAddressDialog()
+ 
+ void InputIpAddressDialog::on_dpi_changed(const wxRect& suggested_rect)
+ {
+-    m_button_cafile->Rescale();
++    if (m_button_cafile)
++        m_button_cafile->Rescale();
+ }
+ 
+ 
+diff --git a/src/slic3r/GUI/ReleaseNote.hpp b/src/slic3r/GUI/ReleaseNote.hpp
+index a8c9a21b..932ad3e0 100644
+--- a/src/slic3r/GUI/ReleaseNote.hpp
++++ b/src/slic3r/GUI/ReleaseNote.hpp
+@@ -347,6 +347,8 @@ public:
+     bool   m_show_access_code{ false };
+     bool   m_need_input_sn{true};
+     bool   m_qidi_connection{false};
++    wxTextCtrl* m_qidi_address{nullptr};
++    wxTextCtrl* m_qidi_key{nullptr};
+     int    m_result;
+     int    current_input_index {0};
+     std::shared_ptr<BBLStatusBarSend> m_status_bar;
+@@ -362,7 +364,7 @@ public:
+     void check_ip_address_failed(int result);
+     void on_check_ip_address_failed(wxCommandEvent& evt);
+     void on_ok(wxMouseEvent& evt);
+-    void connect_qidi();
++    bool connect_qidi(const std::string& address, const std::string& api_key);
+     void on_send_retry();
+     void update_test_msg_event(wxCommandEvent &evt);
+     void post_update_test_msg(std::weak_ptr<InputIpAddressDialog> w, wxString text, bool beconnect);
