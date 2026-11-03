@@ -108,6 +108,12 @@ jobs:
             build/max4-slicing/
           if-no-files-found: warn
           retention-days: 30
+      - name: Free completed build intermediates for compiler cache archival
+        if: always()
+        run: |
+          # Tests and retained artifacts are complete. These are runner-local build trees.
+          rm -rf -- "$GITHUB_WORKSPACE/source/build" "$GITHUB_WORKSPACE/source/deps/build"
+          df -h "$GITHUB_WORKSPACE"
       - uses: actions/cache/save@v4
         if: always()
         with:

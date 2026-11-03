@@ -1,0 +1,31 @@
+From 1cf30aa95dd8bf64a0a826c65bbe06291b82526c Mon Sep 17 00:00:00 2001
+From: chevydan6 <339888127+chevydan6@users.noreply.github.com>
+Date: Tue, 3 Nov 2026 12:53:42 +0900
+Subject: [PATCH] Identify the QIDI fork in project window titles
+
+---
+ src/slic3r/GUI/Plater.cpp | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/src/slic3r/GUI/Plater.cpp b/src/slic3r/GUI/Plater.cpp
+index 914df02b..d3ac0ba0 100644
+--- a/src/slic3r/GUI/Plater.cpp
++++ b/src/slic3r/GUI/Plater.cpp
+@@ -14463,7 +14463,7 @@ void Plater::priv::set_project_name(const wxString& project_name)
+     if (!m_project_name.IsEmpty())
+         wxGetApp().mainframe->update_title_colour_after_set_title();
+ #else
+-    wxGetApp().mainframe->SetTitle(m_project_name + " - OrcaSlicer");
++    wxGetApp().mainframe->SetTitle(m_project_name + " - " + SLIC3R_APP_NAME);
+     wxGetApp().mainframe->topbar()->SetTitle(m_project_name);
+ #endif
+ }
+@@ -14483,7 +14483,7 @@ void Plater::priv::update_title_dirty_status()
+     wxGetApp().mainframe->SetTitle(title);
+     wxGetApp().mainframe->update_title_colour_after_set_title();
+ #else
+-    wxGetApp().mainframe->SetTitle(title + " - OrcaSlicer");
++    wxGetApp().mainframe->SetTitle(title + " - " + SLIC3R_APP_NAME);
+     wxGetApp().mainframe->topbar()->SetTitle(title);
+ #endif    
+ }

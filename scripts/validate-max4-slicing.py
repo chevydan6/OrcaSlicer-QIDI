@@ -164,6 +164,9 @@ materials = []
 for index, temperature in enumerate([35, 40, 45]):
     values['name'] = f'Offline QIDI logical filament {index}'
     values['box_temperature'] = [str(temperature)]
+    # Standalone CLI presets must supply this per-filament column when there
+    # are multiple materials; the schema default otherwise has only one entry.
+    values['filament_is_support'] = ['0']
     path = output / f'logical-filament-{index}.json'
     path.write_text(json.dumps(values, indent=2) + '\n')
     materials.append(str(path))

@@ -55,7 +55,7 @@ separately from implementation; a patch's presence does not certify hardware use
 
 28. `0028-qidi-nested-status-cache.patch` adds an opt-in cache merge policy for QIDI multi_color_controller only. Nested partial temperature updates retain the reported Box count and material fields; other Moonraker agents keep their existing field replacement semantics. Production cache-body isolation checks and full-library regression cases cover both policies.
 
-29. `0029-default-cli-filament-diameter.patch` fixes an upstream CLI crash found by the baseline regression run. A standalone filament preset may omit diameter; flush calculation runs before full defaults are applied. Create the schema default before that calculation. The existing `cli_malformed_input` test reproduces the crash without this change; compiled verification of the fix remains pending.
+29. `0029-default-cli-filament-diameter.patch` fixes an upstream CLI crash found by the baseline regression run. A standalone filament preset may omit diameter; flush calculation runs before full defaults are applied. Create the schema default before that calculation. The existing `cli_malformed_input` test reproduces the crash without this change; the first custom build passes all seven upstream CLI regression tests, including this case.
 
 30. `0030-qidi-integration-build-fixes.patch` resolves full-build and static-check findings: expose Box identity through a const accessor, use the existing AMS collection accessor, select the HTTP string-body overload explicitly, and include the required exception/base-agent headers.
 
@@ -78,3 +78,7 @@ separately from implementation; a patch's presence does not certify hardware use
 39. `0039-qidi-legacy-slot-validation.patch` rejects corrupt legacy color/material/vendor indexes before integer conversion and validates runout sensor types/range. The original production block reproduced a float-to-int overflow at 1e300; the corrected block passes the sanitizer harness, including the explicit float-cast-overflow check. Full HTTP regression cases cover invalid numeric indexes without a real printer.
 
 40. `0040-qidi-batch-submission-guard.patch` refuses experimental QIDI batch printing before opening its separate submission dialog, because that path lacks per-printer QIDI slot/options snapshots. It directs the user to single-printer submission and preserves other agents' batch behavior. Native GUI verification remains pending; QIDI batch support is a documented limitation.
+
+41. `0041-upstream-gcode-import-compatibility.patch` restores recognition of upstream Orca G-code alongside the custom application banner. Four existing import/preview regressions caught this in the first compiled test run; the settings-import case now exercises upstream, downstream, and legacy headers. Compiled rerun pending.
+
+42. `0042-downstream-window-title.patch` uses the downstream application name in project window titles, distinguishing the fork from an official Orca window without changing translation catalog or project identifiers.
