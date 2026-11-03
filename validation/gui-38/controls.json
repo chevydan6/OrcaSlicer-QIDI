@@ -1,0 +1,170 @@
+{
+  "build": "93f7fca02c0fe575b3d964542980af6f375f2113",
+  "patch_count": 38,
+  "endpoint": "http://127.0.0.1:19025",
+  "hardware_contacted": false,
+  "commands_recorded_not_executed": [
+    {
+      "time": 1793679372.55874,
+      "method": "POST",
+      "path": "/printer/gcode/script",
+      "query": {},
+      "body": "{\"script\":\"SET_PIN PIN=polar_cooler VALUE=1\"}"
+    },
+    {
+      "time": 1793679373.1458821,
+      "method": "POST",
+      "path": "/printer/gcode/script",
+      "query": {},
+      "body": "{\"script\":\"SAVE_VARIABLE VARIABLE=enable_noodle_detection VALUE=0\\nSAVE_VARIABLE VARIABLE=noodle_sensitivity_level VALUE=\\\"'MEDIUM'\\\"\"}"
+    },
+    {
+      "time": 1793679373.7976327,
+      "method": "POST",
+      "path": "/printer/gcode/script",
+      "query": {},
+      "body": "{\"script\":\"SAVE_VARIABLE VARIABLE=enable_pre_print_model_check VALUE=0\"}"
+    },
+    {
+      "time": 1793679409.2350066,
+      "method": "POST",
+      "path": "/printer/gcode/script",
+      "query": {},
+      "body": "{\"script\":\"LOAD_FILAMENT_CONTROL SLOT=5\"}"
+    },
+    {
+      "time": 1793679426.1616535,
+      "method": "POST",
+      "path": "/printer/gcode/script",
+      "query": {},
+      "body": "{\"script\":\"UNLOAD_FILAMENT_CONTROL SLOT=5\"}"
+    },
+    {
+      "time": 1793679426.8169813,
+      "method": "POST",
+      "path": "/printer/gcode/script",
+      "query": {},
+      "body": "{\"script\":\"READ_RFID SLOT=5\"}"
+    },
+    {
+      "time": 1793679427.4656081,
+      "method": "POST",
+      "path": "/printer/gcode/script",
+      "query": {},
+      "body": "{\"script\":\"SET_PIN PIN=caselight VALUE=1\"}"
+    },
+    {
+      "time": 1793679732.0468636,
+      "method": "POST",
+      "path": "/printer/gcode/script",
+      "query": {},
+      "body": "{\"script\":\"EJECT_FILAMENT_CONTROL SLOT=5\"}"
+    },
+    {
+      "time": 1793679796.6334312,
+      "method": "POST",
+      "path": "/printer/gcode/script",
+      "query": {},
+      "body": "{\"script\":\"SET_ENABLE_RFID_READ ENABLE=\\\"0\\\"\\nSET_ENABLE_INIT_READ_RFID ENABLE=\\\"1\\\"\"}"
+    },
+    {
+      "time": 1793679839.0314946,
+      "method": "POST",
+      "path": "/printer/gcode/script",
+      "query": {},
+      "body": "{\"script\":\"SET_PIN PIN=caselight VALUE=1\"}"
+    },
+    {
+      "time": 1793679841.707127,
+      "method": "POST",
+      "path": "/printer/gcode/script",
+      "query": {},
+      "body": "{\"script\":\"SET_PIN PIN=caselight VALUE=0\"}"
+    },
+    {
+      "time": 1793679844.3853257,
+      "method": "POST",
+      "path": "/printer/gcode/script",
+      "query": {},
+      "body": "{\"script\":\"SET_PIN PIN=caselight VALUE=1\"}"
+    },
+    {
+      "time": 1793679847.0481045,
+      "method": "POST",
+      "path": "/printer/gcode/script",
+      "query": {},
+      "body": "{\"script\":\"SET_PIN PIN=caselight VALUE=0\"}"
+    },
+    {
+      "time": 1793679849.7307932,
+      "method": "POST",
+      "path": "/printer/gcode/script",
+      "query": {},
+      "body": "{\"script\":\"SET_PIN PIN=caselight VALUE=1\"}"
+    },
+    {
+      "time": 1793680016.9386969,
+      "method": "POST",
+      "path": "/printer/gcode/script",
+      "query": {},
+      "body": "{\"script\":\"SET_PIN PIN=caselight VALUE=1\"}"
+    },
+    {
+      "time": 1793680017.5862503,
+      "method": "POST",
+      "path": "/printer/gcode/script",
+      "query": {},
+      "body": "{\"script\":\"SET_PIN PIN=caselight VALUE=0\"}"
+    },
+    {
+      "time": 1793680018.2539856,
+      "method": "POST",
+      "path": "/printer/gcode/script",
+      "query": {},
+      "body": "{\"script\":\"SET_PIN PIN=caselight VALUE=1\"}"
+    },
+    {
+      "time": 1793680018.9086933,
+      "method": "POST",
+      "path": "/printer/gcode/script",
+      "query": {},
+      "body": "{\"script\":\"SET_PIN PIN=caselight VALUE=0\"}"
+    },
+    {
+      "time": 1793680501.0929456,
+      "method": "POST",
+      "path": "/printer/gcode/script",
+      "query": {},
+      "body": "{\"script\":\"LOAD_FILAMENT_CONTROL SLOT=15\"}"
+    },
+    {
+      "time": 1793680573.156951,
+      "method": "POST",
+      "path": "/printer/gcode/script",
+      "query": {},
+      "body": "{\"script\":\"SET_HEATER_TEMPERATURE HEATER=chamber TARGET=50\"}"
+    },
+    {
+      "time": 1793680586.30758,
+      "method": "POST",
+      "path": "/printer/gcode/script",
+      "query": {},
+      "body": "{\"script\":\"M220 S124\"}"
+    },
+    {
+      "time": 1793680602.3429906,
+      "method": "POST",
+      "path": "/printer/gcode/script",
+      "query": {},
+      "body": "{\"script\":\"SET_FAN_SPEED FAN=cooling_fan SPEED=1.0\"}"
+    },
+    {
+      "time": 1793680651.735492,
+      "method": "POST",
+      "path": "/printer/gcode/script",
+      "query": {},
+      "body": "{\"script\":\"SET_FAN_SPEED FAN=auxiliary_cooling_fan SPEED=1.0\"}"
+    }
+  ],
+  "scope": "Cumulative GUI simulator trace, including initial 32-patch session. Later controls and malformed-telemetry tests use patch 38. This is not final-build or hardware acceptance."
+}

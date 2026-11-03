@@ -1,0 +1,37 @@
+[
+  {
+    "case": "malformed websocket JSON",
+    "lamp_request": {
+      "script": "SET_PIN PIN=caselight VALUE=1"
+    },
+    "responsive": true
+  },
+  {
+    "case": "null material name",
+    "lamp_request": {
+      "script": "SET_PIN PIN=caselight VALUE=0"
+    },
+    "responsive": true
+  },
+  {
+    "case": "extreme chamber telemetry",
+    "lamp_request": {
+      "script": "SET_PIN PIN=caselight VALUE=1"
+    },
+    "responsive": true
+  },
+  {
+    "case": "wrong Box object type",
+    "lamp_request": {
+      "script": "SET_PIN PIN=caselight VALUE=0"
+    },
+    "responsive": true
+  },
+  {
+    "case": "restore complete status",
+    "lamp_request": {
+      "script": "SET_PIN PIN=caselight VALUE=1"
+    },
+    "responsive": true
+  }
+]
