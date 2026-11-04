@@ -1,0 +1,26 @@
+[
+  {
+    "pid": 174130,
+    "path": "/home/qidi/klipper/klippy/extras/box_extras.so",
+    "mapped_inode": 16973,
+    "disk_inode": 16973,
+    "mapped_file_matches_disk": true,
+    "sha256": "0878b5b9d48d71e6bb1a83792776a7f59a529239cc1ca35e9a55102721bde2a6"
+  },
+  {
+    "pid": 174130,
+    "path": "/home/qidi/klipper/klippy/extras/box_stepper.so",
+    "mapped_inode": 16977,
+    "disk_inode": 16977,
+    "mapped_file_matches_disk": true,
+    "sha256": "58ee8c61bffc3d4e18edc9e56a326495b6a218348bbfb13f7a012a946039b0a5"
+  },
+  {
+    "pid": 174130,
+    "path": "/home/qidi/klipper/klippy/extras/multi_color_controller.so",
+    "mapped_inode": 17056,
+    "disk_inode": 17056,
+    "mapped_file_matches_disk": true,
+    "sha256": "b7e3bc21156fb9df9f5eea07f2c596a17c7ea5db852a36139ba9773160e43592"
+  }
+]

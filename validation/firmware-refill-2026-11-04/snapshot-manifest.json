@@ -1,0 +1,51 @@
+[
+  {
+    "remote_path": "/home/qidi/klipper/klippy/extras/multi_color_controller.so",
+    "size": 5393928,
+    "mtime": 1792163881,
+    "sha256": "b7e3bc21156fb9df9f5eea07f2c596a17c7ea5db852a36139ba9773160e43592",
+    "read_time": 1793787680.2781894
+  },
+  {
+    "remote_path": "/home/qidi/klipper/klippy/extras/box_extras.so",
+    "size": 5259400,
+    "mtime": 1792163881,
+    "sha256": "0878b5b9d48d71e6bb1a83792776a7f59a529239cc1ca35e9a55102721bde2a6",
+    "read_time": 1793787682.2328954
+  },
+  {
+    "remote_path": "/home/qidi/klipper/klippy/extras/box_autofeed.so",
+    "size": 2042352,
+    "mtime": 1792163881,
+    "sha256": "03a38b456e1d95b3bd26fe5133f2a9714a2bd31bd0881d439040ea5a885b17da",
+    "read_time": 1793787683.0377676
+  },
+  {
+    "remote_path": "/home/qidi/klipper/klippy/extras/box_stepper.so",
+    "size": 4395504,
+    "mtime": 1792163881,
+    "sha256": "58ee8c61bffc3d4e18edc9e56a326495b6a218348bbfb13f7a012a946039b0a5",
+    "read_time": 1793787684.633665
+  },
+  {
+    "remote_path": "/home/qidi/klipper/klippy/extras/color_feeder.py",
+    "size": 5183,
+    "mtime": 1751426363,
+    "sha256": "b917d7b2e515ac924c17909f1316fdbdf89569843da32201279dd03af745cda5",
+    "read_time": 1793787684.6970532
+  },
+  {
+    "remote_path": "/home/qidi/klipper/klippy/extras/box_detect.so",
+    "size": 1732264,
+    "mtime": 1792163881,
+    "sha256": "8bae8af714b7ffccdafd56e17d7ba247ee6aadca65021a6449074d23dba835b4",
+    "read_time": 1793787685.308252
+  },
+  {
+    "remote_path": "/home/qidi/klipper/klippy/extras/box_device.so",
+    "size": 4543536,
+    "mtime": 1792163881,
+    "sha256": "c700ea6a3dbc4c13d0016b00ffbc680e2c3676ae34e4477ac2c62d88765a97c4",
+    "read_time": 1793787686.961874
+  }
+]

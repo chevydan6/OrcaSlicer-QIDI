@@ -96,3 +96,13 @@ Keep sparse logical mappings intact. A future controlled comparison needs the be
 cleared and donor/feed reset, plus a reviewed response to the temperature mismatch.
 Accepted Orca70, its source pins and software acceptance remain unchanged. Its
 physical refill comparison and refill controls are still unfinished.
+
+## Subsequent read-only diagnosis
+
+The later [installed-firmware replay](../../firmware-refill-2026-11-04/README.md)
+reproduced the previously hypothesized indirection bug: cmd_detect_auto_reload_func
+writes physical replacement2 to extrude_state, while try_resume_print_box1 reads
+value_t2 and loads slot0. Seven offline cases and two diagnostic call-site probes
+passed against copies matching the loaded modules. This updates the earlier
+"unproven" interpretation above while retaining the original physical evidence.
+No live firmware correction or additional print occurred.

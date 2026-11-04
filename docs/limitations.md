@@ -107,3 +107,10 @@ History confirms cancellation; explicit shutdown verified every heater target0.
 The reference startup also targeted280C despite requested260C and sampled286C;
 this temperature discrepancy remains unresolved. No custom Orca refill pass or
 firmware fix is claimed.
+
+[Read-only analysis of the installed firmware](../validation/firmware-refill-2026-11-04/README.md)
+subsequently reproduced the cause: the inlet-runout handler saves the replacement's
+physical index in extrude_state, then resume treats it as a logical tool and looks
+up value_t{index}. Seven offline cases passed against copied, hash-verified loaded
+modules. Two counterfactuals preserving the logical tool selected the intended
+replacement. No firmware modification or new physical validation was performed.

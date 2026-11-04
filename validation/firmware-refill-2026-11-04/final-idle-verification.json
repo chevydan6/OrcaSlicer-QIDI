@@ -1,0 +1,12 @@
+{
+  "time": 1793788724.5829494,
+  "state": "standby",
+  "targets": {
+    "extruder": 0.0,
+    "heater_bed": 0.0,
+    "heater_generic chamber": 0.0
+  },
+  "box_target": 0.0,
+  "lamp": 0.0,
+  "loaded_slot": "slot0"
+}

@@ -113,8 +113,11 @@ preflight established clear bed and restored A2/A3 feed. The [larger reference r
 failed refill acceptance and was cancelled at layer61/160. The firmware initiated
 reload after A2 exhaustion, changed value_t0 to slot2/A3, then enabled the slot0/A1
 PLA feeder; telemetry and the reference GUI corroborated that wrong slot. No
-manual Resume/load/refill command was sent. The cause is unproven; physical-slot
-versus logical-tool indirection is a hypothesis (retained value_t2=slot0). No blue
+manual Resume/load/refill command was sent. A subsequent [read-only firmware diagnosis](validation/firmware-refill-2026-11-04/README.md)
+reproduced the cause using the exact loaded modules: inlet reload writes physical
+replacement index2 to extrude_state, then resume interprets it as logical T2 and
+loads retained value_t2=slot0. Seven offline cases passed; preserving the logical
+tool corrected the requested slot in two counterfactuals. No live fix is installed. No blue
 continuation was observed. History00002C confirms cancelled, not completed.
 All heater targets0/standby and lampOff were verified; GUI exited0. The bed still
 holds the block and the feed needs inspection/reset before another physical job.

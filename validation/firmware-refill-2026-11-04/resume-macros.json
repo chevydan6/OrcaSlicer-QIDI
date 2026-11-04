@@ -1,0 +1,17 @@
+{
+  "gcode_macro resume_print": {
+    "gcode": "\n\n{% if printer.pause_resume.is_paused %}\n{% set km = printer[\"gcode_macro _km_globals\"] %}\n{% set extruder = printer[printer.toolhead.extruder] %}\n\n{% if saved_extruder_temp > 0 %}\nMOVE_TO_TRASH\nG1 X163 F8000\nG1 X145 F5000\nG1 X163 F3000\nG1 X145 F2000\nG1 X175 F6000\nG1 X163\nG1 X175\nG1 X163\nG1 X175\nG1 X163\nG1 X180 F8000\nG1 Y370\nMOVE_TO_TRASH\nM106 S0\nM109 S{saved_extruder_temp}\nG1 X{km.park_x} F9000\nG1 Y{km.park_y} F9000\nG92 E0\nM83\nG1  E250 F300\n\n\nG1 X{km.park_x + 27} F10000\nG1 X{km.park_x + 8} F6000\nG1 X{km.park_x + 27} F10000\nG1 X{km.park_x + 8} F6000\nG1 X{km.park_x + 27} F10000\nG1 X{km.park_x + 8} F6000\nG1 X{km.park_x} F5000\n\n\nSET_GCODE_VARIABLE MACRO=RESUME_PRINT VARIABLE=saved_extruder_temp VALUE=\"{0}\"\nG90\nM106 S{saved_efan}\nG0 X{km.park_x - 19} F{km.travel_speed_xy}\nG0 Y{km.park_y - 30} F{km.travel_speed_xy}\nG0 X{saved_x} Y{saved_y} F{km.travel_speed_xy}\nG0 Z{saved_z} F{km.travel_speed_z}\nG91\n{% endif %}\n\n\n{% if printer.save_variables.variables.box_count >= 1 and printer.save_variables.variables.enable_box == 1 %}\nBUFFER_MONITORING ENABLE=1\n{% endif %}\n{% if not (printer[\"box_extras\"] and printer[\"box_extras\"].is_tool_change == 1) %}\nENABLE_ALL_SENSOR\n{% endif %}\n\nRESTORE_GCODE_STATE NAME=_KM_PAUSE_OVERRIDE_STATE MOVE=1\n_KM_RESUME_BASE\nSET_PRINT_MAIN_STATUS MAIN_STATUS=printing\n{% else %}\n{ action_respond_info(\"Printer is not paused.\") }\n{% endif %}",
+    "description": "Resumes the currently paused print.\nUsage: RESUME [E<pos>]",
+    "variable_saved_extruder_temp": "0",
+    "variable_saved_x": "0.0",
+    "variable_saved_y": "0.0",
+    "variable_saved_z": "0.0",
+    "variable_saved_e": "0.0",
+    "variable_saved_efan": "0"
+  },
+  "gcode_macro resume": {
+    "gcode": "\n{% if printer['pause_resume'].is_paused|int == 1 %}\nTRY_RESUME_PRINT\n{% endif %}",
+    "rename_existing": "_KM_RESUME_BASE",
+    "description": "G-Code macro"
+  }
+}
