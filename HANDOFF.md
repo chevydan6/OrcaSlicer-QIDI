@@ -108,8 +108,9 @@ and arrange enough remaining model consumption to reach runout. Orca comparison
 is pending. No product source, pin or accepted-binary change accompanied this work.
 Dan subsequently requested a larger test. The [30×30×32mm prepared jobs](validation/refill-large-2026-11-04/README.md)
 use160 layers/~11.5m ABS, with the same temperatures and planned A2→A3 refill.
-Official QIDI GUI export and both CLI slices were checked; no larger job has been
-submitted. Await a clear bed and verify the feed state before starting.
+Official QIDI GUI export and both CLI slices were checked. Dan confirmed ready;
+preflight established clear bed and restored A2/A3 feed. The [larger reference run](validation/refill-large-2026-11-04/run/README.md)
+was submitted and is now in startup; no refill outcome is yet established.
 
 On2026-11-04 Dan authorized a small physical test and delegated its setup choices.
 Accepted70's actual GUI submitted a10×10×4mm cube using only logical T2 mapped to

@@ -1,0 +1,7 @@
+{
+  "archive_sha256": "368200e6fe59e419d7dafa517104e936f8ed5f7594d1b225716bd8e01e1ad72f",
+  "gcode_sha256": "ff93af31cbfd52068e0fecae93e3ea986cbea12ebc87f62ba4635796e3d11765",
+  "matches_packet_capture": true,
+  "executable_commands_match_review": true,
+  "preflight_change": "One redundant M140 S100 at layer2 vs earlier prepared export; all other executable commands identical."
+}

@@ -1,0 +1,25 @@
+{
+  "time": 1793784804.0657864,
+  "job": "MAX4-QIDI-ABS-refill-large-20261104",
+  "authorization": "Dan requested larger refill print and confirmed ready. Preflight camera clear; standby; both ABS slots present; refill enabled and matching group. Existing hotend222C and bed100C targets recorded before agent start.",
+  "mapping": [
+    1
+  ],
+  "refill_partner_physical_slot": 2,
+  "dimensions_mm": [
+    30,
+    30,
+    32
+  ],
+  "layers": 160,
+  "print_temperature": 250,
+  "preparation_temperature": 260,
+  "bed_temperature": 100,
+  "chamber_temperature": 0,
+  "bed_leveling": true,
+  "timelapse": false,
+  "polar_cooler": false,
+  "reviewed_archive_sha256": "5eccd170672f8a890c985ccd276edb83777d0b7aeb4bba30eff05286adaed07b",
+  "reviewed_gcode_sha256": "ff93af31cbfd52068e0fecae93e3ea986cbea12ebc87f62ba4635796e3d11765",
+  "difference_from_prepared": "One redundant M140 S100 added at layer2 after reimport/reslice; all other executable commands identical."
+}
