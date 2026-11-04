@@ -1,0 +1,10 @@
+[
+  {
+    "id": 3062,
+    "jsonrpc": "2.0",
+    "method": "printer.gcode.script",
+    "params": {
+      "script": "SET_PIN PIN=caselight VALUE=1"
+    }
+  }
+]

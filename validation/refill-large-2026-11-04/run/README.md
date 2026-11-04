@@ -18,4 +18,20 @@ pre-submission GUI export. One redundant bed100C command at layer2 differs from
 the earlier prepared export, reviewed before submission. Exact hashes and upload
 are retained. This is reference runtime evidence, not a custom-Orca refill pass.
 
-Current status: accepted by printer and startup underway. Outcome pending.
+Current checkpoint: layer 31/160, printing from A2 with orange deposition visible.
+A2 inlet and toolhead still report filament present; A3 transfer has not occurred.
+The toolhead runout sensor is enabled during printing. Outcome remains pending.
+
+Read-only firmware configuration shows pause_on_runout=true and invokes
+AUTO_RELOAD_FILAMENT when enable_box and the saved auto_reload_detect flag are 1.
+Both flags are 1 during this job. A transient pause is therefore not by itself a
+refill failure; observe the automatic slot transition and resumed deposition.
+No sensor state, refill command or Resume has been injected.
+
+Startup unexpectedly targeted 280C despite the reviewed HOTENDTEMP=260 argument.
+It returned to 250C before model deposition. This runtime discrepancy is retained;
+its cause is unresolved. No independent heater override appears in the captured
+client commands. The sensor was disabled during startup and enabled for printing.
+
+Cut timing/location for this larger attempt has not been confirmed by Dan. Do not
+infer the time of cutting from an instruction or the earlier smaller attempt.

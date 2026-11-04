@@ -110,7 +110,11 @@ Dan subsequently requested a larger test. The [30×30×32mm prepared jobs](valid
 use160 layers/~11.5m ABS, with the same temperatures and planned A2→A3 refill.
 Official QIDI GUI export and both CLI slices were checked. Dan confirmed ready;
 preflight established clear bed and restored A2/A3 feed. The [larger reference run](validation/refill-large-2026-11-04/run/README.md)
-was submitted and is now in startup; no refill outcome is yet established.
+was submitted and has reached layer31/160 with orange A2 deposition, both feed
+sensors present and no faults. The printing runout sensor is enabled. Read-only
+firmware configuration confirms an automatic-refill call after the initial runout
+pause when Box/refill flags are enabled; no refill outcome is yet established.
+An unexpected startup280C target returned to250C; its cause remains unresolved.
 
 On2026-11-04 Dan authorized a small physical test and delegated its setup choices.
 Accepted70's actual GUI submitted a10×10×4mm cube using only logical T2 mapped to
@@ -139,12 +143,14 @@ explicit. No product source changed during this session.
 
 This one T2→A1 success does not establish the cause or general resolution of Dan's
 original starting-filament symptom. Multiple-Box, support-first and sequential
-QIDI Studio comparisons remain pending. Orca refill controls remain unimplemented. Dan plans
-matching ABS in A2/A3 for a later refill comparison; firmware now reports both blue ABS slots in one refill group and auto_reload_detect=1.
+QIDI Studio comparisons remain pending. Orca refill controls remain unimplemented. Dan loaded
+matching ABS in A2/A3 for the authorized refill comparison; firmware now reports both blue ABS slots in one refill group and auto_reload_detect=1.
 The physical colors are intentionally orange/blue; preserve the matching software
 metadata. [Refill drafts/evidence](validation/refill-investigation-2026-11-04/README.md)
-are prepared, but temperatures and controlled runout method still need agreement. Do not start a
-runout test merely because those spools have been loaded.
+record the earlier preparation. Dan subsequently authorized the ABS print/runout
+session and requested the larger repeat; that authorization persists. Cut timing
+for the current run remains unconfirmed. No firmware flash or persistent firmware
+configuration change is authorized by this print session.
 
 ## Implemented scope and unfinished requirements
 

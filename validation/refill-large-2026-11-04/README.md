@@ -1,4 +1,4 @@
-# Larger ABS refill test — prepared, not submitted
+# Larger ABS refill test — preparation and active reference
 
 Dan requested a larger print after the 30×30×8mm reference job finished before
 filament ran out at the toolhead. This version keeps the 30×30mm footprint and
@@ -24,8 +24,8 @@ QIDI startup retains the same stock MZV commands as the previous actual referenc
 this does not change accepted Orca's code or upstream pins.
 
 At preparation the camera still showed the completed block on the bed; A2 inlet
-was absent while toolhead filament remained reported present. No larger print was
-submitted. Dan was asked to clear the bed when cool. Before a new start, verify the
+was absent while toolhead filament remained reported present. No larger print had yet been
+submitted at that preparation checkpoint. Dan was asked to clear the bed when cool. Before a new start, verify the
 plate clear and the feed recovered/ready; preserve the existing authorization for
 this ABS test rather than asking permission again. Obtain actual uploaded-file
 identity and trace for any new run; these prepared files are not physical evidence.
@@ -45,3 +45,7 @@ verify Textured PEI and review any regenerated upload before printing.
 
 Checksums cover the prepared jobs, source STL, profiles, reviews and GUI evidence.
 Both applications retain their original engine; no product source changed.
+
+Dan subsequently confirmed the printer ready. The official reference is now
+printing; see [actual submission and runtime evidence](run/README.md). The prepared
+archive and actual upload have distinct identities, both retained.

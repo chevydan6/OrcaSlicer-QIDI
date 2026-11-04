@@ -1,0 +1,12 @@
+{
+  "source": "Read-only live configfile.settings snapshot during authorized larger reference print",
+  "sensor": {
+    "switch_pin": "!THR:PA0",
+    "pause_on_runout": true,
+    "runout_gcode": "\nM118 Filament run out\n{% set enable_box = printer.save_variables.variables.enable_box|default(0) %}\n{% if enable_box == 1 %}\n{% set can_auto_reload = printer.save_variables.variables.auto_reload_detect|default(0) %}\n{% if can_auto_reload == 1 %}\nAUTO_RELOAD_FILAMENT\n{% else %}\nSET_PRINT_SUB_STATUS SUB_STATUS=box_filament_exhausted\n{% endif %}\n{% else %}\nSET_PRINT_SUB_STATUS SUB_STATUS=ext_filament_exhausted\n{% endif %}",
+    "insert_gcode": "",
+    "pause_delay": 0.5,
+    "event_delay": 3.0
+  },
+  "interpretation": "pause_on_runout=true; runout_gcode calls AUTO_RELOAD_FILAMENT when enable_box=1 and save_variables.auto_reload_detect=1. A transient pause alone does not establish refill failure. No command invoked manually."
+}
