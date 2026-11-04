@@ -1,0 +1,12 @@
+{
+  "archive_sha256": "5410b4dc821d88eb3f42fc606d4199194ffcc2ce862949a00be8453d6a47ed63",
+  "gcode_sha256": "ff93af31cbfd52068e0fecae93e3ea986cbea12ebc87f62ba4635796e3d11765",
+  "executable_commands_identical_to_prior_reference": true,
+  "logical_tool_commands": [
+    "T0"
+  ],
+  "preparation": [
+    "BOX_PRINT_START EXTRUDER=0 HOTENDTEMP=260"
+  ],
+  "layers": 160
+}

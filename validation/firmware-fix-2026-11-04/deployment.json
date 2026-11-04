@@ -1,0 +1,25 @@
+{
+  "started": 1793790108.688026,
+  "backup_sha256": "48993ae22c16df1d140ac92bbc7d395e4d14b85108c4e6d340fe1a8222fd4158",
+  "state": "installed_ready",
+  "original_vendor_modules_replaced": false,
+  "printer_cfg_before_sha256": "0a37e34535c68c893efa8ed9220059b2571e059e349223951442532eda4f70eb",
+  "printer_cfg_after_sha256": "aa53378125ef0d0af5f663ce23db45d4449bdaa653b8d27b83cf137267d54ef2",
+  "files": {
+    "/home/qidi/klipper/klippy/extras/qidi_refill_tool_identity.py": "4513412930926926dc0d72ae1a0fbcdac3c1eba92e09c7b712171d7db842bd0f",
+    "/home/qidi/printer_data/config/qidi_refill_tool_identity.cfg": "1af7360d68623b8c6b6d3bccdf0138e793d2d5dc6d6e338e060de05f974a0402"
+  },
+  "printer": {
+    "state": "ready",
+    "state_message": "Printer is ready"
+  },
+  "extension_status": {
+    "enabled": true,
+    "version": "1",
+    "active": null,
+    "corrected_count": 0,
+    "last_correction": null,
+    "last_error": null
+  },
+  "finished": 1793790139.89417
+}

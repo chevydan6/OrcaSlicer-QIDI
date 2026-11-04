@@ -5,6 +5,20 @@ Linux x86_64 use with the X11 backend (XWayland on GNOME).** The general port is
 not complete: automatic refill and broader physical validation remain unfinished.
 One authorized sparse T2→A1 physical print completed on2026-11-04; see below.
 
+**Current hardware session:** Dan subsequently authorized backing up and fixing
+the MAX4 host firmware and repeating the ABS refill test. The reversible,
+hash-pinned extension is installed and Klipper returned ready after a service
+restart; the whole printer was not rebooted or power-cycled. Original vendor
+modules and MCU firmware are unchanged. The private backup was verified both on
+the printer and this computer. See [deployment](validation/firmware-fix-2026-11-04/deployment.json)
+and [fix/rollback instructions](firmware-fixes/max4-refill-tool-identity/README.md).
+The official QIDI Studio repeat `MAX4-QIDI-ABS-refill-fixed-20261104.gcode.3mf`
+has been submitted and is in progress; **no physical fix acceptance yet**.
+Its executable G-code is byte-identical to the failed larger reference.
+Dan reports refill works when starting from printer memory. That observation is
+recorded, but the reason for the different behavior has not been independently
+traced. The historical no-firmware-change statements below describe earlier runs.
+
 Release: [candidate70 deliverables](https://github.com/chevydan6/OrcaSlicer-QIDI/releases/tag/qidi-linux-2026-11-03-c70).
 The definitive identity/gate record is [accepted-70.json](validation/accepted-70.json).
 [Publication verification](validation/release-70.json) confirms all8 GitHub asset
