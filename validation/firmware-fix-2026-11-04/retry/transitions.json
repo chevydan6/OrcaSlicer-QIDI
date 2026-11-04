@@ -1,0 +1,254 @@
+[
+  {
+    "time": 1793792359.8177643,
+    "loaded_slot": "slot16",
+    "present": [
+      0,
+      1,
+      1,
+      0
+    ],
+    "auto_refill": [
+      {
+        "color": "#2850FF",
+        "type": "ABS",
+        "slot": [
+          "1B",
+          "1C"
+        ]
+      }
+    ],
+    "extruder_limit_state": false,
+    "warnings": [],
+    "print_state": "standby",
+    "refill_fix": {
+      "enabled": true,
+      "version": "1",
+      "active": null,
+      "corrected_count": 0,
+      "last_correction": null,
+      "last_error": null
+    },
+    "job_variables": {
+      "enable_box": 1,
+      "value_t0": "slot1",
+      "value_t1": "slot2",
+      "value_t2": "slot0",
+      "loaded_slot": null,
+      "auto_reload_detect": 1,
+      "runout_1": 0,
+      "runout_2": 0,
+      "extrude_state": 0
+    }
+  },
+  {
+    "time": 1793792489.0127213,
+    "loaded_slot": "slot16",
+    "present": [
+      0,
+      1,
+      1,
+      0
+    ],
+    "auto_refill": [
+      {
+        "color": "#2850FF",
+        "type": "ABS",
+        "slot": [
+          "1B",
+          "1C"
+        ]
+      }
+    ],
+    "extruder_limit_state": false,
+    "warnings": [],
+    "print_state": "printing",
+    "refill_fix": {
+      "enabled": true,
+      "version": "1",
+      "active": null,
+      "corrected_count": 0,
+      "last_correction": null,
+      "last_error": null
+    },
+    "job_variables": {
+      "enable_box": 1,
+      "value_t0": "slot1",
+      "value_t1": "slot2",
+      "value_t2": "slot0",
+      "loaded_slot": null,
+      "auto_reload_detect": 1,
+      "runout_1": 0,
+      "runout_2": 0,
+      "extrude_state": 0
+    }
+  },
+  {
+    "time": 1793792633.2882853,
+    "loaded_slot": "slot1",
+    "present": [
+      0,
+      1,
+      1,
+      0
+    ],
+    "auto_refill": [
+      {
+        "color": "#2850FF",
+        "type": "ABS",
+        "slot": [
+          "1B",
+          "1C"
+        ]
+      }
+    ],
+    "extruder_limit_state": false,
+    "warnings": [],
+    "print_state": "printing",
+    "refill_fix": {
+      "enabled": true,
+      "version": "1",
+      "active": null,
+      "corrected_count": 0,
+      "last_correction": null,
+      "last_error": null
+    },
+    "job_variables": {
+      "enable_box": 1,
+      "value_t0": "slot1",
+      "value_t1": "slot2",
+      "value_t2": "slot0",
+      "loaded_slot": null,
+      "auto_reload_detect": 1,
+      "runout_1": 0,
+      "runout_2": 0,
+      "extrude_state": 0
+    }
+  },
+  {
+    "time": 1793792655.413392,
+    "loaded_slot": "slot1",
+    "present": [
+      0,
+      1,
+      1,
+      0
+    ],
+    "auto_refill": [
+      {
+        "color": "#2850FF",
+        "type": "ABS",
+        "slot": [
+          "1B",
+          "1C"
+        ]
+      }
+    ],
+    "extruder_limit_state": true,
+    "warnings": [],
+    "print_state": "printing",
+    "refill_fix": {
+      "enabled": true,
+      "version": "1",
+      "active": null,
+      "corrected_count": 0,
+      "last_correction": null,
+      "last_error": null
+    },
+    "job_variables": {
+      "enable_box": 1,
+      "value_t0": "slot1",
+      "value_t1": "slot2",
+      "value_t2": "slot0",
+      "loaded_slot": null,
+      "auto_reload_detect": 1,
+      "runout_1": 0,
+      "runout_2": 0,
+      "extrude_state": 0
+    }
+  },
+  {
+    "time": 1793793540.7278378,
+    "loaded_slot": "slot1",
+    "present": [
+      0,
+      1,
+      1,
+      0
+    ],
+    "auto_refill": [
+      {
+        "color": "#2850FF",
+        "type": "ABS",
+        "slot": [
+          "1B",
+          "1C"
+        ]
+      }
+    ],
+    "extruder_limit_state": true,
+    "warnings": [],
+    "print_state": "cancelled",
+    "refill_fix": {
+      "enabled": true,
+      "version": "1",
+      "active": null,
+      "corrected_count": 0,
+      "last_correction": null,
+      "last_error": null
+    },
+    "job_variables": {
+      "enable_box": 1,
+      "value_t0": "slot1",
+      "value_t1": "slot2",
+      "value_t2": "slot0",
+      "loaded_slot": null,
+      "auto_reload_detect": 1,
+      "runout_1": 0,
+      "runout_2": 0,
+      "extrude_state": 0
+    }
+  },
+  {
+    "time": 1793793570.2323472,
+    "loaded_slot": "slot1",
+    "present": [
+      0,
+      1,
+      1,
+      0
+    ],
+    "auto_refill": [
+      {
+        "color": "#2850FF",
+        "type": "ABS",
+        "slot": [
+          "1B",
+          "1C"
+        ]
+      }
+    ],
+    "extruder_limit_state": true,
+    "warnings": [],
+    "print_state": "standby",
+    "refill_fix": {
+      "enabled": true,
+      "version": "1",
+      "active": null,
+      "corrected_count": 0,
+      "last_correction": null,
+      "last_error": null
+    },
+    "job_variables": {
+      "enable_box": 1,
+      "value_t0": "slot1",
+      "value_t1": "slot2",
+      "value_t2": "slot0",
+      "loaded_slot": null,
+      "auto_reload_detect": 1,
+      "runout_1": 0,
+      "runout_2": 0,
+      "extrude_state": 0
+    }
+  }
+]

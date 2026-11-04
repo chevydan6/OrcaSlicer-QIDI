@@ -1,0 +1,92 @@
+[
+  {
+    "method": "POST",
+    "path": "/printer/gcode/script",
+    "destination_port": 80,
+    "body_length": 64,
+    "response": {
+      "http_status": 200,
+      "result": "ok"
+    },
+    "body": {
+      "script": "SAVE_VARIABLE VARIABLE=enable_polar_cooler VALUE=0"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/printer/gcode/script",
+    "destination_port": 80,
+    "body_length": 55,
+    "response": {
+      "http_status": 200,
+      "result": "ok"
+    },
+    "body": {
+      "script": "SAVE_VARIABLE VARIABLE=enable_box VALUE=1"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/printer/gcode/script",
+    "destination_port": 80,
+    "body_length": 63,
+    "response": {
+      "http_status": 200,
+      "result": "ok"
+    },
+    "body": {
+      "script": "SAVE_VARIABLE VARIABLE=value_t0 VALUE=\"'slot1'\""
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/printer/gcode/script",
+    "destination_port": 80,
+    "body_length": 17,
+    "response": {
+      "http_status": 200,
+      "result": "ok"
+    },
+    "body": {
+      "script": "G31"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/machine/timelapse/settings?enabled=false",
+    "destination_port": 80,
+    "body_length": 2,
+    "response": {
+      "http_status": 200
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/server/files/upload",
+    "destination_port": 80,
+    "body_length": 56756,
+    "response": {
+      "http_status": 201
+    },
+    "multipart_sha256": "3355208bb7e78c6cba7b3d6dfb75071c1676141d3526e20b994873d17c4bf207",
+    "upload_fields": {
+      "root": "gcodes",
+      "print": "true",
+      "plateindex": "1"
+    },
+    "uploaded_file_sha256": "34bee008c15b2bf16cb663a92395af4e8299962a920111626af3bf35db5f4765"
+  },
+  {
+    "method": "POST",
+    "path": "/printer/gcode/script",
+    "destination_port": 7125,
+    "body_length": 30,
+    "response": {
+      "http_status": 200,
+      "result": "ok"
+    },
+    "body": {
+      "script": "TURN_OFF_HEATERS"
+    }
+  }
+]

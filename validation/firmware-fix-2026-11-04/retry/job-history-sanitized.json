@@ -1,0 +1,12 @@
+[
+  {
+    "job_id": "00002E",
+    "filename": "MAX4-QIDI-ABS-refill-fixed-retry-20261104.gcode.3mf",
+    "status": "cancelled",
+    "start_time": 1793792483.1728878,
+    "end_time": 1793793535.0316744,
+    "print_duration": 870.473479957,
+    "total_duration": 1050.845985418,
+    "filament_used": 2040.4105500001012
+  }
+]

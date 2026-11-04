@@ -1,0 +1,18 @@
+[
+  {
+    "id": 7395,
+    "jsonrpc": "2.0",
+    "method": "printer.gcode.script",
+    "params": {
+      "script": "SET_PIN PIN=caselight VALUE=1"
+    }
+  },
+  {
+    "id": 7395,
+    "jsonrpc": "2.0",
+    "method": "printer.gcode.script",
+    "params": {
+      "script": "SET_PIN PIN=caselight VALUE=0"
+    }
+  }
+]

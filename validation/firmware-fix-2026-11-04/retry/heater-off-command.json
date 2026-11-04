@@ -1,0 +1,7 @@
+{
+  "time": 1793793566.141358,
+  "script": "TURN_OFF_HEATERS",
+  "response": {
+    "result": "ok"
+  }
+}

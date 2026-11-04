@@ -22,8 +22,15 @@ Read-only preflight now shows loaded_slot=slot16, an empty toolhead sensor,
 A1 absent, A2/A3 present, and all heater targets0. Dan instructed proceeding after
 the front-cover observation; the camera still showed it removed, so do not claim
 reassembly was visually verified. The [retry](validation/firmware-fix-2026-11-04/retry/README.md)
-was submitted from official QIDI Studio and is in progress. The uploaded G-code
-again matches the failed reference exactly. Physical refill acceptance is pending.
+was submitted from official QIDI Studio, then cancelled from the printer side at
+reported layer22. The uploaded G-code again matches the failed reference exactly.
+No formed block was visible after lowering the bed: advancing layer/filament
+telemetry did not prove successful extrusion. The earlier statement that deposition
+was established was unsupported. Refill never triggered; correction_count remained0.
+All heater targets0 were verified after TURN_OFF_HEATERS; a later printer-side
+A2 eject operation reheated the nozzle to a280C target. Do not confuse that later
+manual recovery with the completed test cleanup. Actual extrusion/adhesion behavior
+awaits Dan's observation before any further print. Physical refill acceptance is pending.
 Its executable G-code is byte-identical to the failed larger reference.
 Dan reports refill works when starting from printer memory. That observation is
 recorded, but the reason for the different behavior has not been independently

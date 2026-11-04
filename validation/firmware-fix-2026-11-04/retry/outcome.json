@@ -1,0 +1,17 @@
+{
+  "state": "cancelled_without_refill",
+  "time": 1793793595.972798,
+  "last_observed_layer": 22,
+  "refill_triggered": false,
+  "correction_count": 0,
+  "cancel_source": "printer-side SDCARD_RESET_FILE; not agent command",
+  "deposition": "No formed block visible after bed lowered; camera during printing partly occluded. Earlier statement of established deposition was unsupported. Actual extrusion/adhesion fault awaits user observation.",
+  "donor_cut": "Dan replied ok to cut instruction; A2 inlet remained present through cancellation",
+  "heater_cleanup": "Cancel retained250/100 targets; agent TURN_OFF_HEATERS acknowledged and all targets0 verified",
+  "fix_unchanged": true,
+  "later_printer_side_recovery": {
+    "command": "EJECT_FILAMENT_CONTROL SLOT=1",
+    "target": 280,
+    "agent_initiated": false
+  }
+}
