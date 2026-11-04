@@ -1,0 +1,112 @@
+[
+  {
+    "message": "SAVE_VARIABLE VARIABLE=enable_polar_cooler VALUE=0",
+    "time": 1793781634.2560508,
+    "type": "command"
+  },
+  {
+    "message": "SAVE_VARIABLE VARIABLE=enable_box VALUE=1",
+    "time": 1793781634.860936,
+    "type": "command"
+  },
+  {
+    "message": "SAVE_VARIABLE VARIABLE=value_t0 VALUE=\"'slot1'\"",
+    "time": 1793781634.9632046,
+    "type": "command"
+  },
+  {
+    "message": "G31",
+    "time": 1793781635.2679007,
+    "type": "command"
+  },
+  {
+    "message": "SMART_STATUS TIMELAPSE=0",
+    "time": 1793781635.36963,
+    "type": "command"
+  },
+  {
+    "message": "_SET_TIMELAPSE_SETUP  ENABLE=False VERBOSE=False PARK_ENABLE=False PARK_POS=back_left CUSTOM_POS_X=10.0 CUSTOM_POS_Y=10.0 CUSTOM_POS_DZ=0.0 TRAVEL_SPEED=100 RETRACT_SPEED=15 EXTRUDE_SPEED=15 RETRACT_DISTANCE=1.0 EXTRUDE_DISTANCE=1.0 PARK_TIME=0.1 FW_RETRACT=False",
+    "time": 1793781635.3704073,
+    "type": "command"
+  },
+  {
+    "message": "// SMART_STATUS \u72b6\u6001\u66f4\u65b0: MODE=1, SCREEN=0, TIMELAPSE=0",
+    "time": 1793781635.402135,
+    "type": "response"
+  },
+  {
+    "message": "// [smart_output_pin caselight] \u7167\u660e\u540c\u6b65: SCREEN=\u7184, PRINT=standby, AI=0, TIMELAPSE=0 -> LIGHT=OFF",
+    "time": 1793781635.4029906,
+    "type": "response"
+  },
+  {
+    "message": "// [neopixel RGB] UI_EVENT: Mode=Smart, Screen=Sleep, State=standby -> LED OFF (Smart Energy Saving)",
+    "time": 1793781635.4038095,
+    "type": "response"
+  },
+  {
+    "message": "// metadata={\"estimated_time\": 1395, \"filament_weight_total\": 7.26, \"nozzle_diameter\": 0.4, \"filament_total\": 2900.0, \"preset_colours\": [\"#2850FF\"], \"layer_height\": \"0.2\", \"nozzle_temperature_initial_layer\": null, \"filament_type\": \"ABS\", \"filament_name\": \"DRAFT ABS refill comparison(qidi-REFILL-DRAFT-NOT-SUBMITTED.gcode.3mf)\", \"used_extruders\": [0], \"slicer\": \"QIDIStudio\", \"slicer_version\": \"02.07.02.73\", \"gcode_end_byte\": 276731, \"gcode_start_byte\": 455, \"thumbnails\": [{\"width\": 512, \"height\": 512, \"size\": 0, \"relative_path\": \".thumbs/MAX4-QIDI-ABS-refill-A2-A3-20261104.gcode/plate_1.png\"}], \"size\": 45999, \"modified\": 1793781635.788942, \"uuid\": \"49e94c21-5d02-460a-ae4e-c38bd3fb2f21\", \"print_start_time\": null, \"job_id\": null}",
+    "time": 1793781638.021946,
+    "type": "response"
+  },
+  {
+    "message": "SDCARD_PRINT_FILE FILENAME=\"MAX4-QIDI-ABS-refill-A2-A3-20261104.gcode.3mf\" PLATEINDEX=\"1\" UID=\"native\"",
+    "time": 1793781638.022287,
+    "type": "command"
+  },
+  {
+    "message": "// [virtual_sdcard] extraction_progress: 0.0",
+    "time": 1793781638.0470166,
+    "type": "response"
+  },
+  {
+    "message": "// [virtual_sdcard] extraction_progress: 1.0",
+    "time": 1793781638.077826,
+    "type": "response"
+  },
+  {
+    "message": "// [virtual_sdcard] extraction_progress: 1.0",
+    "time": 1793781638.1588438,
+    "type": "response"
+  },
+  {
+    "message": "File opened:MAX4-QIDI-ABS-refill-A2-A3-20261104.gcode.3mf Size:300853 Plateindex:1",
+    "time": 1793781638.1714382,
+    "type": "response"
+  },
+  {
+    "message": "File selected",
+    "time": 1793781638.1728184,
+    "type": "response"
+  },
+  {
+    "message": "// M4050: Pre-print model check is disabled, skipping detection",
+    "time": 1793781638.22119,
+    "type": "response"
+  },
+  {
+    "message": "// shaper_type_x:mzv shaper_freq_x:48.800 damping_ratio_x:0.100000",
+    "time": 1793781638.2420695,
+    "type": "response"
+  },
+  {
+    "message": "// shaper_type_y:zv shaper_freq_y:39.600 damping_ratio_y:0.100000",
+    "time": 1793781638.2431855,
+    "type": "response"
+  },
+  {
+    "message": "// shaper_type_x:mzv shaper_freq_x:48.800 damping_ratio_x:0.100000",
+    "time": 1793781638.2688632,
+    "type": "response"
+  },
+  {
+    "message": "// shaper_type_y:mzv shaper_freq_y:39.600 damping_ratio_y:0.100000",
+    "time": 1793781638.2700243,
+    "type": "response"
+  },
+  {
+    "message": "// Sub status 'homing' not valid for main status 'print_start'",
+    "time": 1793781638.3300622,
+    "type": "response"
+  }
+]

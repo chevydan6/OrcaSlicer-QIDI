@@ -1,6 +1,8 @@
 # Refill investigation and proposed ABS comparison
 
-No refill command or runout job has been sent. Dan loaded physical A2 orange ABS
+This records the earlier offline investigation. The subsequently authorized QIDI Studio
+reference job is now running; see [reference session](../refill-reference-2026-11-04/README.md).
+No explicit refill-enable or manual reload command has been sent. Dan loaded physical A2 orange ABS
 and A3 blue ABS, deliberately setting both software colors to blue. The agent
 preserved that metadata. Read-only telemetry now reports both slots present,
 auto_reload_detect=1 and auto_refill=[{type:ABS,color:#2850FF,slot:[1B,1C]}].
@@ -20,7 +22,8 @@ arguments and persistence of the advertised commands still need protocol evidenc
 An official Ubuntu24 QIDI Studio2.07.02.73 AppImage was downloaded and its SHA256
 matched GitHub's asset digest (reference-identity.json). This is a runtime reference,
 not a change to either integration source pin. Accepted Orca candidate70 is retained.
-Both apps have been used only for offline slicing of these refill drafts.
+The archived drafts below were offline preparation. The later reference session
+uses an independently reviewed GUI export.
 
 ## Concrete draft session
 
@@ -48,8 +51,9 @@ Both apps have been used only for offline slicing of these refill drafts.
 
 The approximately18-minute Orca estimate is not a guaranteed physical duration.
 The earlier PLA startup exceeded its estimate. The QIDI Studio draft retains its own engine and the normalized startup described
-above; generated toolpaths still differ between engines. This is a proposal awaiting the temperature/runout-method agreement,
-not authorization to induce runout merely because the spools are loaded.
+above; generated toolpaths still differ between engines. Dan subsequently instructed autonomous execution of this ABS test and reported
+that he had already cut A2. The active session uses that existing cut; remaining
+length is unknown, so a startup runout must be distinguished from deposition runout.
 
 ## Offline preparation evidence and limits
 

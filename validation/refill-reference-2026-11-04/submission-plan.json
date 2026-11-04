@@ -1,0 +1,19 @@
+{
+  "time": 1793781633.2165499,
+  "job": "MAX4-QIDI-ABS-refill-A2-A3-20261104",
+  "authorization": "User requested autonomous ABS refill session and reported donor already cut. A2 physical orange and A3 physical blue intentionally both software blue.",
+  "logical_tool": 0,
+  "mapping": [
+    1
+  ],
+  "refill_partner_physical_slot": 2,
+  "print_temperature": 250,
+  "preparation_temperature": 260,
+  "bed_temperature": 100,
+  "chamber_temperature": 0,
+  "bed_leveling": true,
+  "timelapse": false,
+  "polar_cooler": false,
+  "reference_startup": "GUI restored official MZV X/Y startup despite custom import normalization. Accept standard reference startup; retain discrepancy. No persistent firmware configuration edit.",
+  "reviewed_archive_sha256": "ba549a101747af4affcb75a160029f0cb6aace2fc2dc15682d780ea4ad2173b1"
+}

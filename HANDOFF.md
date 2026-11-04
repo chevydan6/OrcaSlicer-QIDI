@@ -94,6 +94,12 @@ contribute positive evidence to this final acceptance.
 
 ## Physical hardware evidence and boundary
 
+An authorized ABS refill comparison is now active. Dan intentionally matched A2/A3
+software colors and already cut the A2 donor. Official QIDI Studio's reference job
+was submitted first; no automatic-refill outcome is established yet. See
+[reference session](validation/refill-reference-2026-11-04/README.md), including the
+actual-upload identity and startup/capture differences. Orca comparison is pending.
+
 On2026-11-04 Dan authorized a small physical test and delegated its setup choices.
 Accepted70's actual GUI submitted a10×10×4mm cube using only logical T2 mapped to
 physical A1 ([-1,-1,0]). The exact upload preserved T2 and its executable G-code
