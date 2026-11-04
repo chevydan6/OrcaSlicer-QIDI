@@ -1,0 +1,13 @@
+{
+  "state": "interrupted_before_deposition",
+  "cause": "full_printer_reboot_observed; initiator pending user clarification",
+  "refill_triggered": false,
+  "fix_correction_count": 0,
+  "logical_tool": 0,
+  "last_layer": 0,
+  "history_duration_caveat": "history duration is inconsistent with observed startup; retain raw reported value, do not use as elapsed measurement",
+  "post_reboot_fix_enabled": true,
+  "post_reboot_heater_targets_zero_observed": true,
+  "other_controller_command": "EJECT_FILAMENT_CONTROL SLOT=0 after boot; not sent by agent",
+  "time": 1793790891.3230853
+}

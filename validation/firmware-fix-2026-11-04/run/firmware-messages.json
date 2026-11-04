@@ -1,0 +1,582 @@
+[
+  {
+    "message": "SET_PIN PIN=caselight VALUE=1",
+    "time": 1793790294.6052408,
+    "type": "command"
+  },
+  {
+    "message": "SAVE_VARIABLE VARIABLE=enable_polar_cooler VALUE=0",
+    "time": 1793790527.4711566,
+    "type": "command"
+  },
+  {
+    "message": "SAVE_VARIABLE VARIABLE=enable_box VALUE=1",
+    "time": 1793790527.7456114,
+    "type": "command"
+  },
+  {
+    "message": "SAVE_VARIABLE VARIABLE=value_t0 VALUE=\"'slot1'\"",
+    "time": 1793790527.8238728,
+    "type": "command"
+  },
+  {
+    "message": "G31",
+    "time": 1793790528.0713964,
+    "type": "command"
+  },
+  {
+    "message": "SMART_STATUS TIMELAPSE=0",
+    "time": 1793790528.2619288,
+    "type": "command"
+  },
+  {
+    "message": "_SET_TIMELAPSE_SETUP  ENABLE=False VERBOSE=False PARK_ENABLE=False PARK_POS=back_left CUSTOM_POS_X=10.0 CUSTOM_POS_Y=10.0 CUSTOM_POS_DZ=0.0 TRAVEL_SPEED=100 RETRACT_SPEED=15 EXTRUDE_SPEED=15 RETRACT_DISTANCE=1.0 EXTRUDE_DISTANCE=1.0 PARK_TIME=0.1 FW_RETRACT=False",
+    "time": 1793790528.262737,
+    "type": "command"
+  },
+  {
+    "message": "// SMART_STATUS \u72b6\u6001\u66f4\u65b0: MODE=1, SCREEN=0, TIMELAPSE=0",
+    "time": 1793790528.285703,
+    "type": "response"
+  },
+  {
+    "message": "// [smart_output_pin caselight] \u7167\u660e\u540c\u6b65: SCREEN=\u7184, PRINT=standby, AI=0, TIMELAPSE=0 -> LIGHT=OFF",
+    "time": 1793790528.2866223,
+    "type": "response"
+  },
+  {
+    "message": "// [neopixel RGB] UI_EVENT: Mode=Smart, Screen=Sleep, State=standby -> LED OFF (Smart Energy Saving)",
+    "time": 1793790528.3077095,
+    "type": "response"
+  },
+  {
+    "message": "// metadata={\"estimated_time\": 3116, \"filament_weight_total\": 28.68, \"nozzle_diameter\": 0.4, \"filament_total\": 11470.0, \"preset_colours\": [\"#2850FF\"], \"layer_height\": \"0.2\", \"nozzle_temperature_initial_layer\": null, \"filament_type\": \"ABS\", \"filament_name\": \"DRAFT ABS refill comparison(qidi-refill-30x30x32.gcode.3mf)\", \"used_extruders\": [0], \"slicer\": \"QIDIStudio\", \"slicer_version\": \"02.07.02.73\", \"gcode_end_byte\": 1055182, \"gcode_start_byte\": 461, \"thumbnails\": [{\"width\": 512, \"height\": 512, \"size\": 0, \"relative_path\": \".thumbs/MAX4-QIDI-ABS-refill-fixed-20261104.gcode/plate_1.png\"}], \"size\": 56216, \"modified\": 1793790528.7597578, \"uuid\": \"8585ff9f-fced-402d-9c27-f226e4574ac5\", \"print_start_time\": null, \"job_id\": null}",
+    "time": 1793790531.0602489,
+    "type": "response"
+  },
+  {
+    "message": "SDCARD_PRINT_FILE FILENAME=\"MAX4-QIDI-ABS-refill-fixed-20261104.gcode.3mf\" PLATEINDEX=\"1\" UID=\"native\"",
+    "time": 1793790531.0606089,
+    "type": "command"
+  },
+  {
+    "message": "// [virtual_sdcard] extraction_progress: 0.0",
+    "time": 1793790531.1197658,
+    "type": "response"
+  },
+  {
+    "message": "// [virtual_sdcard] extraction_progress: 1.0",
+    "time": 1793790531.152465,
+    "type": "response"
+  },
+  {
+    "message": "// [virtual_sdcard] extraction_progress: 1.0",
+    "time": 1793790531.206267,
+    "type": "response"
+  },
+  {
+    "message": "File opened:MAX4-QIDI-ABS-refill-fixed-20261104.gcode.3mf Size:1079292 Plateindex:1",
+    "time": 1793790531.2143471,
+    "type": "response"
+  },
+  {
+    "message": "File selected",
+    "time": 1793790531.2153213,
+    "type": "response"
+  },
+  {
+    "message": "// M4050: Pre-print model check is disabled, skipping detection",
+    "time": 1793790531.3100207,
+    "type": "response"
+  },
+  {
+    "message": "// shaper_type_x:mzv shaper_freq_x:48.800 damping_ratio_x:0.100000",
+    "time": 1793790531.381348,
+    "type": "response"
+  },
+  {
+    "message": "// shaper_type_y:zv shaper_freq_y:39.600 damping_ratio_y:0.100000",
+    "time": 1793790531.3823352,
+    "type": "response"
+  },
+  {
+    "message": "// shaper_type_x:mzv shaper_freq_x:48.800 damping_ratio_x:0.100000",
+    "time": 1793790531.3832607,
+    "type": "response"
+  },
+  {
+    "message": "// shaper_type_y:mzv shaper_freq_y:39.600 damping_ratio_y:0.100000",
+    "time": 1793790531.3843195,
+    "type": "response"
+  },
+  {
+    "message": "// Sub status 'homing' not valid for main status 'print_start'",
+    "time": 1793790531.4460914,
+    "type": "response"
+  },
+  {
+    "message": "// Sub status 'extruder_heating' not valid for main status 'print_start'",
+    "time": 1793790628.5581257,
+    "type": "response"
+  },
+  {
+    "message": "B:56.6 /100.0 T0:43.2 /260.0",
+    "time": 1793790628.5856023,
+    "type": "response"
+  },
+  {
+    "message": "B:56.7 /100.0 T0:42.5 /260.0",
+    "time": 1793790629.574784,
+    "type": "response"
+  },
+  {
+    "message": "B:56.8 /100.0 T0:43.5 /260.0",
+    "time": 1793790630.5756867,
+    "type": "response"
+  },
+  {
+    "message": "B:56.9 /100.0 T0:43.8 /260.0",
+    "time": 1793790631.5748808,
+    "type": "response"
+  },
+  {
+    "message": "B:57.0 /100.0 T0:45.0 /260.0",
+    "time": 1793790632.57719,
+    "type": "response"
+  },
+  {
+    "message": "B:57.1 /100.0 T0:46.2 /260.0",
+    "time": 1793790633.578438,
+    "type": "response"
+  },
+  {
+    "message": "B:57.3 /100.0 T0:48.0 /260.0",
+    "time": 1793790634.5796945,
+    "type": "response"
+  },
+  {
+    "message": "B:57.4 /100.0 T0:50.0 /260.0",
+    "time": 1793790635.5802827,
+    "type": "response"
+  },
+  {
+    "message": "B:57.5 /100.0 T0:53.0 /260.0",
+    "time": 1793790636.5796607,
+    "type": "response"
+  },
+  {
+    "message": "B:57.6 /100.0 T0:55.5 /260.0",
+    "time": 1793790637.5811782,
+    "type": "response"
+  },
+  {
+    "message": "B:57.8 /100.0 T0:58.2 /260.0",
+    "time": 1793790638.5865498,
+    "type": "response"
+  },
+  {
+    "message": "B:57.9 /100.0 T0:62.2 /260.0",
+    "time": 1793790639.5837557,
+    "type": "response"
+  },
+  {
+    "message": "B:58.0 /100.0 T0:65.2 /260.0",
+    "time": 1793790640.5857813,
+    "type": "response"
+  },
+  {
+    "message": "B:58.1 /100.0 T0:69.0 /260.0",
+    "time": 1793790641.5854056,
+    "type": "response"
+  },
+  {
+    "message": "B:58.2 /100.0 T0:72.2 /260.0",
+    "time": 1793790642.5867753,
+    "type": "response"
+  },
+  {
+    "message": "B:58.4 /100.0 T0:76.2 /260.0",
+    "time": 1793790643.5880048,
+    "type": "response"
+  },
+  {
+    "message": "B:58.5 /100.0 T0:80.8 /260.0",
+    "time": 1793790644.591138,
+    "type": "response"
+  },
+  {
+    "message": "B:58.6 /100.0 T0:84.5 /260.0",
+    "time": 1793790645.5909579,
+    "type": "response"
+  },
+  {
+    "message": "B:58.8 /100.0 T0:88.0 /260.0",
+    "time": 1793790646.5932994,
+    "type": "response"
+  },
+  {
+    "message": "B:58.9 /100.0 T0:92.8 /260.0",
+    "time": 1793790647.5903132,
+    "type": "response"
+  },
+  {
+    "message": "B:59.1 /100.0 T0:96.2 /260.0",
+    "time": 1793790648.5960274,
+    "type": "response"
+  },
+  {
+    "message": "B:59.2 /100.0 T0:100.0 /260.0",
+    "time": 1793790649.5942712,
+    "type": "response"
+  },
+  {
+    "message": "B:59.4 /100.0 T0:104.5 /260.0",
+    "time": 1793790650.5941005,
+    "type": "response"
+  },
+  {
+    "message": "B:59.5 /100.0 T0:108.8 /260.0",
+    "time": 1793790651.594563,
+    "type": "response"
+  },
+  {
+    "message": "B:59.6 /100.0 T0:112.2 /260.0",
+    "time": 1793790652.5963209,
+    "type": "response"
+  },
+  {
+    "message": "B:59.8 /100.0 T0:116.8 /260.0",
+    "time": 1793790653.596747,
+    "type": "response"
+  },
+  {
+    "message": "B:59.9 /100.0 T0:120.5 /260.0",
+    "time": 1793790654.5996678,
+    "type": "response"
+  },
+  {
+    "message": "B:60.1 /100.0 T0:124.2 /260.0",
+    "time": 1793790655.5975623,
+    "type": "response"
+  },
+  {
+    "message": "B:60.2 /100.0 T0:129.5 /260.0",
+    "time": 1793790656.5991168,
+    "type": "response"
+  },
+  {
+    "message": "B:60.3 /100.0 T0:133.0 /260.0",
+    "time": 1793790657.5991435,
+    "type": "response"
+  },
+  {
+    "message": "B:60.5 /100.0 T0:135.8 /260.0",
+    "time": 1793790658.60188,
+    "type": "response"
+  },
+  {
+    "message": "B:60.6 /100.0 T0:141.0 /260.0",
+    "time": 1793790659.6154401,
+    "type": "response"
+  },
+  {
+    "message": "B:60.7 /100.0 T0:144.8 /260.0",
+    "time": 1793790660.6021032,
+    "type": "response"
+  },
+  {
+    "message": "B:60.8 /100.0 T0:148.5 /260.0",
+    "time": 1793790661.6039376,
+    "type": "response"
+  },
+  {
+    "message": "B:61.0 /100.0 T0:152.5 /260.0",
+    "time": 1793790662.6070807,
+    "type": "response"
+  },
+  {
+    "message": "B:61.1 /100.0 T0:156.0 /260.0",
+    "time": 1793790663.6046367,
+    "type": "response"
+  },
+  {
+    "message": "B:61.2 /100.0 T0:159.8 /260.0",
+    "time": 1793790664.605864,
+    "type": "response"
+  },
+  {
+    "message": "B:61.3 /100.0 T0:164.0 /260.0",
+    "time": 1793790665.6653779,
+    "type": "response"
+  },
+  {
+    "message": "B:61.4 /100.0 T0:167.5 /260.0",
+    "time": 1793790666.6067333,
+    "type": "response"
+  },
+  {
+    "message": "B:61.6 /100.0 T0:170.0 /260.0",
+    "time": 1793790667.6071398,
+    "type": "response"
+  },
+  {
+    "message": "B:61.7 /100.0 T0:174.8 /260.0",
+    "time": 1793790668.6092594,
+    "type": "response"
+  },
+  {
+    "message": "B:61.8 /100.0 T0:178.2 /260.0",
+    "time": 1793790669.6092536,
+    "type": "response"
+  },
+  {
+    "message": "B:61.9 /100.0 T0:181.5 /260.0",
+    "time": 1793790670.6120548,
+    "type": "response"
+  },
+  {
+    "message": "B:62.0 /100.0 T0:185.5 /260.0",
+    "time": 1793790671.6103315,
+    "type": "response"
+  },
+  {
+    "message": "B:62.2 /100.0 T0:188.8 /260.0",
+    "time": 1793790672.612648,
+    "type": "response"
+  },
+  {
+    "message": "B:62.3 /100.0 T0:192.0 /260.0",
+    "time": 1793790673.6123016,
+    "type": "response"
+  },
+  {
+    "message": "B:62.4 /100.0 T0:195.8 /260.0",
+    "time": 1793790674.6144114,
+    "type": "response"
+  },
+  {
+    "message": "B:62.6 /100.0 T0:199.2 /260.0",
+    "time": 1793790675.6174388,
+    "type": "response"
+  },
+  {
+    "message": "B:62.7 /100.0 T0:202.5 /260.0",
+    "time": 1793790676.6161852,
+    "type": "response"
+  },
+  {
+    "message": "B:62.9 /100.0 T0:206.2 /260.0",
+    "time": 1793790677.615917,
+    "type": "response"
+  },
+  {
+    "message": "B:63.0 /100.0 T0:209.8 /260.0",
+    "time": 1793790678.6218393,
+    "type": "response"
+  },
+  {
+    "message": "B:63.1 /100.0 T0:212.8 /260.0",
+    "time": 1793790679.6194217,
+    "type": "response"
+  },
+  {
+    "message": "B:63.2 /100.0 T0:217.0 /260.0",
+    "time": 1793790680.622914,
+    "type": "response"
+  },
+  {
+    "message": "B:63.4 /100.0 T0:219.8 /260.0",
+    "time": 1793790681.6201446,
+    "type": "response"
+  },
+  {
+    "message": "B:63.5 /100.0 T0:222.5 /260.0",
+    "time": 1793790682.623374,
+    "type": "response"
+  },
+  {
+    "message": "B:63.7 /100.0 T0:226.8 /260.0",
+    "time": 1793790683.6224086,
+    "type": "response"
+  },
+  {
+    "message": "B:63.8 /100.0 T0:229.5 /260.0",
+    "time": 1793790684.6241424,
+    "type": "response"
+  },
+  {
+    "message": "B:63.9 /100.0 T0:232.5 /260.0",
+    "time": 1793790685.6239445,
+    "type": "response"
+  },
+  {
+    "message": "B:64.0 /100.0 T0:236.5 /260.0",
+    "time": 1793790686.6277606,
+    "type": "response"
+  },
+  {
+    "message": "B:64.2 /100.0 T0:239.0 /260.0",
+    "time": 1793790687.6252537,
+    "type": "response"
+  },
+  {
+    "message": "B:64.3 /100.0 T0:242.5 /260.0",
+    "time": 1793790688.6298995,
+    "type": "response"
+  },
+  {
+    "message": "B:64.4 /100.0 T0:245.8 /260.0",
+    "time": 1793790689.6276042,
+    "type": "response"
+  },
+  {
+    "message": "B:64.5 /100.0 T0:248.8 /260.0",
+    "time": 1793790690.6353977,
+    "type": "response"
+  },
+  {
+    "message": "B:64.6 /100.0 T0:251.5 /260.0",
+    "time": 1793790691.6302912,
+    "type": "response"
+  },
+  {
+    "message": "B:64.7 /100.0 T0:254.8 /260.0",
+    "time": 1793790692.6348898,
+    "type": "response"
+  },
+  {
+    "message": "B:64.8 /100.0 T0:258.0 /260.0",
+    "time": 1793790693.63176,
+    "type": "response"
+  },
+  {
+    "message": "SMART_STATUS MODE=1 SCREEN=1",
+    "time": 1793790751.9797018,
+    "type": "command"
+  },
+  {
+    "message": "SAVE_VARIABLE VARIABLE=enable_polar_cooler VALUE=1",
+    "time": 1793790838.519567,
+    "type": "command"
+  },
+  {
+    "message": "SAVE_VARIABLE VARIABLE=beep VALUE=1",
+    "time": 1793790838.5211704,
+    "type": "command"
+  },
+  {
+    "message": "NEOPIXEL_ENABLE ENABLE=1",
+    "time": 1793790838.537531,
+    "type": "command"
+  },
+  {
+    "message": "SAVE_VARIABLE VARIABLE=box_count VALUE=1",
+    "time": 1793790838.5388029,
+    "type": "command"
+  },
+  {
+    "message": "SMART_STATUS MODE=1 SCREEN=1",
+    "time": 1793790838.5400639,
+    "type": "command"
+  },
+  {
+    "message": "SMART_STATUS MODE=1 SCREEN=1\nNEOPIXEL_ENABLE ENABLE=1",
+    "time": 1793790847.6648498,
+    "type": "command"
+  },
+  {
+    "message": "SMART_STATUS MODE=1 SCREEN=1\nNEOPIXEL_ENABLE ENABLE=1",
+    "time": 1793790847.6648498,
+    "type": "command"
+  },
+  {
+    "message": "SMART_STATUS TIMELAPSE=0",
+    "time": 1793790847.668667,
+    "type": "command"
+  },
+  {
+    "message": "_SET_TIMELAPSE_SETUP  ENABLE=False VERBOSE=False PARK_ENABLE=False PARK_POS=back_left CUSTOM_POS_X=10.0 CUSTOM_POS_Y=10.0 CUSTOM_POS_DZ=0.0 TRAVEL_SPEED=100 RETRACT_SPEED=15 EXTRUDE_SPEED=15 RETRACT_DISTANCE=1.0 EXTRUDE_DISTANCE=1.0 PARK_TIME=0.1 FW_RETRACT=False",
+    "time": 1793790847.6957934,
+    "type": "command"
+  },
+  {
+    "message": "HYPERLAPSE ACTION=STOP",
+    "time": 1793790847.6992612,
+    "type": "command"
+  },
+  {
+    "message": "SAVE_VARIABLE VARIABLE=box_count VALUE=1",
+    "time": 1793790847.7140021,
+    "type": "command"
+  },
+  {
+    "message": "SAVE_VARIABLE VARIABLE=qdc_ai_error_code VALUE='\"noodle=0 status=0 time=1793790847\"'",
+    "time": 1793790848.006134,
+    "type": "command"
+  },
+  {
+    "message": "// SMART_STATUS \u72b6\u6001\u66f4\u65b0: MODE=1, SCREEN=1, TIMELAPSE=1",
+    "time": 1793790848.6685557,
+    "type": "response"
+  },
+  {
+    "message": "// [smart_output_pin caselight] \u7167\u660e\u540c\u6b65: SCREEN=\u4eae, PRINT=standby, AI=0, TIMELAPSE=1 -> LIGHT=ON",
+    "time": 1793790848.6695478,
+    "type": "response"
+  },
+  {
+    "message": "// [neopixel RGB] UI_EVENT: Mode=Smart, Screen=Wake, State=standby -> LED ON (UI Wake-up)",
+    "time": 1793790848.6703758,
+    "type": "response"
+  },
+  {
+    "message": "// SMART_STATUS \u72b6\u6001\u66f4\u65b0: MODE=1, SCREEN=1, TIMELAPSE=0",
+    "time": 1793790848.774899,
+    "type": "response"
+  },
+  {
+    "message": "// [smart_output_pin caselight] \u7167\u660e\u540c\u6b65: SCREEN=\u4eae, PRINT=standby, AI=0, TIMELAPSE=0 -> LIGHT=ON",
+    "time": 1793790848.7759295,
+    "type": "response"
+  },
+  {
+    "message": "// [neopixel RGB] UI_EVENT: Mode=Smart, Screen=Wake, State=standby -> LED ON (UI Wake-up)",
+    "time": 1793790848.776903,
+    "type": "response"
+  },
+  {
+    "message": "Stepper x software version: 03.01.10.15, hardware version: 9.1",
+    "time": 1793790849.0098093,
+    "type": "response"
+  },
+  {
+    "message": "Stepper y software version: 03.01.10.15, hardware version: 9.1",
+    "time": 1793790849.0263834,
+    "type": "response"
+  },
+  {
+    "message": "SAVE_VARIABLE VARIABLE=beep VALUE=1",
+    "time": 1793790851.670703,
+    "type": "command"
+  },
+  {
+    "message": "SAVE_VARIABLE VARIABLE=beep VALUE=1",
+    "time": 1793790851.6720338,
+    "type": "command"
+  },
+  {
+    "message": "SAVE_VARIABLE VARIABLE=beep VALUE=1",
+    "time": 1793790851.6783595,
+    "type": "command"
+  },
+  {
+    "message": "SAVE_VARIABLE VARIABLE=beep VALUE=1",
+    "time": 1793790851.679617,
+    "type": "command"
+  },
+  {
+    "message": "EJECT_FILAMENT_CONTROL SLOT=0",
+    "time": 1793790859.2045515,
+    "type": "command"
+  }
+]

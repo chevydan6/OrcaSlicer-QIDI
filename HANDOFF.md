@@ -13,7 +13,10 @@ modules and MCU firmware are unchanged. The private backup was verified both on
 the printer and this computer. See [deployment](validation/firmware-fix-2026-11-04/deployment.json)
 and [fix/rollback instructions](firmware-fixes/max4-refill-tool-identity/README.md).
 The official QIDI Studio repeat `MAX4-QIDI-ABS-refill-fixed-20261104.gcode.3mf`
-has been submitted and is in progress; **no physical fix acceptance yet**.
+was interrupted by a full printer reboot during startup, before deposition;
+**no physical fix acceptance yet**. The reboot initiator is not yet established.
+The fix remained enabled after reboot. A subsequent printer-side eject command
+was observed; do not submit another job while Dan is handling the feed.
 Its executable G-code is byte-identical to the failed larger reference.
 Dan reports refill works when starting from printer memory. That observation is
 recorded, but the reason for the different behavior has not been independently

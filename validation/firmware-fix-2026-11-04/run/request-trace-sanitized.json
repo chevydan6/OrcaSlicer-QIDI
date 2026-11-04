@@ -1,0 +1,79 @@
+[
+  {
+    "method": "POST",
+    "path": "/printer/gcode/script",
+    "destination_port": 80,
+    "body_length": 64,
+    "response": {
+      "http_status": 200,
+      "result": "ok"
+    },
+    "body": {
+      "script": "SAVE_VARIABLE VARIABLE=enable_polar_cooler VALUE=0"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/printer/gcode/script",
+    "destination_port": 80,
+    "body_length": 55,
+    "response": {
+      "http_status": 200,
+      "result": "ok"
+    },
+    "body": {
+      "script": "SAVE_VARIABLE VARIABLE=enable_box VALUE=1"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/printer/gcode/script",
+    "destination_port": 80,
+    "body_length": 63,
+    "response": {
+      "http_status": 200,
+      "result": "ok"
+    },
+    "body": {
+      "script": "SAVE_VARIABLE VARIABLE=value_t0 VALUE=\"'slot1'\""
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/printer/gcode/script",
+    "destination_port": 80,
+    "body_length": 17,
+    "response": {
+      "http_status": 200,
+      "result": "ok"
+    },
+    "body": {
+      "script": "G31"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/machine/timelapse/settings?enabled=false",
+    "destination_port": 80,
+    "body_length": 2,
+    "response": {
+      "http_status": 200
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/server/files/upload",
+    "destination_port": 80,
+    "body_length": 56750,
+    "response": {
+      "http_status": 201
+    },
+    "multipart_sha256": "1ca8d38160f5355d9d88eae2dd3caaab8e9afcae29d8bdf7488a696ab9bf21ae",
+    "upload_fields": {
+      "root": "gcodes",
+      "print": "true",
+      "plateindex": "1"
+    },
+    "uploaded_file_sha256": "a6f307eccc0ca69efd842380e559f403ef729f4dff6fce21959d13a2d4e58ce2"
+  }
+]

@@ -1,0 +1,20 @@
+{
+  "time": 1793790864.5852432,
+  "printer_info": {
+    "result": {
+      "state": "ready",
+      "state_message": "Printer is ready",
+      "hostname": "qidi-max4",
+      "klipper_path": "/home/qidi/klipper",
+      "python_path": "/home/qidi/klippy-env/bin/python",
+      "process_id": 880,
+      "user_id": 1001,
+      "group_id": 111,
+      "log_file": "/home/qidi/printer_data/logs/klippy.log",
+      "config_file": "/home/qidi/printer_data/config/printer.cfg",
+      "software_version": "?",
+      "cpu_info": "4 core ?"
+    }
+  },
+  "source": "read_only inspection; no agent restart after submission"
+}
