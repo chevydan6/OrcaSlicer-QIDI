@@ -1,0 +1,6 @@
+{
+  "archive_sha256": "88ab06b3b46bd785dc8172904bcd3a07694daf616650aeb1c5006e54baba15e0",
+  "gcode_sha256": "4b7c0c92a86ba284828baffadfc752ed54c4b69f16830da98f550962246ee214",
+  "difference": "After restoring Textured PEI plate and reslicing, actual upload omits one redundant M140 S100 at layer2. Startup M140 S100, M190 S100 and all motion/tool/other thermal commands unchanged. Reviewed this discrepancy during homing before deposition.",
+  "thermal_behavior_equivalent": true
+}

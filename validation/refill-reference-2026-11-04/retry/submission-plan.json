@@ -1,0 +1,19 @@
+{
+  "time": 1793782241.8015006,
+  "job": "MAX4-QIDI-ABS-refill-retry-20261104",
+  "authorization": "Dan confirmed first donor too short and requested retry. Read-only preflight confirms A2/A3 present, refill group restored, standby and all heater targets0; loaded_slot16.",
+  "logical_tool": 0,
+  "mapping": [
+    1
+  ],
+  "refill_partner_physical_slot": 2,
+  "print_temperature": 250,
+  "preparation_temperature": 260,
+  "bed_temperature": 100,
+  "chamber_temperature": 0,
+  "bed_leveling": true,
+  "timelapse": false,
+  "polar_cooler": false,
+  "reference_startup": "GUI restored official MZV X/Y startup despite custom import normalization. Accept standard reference startup; retain discrepancy. No persistent firmware configuration edit.",
+  "reviewed_archive_sha256": "02646bd621b37e2c6f0177408d46c955e224126515d1fe1b2553b7e05997762b"
+}
