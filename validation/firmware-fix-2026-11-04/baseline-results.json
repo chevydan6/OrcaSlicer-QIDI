@@ -1,0 +1,2022 @@
+{
+  "firmware_sha256": {
+    "box_extras.so": "0878b5b9d48d71e6bb1a83792776a7f59a529239cc1ca35e9a55102721bde2a6",
+    "box_stepper.so": "58ee8c61bffc3d4e18edc9e56a326495b6a218348bbfb13f7a012a946039b0a5"
+  },
+  "scope": "Actual copied Cython selection/reload/resume methods; fake peripherals, simulated successful flush, load intercepted; not a hardware pass",
+  "results": [
+    {
+      "initial_mapping": {
+        "0": 1,
+        "1": 1,
+        "2": 0,
+        "3": 2
+      },
+      "donor": 1,
+      "intended_replacement": 2,
+      "requested_physical_slot": 0,
+      "final_mapping": {
+        "value_t0": "slot2",
+        "value_t1": "slot2",
+        "value_t2": "slot0",
+        "value_t3": "slot2"
+      },
+      "extrude_state": 2,
+      "events": [
+        {
+          "kind": "lookup_object",
+          "name": "box_stepper slot1"
+        },
+        {
+          "kind": "gcode",
+          "script": "AUTO_RELOAD_FUNC SLOT=slot1"
+        },
+        {
+          "kind": "lookup_object",
+          "name": "filament_switch_sensor filament_switch_sensor"
+        },
+        {
+          "kind": "lookup_object",
+          "name": "toolhead"
+        },
+        {
+          "kind": "read_saved",
+          "key": "last_load_slot",
+          "value": "slot1"
+        },
+        {
+          "kind": "lookup_object",
+          "name": "print_stats_manager"
+        },
+        {
+          "kind": "lookup_object",
+          "name": "toolhead"
+        },
+        {
+          "kind": "gcode",
+          "script": "PAUSE"
+        },
+        {
+          "kind": "wait_moves"
+        },
+        {
+          "kind": "read_saved",
+          "key": "last_load_slot",
+          "value": "slot1"
+        },
+        {
+          "kind": "lookup_object",
+          "name": "filament_switch_sensor filament_switch_sensor"
+        },
+        {
+          "kind": "gcode",
+          "script": "MOVE_TO_TRASH\nM109 S250"
+        },
+        {
+          "kind": "simulated_flush",
+          "success": true,
+          "print_active": true
+        },
+        {
+          "kind": "read_saved",
+          "key": "auto_reload_detect",
+          "value": 1
+        },
+        {
+          "kind": "lookup_object",
+          "name": "multi_color_controller"
+        },
+        {
+          "kind": "read_saved",
+          "key": "box_count",
+          "value": 1
+        },
+        {
+          "kind": "lookup_object",
+          "name": "box_stepper slot2"
+        },
+        {
+          "kind": "read_saved",
+          "key": "value_t0",
+          "value": "slot1"
+        },
+        {
+          "kind": "write_saved",
+          "key": "value_t0",
+          "value": "slot2"
+        },
+        {
+          "kind": "read_saved",
+          "key": "value_t1",
+          "value": "slot1"
+        },
+        {
+          "kind": "write_saved",
+          "key": "value_t1",
+          "value": "slot2"
+        },
+        {
+          "kind": "read_saved",
+          "key": "value_t2",
+          "value": "slot0"
+        },
+        {
+          "kind": "read_saved",
+          "key": "value_t3",
+          "value": "slot2"
+        },
+        {
+          "kind": "read_saved",
+          "key": "value_t4",
+          "value": null
+        },
+        {
+          "kind": "read_saved",
+          "key": "value_t5",
+          "value": null
+        },
+        {
+          "kind": "read_saved",
+          "key": "value_t6",
+          "value": null
+        },
+        {
+          "kind": "read_saved",
+          "key": "value_t7",
+          "value": null
+        },
+        {
+          "kind": "read_saved",
+          "key": "value_t8",
+          "value": null
+        },
+        {
+          "kind": "read_saved",
+          "key": "value_t9",
+          "value": null
+        },
+        {
+          "kind": "read_saved",
+          "key": "value_t10",
+          "value": null
+        },
+        {
+          "kind": "read_saved",
+          "key": "value_t11",
+          "value": null
+        },
+        {
+          "kind": "read_saved",
+          "key": "value_t12",
+          "value": null
+        },
+        {
+          "kind": "read_saved",
+          "key": "value_t13",
+          "value": null
+        },
+        {
+          "kind": "read_saved",
+          "key": "value_t14",
+          "value": null
+        },
+        {
+          "kind": "read_saved",
+          "key": "value_t15",
+          "value": null
+        },
+        {
+          "kind": "gcode",
+          "script": "SET_PRINT_SUB_STATUS SUB_STATUS=auto_reloading_successful"
+        },
+        {
+          "kind": "write_saved",
+          "key": "extrude_state",
+          "value": 2
+        },
+        {
+          "kind": "gcode",
+          "script": "MOVE_TO_TRASH\nM104 S0"
+        },
+        {
+          "kind": "wait_moves"
+        },
+        {
+          "kind": "gcode",
+          "script": "RESUME"
+        },
+        {
+          "kind": "gcode",
+          "script": "MOVE_TO_TRASH\n"
+        },
+        {
+          "kind": "read_saved",
+          "key": "extrude_state",
+          "value": 2
+        },
+        {
+          "kind": "lookup_object",
+          "name": "multi_color_controller"
+        },
+        {
+          "kind": "read_saved",
+          "key": "value_t2",
+          "value": "slot0"
+        },
+        {
+          "kind": "lookup_object",
+          "name": "box_stepper slot0"
+        },
+        {
+          "kind": "gcode",
+          "script": "MOVE_TO_TRASH\n"
+        },
+        {
+          "kind": "gcode",
+          "script": "M109 S250"
+        },
+        {
+          "kind": "physical_load_intercepted",
+          "slot": 0
+        }
+      ],
+      "intercepted_call_stack": [
+        {
+          "file": "replay.py",
+          "line": 143,
+          "function": "run"
+        },
+        {
+          "file": "box_extras.py",
+          "line": 1660,
+          "function": "box_extras.BoxExtras._execute_auto_reload"
+        },
+        {
+          "file": "replay.py",
+          "line": 126,
+          "function": "command"
+        },
+        {
+          "file": "box_stepper.py",
+          "line": 1161,
+          "function": "box_stepper.BoxExtruderStepper.cmd_detect_auto_reload_func"
+        },
+        {
+          "file": "replay.py",
+          "line": 135,
+          "function": "command"
+        },
+        {
+          "file": "box_extras.py",
+          "line": 1444,
+          "function": "box_extras.BoxExtras.try_resume_print_box1"
+        },
+        {
+          "file": "replay.py",
+          "line": 94,
+          "function": "<lambda>"
+        },
+        {
+          "file": "replay.py",
+          "line": 139,
+          "function": "intercept_load"
+        }
+      ],
+      "counterfactual": false,
+      "name": "observed_mapping",
+      "expected_slot": 0,
+      "passed": true
+    },
+    {
+      "initial_mapping": {
+        "0": 1,
+        "1": 1,
+        "2": 2,
+        "3": 2
+      },
+      "donor": 1,
+      "intended_replacement": 2,
+      "requested_physical_slot": 2,
+      "final_mapping": {
+        "value_t0": "slot2",
+        "value_t1": "slot2",
+        "value_t2": "slot2",
+        "value_t3": "slot2"
+      },
+      "extrude_state": 2,
+      "events": [
+        {
+          "kind": "lookup_object",
+          "name": "box_stepper slot1"
+        },
+        {
+          "kind": "gcode",
+          "script": "AUTO_RELOAD_FUNC SLOT=slot1"
+        },
+        {
+          "kind": "lookup_object",
+          "name": "filament_switch_sensor filament_switch_sensor"
+        },
+        {
+          "kind": "lookup_object",
+          "name": "toolhead"
+        },
+        {
+          "kind": "read_saved",
+          "key": "last_load_slot",
+          "value": "slot1"
+        },
+        {
+          "kind": "lookup_object",
+          "name": "print_stats_manager"
+        },
+        {
+          "kind": "lookup_object",
+          "name": "toolhead"
+        },
+        {
+          "kind": "gcode",
+          "script": "PAUSE"
+        },
+        {
+          "kind": "wait_moves"
+        },
+        {
+          "kind": "read_saved",
+          "key": "last_load_slot",
+          "value": "slot1"
+        },
+        {
+          "kind": "lookup_object",
+          "name": "filament_switch_sensor filament_switch_sensor"
+        },
+        {
+          "kind": "gcode",
+          "script": "MOVE_TO_TRASH\nM109 S250"
+        },
+        {
+          "kind": "simulated_flush",
+          "success": true,
+          "print_active": true
+        },
+        {
+          "kind": "read_saved",
+          "key": "auto_reload_detect",
+          "value": 1
+        },
+        {
+          "kind": "lookup_object",
+          "name": "multi_color_controller"
+        },
+        {
+          "kind": "read_saved",
+          "key": "box_count",
+          "value": 1
+        },
+        {
+          "kind": "lookup_object",
+          "name": "box_stepper slot2"
+        },
+        {
+          "kind": "read_saved",
+          "key": "value_t0",
+          "value": "slot1"
+        },
+        {
+          "kind": "write_saved",
+          "key": "value_t0",
+          "value": "slot2"
+        },
+        {
+          "kind": "read_saved",
+          "key": "value_t1",
+          "value": "slot1"
+        },
+        {
+          "kind": "write_saved",
+          "key": "value_t1",
+          "value": "slot2"
+        },
+        {
+          "kind": "read_saved",
+          "key": "value_t2",
+          "value": "slot2"
+        },
+        {
+          "kind": "read_saved",
+          "key": "value_t3",
+          "value": "slot2"
+        },
+        {
+          "kind": "read_saved",
+          "key": "value_t4",
+          "value": null
+        },
+        {
+          "kind": "read_saved",
+          "key": "value_t5",
+          "value": null
+        },
+        {
+          "kind": "read_saved",
+          "key": "value_t6",
+          "value": null
+        },
+        {
+          "kind": "read_saved",
+          "key": "value_t7",
+          "value": null
+        },
+        {
+          "kind": "read_saved",
+          "key": "value_t8",
+          "value": null
+        },
+        {
+          "kind": "read_saved",
+          "key": "value_t9",
+          "value": null
+        },
+        {
+          "kind": "read_saved",
+          "key": "value_t10",
+          "value": null
+        },
+        {
+          "kind": "read_saved",
+          "key": "value_t11",
+          "value": null
+        },
+        {
+          "kind": "read_saved",
+          "key": "value_t12",
+          "value": null
+        },
+        {
+          "kind": "read_saved",
+          "key": "value_t13",
+          "value": null
+        },
+        {
+          "kind": "read_saved",
+          "key": "value_t14",
+          "value": null
+        },
+        {
+          "kind": "read_saved",
+          "key": "value_t15",
+          "value": null
+        },
+        {
+          "kind": "gcode",
+          "script": "SET_PRINT_SUB_STATUS SUB_STATUS=auto_reloading_successful"
+        },
+        {
+          "kind": "write_saved",
+          "key": "extrude_state",
+          "value": 2
+        },
+        {
+          "kind": "gcode",
+          "script": "MOVE_TO_TRASH\nM104 S0"
+        },
+        {
+          "kind": "wait_moves"
+        },
+        {
+          "kind": "gcode",
+          "script": "RESUME"
+        },
+        {
+          "kind": "gcode",
+          "script": "MOVE_TO_TRASH\n"
+        },
+        {
+          "kind": "read_saved",
+          "key": "extrude_state",
+          "value": 2
+        },
+        {
+          "kind": "lookup_object",
+          "name": "multi_color_controller"
+        },
+        {
+          "kind": "read_saved",
+          "key": "value_t2",
+          "value": "slot2"
+        },
+        {
+          "kind": "lookup_object",
+          "name": "box_stepper slot2"
+        },
+        {
+          "kind": "gcode",
+          "script": "MOVE_TO_TRASH\n"
+        },
+        {
+          "kind": "gcode",
+          "script": "M109 S250"
+        },
+        {
+          "kind": "physical_load_intercepted",
+          "slot": 2
+        }
+      ],
+      "intercepted_call_stack": [
+        {
+          "file": "replay.py",
+          "line": 143,
+          "function": "run"
+        },
+        {
+          "file": "box_extras.py",
+          "line": 1660,
+          "function": "box_extras.BoxExtras._execute_auto_reload"
+        },
+        {
+          "file": "replay.py",
+          "line": 126,
+          "function": "command"
+        },
+        {
+          "file": "box_stepper.py",
+          "line": 1161,
+          "function": "box_stepper.BoxExtruderStepper.cmd_detect_auto_reload_func"
+        },
+        {
+          "file": "replay.py",
+          "line": 135,
+          "function": "command"
+        },
+        {
+          "file": "box_extras.py",
+          "line": 1444,
+          "function": "box_extras.BoxExtras.try_resume_print_box1"
+        },
+        {
+          "file": "replay.py",
+          "line": 94,
+          "function": "<lambda>"
+        },
+        {
+          "file": "replay.py",
+          "line": 139,
+          "function": "intercept_load"
+        }
+      ],
+      "counterfactual": false,
+      "name": "identity_destination_masks_bug",
+      "expected_slot": 2,
+      "passed": true
+    },
+    {
+      "initial_mapping": {
+        "2": 1
+      },
+      "donor": 1,
+      "intended_replacement": 2,
+      "requested_physical_slot": 2,
+      "final_mapping": {
+        "value_t2": "slot2"
+      },
+      "extrude_state": 2,
+      "events": [
+        {
+          "kind": "lookup_object",
+          "name": "box_stepper slot1"
+        },
+        {
+          "kind": "gcode",
+          "script": "AUTO_RELOAD_FUNC SLOT=slot1"
+        },
+        {
+          "kind": "lookup_object",
+          "name": "filament_switch_sensor filament_switch_sensor"
+        },
+        {
+          "kind": "lookup_object",
+          "name": "toolhead"
+        },
+        {
+          "kind": "read_saved",
+          "key": "last_load_slot",
+          "value": "slot1"
+        },
+        {
+          "kind": "lookup_object",
+          "name": "print_stats_manager"
+        },
+        {
+          "kind": "lookup_object",
+          "name": "toolhead"
+        },
+        {
+          "kind": "gcode",
+          "script": "PAUSE"
+        },
+        {
+          "kind": "wait_moves"
+        },
+        {
+          "kind": "read_saved",
+          "key": "last_load_slot",
+          "value": "slot1"
+        },
+        {
+          "kind": "lookup_object",
+          "name": "filament_switch_sensor filament_switch_sensor"
+        },
+        {
+          "kind": "gcode",
+          "script": "MOVE_TO_TRASH\nM109 S250"
+        },
+        {
+          "kind": "simulated_flush",
+          "success": true,
+          "print_active": true
+        },
+        {
+          "kind": "read_saved",
+          "key": "auto_reload_detect",
+          "value": 1
+        },
+        {
+          "kind": "lookup_object",
+          "name": "multi_color_controller"
+        },
+        {
+          "kind": "read_saved",
+          "key": "box_count",
+          "value": 1
+        },
+        {
+          "kind": "lookup_object",
+          "name": "box_stepper slot2"
+        },
+        {
+          "kind": "read_saved",
+          "key": "value_t0",
+          "value": null
+        },
+        {
+          "kind": "read_saved",
+          "key": "value_t1",
+          "value": null
+        },
+        {
+          "kind": "read_saved",
+          "key": "value_t2",
+          "value": "slot1"
+        },
+        {
+          "kind": "write_saved",
+          "key": "value_t2",
+          "value": "slot2"
+        },
+        {
+          "kind": "read_saved",
+          "key": "value_t3",
+          "value": null
+        },
+        {
+          "kind": "read_saved",
+          "key": "value_t4",
+          "value": null
+        },
+        {
+          "kind": "read_saved",
+          "key": "value_t5",
+          "value": null
+        },
+        {
+          "kind": "read_saved",
+          "key": "value_t6",
+          "value": null
+        },
+        {
+          "kind": "read_saved",
+          "key": "value_t7",
+          "value": null
+        },
+        {
+          "kind": "read_saved",
+          "key": "value_t8",
+          "value": null
+        },
+        {
+          "kind": "read_saved",
+          "key": "value_t9",
+          "value": null
+        },
+        {
+          "kind": "read_saved",
+          "key": "value_t10",
+          "value": null
+        },
+        {
+          "kind": "read_saved",
+          "key": "value_t11",
+          "value": null
+        },
+        {
+          "kind": "read_saved",
+          "key": "value_t12",
+          "value": null
+        },
+        {
+          "kind": "read_saved",
+          "key": "value_t13",
+          "value": null
+        },
+        {
+          "kind": "read_saved",
+          "key": "value_t14",
+          "value": null
+        },
+        {
+          "kind": "read_saved",
+          "key": "value_t15",
+          "value": null
+        },
+        {
+          "kind": "gcode",
+          "script": "SET_PRINT_SUB_STATUS SUB_STATUS=auto_reloading_successful"
+        },
+        {
+          "kind": "write_saved",
+          "key": "extrude_state",
+          "value": 2
+        },
+        {
+          "kind": "gcode",
+          "script": "MOVE_TO_TRASH\nM104 S0"
+        },
+        {
+          "kind": "wait_moves"
+        },
+        {
+          "kind": "gcode",
+          "script": "RESUME"
+        },
+        {
+          "kind": "gcode",
+          "script": "MOVE_TO_TRASH\n"
+        },
+        {
+          "kind": "read_saved",
+          "key": "extrude_state",
+          "value": 2
+        },
+        {
+          "kind": "lookup_object",
+          "name": "multi_color_controller"
+        },
+        {
+          "kind": "read_saved",
+          "key": "value_t2",
+          "value": "slot2"
+        },
+        {
+          "kind": "lookup_object",
+          "name": "box_stepper slot2"
+        },
+        {
+          "kind": "gcode",
+          "script": "MOVE_TO_TRASH\n"
+        },
+        {
+          "kind": "gcode",
+          "script": "M109 S250"
+        },
+        {
+          "kind": "physical_load_intercepted",
+          "slot": 2
+        }
+      ],
+      "intercepted_call_stack": [
+        {
+          "file": "replay.py",
+          "line": 143,
+          "function": "run"
+        },
+        {
+          "file": "box_extras.py",
+          "line": 1660,
+          "function": "box_extras.BoxExtras._execute_auto_reload"
+        },
+        {
+          "file": "replay.py",
+          "line": 126,
+          "function": "command"
+        },
+        {
+          "file": "box_stepper.py",
+          "line": 1161,
+          "function": "box_stepper.BoxExtruderStepper.cmd_detect_auto_reload_func"
+        },
+        {
+          "file": "replay.py",
+          "line": 135,
+          "function": "command"
+        },
+        {
+          "file": "box_extras.py",
+          "line": 1444,
+          "function": "box_extras.BoxExtras.try_resume_print_box1"
+        },
+        {
+          "file": "replay.py",
+          "line": 94,
+          "function": "<lambda>"
+        },
+        {
+          "file": "replay.py",
+          "line": 139,
+          "function": "intercept_load"
+        }
+      ],
+      "counterfactual": false,
+      "name": "sparse_T2_donor_maps_successfully_by_coincidence",
+      "expected_slot": 2,
+      "passed": true
+    },
+    {
+      "initial_mapping": {
+        "2": 5,
+        "6": 0
+      },
+      "donor": 5,
+      "intended_replacement": 6,
+      "requested_physical_slot": 0,
+      "final_mapping": {
+        "value_t2": "slot6",
+        "value_t6": "slot0"
+      },
+      "extrude_state": 6,
+      "events": [
+        {
+          "kind": "lookup_object",
+          "name": "box_stepper slot5"
+        },
+        {
+          "kind": "gcode",
+          "script": "AUTO_RELOAD_FUNC SLOT=slot5"
+        },
+        {
+          "kind": "lookup_object",
+          "name": "filament_switch_sensor filament_switch_sensor"
+        },
+        {
+          "kind": "lookup_object",
+          "name": "toolhead"
+        },
+        {
+          "kind": "read_saved",
+          "key": "last_load_slot",
+          "value": "slot5"
+        },
+        {
+          "kind": "lookup_object",
+          "name": "print_stats_manager"
+        },
+        {
+          "kind": "lookup_object",
+          "name": "toolhead"
+        },
+        {
+          "kind": "gcode",
+          "script": "PAUSE"
+        },
+        {
+          "kind": "wait_moves"
+        },
+        {
+          "kind": "read_saved",
+          "key": "last_load_slot",
+          "value": "slot5"
+        },
+        {
+          "kind": "lookup_object",
+          "name": "filament_switch_sensor filament_switch_sensor"
+        },
+        {
+          "kind": "gcode",
+          "script": "MOVE_TO_TRASH\nM109 S250"
+        },
+        {
+          "kind": "simulated_flush",
+          "success": true,
+          "print_active": true
+        },
+        {
+          "kind": "read_saved",
+          "key": "auto_reload_detect",
+          "value": 1
+        },
+        {
+          "kind": "lookup_object",
+          "name": "multi_color_controller"
+        },
+        {
+          "kind": "read_saved",
+          "key": "box_count",
+          "value": 2
+        },
+        {
+          "kind": "lookup_object",
+          "name": "box_stepper slot6"
+        },
+        {
+          "kind": "read_saved",
+          "key": "value_t0",
+          "value": null
+        },
+        {
+          "kind": "read_saved",
+          "key": "value_t1",
+          "value": null
+        },
+        {
+          "kind": "read_saved",
+          "key": "value_t2",
+          "value": "slot5"
+        },
+        {
+          "kind": "write_saved",
+          "key": "value_t2",
+          "value": "slot6"
+        },
+        {
+          "kind": "read_saved",
+          "key": "value_t3",
+          "value": null
+        },
+        {
+          "kind": "read_saved",
+          "key": "value_t4",
+          "value": null
+        },
+        {
+          "kind": "read_saved",
+          "key": "value_t5",
+          "value": null
+        },
+        {
+          "kind": "read_saved",
+          "key": "value_t6",
+          "value": "slot0"
+        },
+        {
+          "kind": "read_saved",
+          "key": "value_t7",
+          "value": null
+        },
+        {
+          "kind": "read_saved",
+          "key": "value_t8",
+          "value": null
+        },
+        {
+          "kind": "read_saved",
+          "key": "value_t9",
+          "value": null
+        },
+        {
+          "kind": "read_saved",
+          "key": "value_t10",
+          "value": null
+        },
+        {
+          "kind": "read_saved",
+          "key": "value_t11",
+          "value": null
+        },
+        {
+          "kind": "read_saved",
+          "key": "value_t12",
+          "value": null
+        },
+        {
+          "kind": "read_saved",
+          "key": "value_t13",
+          "value": null
+        },
+        {
+          "kind": "read_saved",
+          "key": "value_t14",
+          "value": null
+        },
+        {
+          "kind": "read_saved",
+          "key": "value_t15",
+          "value": null
+        },
+        {
+          "kind": "read_saved",
+          "key": "value_t16",
+          "value": null
+        },
+        {
+          "kind": "read_saved",
+          "key": "value_t17",
+          "value": null
+        },
+        {
+          "kind": "read_saved",
+          "key": "value_t18",
+          "value": null
+        },
+        {
+          "kind": "read_saved",
+          "key": "value_t19",
+          "value": null
+        },
+        {
+          "kind": "read_saved",
+          "key": "value_t20",
+          "value": null
+        },
+        {
+          "kind": "read_saved",
+          "key": "value_t21",
+          "value": null
+        },
+        {
+          "kind": "read_saved",
+          "key": "value_t22",
+          "value": null
+        },
+        {
+          "kind": "read_saved",
+          "key": "value_t23",
+          "value": null
+        },
+        {
+          "kind": "read_saved",
+          "key": "value_t24",
+          "value": null
+        },
+        {
+          "kind": "read_saved",
+          "key": "value_t25",
+          "value": null
+        },
+        {
+          "kind": "read_saved",
+          "key": "value_t26",
+          "value": null
+        },
+        {
+          "kind": "read_saved",
+          "key": "value_t27",
+          "value": null
+        },
+        {
+          "kind": "read_saved",
+          "key": "value_t28",
+          "value": null
+        },
+        {
+          "kind": "read_saved",
+          "key": "value_t29",
+          "value": null
+        },
+        {
+          "kind": "read_saved",
+          "key": "value_t30",
+          "value": null
+        },
+        {
+          "kind": "read_saved",
+          "key": "value_t31",
+          "value": null
+        },
+        {
+          "kind": "gcode",
+          "script": "SET_PRINT_SUB_STATUS SUB_STATUS=auto_reloading_successful"
+        },
+        {
+          "kind": "write_saved",
+          "key": "extrude_state",
+          "value": 6
+        },
+        {
+          "kind": "gcode",
+          "script": "MOVE_TO_TRASH\nM104 S0"
+        },
+        {
+          "kind": "wait_moves"
+        },
+        {
+          "kind": "gcode",
+          "script": "RESUME"
+        },
+        {
+          "kind": "gcode",
+          "script": "MOVE_TO_TRASH\n"
+        },
+        {
+          "kind": "read_saved",
+          "key": "extrude_state",
+          "value": 6
+        },
+        {
+          "kind": "lookup_object",
+          "name": "multi_color_controller"
+        },
+        {
+          "kind": "read_saved",
+          "key": "value_t6",
+          "value": "slot0"
+        },
+        {
+          "kind": "lookup_object",
+          "name": "box_stepper slot0"
+        },
+        {
+          "kind": "gcode",
+          "script": "MOVE_TO_TRASH\n"
+        },
+        {
+          "kind": "gcode",
+          "script": "M109 S250"
+        },
+        {
+          "kind": "physical_load_intercepted",
+          "slot": 0
+        }
+      ],
+      "intercepted_call_stack": [
+        {
+          "file": "replay.py",
+          "line": 143,
+          "function": "run"
+        },
+        {
+          "file": "box_extras.py",
+          "line": 1660,
+          "function": "box_extras.BoxExtras._execute_auto_reload"
+        },
+        {
+          "file": "replay.py",
+          "line": 126,
+          "function": "command"
+        },
+        {
+          "file": "box_stepper.py",
+          "line": 1161,
+          "function": "box_stepper.BoxExtruderStepper.cmd_detect_auto_reload_func"
+        },
+        {
+          "file": "replay.py",
+          "line": 135,
+          "function": "command"
+        },
+        {
+          "file": "box_extras.py",
+          "line": 1444,
+          "function": "box_extras.BoxExtras.try_resume_print_box1"
+        },
+        {
+          "file": "replay.py",
+          "line": 94,
+          "function": "<lambda>"
+        },
+        {
+          "file": "replay.py",
+          "line": 139,
+          "function": "intercept_load"
+        }
+      ],
+      "counterfactual": false,
+      "name": "multiple_box_same_indirection",
+      "expected_slot": 0,
+      "passed": true
+    },
+    {
+      "initial_mapping": {
+        "0": 1,
+        "2": 0
+      },
+      "donor": 1,
+      "intended_replacement": 2,
+      "requested_physical_slot": null,
+      "final_mapping": {
+        "value_t0": "slot1",
+        "value_t2": "slot0"
+      },
+      "extrude_state": 0,
+      "events": [
+        {
+          "kind": "lookup_object",
+          "name": "box_stepper slot1"
+        },
+        {
+          "kind": "gcode",
+          "script": "AUTO_RELOAD_FUNC SLOT=slot1"
+        },
+        {
+          "kind": "lookup_object",
+          "name": "filament_switch_sensor filament_switch_sensor"
+        },
+        {
+          "kind": "lookup_object",
+          "name": "toolhead"
+        },
+        {
+          "kind": "read_saved",
+          "key": "last_load_slot",
+          "value": "slot1"
+        },
+        {
+          "kind": "lookup_object",
+          "name": "print_stats_manager"
+        },
+        {
+          "kind": "lookup_object",
+          "name": "toolhead"
+        },
+        {
+          "kind": "gcode",
+          "script": "PAUSE"
+        },
+        {
+          "kind": "wait_moves"
+        },
+        {
+          "kind": "read_saved",
+          "key": "last_load_slot",
+          "value": "slot1"
+        },
+        {
+          "kind": "lookup_object",
+          "name": "filament_switch_sensor filament_switch_sensor"
+        },
+        {
+          "kind": "gcode",
+          "script": "MOVE_TO_TRASH\nM109 S250"
+        },
+        {
+          "kind": "simulated_flush",
+          "success": true,
+          "print_active": true
+        },
+        {
+          "kind": "read_saved",
+          "key": "auto_reload_detect",
+          "value": 1
+        },
+        {
+          "kind": "lookup_object",
+          "name": "multi_color_controller"
+        },
+        {
+          "kind": "read_saved",
+          "key": "box_count",
+          "value": 1
+        },
+        {
+          "kind": "sensor_log"
+        },
+        {
+          "kind": "gcode",
+          "script": "MOVE_TO_TRASH\nM104 S0"
+        },
+        {
+          "kind": "gcode",
+          "script": "SET_PRINT_SUB_STATUS SUB_STATUS=auto_reloading_failed"
+        }
+      ],
+      "intercepted_call_stack": [],
+      "counterfactual": false,
+      "name": "different_color_material_no_replacement",
+      "expected_slot": null,
+      "passed": true
+    },
+    {
+      "initial_mapping": {
+        "0": 1,
+        "1": 1,
+        "2": 0,
+        "3": 2
+      },
+      "donor": 1,
+      "intended_replacement": 2,
+      "requested_physical_slot": 2,
+      "final_mapping": {
+        "value_t0": "slot2",
+        "value_t1": "slot2",
+        "value_t2": "slot0",
+        "value_t3": "slot2"
+      },
+      "extrude_state": 0,
+      "events": [
+        {
+          "kind": "lookup_object",
+          "name": "box_stepper slot1"
+        },
+        {
+          "kind": "gcode",
+          "script": "AUTO_RELOAD_FUNC SLOT=slot1"
+        },
+        {
+          "kind": "lookup_object",
+          "name": "filament_switch_sensor filament_switch_sensor"
+        },
+        {
+          "kind": "lookup_object",
+          "name": "toolhead"
+        },
+        {
+          "kind": "read_saved",
+          "key": "last_load_slot",
+          "value": "slot1"
+        },
+        {
+          "kind": "lookup_object",
+          "name": "print_stats_manager"
+        },
+        {
+          "kind": "lookup_object",
+          "name": "toolhead"
+        },
+        {
+          "kind": "gcode",
+          "script": "PAUSE"
+        },
+        {
+          "kind": "wait_moves"
+        },
+        {
+          "kind": "read_saved",
+          "key": "last_load_slot",
+          "value": "slot1"
+        },
+        {
+          "kind": "lookup_object",
+          "name": "filament_switch_sensor filament_switch_sensor"
+        },
+        {
+          "kind": "gcode",
+          "script": "MOVE_TO_TRASH\nM109 S250"
+        },
+        {
+          "kind": "simulated_flush",
+          "success": true,
+          "print_active": true
+        },
+        {
+          "kind": "read_saved",
+          "key": "auto_reload_detect",
+          "value": 1
+        },
+        {
+          "kind": "lookup_object",
+          "name": "multi_color_controller"
+        },
+        {
+          "kind": "read_saved",
+          "key": "box_count",
+          "value": 1
+        },
+        {
+          "kind": "lookup_object",
+          "name": "box_stepper slot2"
+        },
+        {
+          "kind": "read_saved",
+          "key": "value_t0",
+          "value": "slot1"
+        },
+        {
+          "kind": "write_saved",
+          "key": "value_t0",
+          "value": "slot2"
+        },
+        {
+          "kind": "read_saved",
+          "key": "value_t1",
+          "value": "slot1"
+        },
+        {
+          "kind": "write_saved",
+          "key": "value_t1",
+          "value": "slot2"
+        },
+        {
+          "kind": "read_saved",
+          "key": "value_t2",
+          "value": "slot0"
+        },
+        {
+          "kind": "read_saved",
+          "key": "value_t3",
+          "value": "slot2"
+        },
+        {
+          "kind": "read_saved",
+          "key": "value_t4",
+          "value": null
+        },
+        {
+          "kind": "read_saved",
+          "key": "value_t5",
+          "value": null
+        },
+        {
+          "kind": "read_saved",
+          "key": "value_t6",
+          "value": null
+        },
+        {
+          "kind": "read_saved",
+          "key": "value_t7",
+          "value": null
+        },
+        {
+          "kind": "read_saved",
+          "key": "value_t8",
+          "value": null
+        },
+        {
+          "kind": "read_saved",
+          "key": "value_t9",
+          "value": null
+        },
+        {
+          "kind": "read_saved",
+          "key": "value_t10",
+          "value": null
+        },
+        {
+          "kind": "read_saved",
+          "key": "value_t11",
+          "value": null
+        },
+        {
+          "kind": "read_saved",
+          "key": "value_t12",
+          "value": null
+        },
+        {
+          "kind": "read_saved",
+          "key": "value_t13",
+          "value": null
+        },
+        {
+          "kind": "read_saved",
+          "key": "value_t14",
+          "value": null
+        },
+        {
+          "kind": "read_saved",
+          "key": "value_t15",
+          "value": null
+        },
+        {
+          "kind": "gcode",
+          "script": "SET_PRINT_SUB_STATUS SUB_STATUS=auto_reloading_successful"
+        },
+        {
+          "kind": "write_saved",
+          "key": "extrude_state",
+          "value": 2
+        },
+        {
+          "kind": "gcode",
+          "script": "MOVE_TO_TRASH\nM104 S0"
+        },
+        {
+          "kind": "wait_moves"
+        },
+        {
+          "kind": "gcode",
+          "script": "RESUME"
+        },
+        {
+          "kind": "counterfactual_only",
+          "extrude_state": 0
+        },
+        {
+          "kind": "gcode",
+          "script": "MOVE_TO_TRASH\n"
+        },
+        {
+          "kind": "read_saved",
+          "key": "extrude_state",
+          "value": 0
+        },
+        {
+          "kind": "lookup_object",
+          "name": "multi_color_controller"
+        },
+        {
+          "kind": "read_saved",
+          "key": "value_t0",
+          "value": "slot2"
+        },
+        {
+          "kind": "lookup_object",
+          "name": "box_stepper slot2"
+        },
+        {
+          "kind": "gcode",
+          "script": "MOVE_TO_TRASH\n"
+        },
+        {
+          "kind": "gcode",
+          "script": "M109 S250"
+        },
+        {
+          "kind": "physical_load_intercepted",
+          "slot": 2
+        }
+      ],
+      "intercepted_call_stack": [
+        {
+          "file": "replay.py",
+          "line": 143,
+          "function": "run"
+        },
+        {
+          "file": "box_extras.py",
+          "line": 1660,
+          "function": "box_extras.BoxExtras._execute_auto_reload"
+        },
+        {
+          "file": "replay.py",
+          "line": 126,
+          "function": "command"
+        },
+        {
+          "file": "box_stepper.py",
+          "line": 1161,
+          "function": "box_stepper.BoxExtruderStepper.cmd_detect_auto_reload_func"
+        },
+        {
+          "file": "replay.py",
+          "line": 135,
+          "function": "command"
+        },
+        {
+          "file": "box_extras.py",
+          "line": 1444,
+          "function": "box_extras.BoxExtras.try_resume_print_box1"
+        },
+        {
+          "file": "replay.py",
+          "line": 94,
+          "function": "<lambda>"
+        },
+        {
+          "file": "replay.py",
+          "line": 139,
+          "function": "intercept_load"
+        }
+      ],
+      "counterfactual": true,
+      "name": "counterfactual_preserve_logical_T0",
+      "expected_slot": 2,
+      "passed": true
+    },
+    {
+      "initial_mapping": {
+        "2": 5,
+        "6": 0
+      },
+      "donor": 5,
+      "intended_replacement": 6,
+      "requested_physical_slot": 6,
+      "final_mapping": {
+        "value_t2": "slot6",
+        "value_t6": "slot0"
+      },
+      "extrude_state": 2,
+      "events": [
+        {
+          "kind": "lookup_object",
+          "name": "box_stepper slot5"
+        },
+        {
+          "kind": "gcode",
+          "script": "AUTO_RELOAD_FUNC SLOT=slot5"
+        },
+        {
+          "kind": "lookup_object",
+          "name": "filament_switch_sensor filament_switch_sensor"
+        },
+        {
+          "kind": "lookup_object",
+          "name": "toolhead"
+        },
+        {
+          "kind": "read_saved",
+          "key": "last_load_slot",
+          "value": "slot5"
+        },
+        {
+          "kind": "lookup_object",
+          "name": "print_stats_manager"
+        },
+        {
+          "kind": "lookup_object",
+          "name": "toolhead"
+        },
+        {
+          "kind": "gcode",
+          "script": "PAUSE"
+        },
+        {
+          "kind": "wait_moves"
+        },
+        {
+          "kind": "read_saved",
+          "key": "last_load_slot",
+          "value": "slot5"
+        },
+        {
+          "kind": "lookup_object",
+          "name": "filament_switch_sensor filament_switch_sensor"
+        },
+        {
+          "kind": "gcode",
+          "script": "MOVE_TO_TRASH\nM109 S250"
+        },
+        {
+          "kind": "simulated_flush",
+          "success": true,
+          "print_active": true
+        },
+        {
+          "kind": "read_saved",
+          "key": "auto_reload_detect",
+          "value": 1
+        },
+        {
+          "kind": "lookup_object",
+          "name": "multi_color_controller"
+        },
+        {
+          "kind": "read_saved",
+          "key": "box_count",
+          "value": 2
+        },
+        {
+          "kind": "lookup_object",
+          "name": "box_stepper slot6"
+        },
+        {
+          "kind": "read_saved",
+          "key": "value_t0",
+          "value": null
+        },
+        {
+          "kind": "read_saved",
+          "key": "value_t1",
+          "value": null
+        },
+        {
+          "kind": "read_saved",
+          "key": "value_t2",
+          "value": "slot5"
+        },
+        {
+          "kind": "write_saved",
+          "key": "value_t2",
+          "value": "slot6"
+        },
+        {
+          "kind": "read_saved",
+          "key": "value_t3",
+          "value": null
+        },
+        {
+          "kind": "read_saved",
+          "key": "value_t4",
+          "value": null
+        },
+        {
+          "kind": "read_saved",
+          "key": "value_t5",
+          "value": null
+        },
+        {
+          "kind": "read_saved",
+          "key": "value_t6",
+          "value": "slot0"
+        },
+        {
+          "kind": "read_saved",
+          "key": "value_t7",
+          "value": null
+        },
+        {
+          "kind": "read_saved",
+          "key": "value_t8",
+          "value": null
+        },
+        {
+          "kind": "read_saved",
+          "key": "value_t9",
+          "value": null
+        },
+        {
+          "kind": "read_saved",
+          "key": "value_t10",
+          "value": null
+        },
+        {
+          "kind": "read_saved",
+          "key": "value_t11",
+          "value": null
+        },
+        {
+          "kind": "read_saved",
+          "key": "value_t12",
+          "value": null
+        },
+        {
+          "kind": "read_saved",
+          "key": "value_t13",
+          "value": null
+        },
+        {
+          "kind": "read_saved",
+          "key": "value_t14",
+          "value": null
+        },
+        {
+          "kind": "read_saved",
+          "key": "value_t15",
+          "value": null
+        },
+        {
+          "kind": "read_saved",
+          "key": "value_t16",
+          "value": null
+        },
+        {
+          "kind": "read_saved",
+          "key": "value_t17",
+          "value": null
+        },
+        {
+          "kind": "read_saved",
+          "key": "value_t18",
+          "value": null
+        },
+        {
+          "kind": "read_saved",
+          "key": "value_t19",
+          "value": null
+        },
+        {
+          "kind": "read_saved",
+          "key": "value_t20",
+          "value": null
+        },
+        {
+          "kind": "read_saved",
+          "key": "value_t21",
+          "value": null
+        },
+        {
+          "kind": "read_saved",
+          "key": "value_t22",
+          "value": null
+        },
+        {
+          "kind": "read_saved",
+          "key": "value_t23",
+          "value": null
+        },
+        {
+          "kind": "read_saved",
+          "key": "value_t24",
+          "value": null
+        },
+        {
+          "kind": "read_saved",
+          "key": "value_t25",
+          "value": null
+        },
+        {
+          "kind": "read_saved",
+          "key": "value_t26",
+          "value": null
+        },
+        {
+          "kind": "read_saved",
+          "key": "value_t27",
+          "value": null
+        },
+        {
+          "kind": "read_saved",
+          "key": "value_t28",
+          "value": null
+        },
+        {
+          "kind": "read_saved",
+          "key": "value_t29",
+          "value": null
+        },
+        {
+          "kind": "read_saved",
+          "key": "value_t30",
+          "value": null
+        },
+        {
+          "kind": "read_saved",
+          "key": "value_t31",
+          "value": null
+        },
+        {
+          "kind": "gcode",
+          "script": "SET_PRINT_SUB_STATUS SUB_STATUS=auto_reloading_successful"
+        },
+        {
+          "kind": "write_saved",
+          "key": "extrude_state",
+          "value": 6
+        },
+        {
+          "kind": "gcode",
+          "script": "MOVE_TO_TRASH\nM104 S0"
+        },
+        {
+          "kind": "wait_moves"
+        },
+        {
+          "kind": "gcode",
+          "script": "RESUME"
+        },
+        {
+          "kind": "counterfactual_only",
+          "extrude_state": 2
+        },
+        {
+          "kind": "gcode",
+          "script": "MOVE_TO_TRASH\n"
+        },
+        {
+          "kind": "read_saved",
+          "key": "extrude_state",
+          "value": 2
+        },
+        {
+          "kind": "lookup_object",
+          "name": "multi_color_controller"
+        },
+        {
+          "kind": "read_saved",
+          "key": "value_t2",
+          "value": "slot6"
+        },
+        {
+          "kind": "lookup_object",
+          "name": "box_stepper slot6"
+        },
+        {
+          "kind": "gcode",
+          "script": "MOVE_TO_TRASH\n"
+        },
+        {
+          "kind": "gcode",
+          "script": "M109 S250"
+        },
+        {
+          "kind": "physical_load_intercepted",
+          "slot": 6
+        }
+      ],
+      "intercepted_call_stack": [
+        {
+          "file": "replay.py",
+          "line": 143,
+          "function": "run"
+        },
+        {
+          "file": "box_extras.py",
+          "line": 1660,
+          "function": "box_extras.BoxExtras._execute_auto_reload"
+        },
+        {
+          "file": "replay.py",
+          "line": 126,
+          "function": "command"
+        },
+        {
+          "file": "box_stepper.py",
+          "line": 1161,
+          "function": "box_stepper.BoxExtruderStepper.cmd_detect_auto_reload_func"
+        },
+        {
+          "file": "replay.py",
+          "line": 135,
+          "function": "command"
+        },
+        {
+          "file": "box_extras.py",
+          "line": 1444,
+          "function": "box_extras.BoxExtras.try_resume_print_box1"
+        },
+        {
+          "file": "replay.py",
+          "line": 94,
+          "function": "<lambda>"
+        },
+        {
+          "file": "replay.py",
+          "line": 139,
+          "function": "intercept_load"
+        }
+      ],
+      "counterfactual": true,
+      "name": "counterfactual_preserve_sparse_logical_T2",
+      "expected_slot": 6,
+      "passed": true
+    }
+  ],
+  "diagnostic_sites": [
+    {
+      "kind": "physical_index_written_to_extrude_state",
+      "stack": [
+        {
+          "file": "replay.py",
+          "line": 193,
+          "function": "<module>"
+        },
+        {
+          "file": "replay.py",
+          "line": 143,
+          "function": "run"
+        },
+        {
+          "file": "box_extras.py",
+          "line": 1660,
+          "function": "box_extras.BoxExtras._execute_auto_reload"
+        },
+        {
+          "file": "replay.py",
+          "line": 126,
+          "function": "command"
+        },
+        {
+          "file": "box_stepper.py",
+          "line": 1158,
+          "function": "box_stepper.BoxExtruderStepper.cmd_detect_auto_reload_func"
+        },
+        {
+          "file": "replay.py",
+          "line": 182,
+          "function": "write_probe"
+        }
+      ]
+    },
+    {
+      "kind": "resume_reads_logical_mapping",
+      "stack": [
+        {
+          "file": "replay.py",
+          "line": 193,
+          "function": "<module>"
+        },
+        {
+          "file": "replay.py",
+          "line": 143,
+          "function": "run"
+        },
+        {
+          "file": "box_extras.py",
+          "line": 1660,
+          "function": "box_extras.BoxExtras._execute_auto_reload"
+        },
+        {
+          "file": "replay.py",
+          "line": 126,
+          "function": "command"
+        },
+        {
+          "file": "box_stepper.py",
+          "line": 1161,
+          "function": "box_stepper.BoxExtruderStepper.cmd_detect_auto_reload_func"
+        },
+        {
+          "file": "replay.py",
+          "line": 135,
+          "function": "command"
+        },
+        {
+          "file": "box_extras.py",
+          "line": 1438,
+          "function": "box_extras.BoxExtras.try_resume_print_box1"
+        },
+        {
+          "file": "replay.py",
+          "line": 189,
+          "function": "read_probe"
+        }
+      ]
+    }
+  ]
+}

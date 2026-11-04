@@ -1,0 +1,17 @@
+{
+  "time": 1793789950.1739771,
+  "remote_backup": "/home/qidi/qidi-refill-backups/20261104-before-tool-identity-fix/firmware-runtime-config.tar.gz",
+  "local_backup_name": "firmware-runtime-config-private.tar.gz",
+  "sha256": "48993ae22c16df1d140ac92bbc7d395e4d14b85108c4e6d340fe1a8222fd4158",
+  "size": 197228958,
+  "included": [
+    "home/qidi/klipper",
+    "home/qidi/klippy-env",
+    "home/qidi/printer_data/config",
+    "etc/systemd/system/klipper.service",
+    "etc/os-release"
+  ],
+  "scope": "Klipper host firmware/runtime/config; not an MCU flash dump",
+  "private": true,
+  "download_verified": true
+}

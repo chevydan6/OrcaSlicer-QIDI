@@ -1,0 +1,12 @@
+{
+  "state": "offline_verified_not_yet_installed",
+  "authorization": "Dan requested backup, fix, install and repeat print; later confirmed bed/feed ready",
+  "offline_passed": 25,
+  "baseline_passed": 7,
+  "files": {
+    "test_firmware.py": "625d6b8ef71e701977aa7a1694ef45a3120f71db6acf1ea4017d1f3226c6f91a",
+    "README.md": "ddb20ac85d6416baba59ebe0d2820d503174688762a52f69d811368f97911bb6",
+    "qidi_refill_tool_identity.cfg": "1af7360d68623b8c6b6d3bccdf0138e793d2d5dc6d6e338e060de05f974a0402",
+    "qidi_refill_tool_identity.py": "4513412930926926dc0d72ae1a0fbcdac3c1eba92e09c7b712171d7db842bd0f"
+  }
+}
