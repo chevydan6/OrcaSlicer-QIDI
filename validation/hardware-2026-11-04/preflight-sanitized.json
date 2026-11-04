@@ -1,0 +1,108 @@
+{
+  "time_utc": "2026-11-04T06:46:49.746288+00:00",
+  "purpose": "Preflight for user-authorized small MAX4 test; material/plate/supervision confirmation pending",
+  "requests": "GET only; no heater/motion/filament/upload/start commands",
+  "printer_state": "ready",
+  "print_state": "standby",
+  "idle_state": "Ready",
+  "homed_axes": "",
+  "box_count": 1,
+  "identity": "box_v1",
+  "loaded_slot": "slot16",
+  "main_mcu_version": "02.01.01.12",
+  "heaters": {
+    "extruder": {
+      "temperature": 27.5,
+      "target": 0.0
+    },
+    "heater_bed": {
+      "temperature": 23.3,
+      "target": 0.0
+    },
+    "heater_generic chamber": {
+      "temperature": 23.95,
+      "target": 0.0
+    }
+  },
+  "slots": [
+    {
+      "physical_slot": 0,
+      "label": "A1",
+      "runout_button": 0,
+      "sensor_indicates_present": true,
+      "vendor_str": "Generic",
+      "filament_str": "PLA",
+      "filament_type": "PLA",
+      "color_rgb_str": [
+        "#DFD628"
+      ],
+      "min_temp": 190,
+      "max_temp": 240,
+      "box_min_temp": 0,
+      "box_max_temp": 0
+    },
+    {
+      "physical_slot": 1,
+      "label": "A2",
+      "runout_button": 1,
+      "sensor_indicates_present": false,
+      "vendor_str": "Generic",
+      "filament_str": "ABS",
+      "filament_type": "ABS",
+      "color_rgb_str": [
+        "#2850FF"
+      ],
+      "min_temp": 240,
+      "max_temp": 280,
+      "box_min_temp": 0,
+      "box_max_temp": 45
+    },
+    {
+      "physical_slot": 2,
+      "label": "A3",
+      "runout_button": 1,
+      "sensor_indicates_present": false,
+      "vendor_str": "QIDI",
+      "filament_str": "PLA Basic",
+      "filament_type": "PLA",
+      "color_rgb_str": [
+        "#FAFAFA"
+      ],
+      "min_temp": 190,
+      "max_temp": 240,
+      "box_min_temp": 0,
+      "box_max_temp": 0
+    },
+    {
+      "physical_slot": 3,
+      "label": "A4",
+      "runout_button": 1,
+      "sensor_indicates_present": false,
+      "vendor_str": "QIDI",
+      "filament_str": "PLA Basic",
+      "filament_type": "PLA",
+      "color_rgb_str": [
+        "#FAFAFA"
+      ],
+      "min_temp": 190,
+      "max_temp": 240,
+      "box_min_temp": 0,
+      "box_max_temp": 0
+    }
+  ],
+  "model": {
+    "filename": "starting-filament-cube-10x10x4.stl",
+    "dimensions_mm": [
+      10,
+      10,
+      4
+    ],
+    "sha256": "92494d786171641cf506536265ee8231051c25cdf630416396dd0205f040f312"
+  },
+  "next_required": "Confirm actual A1 filament, temperatures, fitted/clear plate and supervision; then slice/inspect the exact job before starting.",
+  "mcu_versions": {
+    "mcu": "02.01.01.12",
+    "mcu THR": "02.02.01.08",
+    "mcu mcu_box1": "02.03.01.21"
+  }
+}

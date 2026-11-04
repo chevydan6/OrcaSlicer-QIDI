@@ -1,0 +1,37 @@
+{
+  "draft_only": true,
+  "submitted": false,
+  "material_confirmation_pending": true,
+  "logical_tool": 2,
+  "proposed_physical_slot": 0,
+  "mapping": [
+    -1,
+    -1,
+    0
+  ],
+  "temperature_and_time_trace": [
+    "BOX_TEMP_SET VT2=0",
+    "M140 S60",
+    "M141 S0",
+    "BOX_PRINT_START EXTRUDER=2 HOTENDTEMP=240",
+    "M109 S210",
+    "M104 S140",
+    "M109.1 S180",
+    "M109.1 S150",
+    "M190 S60",
+    "M191 S0",
+    "M109 S210",
+    "M140 S60",
+    "M104 S210",
+    "M141 S0",
+    "M104 S210 ; set nozzle temperature",
+    "M140 S60 ; set bed temperature",
+    "M141 S0",
+    "M140 S0",
+    "M104 S0",
+    "; total filament used [g] = 0.38",
+    "; total filament cost = 0.00",
+    "; estimated printing time (normal mode) = 9m 42s"
+  ],
+  "gcode_sha256": "ae0269b7034eead8342edc4b052b0a7a04eff8fb1f668f89b80f54667496446f"
+}
