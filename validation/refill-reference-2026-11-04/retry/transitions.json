@@ -1,0 +1,122 @@
+[
+  {
+    "time": 1793782142.2526538,
+    "loaded_slot": "slot16",
+    "present": [
+      1,
+      1,
+      1,
+      0
+    ],
+    "auto_refill": [
+      {
+        "color": "#2850FF",
+        "type": "ABS",
+        "slot": [
+          "1B",
+          "1C"
+        ]
+      }
+    ],
+    "extruder_limit_state": false,
+    "warnings": [],
+    "print_state": "standby"
+  },
+  {
+    "time": 1793782254.5848703,
+    "loaded_slot": "slot16",
+    "present": [
+      1,
+      1,
+      1,
+      0
+    ],
+    "auto_refill": [
+      {
+        "color": "#2850FF",
+        "type": "ABS",
+        "slot": [
+          "1B",
+          "1C"
+        ]
+      }
+    ],
+    "extruder_limit_state": false,
+    "warnings": [],
+    "print_state": "printing"
+  },
+  {
+    "time": 1793782423.1032767,
+    "loaded_slot": "slot1",
+    "present": [
+      1,
+      1,
+      1,
+      0
+    ],
+    "auto_refill": [
+      {
+        "color": "#2850FF",
+        "type": "ABS",
+        "slot": [
+          "1B",
+          "1C"
+        ]
+      }
+    ],
+    "extruder_limit_state": false,
+    "warnings": [],
+    "print_state": "printing"
+  },
+  {
+    "time": 1793782434.0652294,
+    "loaded_slot": "slot1",
+    "present": [
+      1,
+      1,
+      1,
+      0
+    ],
+    "auto_refill": [
+      {
+        "color": "#2850FF",
+        "type": "ABS",
+        "slot": [
+          "1B",
+          "1C"
+        ]
+      }
+    ],
+    "extruder_limit_state": true,
+    "warnings": [],
+    "print_state": "printing"
+  },
+  {
+    "time": 1793783442.0466099,
+    "loaded_slot": "slot1",
+    "present": [
+      1,
+      0,
+      1,
+      0
+    ],
+    "auto_refill": [],
+    "extruder_limit_state": true,
+    "warnings": [],
+    "print_state": "printing"
+  },
+  {
+    "time": 1793783531.6027281,
+    "loaded_slot": "slot1",
+    "present": [
+      1,
+      0,
+      1,
+      0
+    ],
+    "auto_refill": [],
+    "extruder_limit_state": true,
+    "warnings": [],
+    "print_state": "standby"
+  }
+]

@@ -94,12 +94,18 @@ contribute positive evidence to this final acceptance.
 
 ## Physical hardware evidence and boundary
 
-An authorized ABS refill comparison is now active. Dan intentionally matched A2/A3
-software colors and already cut the A2 donor. Official QIDI Studio's reference job
-failed during initial loading with QDE_004_006, before layer1. Dan confirmed the
-cut donor was too short and requested a retry; automatic refill remains unverified. See
-[reference session](validation/refill-reference-2026-11-04/README.md), including the
-actual-upload identity and startup/capture differences. Orca comparison is pending.
+The authorized ABS refill reference session completed two attempts in official
+QIDI Studio2.07.02.73. The first failed initial loading (QDE_004_006); Dan confirmed
+the cut donor was too short. The retry completed40 layers/21m21s in orange fromA2.
+Its inlet became empty at layer38 but toolhead filament remained present through
+completion; noA3 transfer occurred. Automatic refill remains **inconclusive**,
+not passed or failed. All heater targets returned0; telemetry still reportedA2
+loaded after normal end, so successful unload is not established. Both reference
+GUIs exited0. [Reference evidence](validation/refill-reference-2026-11-04/README.md)
+includes exact uploads, hashes, sanitized telemetry/history and retry HTTP/WS traces.
+Next physical step: remove the block after cooling, establish cut timing/location,
+and arrange enough remaining model consumption to reach runout. Orca comparison
+is pending. No product source, pin or accepted-binary change accompanied this work.
 
 On2026-11-04 Dan authorized a small physical test and delegated its setup choices.
 Accepted70's actual GUI submitted a10×10×4mm cube using only logical T2 mapped to

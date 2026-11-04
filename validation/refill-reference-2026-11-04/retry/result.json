@@ -1,0 +1,33 @@
+{
+  "reference": "Official QIDI Studio 2.07.02.73 Ubuntu24",
+  "job": "MAX4-QIDI-ABS-refill-retry-20261104.gcode.3mf",
+  "status": "completed",
+  "job_id": "00002B",
+  "total_duration_seconds": 1281.3292376520112,
+  "layers_observed": 40,
+  "inlet_empty_first_observed": {
+    "time": 1793783442.0466099,
+    "layer": 38,
+    "toolhead_filament_present": true
+  },
+  "loaded_slots_observed": [
+    "slot1",
+    "slot16"
+  ],
+  "slot3_transition_observed": false,
+  "toolhead_runout_during_model_observed": false,
+  "physical_color_observed": "orange through completed block",
+  "automatic_refill_result": "Inconclusive: Box inlet became empty at layer38, model completed while toolhead still detected filament. No slot3 transfer occurred.",
+  "final_state": "standby",
+  "final_heater_targets": {
+    "extruder": 0.0,
+    "heater_bed": 0.0,
+    "heater_generic chamber": 0.0
+  },
+  "final_loaded_slot": "slot1",
+  "final_extruder_limit_state": true,
+  "end_unload_command": "UNLOAD_FILAMENT T=0 exists in exact upload; telemetry still reports slot1 and toolhead filament present after completion. Do not claim successful unload.",
+  "gui_exit_code": 0,
+  "physical_cut_timing": "Requested after stable first-layer deposition; no user response received specifying retry cut time/location. Sensor evidence retained.",
+  "next_required": "Remove completed block/purge after cooling; establish donor cut location/timing and restore/recover feed as needed for repeat. Complete a real reference refill before comparison with accepted Orca70."
+}

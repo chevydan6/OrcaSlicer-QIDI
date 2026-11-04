@@ -42,4 +42,6 @@ TARGET=0 at1793781976.93. Subsequent standby telemetry confirms all targets0.
 The lamp was turned off and QIDI Studio exited0. Do not claim cancellation alone
 verified heater shutdown. A2 was subsequently restored by Dan for the retry.
 
-[The restored-donor retry](retry/README.md) is now running in the same official reference.
+[The restored-donor retry](retry/README.md) completed all40 layers in the same
+official reference. The inlet became empty at layer38, but no toolhead runout or
+A3 transfer occurred before completion; automatic refill remains inconclusive.

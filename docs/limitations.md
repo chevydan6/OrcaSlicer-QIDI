@@ -31,8 +31,9 @@ failed records are retained and are not combined with70's positive evidence.
   mode. Mixed Box/external jobs, multicolor external-spool jobs and incomplete
   mappings are rejected. Experimental multi-device submission refuses QIDI jobs
   because that separate path lacks a per-printer mapping snapshot.
-- Manual drying and automatic refill are not enabled. Public source evidence did
-  not establish an unambiguous active LAN command for both workflows. The
+- Custom Orca exposes neither manual drying nor automatic-refill controls.
+  Firmware may already have refill enabled, as observed on Dan's MAX4. Public source
+  evidence did not establish unambiguous control commands for both workflows. The
   incompatible Bambu refill/calibration/reset operations are hidden for QIDI.
   Filament Box temperatures used during printing are implemented separately.
 - Current Orca process and material tuning is retained where a counterpart
@@ -65,10 +66,13 @@ The port explicitly sets Box mode, validates every used tool mapping, and captur
 submission options before asynchronous upload. A physical T2→A1 print now passed on the reported firmware, but multiple-Box,
 support-first and sequential QIDI Studio comparisons remain outstanding.
 
-## Hardware checks requiring separate authorization
+## Hardware test scope
 
-Record the MAX4 firmware version, Box count and slot layout first. Agree on each
-physical operation before performing it. Suggested checks include single-material
+Record the MAX4 firmware version, Box count and slot layout first. Work within
+Dan's authorized test session; do not repeatedly request permission for operations
+already authorized. Dan authorized autonomous execution of this ABS refill
+session. New firmware flashing or persistent configuration changes remain outside
+that test scope. Suggested checks include single-material
 external mode, sparse logical filament 3 to B2, reversed/multiple-Box mappings,
 support-first startup, filament changes, RFID and material sync, chamber/fan
 telemetry, camera, and network failure recovery. Heating, feeding, motion and print
@@ -78,3 +82,18 @@ No software test suite can guarantee that a GUI will never crash. The control
 stability gate covers documented malformed inputs, delayed/failed communication,
 dialog lifetimes, repeated actions, recovery and subsequent slicing. Unobserved
 hardware responses or platform conditions can still expose defects.
+
+## ABS refill reference, 2026-11-04
+
+Official QIDI Studio2.07.02.73 was tested before the custom Orca comparison.
+The first cut donor failed initial loading; Dan confirmed it was too short.
+The restored-donor retry completed40 orange layers. A2's inlet became empty at
+layer38, but toolhead filament remained present through completion and no A3
+transfer occurred. This is inconclusive for automatic refill. The firmware had
+reported auto_reload_detect=1 and a matched blue ABS A2/A3 group; custom Orca still
+has no refill control and has not been physically tested for refill.
+All heater targets returned0. Post-end loaded_slot1/sensor-present remained despite
+the reference job's unload command, so unload success is not claimed.
+[Exact jobs, traces and results](../validation/refill-reference-2026-11-04/README.md)
+are retained. Repeat with sufficient consumption after the donor inlet empties,
+then compare Orca sequentially after clearing the plate.

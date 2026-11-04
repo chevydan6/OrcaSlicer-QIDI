@@ -1,0 +1,1437 @@
+[
+  {
+    "message": "SAVE_VARIABLE VARIABLE=enable_polar_cooler VALUE=0",
+    "time": 1793782242.6800706,
+    "type": "command"
+  },
+  {
+    "message": "SAVE_VARIABLE VARIABLE=enable_box VALUE=1",
+    "time": 1793782242.8304527,
+    "type": "command"
+  },
+  {
+    "message": "SAVE_VARIABLE VARIABLE=value_t0 VALUE=\"'slot1'\"",
+    "time": 1793782243.109131,
+    "type": "command"
+  },
+  {
+    "message": "G31",
+    "time": 1793782243.4892838,
+    "type": "command"
+  },
+  {
+    "message": "SMART_STATUS TIMELAPSE=0",
+    "time": 1793782243.694815,
+    "type": "command"
+  },
+  {
+    "message": "_SET_TIMELAPSE_SETUP  ENABLE=False VERBOSE=False PARK_ENABLE=False PARK_POS=back_left CUSTOM_POS_X=10.0 CUSTOM_POS_Y=10.0 CUSTOM_POS_DZ=0.0 TRAVEL_SPEED=100 RETRACT_SPEED=15 EXTRUDE_SPEED=15 RETRACT_DISTANCE=1.0 EXTRUDE_DISTANCE=1.0 PARK_TIME=0.1 FW_RETRACT=False",
+    "time": 1793782243.6956468,
+    "type": "command"
+  },
+  {
+    "message": "// SMART_STATUS \u72b6\u6001\u66f4\u65b0: MODE=1, SCREEN=1, TIMELAPSE=0",
+    "time": 1793782243.7061267,
+    "type": "response"
+  },
+  {
+    "message": "// [smart_output_pin caselight] \u7167\u660e\u540c\u6b65: SCREEN=\u4eae, PRINT=standby, AI=0, TIMELAPSE=0 -> LIGHT=ON",
+    "time": 1793782243.7211947,
+    "type": "response"
+  },
+  {
+    "message": "// [neopixel RGB] UI_EVENT: Mode=Smart, Screen=Wake, State=standby -> LED ON (UI Wake-up)",
+    "time": 1793782243.721911,
+    "type": "response"
+  },
+  {
+    "message": "// metadata={\"estimated_time\": 1395, \"filament_weight_total\": 7.26, \"nozzle_diameter\": 0.4, \"filament_total\": 2900.0, \"preset_colours\": [\"#2850FF\"], \"layer_height\": \"0.2\", \"nozzle_temperature_initial_layer\": null, \"filament_type\": \"ABS\", \"filament_name\": \"DRAFT ABS refill comparison(qidi-REFILL-DRAFT-NOT-SUBMITTED.gcode.3mf)\", \"used_extruders\": [0], \"slicer\": \"QIDIStudio\", \"slicer_version\": \"02.07.02.73\", \"gcode_end_byte\": 276659, \"gcode_start_byte\": 455, \"thumbnails\": [{\"width\": 512, \"height\": 512, \"size\": 0, \"relative_path\": \".thumbs/MAX4-QIDI-ABS-refill-retry-20261104.gcode/plate_1.png\"}], \"size\": 45974, \"modified\": 1793782244.0502813, \"uuid\": \"425e431a-2129-4676-b4d5-f940ed4c445c\", \"print_start_time\": null, \"job_id\": null}",
+    "time": 1793782246.1442428,
+    "type": "response"
+  },
+  {
+    "message": "SDCARD_PRINT_FILE FILENAME=\"MAX4-QIDI-ABS-refill-retry-20261104.gcode.3mf\" PLATEINDEX=\"1\" UID=\"native\"",
+    "time": 1793782246.1453786,
+    "type": "command"
+  },
+  {
+    "message": "// [virtual_sdcard] extraction_progress: 0.0",
+    "time": 1793782246.193683,
+    "type": "response"
+  },
+  {
+    "message": "// [virtual_sdcard] extraction_progress: 1.0",
+    "time": 1793782246.2077727,
+    "type": "response"
+  },
+  {
+    "message": "// [virtual_sdcard] extraction_progress: 1.0",
+    "time": 1793782246.261729,
+    "type": "response"
+  },
+  {
+    "message": "File opened:MAX4-QIDI-ABS-refill-retry-20261104.gcode.3mf Size:300788 Plateindex:1",
+    "time": 1793782246.280909,
+    "type": "response"
+  },
+  {
+    "message": "File selected",
+    "time": 1793782246.284568,
+    "type": "response"
+  },
+  {
+    "message": "// M4050: Pre-print model check is disabled, skipping detection",
+    "time": 1793782246.3358343,
+    "type": "response"
+  },
+  {
+    "message": "// shaper_type_x:mzv shaper_freq_x:48.800 damping_ratio_x:0.100000",
+    "time": 1793782246.3536546,
+    "type": "response"
+  },
+  {
+    "message": "// shaper_type_y:mzv shaper_freq_y:39.600 damping_ratio_y:0.100000",
+    "time": 1793782246.3847983,
+    "type": "response"
+  },
+  {
+    "message": "// shaper_type_x:mzv shaper_freq_x:48.800 damping_ratio_x:0.100000",
+    "time": 1793782246.3950024,
+    "type": "response"
+  },
+  {
+    "message": "// shaper_type_y:mzv shaper_freq_y:39.600 damping_ratio_y:0.100000",
+    "time": 1793782246.3962066,
+    "type": "response"
+  },
+  {
+    "message": "// Sub status 'homing' not valid for main status 'print_start'",
+    "time": 1793782246.4622421,
+    "type": "response"
+  },
+  {
+    "message": "// Sub status 'extruder_heating' not valid for main status 'print_start'",
+    "time": 1793782343.8929207,
+    "type": "response"
+  },
+  {
+    "message": "B:79.8 /100.0 T0:55.0 /260.0",
+    "time": 1793782343.9293542,
+    "type": "response"
+  },
+  {
+    "message": "B:79.9 /100.0 T0:55.8 /260.0",
+    "time": 1793782344.9164295,
+    "type": "response"
+  },
+  {
+    "message": "B:80.0 /100.0 T0:55.8 /260.0",
+    "time": 1793782345.918202,
+    "type": "response"
+  },
+  {
+    "message": "B:80.1 /100.0 T0:56.2 /260.0",
+    "time": 1793782346.915855,
+    "type": "response"
+  },
+  {
+    "message": "B:80.2 /100.0 T0:56.2 /260.0",
+    "time": 1793782347.9161012,
+    "type": "response"
+  },
+  {
+    "message": "B:80.3 /100.0 T0:58.5 /260.0",
+    "time": 1793782348.9179103,
+    "type": "response"
+  },
+  {
+    "message": "B:80.4 /100.0 T0:60.2 /260.0",
+    "time": 1793782349.9189248,
+    "type": "response"
+  },
+  {
+    "message": "B:80.5 /100.0 T0:61.8 /260.0",
+    "time": 1793782350.9192631,
+    "type": "response"
+  },
+  {
+    "message": "B:80.6 /100.0 T0:64.8 /260.0",
+    "time": 1793782351.924578,
+    "type": "response"
+  },
+  {
+    "message": "B:80.7 /100.0 T0:67.5 /260.0",
+    "time": 1793782352.9254253,
+    "type": "response"
+  },
+  {
+    "message": "B:80.8 /100.0 T0:70.8 /260.0",
+    "time": 1793782353.9231193,
+    "type": "response"
+  },
+  {
+    "message": "B:81.0 /100.0 T0:74.2 /260.0",
+    "time": 1793782354.9228876,
+    "type": "response"
+  },
+  {
+    "message": "B:81.1 /100.0 T0:77.2 /260.0",
+    "time": 1793782355.9248593,
+    "type": "response"
+  },
+  {
+    "message": "B:81.2 /100.0 T0:80.2 /260.0",
+    "time": 1793782356.9262345,
+    "type": "response"
+  },
+  {
+    "message": "B:81.3 /100.0 T0:84.5 /260.0",
+    "time": 1793782357.9254615,
+    "type": "response"
+  },
+  {
+    "message": "B:81.4 /100.0 T0:88.2 /260.0",
+    "time": 1793782358.9277499,
+    "type": "response"
+  },
+  {
+    "message": "B:81.5 /100.0 T0:92.8 /260.0",
+    "time": 1793782359.9266315,
+    "type": "response"
+  },
+  {
+    "message": "B:81.7 /100.0 T0:95.8 /260.0",
+    "time": 1793782360.9274015,
+    "type": "response"
+  },
+  {
+    "message": "B:81.8 /100.0 T0:100.0 /260.0",
+    "time": 1793782361.927876,
+    "type": "response"
+  },
+  {
+    "message": "B:81.9 /100.0 T0:103.8 /260.0",
+    "time": 1793782362.928202,
+    "type": "response"
+  },
+  {
+    "message": "B:82.0 /100.0 T0:107.8 /260.0",
+    "time": 1793782363.9293222,
+    "type": "response"
+  },
+  {
+    "message": "B:82.1 /100.0 T0:111.2 /260.0",
+    "time": 1793782364.9305935,
+    "type": "response"
+  },
+  {
+    "message": "B:82.2 /100.0 T0:115.8 /260.0",
+    "time": 1793782365.930783,
+    "type": "response"
+  },
+  {
+    "message": "B:82.3 /100.0 T0:119.8 /260.0",
+    "time": 1793782366.931392,
+    "type": "response"
+  },
+  {
+    "message": "B:82.4 /100.0 T0:123.2 /260.0",
+    "time": 1793782367.9347486,
+    "type": "response"
+  },
+  {
+    "message": "B:82.5 /100.0 T0:127.8 /260.0",
+    "time": 1793782368.9329522,
+    "type": "response"
+  },
+  {
+    "message": "B:82.6 /100.0 T0:131.2 /260.0",
+    "time": 1793782369.9380403,
+    "type": "response"
+  },
+  {
+    "message": "B:82.7 /100.0 T0:135.2 /260.0",
+    "time": 1793782370.935289,
+    "type": "response"
+  },
+  {
+    "message": "B:82.8 /100.0 T0:139.8 /260.0",
+    "time": 1793782371.9370422,
+    "type": "response"
+  },
+  {
+    "message": "B:82.9 /100.0 T0:143.2 /260.0",
+    "time": 1793782372.9370868,
+    "type": "response"
+  },
+  {
+    "message": "B:83.0 /100.0 T0:146.8 /260.0",
+    "time": 1793782373.9385726,
+    "type": "response"
+  },
+  {
+    "message": "B:83.1 /100.0 T0:151.2 /260.0",
+    "time": 1793782374.9413178,
+    "type": "response"
+  },
+  {
+    "message": "B:83.2 /100.0 T0:154.5 /260.0",
+    "time": 1793782375.9421308,
+    "type": "response"
+  },
+  {
+    "message": "B:83.3 /100.0 T0:158.0 /260.0",
+    "time": 1793782376.9400103,
+    "type": "response"
+  },
+  {
+    "message": "B:83.4 /100.0 T0:162.2 /260.0",
+    "time": 1793782377.9429061,
+    "type": "response"
+  },
+  {
+    "message": "B:83.5 /100.0 T0:165.8 /260.0",
+    "time": 1793782378.9430466,
+    "type": "response"
+  },
+  {
+    "message": "B:83.6 /100.0 T0:169.0 /260.0",
+    "time": 1793782379.9440393,
+    "type": "response"
+  },
+  {
+    "message": "B:83.7 /100.0 T0:173.2 /260.0",
+    "time": 1793782380.944822,
+    "type": "response"
+  },
+  {
+    "message": "B:83.8 /100.0 T0:176.8 /260.0",
+    "time": 1793782381.948339,
+    "type": "response"
+  },
+  {
+    "message": "B:83.9 /100.0 T0:180.0 /260.0",
+    "time": 1793782382.9451997,
+    "type": "response"
+  },
+  {
+    "message": "B:84.0 /100.0 T0:184.2 /260.0",
+    "time": 1793782383.9487793,
+    "type": "response"
+  },
+  {
+    "message": "B:84.1 /100.0 T0:187.2 /260.0",
+    "time": 1793782384.9483113,
+    "type": "response"
+  },
+  {
+    "message": "B:84.3 /100.0 T0:190.5 /260.0",
+    "time": 1793782385.9518294,
+    "type": "response"
+  },
+  {
+    "message": "B:84.4 /100.0 T0:194.8 /260.0",
+    "time": 1793782386.950234,
+    "type": "response"
+  },
+  {
+    "message": "B:84.5 /100.0 T0:197.2 /260.0",
+    "time": 1793782387.9541974,
+    "type": "response"
+  },
+  {
+    "message": "B:84.6 /100.0 T0:201.5 /260.0",
+    "time": 1793782388.9519513,
+    "type": "response"
+  },
+  {
+    "message": "B:84.7 /100.0 T0:205.5 /260.0",
+    "time": 1793782389.9561267,
+    "type": "response"
+  },
+  {
+    "message": "B:84.8 /100.0 T0:208.5 /260.0",
+    "time": 1793782390.9549217,
+    "type": "response"
+  },
+  {
+    "message": "B:84.9 /100.0 T0:211.5 /260.0",
+    "time": 1793782391.9556413,
+    "type": "response"
+  },
+  {
+    "message": "B:85.0 /100.0 T0:215.2 /260.0",
+    "time": 1793782392.955198,
+    "type": "response"
+  },
+  {
+    "message": "B:85.1 /100.0 T0:218.5 /260.0",
+    "time": 1793782393.9572394,
+    "type": "response"
+  },
+  {
+    "message": "B:85.2 /100.0 T0:221.5 /260.0",
+    "time": 1793782394.957561,
+    "type": "response"
+  },
+  {
+    "message": "B:85.3 /100.0 T0:226.0 /260.0",
+    "time": 1793782395.963674,
+    "type": "response"
+  },
+  {
+    "message": "B:85.4 /100.0 T0:228.0 /260.0",
+    "time": 1793782396.9592855,
+    "type": "response"
+  },
+  {
+    "message": "B:85.5 /100.0 T0:232.0 /260.0",
+    "time": 1793782397.9646401,
+    "type": "response"
+  },
+  {
+    "message": "B:85.6 /100.0 T0:235.8 /260.0",
+    "time": 1793782398.9625676,
+    "type": "response"
+  },
+  {
+    "message": "B:85.7 /100.0 T0:238.0 /260.0",
+    "time": 1793782399.967047,
+    "type": "response"
+  },
+  {
+    "message": "B:85.8 /100.0 T0:241.2 /260.0",
+    "time": 1793782400.9631455,
+    "type": "response"
+  },
+  {
+    "message": "B:85.9 /100.0 T0:245.2 /260.0",
+    "time": 1793782401.9671304,
+    "type": "response"
+  },
+  {
+    "message": "B:85.9 /100.0 T0:248.0 /260.0",
+    "time": 1793782402.9630525,
+    "type": "response"
+  },
+  {
+    "message": "B:86.1 /100.0 T0:250.2 /260.0",
+    "time": 1793782403.9677913,
+    "type": "response"
+  },
+  {
+    "message": "B:86.2 /100.0 T0:254.2 /260.0",
+    "time": 1793782404.9633036,
+    "type": "response"
+  },
+  {
+    "message": "B:86.3 /100.0 T0:256.5 /260.0",
+    "time": 1793782405.9683073,
+    "type": "response"
+  },
+  {
+    "message": "// The temperature at the hot end is unstable. Wait for the temperature to stabilize before trying again.",
+    "time": 1793782411.9673991,
+    "type": "response"
+  },
+  {
+    "message": "// Sub status 'extruder_heating' not valid for main status 'print_start'",
+    "time": 1793782456.298208,
+    "type": "response"
+  },
+  {
+    "message": "// Sub status 'extruder_heating' not valid for main status 'print_start'",
+    "time": 1793782497.9022062,
+    "type": "response"
+  },
+  {
+    "message": "B:99.2 /100.0 T0:249.2 /140.0",
+    "time": 1793782556.4719794,
+    "type": "response"
+  },
+  {
+    "message": "B:99.3 /100.0 T0:249.8 /140.0",
+    "time": 1793782557.469914,
+    "type": "response"
+  },
+  {
+    "message": "B:99.3 /100.0 T0:249.2 /140.0",
+    "time": 1793782558.4702833,
+    "type": "response"
+  },
+  {
+    "message": "B:99.4 /100.0 T0:249.5 /140.0",
+    "time": 1793782559.4725556,
+    "type": "response"
+  },
+  {
+    "message": "B:99.4 /100.0 T0:249.0 /140.0",
+    "time": 1793782560.4738688,
+    "type": "response"
+  },
+  {
+    "message": "B:99.5 /100.0 T0:248.2 /140.0",
+    "time": 1793782561.474752,
+    "type": "response"
+  },
+  {
+    "message": "B:99.5 /100.0 T0:247.8 /140.0",
+    "time": 1793782562.4763043,
+    "type": "response"
+  },
+  {
+    "message": "B:99.5 /100.0 T0:247.0 /140.0",
+    "time": 1793782563.4847636,
+    "type": "response"
+  },
+  {
+    "message": "B:99.6 /100.0 T0:246.2 /140.0",
+    "time": 1793782564.4787977,
+    "type": "response"
+  },
+  {
+    "message": "B:99.6 /100.0 T0:245.5 /140.0",
+    "time": 1793782565.477182,
+    "type": "response"
+  },
+  {
+    "message": "B:99.6 /100.0 T0:244.5 /140.0",
+    "time": 1793782566.4802666,
+    "type": "response"
+  },
+  {
+    "message": "B:99.7 /100.0 T0:243.2 /140.0",
+    "time": 1793782567.4806578,
+    "type": "response"
+  },
+  {
+    "message": "B:99.7 /100.0 T0:242.5 /140.0",
+    "time": 1793782568.4801054,
+    "type": "response"
+  },
+  {
+    "message": "B:99.7 /100.0 T0:241.0 /140.0",
+    "time": 1793782569.4815872,
+    "type": "response"
+  },
+  {
+    "message": "B:99.8 /100.0 T0:240.0 /140.0",
+    "time": 1793782570.4846976,
+    "type": "response"
+  },
+  {
+    "message": "B:99.8 /100.0 T0:238.5 /140.0",
+    "time": 1793782571.483236,
+    "type": "response"
+  },
+  {
+    "message": "B:99.8 /100.0 T0:237.8 /140.0",
+    "time": 1793782572.4839623,
+    "type": "response"
+  },
+  {
+    "message": "B:99.9 /100.0 T0:236.5 /140.0",
+    "time": 1793782573.4844627,
+    "type": "response"
+  },
+  {
+    "message": "B:99.9 /100.0 T0:235.8 /140.0",
+    "time": 1793782574.4854696,
+    "type": "response"
+  },
+  {
+    "message": "B:99.9 /100.0 T0:234.5 /140.0",
+    "time": 1793782575.4940217,
+    "type": "response"
+  },
+  {
+    "message": "B:99.9 /100.0 T0:233.5 /140.0",
+    "time": 1793782576.4882069,
+    "type": "response"
+  },
+  {
+    "message": "B:100.0 /100.0 T0:232.0 /140.0",
+    "time": 1793782577.4887464,
+    "type": "response"
+  },
+  {
+    "message": "B:100.0 /100.0 T0:230.5 /140.0",
+    "time": 1793782578.488836,
+    "type": "response"
+  },
+  {
+    "message": "B:100.0 /100.0 T0:229.0 /140.0",
+    "time": 1793782579.4905996,
+    "type": "response"
+  },
+  {
+    "message": "B:100.0 /100.0 T0:227.5 /140.0",
+    "time": 1793782580.4913752,
+    "type": "response"
+  },
+  {
+    "message": "B:100.1 /100.0 T0:227.0 /140.0",
+    "time": 1793782581.4918413,
+    "type": "response"
+  },
+  {
+    "message": "B:100.1 /100.0 T0:226.0 /140.0",
+    "time": 1793782582.4917417,
+    "type": "response"
+  },
+  {
+    "message": "B:100.1 /100.0 T0:224.2 /140.0",
+    "time": 1793782583.49339,
+    "type": "response"
+  },
+  {
+    "message": "B:100.1 /100.0 T0:223.0 /140.0",
+    "time": 1793782584.4934049,
+    "type": "response"
+  },
+  {
+    "message": "B:100.2 /100.0 T0:221.8 /140.0",
+    "time": 1793782585.4938116,
+    "type": "response"
+  },
+  {
+    "message": "SMART_STATUS MODE=1 SCREEN=0",
+    "time": 1793782585.768943,
+    "type": "command"
+  },
+  {
+    "message": "// SMART_STATUS \u72b6\u6001\u66f4\u65b0: MODE=1, SCREEN=0, TIMELAPSE=0",
+    "time": 1793782586.5018437,
+    "type": "response"
+  },
+  {
+    "message": "// [smart_output_pin caselight] \u7167\u660e\u540c\u6b65: SCREEN=\u7184, PRINT=printing, AI=0, TIMELAPSE=0 -> LIGHT=OFF",
+    "time": 1793782586.51801,
+    "type": "response"
+  },
+  {
+    "message": "// [neopixel RGB] SKIP: Printing (Keep Alive)",
+    "time": 1793782586.5189083,
+    "type": "response"
+  },
+  {
+    "message": "B:100.2 /100.0 T0:220.5 /140.0",
+    "time": 1793782586.8276997,
+    "type": "response"
+  },
+  {
+    "message": "B:100.2 /100.0 T0:218.8 /140.0",
+    "time": 1793782587.6983533,
+    "type": "response"
+  },
+  {
+    "message": "B:100.2 /100.0 T0:218.2 /140.0",
+    "time": 1793782588.6984518,
+    "type": "response"
+  },
+  {
+    "message": "B:100.2 /100.0 T0:216.8 /140.0",
+    "time": 1793782589.730988,
+    "type": "response"
+  },
+  {
+    "message": "B:100.2 /100.0 T0:215.5 /140.0",
+    "time": 1793782590.698167,
+    "type": "response"
+  },
+  {
+    "message": "B:100.2 /100.0 T0:214.2 /140.0",
+    "time": 1793782591.6994603,
+    "type": "response"
+  },
+  {
+    "message": "B:100.2 /100.0 T0:213.2 /140.0",
+    "time": 1793782592.7033505,
+    "type": "response"
+  },
+  {
+    "message": "B:100.3 /100.0 T0:211.2 /140.0",
+    "time": 1793782593.7024386,
+    "type": "response"
+  },
+  {
+    "message": "B:100.3 /100.0 T0:210.5 /140.0",
+    "time": 1793782594.7031686,
+    "type": "response"
+  },
+  {
+    "message": "B:100.3 /100.0 T0:209.0 /140.0",
+    "time": 1793782595.7028308,
+    "type": "response"
+  },
+  {
+    "message": "B:100.3 /100.0 T0:207.2 /140.0",
+    "time": 1793782596.7042267,
+    "type": "response"
+  },
+  {
+    "message": "B:100.3 /100.0 T0:206.8 /140.0",
+    "time": 1793782597.7078292,
+    "type": "response"
+  },
+  {
+    "message": "B:100.3 /100.0 T0:204.8 /140.0",
+    "time": 1793782598.7121592,
+    "type": "response"
+  },
+  {
+    "message": "B:100.3 /100.0 T0:204.2 /140.0",
+    "time": 1793782599.7729433,
+    "type": "response"
+  },
+  {
+    "message": "B:100.3 /100.0 T0:203.0 /140.0",
+    "time": 1793782600.7153518,
+    "type": "response"
+  },
+  {
+    "message": "B:100.3 /100.0 T0:201.8 /140.0",
+    "time": 1793782601.7152638,
+    "type": "response"
+  },
+  {
+    "message": "B:100.4 /100.0 T0:200.0 /140.0",
+    "time": 1793782602.7179604,
+    "type": "response"
+  },
+  {
+    "message": "B:100.4 /100.0 T0:198.2 /140.0",
+    "time": 1793782603.7198362,
+    "type": "response"
+  },
+  {
+    "message": "B:100.4 /100.0 T0:198.2 /140.0",
+    "time": 1793782604.7250192,
+    "type": "response"
+  },
+  {
+    "message": "B:100.4 /100.0 T0:196.8 /140.0",
+    "time": 1793782605.722656,
+    "type": "response"
+  },
+  {
+    "message": "B:100.4 /100.0 T0:195.2 /140.0",
+    "time": 1793782606.7228808,
+    "type": "response"
+  },
+  {
+    "message": "B:100.4 /100.0 T0:194.5 /140.0",
+    "time": 1793782607.7247984,
+    "type": "response"
+  },
+  {
+    "message": "B:100.4 /100.0 T0:192.0 /140.0",
+    "time": 1793782608.7251391,
+    "type": "response"
+  },
+  {
+    "message": "B:100.4 /100.0 T0:191.8 /140.0",
+    "time": 1793782609.7830865,
+    "type": "response"
+  },
+  {
+    "message": "B:100.4 /100.0 T0:190.8 /140.0",
+    "time": 1793782610.728843,
+    "type": "response"
+  },
+  {
+    "message": "B:100.4 /100.0 T0:189.5 /140.0",
+    "time": 1793782611.716994,
+    "type": "response"
+  },
+  {
+    "message": "B:100.4 /100.0 T0:188.5 /140.0",
+    "time": 1793782612.730009,
+    "type": "response"
+  },
+  {
+    "message": "B:100.4 /100.0 T0:187.8 /140.0",
+    "time": 1793782613.7292607,
+    "type": "response"
+  },
+  {
+    "message": "B:100.4 /100.0 T0:186.0 /140.0",
+    "time": 1793782614.721714,
+    "type": "response"
+  },
+  {
+    "message": "B:100.4 /100.0 T0:185.0 /140.0",
+    "time": 1793782615.7198982,
+    "type": "response"
+  },
+  {
+    "message": "B:100.4 /100.0 T0:183.8 /140.0",
+    "time": 1793782616.720464,
+    "type": "response"
+  },
+  {
+    "message": "B:100.4 /100.0 T0:182.8 /140.0",
+    "time": 1793782617.7225652,
+    "type": "response"
+  },
+  {
+    "message": "B:100.4 /100.0 T0:181.5 /140.0",
+    "time": 1793782618.7257361,
+    "type": "response"
+  },
+  {
+    "message": "B:100.4 /100.0 T0:180.2 /140.0",
+    "time": 1793782619.7248893,
+    "type": "response"
+  },
+  {
+    "message": "B:100.4 /100.0 T0:179.8 /140.0",
+    "time": 1793782620.725925,
+    "type": "response"
+  },
+  {
+    "message": "B:100.4 /100.0 T0:178.8 /140.0",
+    "time": 1793782621.7306867,
+    "type": "response"
+  },
+  {
+    "message": "B:100.4 /100.0 T0:177.2 /140.0",
+    "time": 1793782622.7359617,
+    "type": "response"
+  },
+  {
+    "message": "B:100.4 /100.0 T0:176.5 /140.0",
+    "time": 1793782623.731466,
+    "type": "response"
+  },
+  {
+    "message": "B:100.4 /100.0 T0:175.5 /140.0",
+    "time": 1793782624.73282,
+    "type": "response"
+  },
+  {
+    "message": "B:100.4 /100.0 T0:174.8 /140.0",
+    "time": 1793782625.735116,
+    "type": "response"
+  },
+  {
+    "message": "B:100.4 /100.0 T0:173.2 /140.0",
+    "time": 1793782626.730797,
+    "type": "response"
+  },
+  {
+    "message": "B:100.4 /100.0 T0:172.2 /140.0",
+    "time": 1793782627.7389007,
+    "type": "response"
+  },
+  {
+    "message": "B:100.4 /100.0 T0:171.2 /140.0",
+    "time": 1793782628.7417185,
+    "type": "response"
+  },
+  {
+    "message": "B:100.4 /100.0 T0:170.0 /140.0",
+    "time": 1793782629.7370632,
+    "type": "response"
+  },
+  {
+    "message": "B:100.4 /100.0 T0:169.5 /140.0",
+    "time": 1793782630.7454445,
+    "type": "response"
+  },
+  {
+    "message": "B:100.4 /100.0 T0:168.0 /140.0",
+    "time": 1793782631.7498648,
+    "type": "response"
+  },
+  {
+    "message": "B:100.4 /100.0 T0:167.0 /140.0",
+    "time": 1793782632.750436,
+    "type": "response"
+  },
+  {
+    "message": "B:100.4 /100.0 T0:166.5 /140.0",
+    "time": 1793782633.736629,
+    "type": "response"
+  },
+  {
+    "message": "B:100.4 /100.0 T0:165.0 /140.0",
+    "time": 1793782634.7376428,
+    "type": "response"
+  },
+  {
+    "message": "B:100.4 /100.0 T0:164.2 /140.0",
+    "time": 1793782635.7376792,
+    "type": "response"
+  },
+  {
+    "message": "B:100.4 /100.0 T0:163.5 /140.0",
+    "time": 1793782636.7456474,
+    "type": "response"
+  },
+  {
+    "message": "B:100.4 /100.0 T0:162.5 /140.0",
+    "time": 1793782637.7384229,
+    "type": "response"
+  },
+  {
+    "message": "B:100.4 /100.0 T0:162.0 /140.0",
+    "time": 1793782638.7388406,
+    "type": "response"
+  },
+  {
+    "message": "B:100.4 /100.0 T0:161.0 /140.0",
+    "time": 1793782639.7393754,
+    "type": "response"
+  },
+  {
+    "message": "B:100.4 /100.0 T0:159.5 /140.0",
+    "time": 1793782640.7417252,
+    "type": "response"
+  },
+  {
+    "message": "SET_PIN PIN=caselight VALUE=1",
+    "time": 1793782640.9071014,
+    "type": "command"
+  },
+  {
+    "message": "B:100.4 /100.0 T0:159.2 /140.0",
+    "time": 1793782641.7422662,
+    "type": "response"
+  },
+  {
+    "message": "B:100.4 /100.0 T0:157.8 /140.0",
+    "time": 1793782642.7422397,
+    "type": "response"
+  },
+  {
+    "message": "B:100.4 /100.0 T0:156.8 /140.0",
+    "time": 1793782643.7439754,
+    "type": "response"
+  },
+  {
+    "message": "B:100.4 /100.0 T0:156.0 /140.0",
+    "time": 1793782644.744192,
+    "type": "response"
+  },
+  {
+    "message": "B:100.4 /100.0 T0:155.0 /140.0",
+    "time": 1793782645.7477694,
+    "type": "response"
+  },
+  {
+    "message": "B:100.4 /100.0 T0:154.5 /140.0",
+    "time": 1793782646.7485669,
+    "type": "response"
+  },
+  {
+    "message": "B:100.4 /100.0 T0:153.8 /140.0",
+    "time": 1793782647.7528336,
+    "type": "response"
+  },
+  {
+    "message": "B:100.3 /100.0 T0:152.8 /140.0",
+    "time": 1793782648.7530572,
+    "type": "response"
+  },
+  {
+    "message": "B:100.3 /100.0 T0:151.2 /140.0",
+    "time": 1793782649.752189,
+    "type": "response"
+  },
+  {
+    "message": "// Sub status 'bed_heating' not valid for main status 'print_start'",
+    "time": 1793782668.2422338,
+    "type": "response"
+  },
+  {
+    "message": "// probe at 15.000,202.498 is z=-0.072891",
+    "time": 1793782680.1337216,
+    "type": "response"
+  },
+  {
+    "message": "// probe at 15.000,202.498 is z=-0.070781",
+    "time": 1793782681.8176014,
+    "type": "response"
+  },
+  {
+    "message": "// probe at 375.000,202.498 is z=-0.094141",
+    "time": 1793782687.132999,
+    "type": "response"
+  },
+  {
+    "message": "// probe at 375.000,202.498 is z=-0.096094",
+    "time": 1793782688.81512,
+    "type": "response"
+  },
+  {
+    "message": "// Making the following Z adjustments:\n// stepper_z = -0.019798\n// stepper_z1 = -0.047146",
+    "time": 1793782688.8911574,
+    "type": "response"
+  },
+  {
+    "message": "// Retries: 0/4 Probed points range: 0.023281 tolerance: 0.050000",
+    "time": 1793782688.9090178,
+    "type": "response"
+  },
+  {
+    "message": "// Sub status 'homing' not valid for main status 'print_start'",
+    "time": 1793782688.9401538,
+    "type": "response"
+  },
+  {
+    "message": "// === \u667a\u80fd\u81ea\u9002\u5e94\u5e8a\u7f51\u6821\u51c6 ===",
+    "time": 1793782754.0338058,
+    "type": "response"
+  },
+  {
+    "message": "// \u7b97\u6cd5\u7c7b\u578b: lagrange",
+    "time": 1793782754.034385,
+    "type": "response"
+  },
+  {
+    "message": "// \u9ed8\u8ba4\u63a2\u6d4b\u70b9\u6570: 9,9",
+    "time": 1793782754.0349152,
+    "type": "response"
+  },
+  {
+    "message": "// \u4f18\u5316\u63a2\u6d4b\u70b9\u6570: 3,3",
+    "time": 1793782754.035333,
+    "type": "response"
+  },
+  {
+    "message": "// \u9ed8\u8ba4\u5e8a\u7f51\u8303\u56f4: (15.0,15.0) \u5230 (375.0,375.0)",
+    "time": 1793782754.0359285,
+    "type": "response"
+  },
+  {
+    "message": "// \u5b9e\u9645\u5e8a\u7f51\u8303\u56f4: (150.0,150.0) \u5230 (240.0,240.0)",
+    "time": 1793782754.0363343,
+    "type": "response"
+  },
+  {
+    "message": "// \u7f51\u683c\u8fb9\u8ddd: 5.0mm",
+    "time": 1793782754.0367672,
+    "type": "response"
+  },
+  {
+    "message": "// Sub status 'meshing' not valid for main status 'print_start'",
+    "time": 1793782754.1012776,
+    "type": "response"
+  },
+  {
+    "message": "// Generating new points...",
+    "time": 1793782754.102201,
+    "type": "response"
+  },
+  {
+    "message": "// bed_mesh: generated points\n// Index |  Tool Adjusted  |   Probe",
+    "time": 1793782754.1188524,
+    "type": "response"
+  },
+  {
+    "message": "// 0   | (150.0, 150.0)  | (150.0, 150.0)",
+    "time": 1793782754.12027,
+    "type": "response"
+  },
+  {
+    "message": "// 1   | (195.0, 150.0)  | (195.0, 150.0)",
+    "time": 1793782754.131606,
+    "type": "response"
+  },
+  {
+    "message": "// 2   | (240.0, 150.0)  | (240.0, 150.0)",
+    "time": 1793782754.1328597,
+    "type": "response"
+  },
+  {
+    "message": "// 3   | (240.0, 195.0)  | (240.0, 195.0)",
+    "time": 1793782754.1340246,
+    "type": "response"
+  },
+  {
+    "message": "// 4   | (195.0, 195.0)  | (195.0, 195.0)",
+    "time": 1793782754.1494453,
+    "type": "response"
+  },
+  {
+    "message": "// 5   | (150.0, 195.0)  | (150.0, 195.0)",
+    "time": 1793782754.150313,
+    "type": "response"
+  },
+  {
+    "message": "// 6   | (150.0, 240.0)  | (150.0, 240.0)",
+    "time": 1793782754.1511998,
+    "type": "response"
+  },
+  {
+    "message": "// 7   | (195.0, 240.0)  | (195.0, 240.0)",
+    "time": 1793782754.154116,
+    "type": "response"
+  },
+  {
+    "message": "// 8   | (240.0, 240.0)  | (240.0, 240.0)",
+    "time": 1793782754.1550736,
+    "type": "response"
+  },
+  {
+    "message": "// probe at 150.001,150.001 is z=-0.006484",
+    "time": 1793782756.8571455,
+    "type": "response"
+  },
+  {
+    "message": "// probe at 150.001,150.001 is z=-0.004063",
+    "time": 1793782758.5960758,
+    "type": "response"
+  },
+  {
+    "message": "// probe at 195.000,149.998 is z=-0.012813",
+    "time": 1793782761.7143466,
+    "type": "response"
+  },
+  {
+    "message": "// probe at 195.000,149.998 is z=-0.012578",
+    "time": 1793782763.4042702,
+    "type": "response"
+  },
+  {
+    "message": "// probe at 239.999,150.001 is z=-0.021250",
+    "time": 1793782766.6096916,
+    "type": "response"
+  },
+  {
+    "message": "// probe at 239.999,150.001 is z=-0.022344",
+    "time": 1793782768.2940402,
+    "type": "response"
+  },
+  {
+    "message": "// probe at 240.002,195.000 is z=-0.026484",
+    "time": 1793782771.5558248,
+    "type": "response"
+  },
+  {
+    "message": "// probe at 240.002,195.000 is z=-0.022344",
+    "time": 1793782773.1948295,
+    "type": "response"
+  },
+  {
+    "message": "// probe at 195.000,195.000 is z=-0.024922",
+    "time": 1793782776.4032881,
+    "type": "response"
+  },
+  {
+    "message": "// probe at 195.000,195.000 is z=-0.020234",
+    "time": 1793782778.0952218,
+    "type": "response"
+  },
+  {
+    "message": "// probe at 149.998,195.000 is z=-0.011719",
+    "time": 1793782781.2989788,
+    "type": "response"
+  },
+  {
+    "message": "// probe at 149.998,195.000 is z=-0.009766",
+    "time": 1793782782.9862485,
+    "type": "response"
+  },
+  {
+    "message": "// probe at 150.001,239.999 is z=-0.027266",
+    "time": 1793782786.1974359,
+    "type": "response"
+  },
+  {
+    "message": "// probe at 150.001,239.999 is z=-0.023906",
+    "time": 1793782787.878332,
+    "type": "response"
+  },
+  {
+    "message": "// probe at 195.000,240.002 is z=-0.025625",
+    "time": 1793782791.1068237,
+    "type": "response"
+  },
+  {
+    "message": "// probe at 195.000,240.002 is z=-0.026172",
+    "time": 1793782792.77691,
+    "type": "response"
+  },
+  {
+    "message": "// probe at 239.999,239.999 is z=-0.028125",
+    "time": 1793782795.9842482,
+    "type": "response"
+  },
+  {
+    "message": "// probe at 239.999,239.999 is z=-0.038594",
+    "time": 1793782797.6830435,
+    "type": "response"
+  },
+  {
+    "message": "// Mesh Bed Leveling Complete",
+    "time": 1793782797.7266843,
+    "type": "response"
+  },
+  {
+    "message": "// Bed Mesh state has been saved to profile [kamp]\n// for the current session.  The SAVE_CONFIG command will\n// update the printer config file and restart the printer.",
+    "time": 1793782797.753272,
+    "type": "response"
+  },
+  {
+    "message": "// Sub status 'extruder_heating' not valid for main status 'print_start'",
+    "time": 1793782801.9355595,
+    "type": "response"
+  },
+  {
+    "message": "B:100.1 /100.0 T0:140.5 /250.0",
+    "time": 1793782802.0352774,
+    "type": "response"
+  },
+  {
+    "message": "B:100.1 /100.0 T0:140.2 /250.0",
+    "time": 1793782802.9561796,
+    "type": "response"
+  },
+  {
+    "message": "B:100.1 /100.0 T0:140.8 /250.0",
+    "time": 1793782803.9586504,
+    "type": "response"
+  },
+  {
+    "message": "B:100.1 /100.0 T0:140.8 /250.0",
+    "time": 1793782804.9564164,
+    "type": "response"
+  },
+  {
+    "message": "B:100.1 /100.0 T0:141.8 /250.0",
+    "time": 1793782805.9601164,
+    "type": "response"
+  },
+  {
+    "message": "B:100.1 /100.0 T0:142.2 /250.0",
+    "time": 1793782806.9598734,
+    "type": "response"
+  },
+  {
+    "message": "B:100.1 /100.0 T0:144.0 /250.0",
+    "time": 1793782807.9601219,
+    "type": "response"
+  },
+  {
+    "message": "B:100.1 /100.0 T0:146.2 /250.0",
+    "time": 1793782808.9590206,
+    "type": "response"
+  },
+  {
+    "message": "B:100.1 /100.0 T0:148.5 /250.0",
+    "time": 1793782809.959432,
+    "type": "response"
+  },
+  {
+    "message": "B:100.1 /100.0 T0:150.8 /250.0",
+    "time": 1793782810.9620605,
+    "type": "response"
+  },
+  {
+    "message": "B:100.0 /100.0 T0:153.0 /250.0",
+    "time": 1793782811.9604673,
+    "type": "response"
+  },
+  {
+    "message": "B:100.1 /100.0 T0:156.8 /250.0",
+    "time": 1793782812.9613383,
+    "type": "response"
+  },
+  {
+    "message": "B:100.1 /100.0 T0:159.2 /250.0",
+    "time": 1793782813.9620397,
+    "type": "response"
+  },
+  {
+    "message": "B:100.0 /100.0 T0:161.5 /250.0",
+    "time": 1793782814.9639156,
+    "type": "response"
+  },
+  {
+    "message": "B:100.0 /100.0 T0:165.5 /250.0",
+    "time": 1793782815.962464,
+    "type": "response"
+  },
+  {
+    "message": "B:100.1 /100.0 T0:168.2 /250.0",
+    "time": 1793782816.9659564,
+    "type": "response"
+  },
+  {
+    "message": "B:100.1 /100.0 T0:170.8 /250.0",
+    "time": 1793782817.9653862,
+    "type": "response"
+  },
+  {
+    "message": "B:100.1 /100.0 T0:175.0 /250.0",
+    "time": 1793782818.9674358,
+    "type": "response"
+  },
+  {
+    "message": "B:100.1 /100.0 T0:177.8 /250.0",
+    "time": 1793782819.9664445,
+    "type": "response"
+  },
+  {
+    "message": "B:100.0 /100.0 T0:180.8 /250.0",
+    "time": 1793782820.9690022,
+    "type": "response"
+  },
+  {
+    "message": "B:100.0 /100.0 T0:184.5 /250.0",
+    "time": 1793782821.967614,
+    "type": "response"
+  },
+  {
+    "message": "B:100.0 /100.0 T0:187.5 /250.0",
+    "time": 1793782822.9702888,
+    "type": "response"
+  },
+  {
+    "message": "B:100.0 /100.0 T0:191.5 /250.0",
+    "time": 1793782823.968253,
+    "type": "response"
+  },
+  {
+    "message": "B:100.1 /100.0 T0:194.8 /250.0",
+    "time": 1793782824.9712663,
+    "type": "response"
+  },
+  {
+    "message": "B:100.0 /100.0 T0:196.8 /250.0",
+    "time": 1793782825.970869,
+    "type": "response"
+  },
+  {
+    "message": "B:100.1 /100.0 T0:201.2 /250.0",
+    "time": 1793782826.9703152,
+    "type": "response"
+  },
+  {
+    "message": "B:100.1 /100.0 T0:204.2 /250.0",
+    "time": 1793782827.9718747,
+    "type": "response"
+  },
+  {
+    "message": "B:100.0 /100.0 T0:207.2 /250.0",
+    "time": 1793782828.9727585,
+    "type": "response"
+  },
+  {
+    "message": "B:100.0 /100.0 T0:211.2 /250.0",
+    "time": 1793782829.9729586,
+    "type": "response"
+  },
+  {
+    "message": "B:100.0 /100.0 T0:214.2 /250.0",
+    "time": 1793782830.9742513,
+    "type": "response"
+  },
+  {
+    "message": "B:100.0 /100.0 T0:217.2 /250.0",
+    "time": 1793782831.9749165,
+    "type": "response"
+  },
+  {
+    "message": "B:100.0 /100.0 T0:220.8 /250.0",
+    "time": 1793782832.9762025,
+    "type": "response"
+  },
+  {
+    "message": "B:100.1 /100.0 T0:224.2 /250.0",
+    "time": 1793782833.9766386,
+    "type": "response"
+  },
+  {
+    "message": "B:100.1 /100.0 T0:226.5 /250.0",
+    "time": 1793782834.9768586,
+    "type": "response"
+  },
+  {
+    "message": "B:100.1 /100.0 T0:230.5 /250.0",
+    "time": 1793782835.9787145,
+    "type": "response"
+  },
+  {
+    "message": "B:100.1 /100.0 T0:233.8 /250.0",
+    "time": 1793782836.9800463,
+    "type": "response"
+  },
+  {
+    "message": "B:100.1 /100.0 T0:236.8 /250.0",
+    "time": 1793782837.991438,
+    "type": "response"
+  },
+  {
+    "message": "B:100.1 /100.0 T0:240.0 /250.0",
+    "time": 1793782838.9894683,
+    "type": "response"
+  },
+  {
+    "message": "B:100.1 /100.0 T0:243.5 /250.0",
+    "time": 1793782839.9884431,
+    "type": "response"
+  },
+  {
+    "message": "B:100.1 /100.0 T0:245.5 /250.0",
+    "time": 1793782840.9926217,
+    "type": "response"
+  },
+  {
+    "message": "B:100.1 /100.0 T0:248.8 /250.0",
+    "time": 1793782841.9901726,
+    "type": "response"
+  },
+  {
+    "message": "// probe at 195.000,0.999 is z=0.084922",
+    "time": 1793782848.4982023,
+    "type": "response"
+  },
+  {
+    "message": "// Result is z=0.084922",
+    "time": 1793782848.5108666,
+    "type": "response"
+  },
+  {
+    "message": "// pressure_advance: 0.030000\n// pressure_advance_smooth_time: 0.030000",
+    "time": 1793782862.182334,
+    "type": "response"
+  },
+  {
+    "message": "Done printing file",
+    "time": 1793783527.568314,
+    "type": "response"
+  },
+  {
+    "message": "SDCARD_RESET_FILE",
+    "time": 1793783528.636046,
+    "type": "command"
+  },
+  {
+    "message": "SMART_STATUS MODE=1 SCREEN=1",
+    "time": 1793783528.7090497,
+    "type": "command"
+  },
+  {
+    "message": "// SMART_STATUS \u72b6\u6001\u66f4\u65b0: MODE=1, SCREEN=1, TIMELAPSE=0",
+    "time": 1793783528.7253895,
+    "type": "response"
+  },
+  {
+    "message": "// [smart_output_pin caselight] \u7167\u660e\u540c\u6b65: SCREEN=\u4eae, PRINT=standby, AI=0, TIMELAPSE=0 -> LIGHT=ON",
+    "time": 1793783528.745247,
+    "type": "response"
+  },
+  {
+    "message": "// [neopixel RGB] UI_EVENT: Mode=Smart, Screen=Wake, State=standby -> LED ON (UI Wake-up)",
+    "time": 1793783528.7458975,
+    "type": "response"
+  },
+  {
+    "message": "SET_PIN PIN=caselight VALUE=0",
+    "time": 1793783601.7539337,
+    "type": "command"
+  }
+]

@@ -66,7 +66,7 @@ documented in the build guide. Source checks alone do not validate GUI behavior.
 | Object skipping | Bambu numeric-ID interface only | QIDI named-object chooser and EXCLUDE_OBJECT translation | Candidate70 stale selection rejects dispatch and fresh selection sends exactly once |
 | Detection settings | Existing spaghetti/FOD controls | QIDI variable commands, sensitivity and reported settings | Protocol and offline GUI toggles/sensitivity pass; hardware pending |
 | Polar cooler | QIDI flag not recognized | Firmware-gated print option and job snapshot | Offline dispatch and native Print Options toggle pass; hardware pending |
-| Auto refill | Native Bambu UI only | Incompatible dialog hidden | QIDI local dispatcher has an ambiguous command spelling; verify before porting |
+| Auto refill | Native Bambu UI only | Incompatible dialog hidden | Custom controls unfinished. Official QIDI reference retry completed; inlet emptied at layer38 without a transfer before completion, so refill remains inconclusive ([evidence](../validation/refill-reference-2026-11-04/retry/README.md)) |
 | Manual drying | Shared upstream Bambu classes | Not enabled for QIDI | Active QIDI source path and firmware protocol need verification |
 | QIDI cloud/MQTT | Different network architecture | Not implemented | Proprietary QIDI networking library/auth integration not bundled |
 | Coexistence | Upstream application identity | Linux default datadir, wrapper and desktop entry isolated | Installed native identity/settings/menu verified separate; no other slicer settings changed |
