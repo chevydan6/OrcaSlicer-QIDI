@@ -1,0 +1,11 @@
+2026-11-04 09:56:17 - slot1 exhausted
+2026-11-04 09:58:30 - Start executing auto reload
+2026-11-04 09:58:34 - Status changed: printing: -> pausing:
+2026-11-04 09:58:34 - Exiting SD card print (position 401782)
+2026-11-04 09:58:41 - Sub-status changed: pausing: -> pausing:extruder_heating
+2026-11-04 10:00:41 - Sub-status changed: pausing:extruder_heating -> pausing:auto_reloading_successful
+2026-11-04 10:00:46 - Sub-status changed: pausing:auto_reloading_successful -> pausing:extruder_heating
+2026-11-04 10:00:56 - ENABLE delay: stepper=slot0 enable=329680.133097 move=329680.433097
+2026-11-04 10:01:00 - The temperature at the hot end is unstable. Wait for the temperature to stabilize before trying again.
+2026-11-04 10:02:26 - Status changed: pausing:extruder_heating -> cancelling:
+2026-11-04 10:02:53 - Status changed: cancelling: -> ready:

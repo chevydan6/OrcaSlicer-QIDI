@@ -90,5 +90,103 @@
     "extruder_limit_state": true,
     "warnings": [],
     "print_state": "printing"
+  },
+  {
+    "time": 1793785933.1484857,
+    "loaded_slot": "slot1",
+    "present": [
+      1,
+      0,
+      1,
+      0
+    ],
+    "auto_refill": [],
+    "extruder_limit_state": true,
+    "warnings": [],
+    "print_state": "printing"
+  },
+  {
+    "time": 1793786319.4218526,
+    "loaded_slot": "slot1",
+    "present": [
+      1,
+      0,
+      1,
+      0
+    ],
+    "auto_refill": [],
+    "extruder_limit_state": true,
+    "warnings": [],
+    "print_state": "paused"
+  },
+  {
+    "time": 1793786421.6196954,
+    "loaded_slot": "slot1",
+    "present": [
+      1,
+      0,
+      1,
+      0
+    ],
+    "auto_refill": [],
+    "extruder_limit_state": false,
+    "warnings": [],
+    "print_state": "paused"
+  },
+  {
+    "time": 1793786466.6554828,
+    "loaded_slot": "slot0",
+    "present": [
+      1,
+      0,
+      1,
+      0
+    ],
+    "auto_refill": [],
+    "extruder_limit_state": false,
+    "warnings": [],
+    "print_state": "paused"
+  },
+  {
+    "time": 1793786488.67647,
+    "loaded_slot": "slot0",
+    "present": [
+      1,
+      0,
+      1,
+      0
+    ],
+    "auto_refill": [],
+    "extruder_limit_state": true,
+    "warnings": [],
+    "print_state": "paused"
+  },
+  {
+    "time": 1793786522.111261,
+    "loaded_slot": "slot0",
+    "present": [
+      1,
+      0,
+      1,
+      0
+    ],
+    "auto_refill": [],
+    "extruder_limit_state": true,
+    "warnings": [],
+    "print_state": "cancelled"
+  },
+  {
+    "time": 1793786600.0970984,
+    "loaded_slot": "slot0",
+    "present": [
+      1,
+      0,
+      1,
+      0
+    ],
+    "auto_refill": [],
+    "extruder_limit_state": true,
+    "warnings": [],
+    "print_state": "standby"
   }
 ]

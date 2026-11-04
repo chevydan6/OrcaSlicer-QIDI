@@ -97,3 +97,13 @@ the reference job's unload command, so unload success is not claimed.
 [Exact jobs, traces and results](../validation/refill-reference-2026-11-04/README.md)
 are retained. Repeat with sufficient consumption after the donor inlet empties,
 then compare Orca sequentially after clearing the plate.
+
+The subsequent [larger official reference](../validation/refill-large-2026-11-04/run/README.md)
+reached natural exhaustion and initiated automatic reload, but selected the wrong
+feeder: after T0 changed to slot2, slot0/A1 PLA was activated. The agent cancelled
+at layer61 before resumed deposition. Root cause is unproven; logical/physical
+indirection is a hypothesis, not a justification to compact or rewrite mappings.
+History confirms cancellation; explicit shutdown verified every heater target0.
+The reference startup also targeted280C despite requested260C and sampled286C;
+this temperature discrepancy remains unresolved. No custom Orca refill pass or
+firmware fix is claimed.

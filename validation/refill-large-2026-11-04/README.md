@@ -1,4 +1,4 @@
-# Larger ABS refill test — preparation and active reference
+# Larger ABS refill test — preparation and failed reference
 
 Dan requested a larger print after the 30×30×8mm reference job finished before
 filament ran out at the toolhead. This version keeps the 30×30mm footprint and
@@ -46,6 +46,5 @@ verify Textured PEI and review any regenerated upload before printing.
 Checksums cover the prepared jobs, source STL, profiles, reviews and GUI evidence.
 Both applications retain their original engine; no product source changed.
 
-Dan subsequently confirmed the printer ready. The official reference is now
-printing; see [actual submission and runtime evidence](run/README.md). The prepared
+Dan subsequently confirmed the printer ready. The official reference later failed refill acceptance and was cancelled; see [actual submission and runtime evidence](run/README.md). The prepared
 archive and actual upload have distinct identities, both retained.

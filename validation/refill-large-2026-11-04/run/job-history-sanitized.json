@@ -1,0 +1,46 @@
+[
+  {
+    "job_id": "00002C",
+    "user": "_TRUSTED_USER_",
+    "filename": "MAX4-QIDI-ABS-refill-large-20261104.gcode.3mf",
+    "status": "cancelled",
+    "start_time": 1793784809.897935,
+    "end_time": 1793786519.9967709,
+    "print_duration": 1347.687657935021,
+    "total_duration": 1709.9357634410262,
+    "filament_used": 4814.307490220643,
+    "metadata": {
+      "estimated_time": 3116,
+      "filament_weight_total": 28.68,
+      "nozzle_diameter": 0.4,
+      "filament_total": 11470.0,
+      "preset_colours": [
+        "#2850FF"
+      ],
+      "layer_height": "0.2",
+      "nozzle_temperature_initial_layer": null,
+      "filament_type": "ABS",
+      "filament_name": "DRAFT ABS refill comparison(qidi-refill-30x30x32.gcode.3mf)",
+      "used_extruders": [
+        0
+      ],
+      "slicer": "QIDIStudio",
+      "slicer_version": "02.07.02.73",
+      "gcode_end_byte": 1055182,
+      "gcode_start_byte": 461,
+      "thumbnails": [
+        {
+          "width": 512,
+          "height": 512,
+          "size": 0,
+          "relative_path": ".thumbs/MAX4-QIDI-ABS-refill-large-20261104.gcode/plate_1.png"
+        }
+      ],
+      "size": 56216,
+      "modified": 1793784806.0305204,
+      "uuid": "b84c0690-a018-4abb-be39-4dafeeb13014"
+    },
+    "auxiliary_data": [],
+    "exists": true
+  }
+]

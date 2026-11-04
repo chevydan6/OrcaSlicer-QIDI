@@ -1,0 +1,21 @@
+{
+  "outcome": "Reference refill failed acceptance; cancelled before resumed model deposition because feeder slot0/PLA was activated instead of intended slot2/ABS",
+  "reference_app": "QIDI Studio 02.07.02.73",
+  "history_job_id": "00002C",
+  "layer_at_pause_and_cancel": 61,
+  "total_layers": 160,
+  "initial_mapping": [
+    1
+  ],
+  "intended_refill_physical_slot": 2,
+  "actual_reported_loaded_slot": "slot0",
+  "no_manual_resume_load_or_refill_command": true,
+  "heaters_off_verified_time": 1793786600.0970984,
+  "normal_gui_exit": {
+    "exit_code": 0,
+    "time": 1793786679.7524617
+  },
+  "maximum_sampled_nozzle_temperature_C": 286.0,
+  "model_deposition_after_refill_verified": false,
+  "root_cause": "Unproven. Mapping/slot indirection is a hypothesis: firmware updated value_t0/value_t1 to slot2 while unchanged value_t2 remained slot0; next feeder activated was slot0. Do not compact or rewrite logical mapping to mask this."
+}

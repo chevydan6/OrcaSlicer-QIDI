@@ -1,0 +1,327 @@
+[
+  {
+    "time": 1793784649.855556,
+    "layer": {
+      "total_layer": null,
+      "current_layer": null
+    },
+    "state": "standby",
+    "loaded_slot": "slot16",
+    "filament_detected": false,
+    "inlets": [
+      1,
+      1,
+      1,
+      0
+    ],
+    "variables": {
+      "enable_box": 1,
+      "value_t0": "slot1",
+      "value_t1": "slot1",
+      "value_t2": "slot0",
+      "auto_reload_detect": null,
+      "runout_1": null,
+      "runout_2": null
+    }
+  },
+  {
+    "time": 1793784816.9691904,
+    "layer": {
+      "total_layer": 160,
+      "current_layer": 0
+    },
+    "state": "printing",
+    "loaded_slot": "slot16",
+    "filament_detected": false,
+    "inlets": [
+      1,
+      1,
+      1,
+      0
+    ],
+    "variables": {
+      "enable_box": 1,
+      "value_t0": "slot1",
+      "value_t1": "slot1",
+      "value_t2": "slot0",
+      "auto_reload_detect": null,
+      "runout_1": null,
+      "runout_2": null
+    }
+  },
+  {
+    "time": 1793784940.5706966,
+    "layer": {
+      "total_layer": 160,
+      "current_layer": 0
+    },
+    "state": "printing",
+    "loaded_slot": "slot1",
+    "filament_detected": false,
+    "inlets": [
+      1,
+      1,
+      1,
+      0
+    ],
+    "variables": {
+      "enable_box": 1,
+      "value_t0": "slot1",
+      "value_t1": "slot1",
+      "value_t2": "slot0",
+      "auto_reload_detect": null,
+      "runout_1": null,
+      "runout_2": null
+    }
+  },
+  {
+    "time": 1793784963.707238,
+    "layer": {
+      "total_layer": 160,
+      "current_layer": 0
+    },
+    "state": "printing",
+    "loaded_slot": "slot1",
+    "filament_detected": true,
+    "inlets": [
+      1,
+      1,
+      1,
+      0
+    ],
+    "variables": {
+      "enable_box": 1,
+      "value_t0": "slot1",
+      "value_t1": "slot1",
+      "value_t2": "slot0",
+      "auto_reload_detect": null,
+      "runout_1": null,
+      "runout_2": null
+    }
+  },
+  {
+    "time": 1793785232.1038997,
+    "layer": {
+      "total_layer": 160,
+      "current_layer": 0
+    },
+    "state": "printing",
+    "loaded_slot": "slot1",
+    "filament_detected": true,
+    "inlets": [
+      1,
+      1,
+      1,
+      0
+    ],
+    "variables": {
+      "enable_box": 1,
+      "value_t0": "slot1",
+      "value_t1": "slot1",
+      "value_t2": "slot0",
+      "auto_reload_detect": 1,
+      "runout_1": 0,
+      "runout_2": 0
+    }
+  },
+  {
+    "time": 1793785933.1484857,
+    "layer": {
+      "total_layer": 160,
+      "current_layer": 35
+    },
+    "state": "printing",
+    "loaded_slot": "slot1",
+    "filament_detected": true,
+    "inlets": [
+      1,
+      0,
+      1,
+      0
+    ],
+    "variables": {
+      "enable_box": 1,
+      "value_t0": "slot1",
+      "value_t1": "slot1",
+      "value_t2": "slot0",
+      "auto_reload_detect": 1,
+      "runout_1": 1,
+      "runout_2": 0
+    }
+  },
+  {
+    "time": 1793786319.4218526,
+    "layer": {
+      "total_layer": 160,
+      "current_layer": 61
+    },
+    "state": "paused",
+    "loaded_slot": "slot1",
+    "filament_detected": true,
+    "inlets": [
+      1,
+      0,
+      1,
+      0
+    ],
+    "variables": {
+      "enable_box": 1,
+      "value_t0": "slot1",
+      "value_t1": "slot1",
+      "value_t2": "slot0",
+      "auto_reload_detect": 1,
+      "runout_1": 1,
+      "runout_2": 0
+    }
+  },
+  {
+    "time": 1793786421.6196954,
+    "layer": {
+      "total_layer": 160,
+      "current_layer": 61
+    },
+    "state": "paused",
+    "loaded_slot": "slot1",
+    "filament_detected": false,
+    "inlets": [
+      1,
+      0,
+      1,
+      0
+    ],
+    "variables": {
+      "enable_box": 1,
+      "value_t0": "slot1",
+      "value_t1": "slot1",
+      "value_t2": "slot0",
+      "auto_reload_detect": 1,
+      "runout_1": 1,
+      "runout_2": 0
+    }
+  },
+  {
+    "time": 1793786443.8331516,
+    "layer": {
+      "total_layer": 160,
+      "current_layer": 61
+    },
+    "state": "paused",
+    "loaded_slot": "slot1",
+    "filament_detected": false,
+    "inlets": [
+      1,
+      0,
+      1,
+      0
+    ],
+    "variables": {
+      "enable_box": 1,
+      "value_t0": "slot2",
+      "value_t1": "slot2",
+      "value_t2": "slot0",
+      "auto_reload_detect": 1,
+      "runout_1": 1,
+      "runout_2": 0
+    }
+  },
+  {
+    "time": 1793786466.6554828,
+    "layer": {
+      "total_layer": 160,
+      "current_layer": 61
+    },
+    "state": "paused",
+    "loaded_slot": "slot0",
+    "filament_detected": false,
+    "inlets": [
+      1,
+      0,
+      1,
+      0
+    ],
+    "variables": {
+      "enable_box": 1,
+      "value_t0": "slot2",
+      "value_t1": "slot2",
+      "value_t2": "slot0",
+      "auto_reload_detect": 1,
+      "runout_1": 1,
+      "runout_2": 0
+    }
+  },
+  {
+    "time": 1793786488.67647,
+    "layer": {
+      "total_layer": 160,
+      "current_layer": 61
+    },
+    "state": "paused",
+    "loaded_slot": "slot0",
+    "filament_detected": true,
+    "inlets": [
+      1,
+      0,
+      1,
+      0
+    ],
+    "variables": {
+      "enable_box": 1,
+      "value_t0": "slot2",
+      "value_t1": "slot2",
+      "value_t2": "slot0",
+      "auto_reload_detect": 1,
+      "runout_1": 1,
+      "runout_2": 0
+    }
+  },
+  {
+    "time": 1793786522.111261,
+    "layer": {
+      "total_layer": 160,
+      "current_layer": 61
+    },
+    "state": "cancelled",
+    "loaded_slot": "slot0",
+    "filament_detected": true,
+    "inlets": [
+      1,
+      0,
+      1,
+      0
+    ],
+    "variables": {
+      "enable_box": 1,
+      "value_t0": "slot2",
+      "value_t1": "slot2",
+      "value_t2": "slot0",
+      "auto_reload_detect": 1,
+      "runout_1": 1,
+      "runout_2": 0
+    }
+  },
+  {
+    "time": 1793786600.0970984,
+    "layer": {
+      "total_layer": null,
+      "current_layer": null
+    },
+    "state": "standby",
+    "loaded_slot": "slot0",
+    "filament_detected": true,
+    "inlets": [
+      1,
+      0,
+      1,
+      0
+    ],
+    "variables": {
+      "enable_box": 1,
+      "value_t0": "slot2",
+      "value_t1": "slot2",
+      "value_t2": "slot0",
+      "auto_reload_detect": 1,
+      "runout_1": 1,
+      "runout_2": 0
+    }
+  }
+]

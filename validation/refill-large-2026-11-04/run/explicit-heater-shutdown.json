@@ -1,0 +1,9 @@
+{
+  "time": 1793786587.2015176,
+  "purpose": "Heater shutdown after cancelled reference retained nozzle250/bed100 targets; GUI zero edits did not change observed targets",
+  "script": "TURN_OFF_HEATERS",
+  "http_status": 200,
+  "response": {
+    "result": "ok"
+  }
+}

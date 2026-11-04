@@ -1,0 +1,14 @@
+{
+  "gcode_macro t0": {
+    "gcode": "\nT_MANAGER T=0",
+    "description": "G-Code macro"
+  },
+  "gcode_macro t1": {
+    "gcode": "\nT_MANAGER T=1",
+    "description": "G-Code macro"
+  },
+  "gcode_macro t2": {
+    "gcode": "\nT_MANAGER T=2",
+    "description": "G-Code macro"
+  }
+}

@@ -1283,5 +1283,110 @@
     "message": "// pressure_advance: 0.030000\n// pressure_advance_smooth_time: 0.030000",
     "time": 1793785391.7011294,
     "type": "response"
+  },
+  {
+    "message": "SMART_STATUS MODE=1 SCREEN=1",
+    "time": 1793785934.7642,
+    "type": "command"
+  },
+  {
+    "message": "// SMART_STATUS \u72b6\u6001\u66f4\u65b0: MODE=1, SCREEN=1, TIMELAPSE=0",
+    "time": 1793785934.9394422,
+    "type": "response"
+  },
+  {
+    "message": "// [smart_output_pin caselight] \u7167\u660e\u540c\u6b65: SCREEN=\u4eae, PRINT=printing, AI=0, TIMELAPSE=0 -> LIGHT=ON",
+    "time": 1793785934.9527934,
+    "type": "response"
+  },
+  {
+    "message": "// [neopixel RGB] SKIP: Printing (Keep Alive)",
+    "time": 1793785934.9610589,
+    "type": "response"
+  },
+  {
+    "message": "SAVE_VARIABLE VARIABLE=qdc_ai_error_code VALUE='\"noodle=0 status=0 time=1793786314\"'",
+    "time": 1793786314.444072,
+    "type": "command"
+  },
+  {
+    "message": "// idle_timeout: Timeout set to 259200.00 s",
+    "time": 1793786318.2489705,
+    "type": "response"
+  },
+  {
+    "message": "B:100.1 /100.0 T0:247.5 /250.0",
+    "time": 1793786446.2942586,
+    "type": "response"
+  },
+  {
+    "message": "B:100.1 /100.0 T0:247.5 /250.0",
+    "time": 1793786447.2978806,
+    "type": "response"
+  },
+  {
+    "message": "B:100.0 /100.0 T0:247.0 /250.0",
+    "time": 1793786448.2984686,
+    "type": "response"
+  },
+  {
+    "message": "B:100.0 /100.0 T0:246.5 /250.0",
+    "time": 1793786449.2976644,
+    "type": "response"
+  },
+  {
+    "message": "B:100.0 /100.0 T0:246.8 /250.0",
+    "time": 1793786450.2979755,
+    "type": "response"
+  },
+  {
+    "message": "B:100.0 /100.0 T0:246.5 /250.0",
+    "time": 1793786451.2991343,
+    "type": "response"
+  },
+  {
+    "message": "B:100.0 /100.0 T0:247.0 /250.0",
+    "time": 1793786452.2994428,
+    "type": "response"
+  },
+  {
+    "message": "B:100.0 /100.0 T0:247.5 /250.0",
+    "time": 1793786453.2997854,
+    "type": "response"
+  },
+  {
+    "message": "B:100.0 /100.0 T0:248.8 /250.0",
+    "time": 1793786454.3012962,
+    "type": "response"
+  },
+  {
+    "message": "// The temperature at the hot end is unstable. Wait for the temperature to stabilize before trying again.",
+    "time": 1793786460.5381343,
+    "type": "response"
+  },
+  {
+    "message": "SMART_STATUS MODE=1 SCREEN=0",
+    "time": 1793786506.270904,
+    "type": "command"
+  },
+  {
+    "message": "cancel",
+    "time": 1793786518.9983168,
+    "type": "command"
+  },
+  {
+    "message": "SDCARD_RESET_FILE",
+    "time": 1793786520.1995971,
+    "type": "command"
+  },
+  {
+    "message": "SMART_STATUS MODE=1 SCREEN=1",
+    "time": 1793786520.2720025,
+    "type": "command"
+  },
+  {
+    "message": "SAVE_VARIABLE VARIABLE=qdc_ai_error_code VALUE='\"noodle=0 status=0 time=1793786521\"'",
+    "time": 1793786521.0926492,
+    "type": "command"
   }
 ]

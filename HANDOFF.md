@@ -110,11 +110,17 @@ Dan subsequently requested a larger test. The [30×30×32mm prepared jobs](valid
 use160 layers/~11.5m ABS, with the same temperatures and planned A2→A3 refill.
 Official QIDI GUI export and both CLI slices were checked. Dan confirmed ready;
 preflight established clear bed and restored A2/A3 feed. The [larger reference run](validation/refill-large-2026-11-04/run/README.md)
-was submitted and has reached layer31/160 with orange A2 deposition, both feed
-sensors present and no faults. The printing runout sensor is enabled. Read-only
-firmware configuration confirms an automatic-refill call after the initial runout
-pause when Box/refill flags are enabled; no refill outcome is yet established.
-An unexpected startup280C target returned to250C; its cause remains unresolved.
+failed refill acceptance and was cancelled at layer61/160. The firmware initiated
+reload after A2 exhaustion, changed value_t0 to slot2/A3, then enabled the slot0/A1
+PLA feeder; telemetry and the reference GUI corroborated that wrong slot. No
+manual Resume/load/refill command was sent. The cause is unproven; physical-slot
+versus logical-tool indirection is a hypothesis (retained value_t2=slot0). No blue
+continuation was observed. History00002C confirms cancelled, not completed.
+All heater targets0/standby and lampOff were verified; GUI exited0. The bed still
+holds the block and the feed needs inspection/reset before another physical job.
+Startup targeted280C despite the requested260C, sampled286C, then returned250C;
+that discrepancy is unresolved. Exact run evidence and failure are retained.
+Orca comparison is pending; no product or firmware changes were made.
 
 On2026-11-04 Dan authorized a small physical test and delegated its setup choices.
 Accepted70's actual GUI submitted a10×10×4mm cube using only logical T2 mapped to

@@ -1,0 +1,40 @@
+{
+  "print_stats_manager": {
+    "main_status": "pausing",
+    "sub_status": "extruder_heating",
+    "main_status_stack": [],
+    "sub_status_stack": [],
+    "current_step": 1
+  },
+  "pause_resume": {
+    "is_paused": true
+  },
+  "ai_func_manager": {
+    "enable_foreign": {
+      "enable": 0,
+      "sensitivity": "MEDIUM"
+    },
+    "enable_noodle": {
+      "enable": 0,
+      "sensitivity": "MEDIUM"
+    },
+    "ai_state": {
+      "error_type": "",
+      "counts": 0
+    }
+  },
+  "gcode_macro pause": {},
+  "gcode_macro RESUME_PRINT": {
+    "saved_extruder_temp": 250.0,
+    "saved_x": 186.709,
+    "saved_y": 180.95,
+    "saved_z": 12.2,
+    "saved_e": 5.0,
+    "saved_efan": 155.55
+  },
+  "gcode_macro SMART_STATUS": {
+    "led_mode": 1,
+    "ui_screen_active": 1,
+    "timelapse_enable": 0
+  }
+}

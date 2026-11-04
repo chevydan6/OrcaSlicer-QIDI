@@ -1,7 +1,8 @@
 # Refill investigation and proposed ABS comparison
 
 This records the earlier offline investigation. The subsequently authorized QIDI Studio
-reference job is now running; see [reference session](../refill-reference-2026-11-04/README.md).
+reference attempts are recorded in [reference session](../refill-reference-2026-11-04/README.md);
+the subsequent [larger reference](../refill-large-2026-11-04/run/README.md) was cancelled after wrong-slot activation.
 No explicit refill-enable or manual reload command has been sent. Dan loaded physical A2 orange ABS
 and A3 blue ABS, deliberately setting both software colors to blue. The agent
 preserved that metadata. Read-only telemetry now reports both slots present,
@@ -39,13 +40,16 @@ uses an independently reviewed GUI export.
    The remaining path length must be less than the job's remaining consumption.
 4. Observe natural runout, firmware event/slot transitions, orange-to-blue material,
    continuation and completion. A manual Resume, Load or forced tool change does
-   not count as automatic refill. If it pauses/faults, preserve state and stop the
-   experiment rather than mask the failure with a manual intervention.
+   not count as automatic refill. If it faults or remains stalled, preserve state rather than mask failure with
+   manual intervention. Later read-only firmware evidence establishes that an
+   initial pause is expected before AUTO_RELOAD_FILAMENT; a transient pause alone
+   is not failure. See the larger reference runout-config-readonly.json.
 5. Run QIDI Studio first, then custom Orca sequentially with the same physical
    arrangement and relevant settings, resetting/reloading the donor between jobs.
    One controlling slicer at a time. Record submission/runtime traces and any
-   engine/startup differences. The QIDI reference profile removes its two forced
-   MZV commands so both jobs preserve existing input-shaper tuning. The official
+   engine/startup differences. This initial offline draft removed two forced MZV commands. The later actual
+   official GUI submissions retained stock QIDI startup MZV commands; that
+   difference from Orca is recorded in the actual-reference evidence. The official
    QIDI executable is unchanged. Orca starts fan-off commands earlier (see
    startup-differences.diff). Verify normal shutdown and heater targets0.
 

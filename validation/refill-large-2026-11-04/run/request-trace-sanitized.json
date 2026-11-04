@@ -75,5 +75,18 @@
       "plateindex": "1"
     },
     "uploaded_file_sha256": "368200e6fe59e419d7dafa517104e936f8ed5f7594d1b225716bd8e01e1ad72f"
+  },
+  {
+    "method": "POST",
+    "path": "/printer/gcode/script",
+    "destination_port": 7125,
+    "body_length": 30,
+    "response": {
+      "http_status": 200,
+      "result": "ok"
+    },
+    "body": {
+      "script": "TURN_OFF_HEATERS"
+    }
   }
 ]
