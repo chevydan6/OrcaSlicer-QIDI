@@ -41,16 +41,14 @@ Both apps have been used only for offline slicing of these refill drafts.
 5. Run QIDI Studio first, then custom Orca sequentially with the same physical
    arrangement and relevant settings, resetting/reloading the donor between jobs.
    One controlling slicer at a time. Record submission/runtime traces and any
-   engine/startup differences. The stock QIDI draft forces MZV input shaping; Orca
-   preserves current tuning and starts its fan-off commands earlier (see
-   startup-differences.diff). Capture the pre-session shaper state and explicitly
-   account for this runtime setting when agreeing the session. Verify normal
-   shutdown and heater targets0.
+   engine/startup differences. The QIDI reference profile removes its two forced
+   MZV commands so both jobs preserve existing input-shaper tuning. The official
+   QIDI executable is unchanged. Orca starts fan-off commands earlier (see
+   startup-differences.diff). Verify normal shutdown and heater targets0.
 
 The approximately18-minute Orca estimate is not a guaranteed physical duration.
-The earlier PLA startup exceeded its estimate. The QIDI Studio draft also retains
-its own engine/startup details; relevant differences must be reviewed before the
-session. This is a proposal awaiting the temperature/runout-method agreement,
+The earlier PLA startup exceeded its estimate. The QIDI Studio draft retains its own engine and the normalized startup described
+above; generated toolpaths still differ between engines. This is a proposal awaiting the temperature/runout-method agreement,
 not authorization to induce runout merely because the spools are loaded.
 
 ## Offline preparation evidence and limits

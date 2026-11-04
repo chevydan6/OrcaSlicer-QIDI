@@ -2,7 +2,7 @@
   {
     "mode": "qidi",
     "submitted": false,
-    "gcode_sha256": "25614b21e6d656ad6799d402573a024f156cc6b0b2bdc74c4187d9617ba521f1",
+    "gcode_sha256": "193d033ef22613db30fde6104f6a665fd1c54d97c42bb5baad093990e3d4886c",
     "temperature_and_time_trace": [
       "; total filament length [mm] : 2901.13",
       "; total filament volume [cm^3] : 6978.04",
@@ -33,7 +33,7 @@
   {
     "mode": "orca",
     "submitted": false,
-    "gcode_sha256": "20d47fc180f1e5ac1c94b54ac85f7a5bbd58f279818c629f9662d0a3c034d723",
+    "gcode_sha256": "dfae2a8ab42aa78b6be8c72cde3544a52fc6d6179bc87614a540ba40b30e87ea",
     "temperature_and_time_trace": [
       "BOX_TEMP_SET VT0=0",
       "M140 S100",

@@ -25,13 +25,14 @@
   "drafts": [
     {
       "file": "qidi-REFILL-DRAFT-NOT-SUBMITTED.gcode.3mf",
-      "sha256": "4e1a4b0e55c9ce97eb987dbcc7661b381f09c964c5820df7107065b22d4e5b65",
+      "sha256": "188a6e9189369e44f3fc2fcd788017cf03f494354ea0e7fde47868b93a3b4e82",
       "submitted": false
     },
     {
       "file": "orca-REFILL-DRAFT-NOT-SUBMITTED.gcode.3mf",
-      "sha256": "0d618711b7ad42a1e32880c4f874e34e6bbbb36b805535764d5e37d3f720df04",
+      "sha256": "9260c99f4b637d7c9397559a0f4bd605aa71a4e60db8c7e7b8a11456e44c7fcc",
       "submitted": false
     }
-  ]
+  ],
+  "reference_profile_adjustment": "Remove the two forced SET_INPUT_SHAPER MZV commands so both jobs preserve existing tuning; official executable unchanged"
 }

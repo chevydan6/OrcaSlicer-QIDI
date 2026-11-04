@@ -1,8 +1,8 @@
---- QIDI startup before printing phase
+--- QIDI normalized startup
 
-+++ Orca startup before printing phase
++++ Orca startup
 
-@@ -1,12 +1,12 @@
+@@ -1,4 +1,6 @@
 
  EXCLUDE_OBJECT_DEFINE NAME=refill-block-30x30x8.stl_id_0_copy_0 CENTER=195,195 POLYGON=[[180,180],[210,180],[210,210],[180,210],[180,180]]
 +M106 S0
@@ -10,11 +10,3 @@
  DISABLE_BOX_HEATER
  BOX_TEMP_SET VT0=0
  SET_PRINT_STATS_INFO TOTAL_LAYER=40
- SET_PRINT_MAIN_STATUS MAIN_STATUS=print_start
- M220 S100
- M221 S100
--SET_INPUT_SHAPER SHAPER_TYPE_X=mzv
--SET_INPUT_SHAPER SHAPER_TYPE_Y=mzv
- DISABLE_ALL_SENSOR
- M1002 R1
- M107
