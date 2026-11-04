@@ -1,0 +1,37 @@
+{
+  "read_only": true,
+  "source_pin": "403b619d56147160bb883e94f95a7951245bc6d0",
+  "physical_colors_user_report": {
+    "A2": "orange ABS",
+    "A3": "blue ABS"
+  },
+  "reported_software_colors": {
+    "A2": "blue",
+    "A3": "blue"
+  },
+  "intentional_color_metadata_match": true,
+  "metadata_modified_by_agent": false,
+  "refill_group_observed": {
+    "type": "ABS",
+    "color": "#2850FF",
+    "slot": [
+      "1B",
+      "1C"
+    ]
+  },
+  "auto_reload_detect": 1,
+  "refill_commands_sent": false,
+  "refill_jobs_submitted": false,
+  "drafts": [
+    {
+      "file": "qidi-REFILL-DRAFT-NOT-SUBMITTED.gcode.3mf",
+      "sha256": "4e1a4b0e55c9ce97eb987dbcc7661b381f09c964c5820df7107065b22d4e5b65",
+      "submitted": false
+    },
+    {
+      "file": "orca-REFILL-DRAFT-NOT-SUBMITTED.gcode.3mf",
+      "sha256": "0d618711b7ad42a1e32880c4f874e34e6bbbb36b805535764d5e37d3f720df04",
+      "submitted": false
+    }
+  ]
+}

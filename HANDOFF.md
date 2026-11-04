@@ -121,9 +121,11 @@ explicit. No product source changed during this session.
 
 This one T2→A1 success does not establish the cause or general resolution of Dan's
 original starting-filament symptom. Multiple-Box, support-first and sequential
-QIDI Studio comparisons remain pending. Automatic refill is not enabled. Dan plans
-matching ABS in A2/A3 for a later refill comparison; actual products/temperature
-limits, donor supply and refill protocol still need establishing. Do not start a
+QIDI Studio comparisons remain pending. Orca refill controls remain unimplemented. Dan plans
+matching ABS in A2/A3 for a later refill comparison; firmware now reports both blue ABS slots in one refill group and auto_reload_detect=1.
+The physical colors are intentionally orange/blue; preserve the matching software
+metadata. [Refill drafts/evidence](validation/refill-investigation-2026-11-04/README.md)
+are prepared, but temperatures and controlled runout method still need agreement. Do not start a
 runout test merely because those spools have been loaded.
 
 ## Implemented scope and unfinished requirements
