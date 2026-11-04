@@ -5,6 +5,12 @@ Linux x86_64 use with the X11 backend (XWayland on GNOME).** The general port is
 not complete: automatic refill and broader physical validation remain unfinished.
 One authorized sparse T2→A1 physical print completed on2026-11-04; see below.
 
+**Latest status:** Dan reports a large remaining PLA jam, has powered the MAX4
+off, and will repair it tomorrow. Hardware testing is paused at his request.
+Do not heat, feed or submit another job until recovery resumes. Clear the jam and
+verify actual clean extrusion before another refill test; the installed fix has
+not yet been exercised by a physical refill.
+
 **Current hardware session:** Dan subsequently authorized backing up and fixing
 the MAX4 host firmware and repeating the ABS refill test. The reversible,
 hash-pinned extension is installed and Klipper returned ready after a service

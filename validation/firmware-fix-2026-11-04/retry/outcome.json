@@ -13,5 +13,11 @@
     "command": "EJECT_FILAMENT_CONTROL SLOT=1",
     "target": 280,
     "agent_initiated": false
+  },
+  "user_followup": {
+    "reported_problem": "large PLA jam",
+    "repair_plan": "tomorrow",
+    "printer_power": "Dan confirms powered off",
+    "hardware_testing": "paused at user request"
   }
 }
