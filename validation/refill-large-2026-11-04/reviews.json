@@ -1,0 +1,60 @@
+[
+  {
+    "mode": "qidi",
+    "submitted": false,
+    "dimensions_mm": [
+      30,
+      30,
+      32
+    ],
+    "layers": 160,
+    "logical_tools": [
+      0
+    ],
+    "planned_mapping": [
+      1
+    ],
+    "planned_refill_partner": 2,
+    "archive_sha256": "30f18857e7ac149576986247cb966d831a20ceb841abc112c81e9328d22dca13",
+    "gcode_sha256": "976ec3b9dae04167511e15910e7530984564b6bc8d7dff06b9906e1c051e3a93",
+    "model_filament_mm": 11445.19,
+    "slicer_estimates": [
+      "; total filament length [mm] : 11466.02",
+      "; total filament volume [cm^3] : 27579.01",
+      "; total filament weight [g] : 28.68",
+      "; filament used [mm] = 11445.19",
+      "; filament used [cm3] = 27.53",
+      "; total filament used [g] = 28.63"
+    ],
+    "temperature_checks": "250C printing,260C preparation,100C bed,chamber0; normal end heater commands off"
+  },
+  {
+    "mode": "orca",
+    "submitted": false,
+    "dimensions_mm": [
+      30,
+      30,
+      32
+    ],
+    "layers": 160,
+    "logical_tools": [
+      0
+    ],
+    "planned_mapping": [
+      1
+    ],
+    "planned_refill_partner": 2,
+    "archive_sha256": "4e74e49346f3a10d141c154a1572af307b9e18767fa13e934ffdc93da3dc6cd9",
+    "gcode_sha256": "4c9f3d8dfc4b550b52afa97243af81dc113244502b923743c19461cb69ce71a3",
+    "model_filament_mm": 11468.35,
+    "slicer_estimates": [
+      "; filament used [mm] = 11468.35",
+      "; filament used [cm3] = 27.58",
+      "; filament used [g] = 28.69",
+      "; total filament used [g] = 28.69",
+      "; total filament cost = 0.00",
+      "; estimated printing time (normal mode) = 48m 17s"
+    ],
+    "temperature_checks": "250C printing,260C preparation,100C bed,chamber0; normal end heater commands off"
+  }
+]

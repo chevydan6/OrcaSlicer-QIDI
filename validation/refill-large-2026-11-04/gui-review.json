@@ -1,0 +1,33 @@
+{
+  "archive_sha256": "f16ef062c2c1ecba6ef700517e6771ef1794414076e71def56cee4eb79cb674d",
+  "gcode_sha256": "04abf8fe6bdd78841df8155b61e9d8b989fc03cda56697609283d42a0353b0e8",
+  "submitted": false,
+  "layers": 160,
+  "model_filament_mm": 11445.19,
+  "bed_type": "Textured PEI Plate",
+  "temperature_and_estimate_trace": [
+    "M140 S100",
+    "M141 S0",
+    "BOX_PRINT_START EXTRUDER=0 HOTENDTEMP=260",
+    "M109 S250",
+    "M104 S140",
+    "M109.1 S220",
+    "M109.1 S150",
+    "M190 S100",
+    "M191 S0",
+    "M109 S250",
+    "M140 S100",
+    "M104 S250",
+    "M141 S0",
+    "M141 S0",
+    "M140 S0",
+    "M104 S0",
+    "; filament used [mm] = 11445.19",
+    "; filament used [cm3] = 27.53",
+    "; estimated printing time (normal mode) = 51m 56s"
+  ],
+  "mapping_plan": [
+    1
+  ],
+  "refill_partner_physical_slot": 2
+}
