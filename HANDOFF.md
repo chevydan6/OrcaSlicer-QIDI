@@ -1,8 +1,9 @@
 # Project handoff
 
-Updated 2026-11-03. **Candidate70 is software-accepted and installed for personal
+Updated 2026-11-04. **Candidate70 is software-accepted and installed for personal
 Linux x86_64 use with the X11 backend (XWayland on GNOME).** The general port is
-not complete: automatic refill and physical print validation remain unfinished.
+not complete: automatic refill and broader physical validation remain unfinished.
+One authorized sparse T2→A1 physical print completed on2026-11-04; see below.
 
 Release: [candidate70 deliverables](https://github.com/chevydan6/OrcaSlicer-QIDI/releases/tag/qidi-linux-2026-11-03-c70).
 The definitive identity/gate record is [accepted-70.json](validation/accepted-70.json).
@@ -93,18 +94,37 @@ contribute positive evidence to this final acceptance.
 
 ## Physical hardware evidence and boundary
 
-Only authorized read-only inspection of Dan's MAX4 was performed: connectivity,
-capabilities/telemetry, slot metadata and a valid1920x1080 camera JPEG. Reported
-main MCU02.01.01.12, Box MCU02.03.01.21, one box_v1, blue Generic ABS present in A2;
-other slots absent; loaded path external16. Overall firmware release and actual
-materials/temperature limits need Dan's confirmation. Existing bed/chamber targets
-were observed unchanged. No heating, feeding, motion, RFID refresh, configuration
-writes or print starts were sent to real hardware. Sanitized traces are in
-validation/recovery-2026-11-03; credentials/raw camera images are not committed.
+On2026-11-04 Dan authorized a small physical test and delegated its setup choices.
+Accepted70's actual GUI submitted a10×10×4mm cube using only logical T2 mapped to
+physical A1 ([-1,-1,0]). The exact upload preserved T2 and its executable G-code
+matched the reviewed draft. Firmware acknowledged value_t2='slot0' before start,
+reported slot0 loaded, and the camera showed yellow purge, deposition and the
+finished cube. All20 layers completed; matching printer history reports completed
+in781.57s. Normal end unloaded to slot16 and all heater targets returned to0.
+The isolated GUI exited0; the lamp was restored Off. Dan reported clearing the bed.
+[Hardware evidence](validation/hardware-2026-11-04/README.md) includes the exact
+uploaded project, hashes, sanitized request/response trace, telemetry and history.
+Raw captures, camera frames and connection settings remain private/ignored.
 
-Software evidence does not establish that the physical starting-filament symptom
-is fixed. Automatic refill is **not enabled**; auto_reload_detect=1 and an empty
-auto_refill array do not establish the firmware prerequisites or command protocol.
+The printer reports main MCU02.01.01.12, toolhead02.02.01.08, Box02.03.01.21 and
+one box_v1. This session used A1's reported yellow Generic PLA, not the historical
+November3 material arrangement. Overall firmware release and independent material
+identity remain unestablished. Startup target240C briefly reached a sampled248.5C
+and then stabilized; firmware warnings are retained. No PID/firmware changes were
+attempted. The test does not measure dimensions or surface quality.
+
+Two real monitoring defects were exposed: GUI layer count stays0/0 while firmware
+reports layers, and remaining time incorrectly subtracts two elapsed durations.
+See [follow-ups](validation/hardware-2026-11-04/monitoring-followups.md). Software
+acceptance evidence remains unchanged; these hardware UI limitations are now
+explicit. No product source changed during this session.
+
+This one T2→A1 success does not establish the cause or general resolution of Dan's
+original starting-filament symptom. Multiple-Box, support-first and sequential
+QIDI Studio comparisons remain pending. Automatic refill is not enabled. Dan plans
+matching ABS in A2/A3 for a later refill comparison; actual products/temperature
+limits, donor supply and refill protocol still need establishing. Do not start a
+runout test merely because those spools have been loaded.
 
 ## Implemented scope and unfinished requirements
 
@@ -115,21 +135,23 @@ detection; named object exclusion; QIDI project/placeholder compatibility;
 isolated Linux identity. Orca's engine and existing supported tuning are retained.
 
 Unfinished/unsupported: automatic refill, manual drying, QIDI cloud/MQTT/tunnels,
-physical operation/print verification, native Wayland acceptance and other platforms.
+broader physical verification, layer/ETA monitoring fixes, native Wayland acceptance
+and other platforms.
 Mixed Box/external, multicolor external and experimental multi-device QIDI jobs
 are rejected. HTTPS/WSS is not accepted as verified secure transport; use trusted
 local HTTP. See [limitations](docs/limitations.md) and [feature checklist](docs/feature-checklist.md).
 
 ## Next work
 
-1. Review [the concrete supervised hardware plan](docs/hardware-validation-plan.md)
-   with Dan. Confirm firmware, loaded materials/slots and temperature limits, then
-   obtain explicit authorization for grouped heating/motion/feed/print operations.
-   One reported Box cannot validate B2; begin with confirmed A2 if appropriate.
-   Compare QIDI Studio and accepted Orca sequentially using identical inputs.
-2. Investigate refill separately from this stable milestone: trace QIDI Studio's
-   active implementation and authorized protocol evidence. Determine configuration,
-   job options and runtime commands; do not guess or reuse Bambu operations.
+1. Fix the observed layer/remaining-time monitoring defects in a separate change,
+   preserving non-QIDI Moonraker behavior. Accept a newly built matching artifact;
+   do not transfer70's final evidence to a changed binary.
+2. Investigate refill separately: inspect pinned QIDI Studio and read-only firmware
+   command/capability evidence, then arrange a sequential QIDI Studio baseline with
+   matching ABS in A2/A3. Confirm product/temperatures and a short donor, document
+   the concrete session and obtain authorization before inducing runout. Capture
+   settings, options, runtime commands and slot transitions; do not guess commands
+   or reuse Bambu operations. One reported Box cannot validate multiple-Box cases.
 3. Refresh official Orca pins only in a separate maintenance change, retaining70.
    Review shared CLI/import/shutdown/Moonraker/GTK changes and non-QIDI regressions.
 

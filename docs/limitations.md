@@ -1,10 +1,14 @@
 # Remaining limitations and physical verification
 
-Dan's MAX4 was inspected with authorized read-only LAN requests on 2026-11-03.
-One Box, main MCU 02.01.01.12, Box MCU 02.03.01.21, slot metadata and a valid
-1920x1080 camera JPEG were observed. The overall release version and physical
-loaded materials still need Dan's confirmation. No heating, feeding, motion,
-configuration writes or print requests were sent to the printer.
+Candidate70 completed one authorized physical MAX4 test on2026-11-04: a20-layer
+10×10×4mm cube with sparse logical T2 mapped to A1. Firmware history reports
+completed; yellow deposition and the finished cube were visible. Normal end
+unloaded the Box path and set all heater targets to0. This establishes that one
+mapping/session, not general hardware certification or print-quality measurements.
+See [hardware evidence](../validation/hardware-2026-11-04/README.md). The real GUI
+exposed inaccurate layer counters and remaining-time estimates; those remain
+unfixed. Read-only reports identify one Box, main MCU02.01.01.12 and Box02.03.01.21;
+the overall release version and independent material identity remain unestablished.
 
 Automated communication tests use only 127.0.0.1:19025, whose fixture records
 and discards requests. A recorded heater, load, RFID or start request does not
@@ -34,8 +38,8 @@ failed records are retained and are not combined with70's positive evidence.
 - Current Orca process and material tuning is retained where a counterpart
   already exists. Missing QIDI profiles are imported with attribution. Matching
   controls and G-code does not make the engines or print quality identical.
-- Native camera uses the reported local HTTP snapshot endpoint. A read-only GET to the MAX4 web-proxy snapshot worked; the custom GUI on a real
-  connection, authentication and other proxy configurations remain unverified.
+- Native camera uses the reported local HTTP snapshot endpoint. The native GUI displayed snapshots from the real MAX4 during the authorized print.
+  Authentication and other proxy configurations remain unverified.
 - New QIDI-specific interface strings fall back to English when a translation
   catalog has no translation. Some shared upstream monitoring labels still say AMS.
 - This deliverable targets Linux x86_64. Other platforms have not been built.
@@ -58,8 +62,8 @@ trace. See filament-mapping.md and the validation records.
 
 The physical cause of the reported MAX4 starting-filament symptom is not proven.
 The port explicitly sets Box mode, validates every used tool mapping, and captures
-submission options before asynchronous upload. Those software fixes still require
-an actual printer comparison with its installed firmware.
+submission options before asynchronous upload. A physical T2→A1 print now passed on the reported firmware, but multiple-Box,
+support-first and sequential QIDI Studio comparisons remain outstanding.
 
 ## Hardware checks requiring separate authorization
 

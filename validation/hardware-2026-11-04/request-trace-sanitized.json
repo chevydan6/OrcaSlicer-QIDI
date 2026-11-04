@@ -1,0 +1,103 @@
+[
+  {
+    "method": "POST",
+    "path": "/printer/gcode/script",
+    "body_length": 42,
+    "response": {
+      "http_status": 200,
+      "result": "ok"
+    },
+    "body": {
+      "script": "SET_PIN PIN=caselight VALUE=1"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/server/files/upload",
+    "body_length": 422,
+    "response": {
+      "http_status": 201
+    },
+    "multipart_sha256": "e156aceca2bd24b8a02292fd2b8eb5c6c86c72d886b0fcde03a00c92bf71d9c1",
+    "uploaded_file_sha256": "d70762425aeea0a99d5d0822dd4746e0a2f4c46901a13d7aefdd633f1a2d8701"
+  },
+  {
+    "method": "POST",
+    "path": "/server/files/upload",
+    "body_length": 54910,
+    "response": {
+      "http_status": 201
+    },
+    "multipart_sha256": "58980bc0d1cd32d5acd632726fa30de9b8cf1ea8e7bf466d6c349eccaa2bc63e",
+    "uploaded_file_sha256": "c153b945e6338e2b55a12d21315fd9b8f5f317481b123dbe31320a01c7564c3d"
+  },
+  {
+    "method": "POST",
+    "path": "/printer/gcode/script",
+    "body_length": 105,
+    "response": {
+      "http_status": 200,
+      "result": "ok"
+    },
+    "body": {
+      "script": "SAVE_VARIABLE VARIABLE=enable_box VALUE=1\nSAVE_VARIABLE VARIABLE=value_t2 VALUE=\"'slot0'\""
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/printer/gcode/script",
+    "body_length": 16,
+    "response": {
+      "http_status": 200,
+      "result": "ok"
+    },
+    "body": {
+      "script": "G31"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/machine/timelapse/settings?enabled=false",
+    "body_length": 2,
+    "response": {
+      "http_status": 200
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/printer/gcode/script",
+    "body_length": 63,
+    "response": {
+      "http_status": 200,
+      "result": "ok"
+    },
+    "body": {
+      "script": "SAVE_VARIABLE VARIABLE=enable_polar_cooler VALUE=0"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/printer/print/start",
+    "body_length": 66,
+    "response": {
+      "http_status": 200,
+      "result": "ok"
+    },
+    "body": {
+      "filename": "MAX4-A1-T2-test-20261104.gcode.3mf",
+      "plateindex": "1"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/printer/gcode/script",
+    "body_length": 42,
+    "response": {
+      "http_status": 200,
+      "result": "ok"
+    },
+    "body": {
+      "script": "SET_PIN PIN=caselight VALUE=0"
+    }
+  }
+]

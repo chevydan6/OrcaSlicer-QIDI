@@ -1,0 +1,46 @@
+{
+  "images": [
+    {
+      "private_file": "ready.png",
+      "sha256": "9f8effd0a6a22da312dd39f28fc123567b4da2cfce9421eddb6045e8c0ec0131"
+    },
+    {
+      "private_file": "upload-state.png",
+      "sha256": "7a71aeedb50967e0de6592251495e6460acfb10bf4cea0f424940ca071c4cb9a"
+    },
+    {
+      "private_file": "a1-loaded.png",
+      "sha256": "b356a6e616a4767acdd34bc58f139b11dab0f2314a02bda2cbd9a1c5868480e4"
+    },
+    {
+      "private_file": "preparing.png",
+      "sha256": "fbb64cd8b15e1e7ab9f685d12d66655dfa44517d1eee77331663fe016beebb3f"
+    },
+    {
+      "private_file": "deposition.png",
+      "sha256": "062b194be9976a1e9c26bf4591b334621f9be80a1b6d155af5241cb7232f1fe4"
+    },
+    {
+      "private_file": "layer17.png",
+      "sha256": "8fdf44165ebadb6b309a99b4a34cacca164ebe30eb2dad293488a70af6f22412"
+    },
+    {
+      "private_file": "final-layers.png",
+      "sha256": "3726af1f53f1d97ce69af4d222124212eb75c0e20005c74a1df5e08dc7ec8ac2"
+    },
+    {
+      "private_file": "end-state.png",
+      "sha256": "4e60204a79fc294fa0c73cd089497edd42804f16d9e75e00dbd838c7aba0e437"
+    },
+    {
+      "private_file": "completed.png",
+      "sha256": "21dd21e8e39e2e758948d084dfda4c9d316a7d281e5504a3e94650624475cc0f"
+    },
+    {
+      "private_file": "lamp-restored.png",
+      "sha256": "91bc89359c4115712bdfe96d23a817f5483cad55bd14f2b997a57c4b80881cc6"
+    }
+  ],
+  "location": "Ignored local research/hardware-2026-11-04; raw images not committed",
+  "observed": "Native GUI camera rendered real printer; yellow purge and deposition visible; small yellow cube remained attached through layer20. Dimension and surface quality not independently measured."
+}

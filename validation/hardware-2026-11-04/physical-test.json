@@ -1,0 +1,100 @@
+{
+  "status": "completed: one sparse T2-to-A1 physical print; monitoring defects recorded",
+  "date": "2026-11-04",
+  "candidate": 70,
+  "integration_build_input": "7352b62f30804ecbeaa96c7996ff86614fadf7a8",
+  "appimage_sha256": "7614dd15d467d0bf08b9e8846111e29940da4c53248a1d238a35d53b1dff35a7",
+  "authorization": [
+    "go ahead and do a test and use the MAX4",
+    "no it didnt do as you please"
+  ],
+  "scope": "One small T2 to A1 print using printer-reported yellow Generic PLA; stock MAX4 startup. No refill/runout test, firmware flashing or configfile edits.",
+  "test": {
+    "model_mm": [
+      10,
+      10,
+      4
+    ],
+    "logical_tool": 2,
+    "physical_slot": 0,
+    "mapping": [
+      -1,
+      -1,
+      0
+    ],
+    "nozzle_C": 210,
+    "startup_preparation_C": 240,
+    "bed_C": 60,
+    "chamber_C": 0,
+    "box_C": 0,
+    "bed_leveling": true,
+    "timelapse": false,
+    "polar_cooler": false
+  },
+  "job": "MAX4-A1-T2-test-20261104.gcode.3mf",
+  "material_basis": "A1 sensor present, stored Generic PLA yellow metadata with 190-240C range; not independently identified by operator",
+  "camera_preflight": "Lamp enabled through accepted GUI; fitted plate appeared clear",
+  "firmware": {
+    "main_mcu": "02.01.01.12",
+    "toolhead_mcu": "02.02.01.08",
+    "box_mcu": "02.03.01.21",
+    "overall_release": "not established"
+  },
+  "upload": {
+    "uploaded_3mf_sha256": "c153b945e6338e2b55a12d21315fd9b8f5f317481b123dbe31320a01c7564c3d",
+    "uploaded_gcode_sha256": "b3ff7021a9cef544b43a82876821975fa69e6350b2ecfa80835d9eb159118241",
+    "executable_commands_identical_to_reviewed_draft": true,
+    "gcode_tools": [
+      "T2",
+      "T2"
+    ]
+  },
+  "request_trace": "request-trace-sanitized.json",
+  "observations": "telemetry-sanitized.jsonl",
+  "history": {
+    "job_id": "000029",
+    "filename": "MAX4-A1-T2-test-20261104.gcode.3mf",
+    "status": "completed",
+    "start_time": 1793778516.509174,
+    "end_time": 1793779298.7023742,
+    "total_duration": 781.5707457899698,
+    "print_duration": 589.2122333649895,
+    "filament_used": 420.6431700035464
+  },
+  "observed": {
+    "mapping_before_start": "value_t2='slot0'",
+    "loaded_path_sequence": [
+      "slot16",
+      "slot0",
+      "slot16"
+    ],
+    "layers": 20,
+    "camera": "yellow purge, yellow model deposition and finished attached cube observed",
+    "post_job_state": "standby",
+    "post_job_heater_targets_C": {
+      "extruder": 0.0,
+      "heater_bed": 0.0,
+      "heater_generic chamber": 0.0
+    },
+    "post_job_box_target_C": 0.0,
+    "peak_sampled_nozzle_C": 248.5,
+    "normal_end_unload": true,
+    "lamp_restored_off": true,
+    "gui_exit_code": 0,
+    "user_followup": "Dan reported that he cleared the bed after completion"
+  },
+  "monitoring_defects": [
+    "layer count stays0/0 despite firmware layer progression",
+    "remaining-time computation uses difference of elapsed durations"
+  ],
+  "not_verified": [
+    "independent material identity or dimensional/finish measurements",
+    "general starting-filament symptom resolution or QIDI Studio comparison",
+    "multiple-Box or reversed mapping",
+    "support-first startup",
+    "automatic refill/runout",
+    "heated Box operation",
+    "RFID/material write operations",
+    "network recovery during print"
+  ]
+}

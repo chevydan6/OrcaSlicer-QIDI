@@ -34,13 +34,13 @@
   "installation_evidence": "validation/install-70",
   "installed_backend": "x11 (XWayland on GNOME)",
   "fixture_sha256": "8e259f6743630a2a224e1c7a54bd322288e8565dbbfef5c96382eb5dba56ff7b",
-  "hardware": "Read-only inspection only; no physical control/print verification",
+  "hardware": "One authorized T2-to-A1 20-layer print completed 2026-11-04; actual native GUI camera and normal end/heaters off verified; broader hardware validation pending",
   "unfinished": [
     "automatic refill",
     "manual drying",
     "QIDI cloud/MQTT/tunnels",
     "physical starting-filament comparison",
-    "physical thermal/feed/print validation",
+    "broader physical thermal/feed/print validation",
     "native Wayland acceptance",
     "other platforms",
     "Flatpak package"
@@ -49,5 +49,10 @@
     "mixed Box/external jobs",
     "multicolor external-spool jobs",
     "QIDI experimental multi-device submission"
+  ],
+  "hardware_evidence": "validation/hardware-2026-11-04",
+  "known_monitoring_defects": [
+    "layer counters remain0/0",
+    "remaining time subtracts elapsed durations"
   ]
 }

@@ -4,7 +4,9 @@ Status describes source implementation, not completion or printer certification.
 The candidate70 software milestone is accepted within the documented Linux backend scope.
 Read-only LAN inspection of Dan's MAX4 is recorded in
 [the recovery evidence](../validation/recovery-2026-11-03/printer-readonly.json).
-No physical control/print behavior is verified. Automated communication tests
+One authorized sparse T2→A1 print completed on2026-11-04; see
+[hardware evidence](../validation/hardware-2026-11-04/README.md). Real GUI layer/time
+displays need fixes. Other physical workflows remain unverified. Automated communication tests
 use only the non-forwarding loopback fixture.
 
 Current acceptance: candidate70 (`7352b62`) passed compilation, 2,916 unit cases
@@ -29,7 +31,8 @@ unfinished requirements.
 | Stale/fresh object exclusion,malformed telemetry,HTTP/delay/WebSocket/camera recovery | Passed |
 | Post-control slicing,non-QIDI A1,normal/pending shutdown | Passed |
 | Installed identity,menu/launcher,chooser,settings,actual GNOME/XWayland rendering | Passed; no loopback connection delivered |
-| Automatic refill,manual drying,cloud/MQTT/tunnels,physical prints | Unfinished/unverified |
+| Physical T2→A1 print, real camera, normal end/heaters off | One20-layer cube completed; layer/time UI defects recorded |
+| Automatic refill,manual drying,cloud/MQTT/tunnels,broader hardware cases | Unfinished/unverified |
 
 The stability fixes include typed telemetry validation, bounded chamber numbers,
 callback lifetime guards, stale dialog selection checks and QIDI-specific
@@ -42,12 +45,12 @@ documented in the build guide. Source checks alone do not validate GUI behavior.
 | MAX4 materials | 234 of QIDI's 247 files | 13 missing files; Orca IDs and inheritance | All 268 relevant profile entries resolve; tuning differences under review |
 | Process profiles | All 16 source files have counterparts | Preserve current Orca tuning | Compare resolved differences and actual slicing |
 | Fan and speed controls | QIDI part-fan number mismatch; speed selection ignored | Named fan commands; speed commands/telemetry | Offline command checks pass; hardware pending |
-| Camera | No QIDI native stream mode | Local web-proxy snapshot endpoint | Offline GUI JPEG display, malformed frame, HTTP failure and recovery pass; read-only MAX4 JPEG GET verified; custom-app real-camera/authentication/proxy testing pending |
+| Camera | No QIDI native stream mode | Local web-proxy snapshot endpoint | Offline GUI JPEG display, malformed frame, HTTP failure and recovery pass; real MAX4 native GUI snapshots verified; authentication/other proxies pending |
 | Chamber heat | Profile temperatures and start macros | Native command translation, heater capability and live current/target telemetry | Protocol and offline GUI target/telemetry checks pass; hardware pending |
 | Box temperature during printing | JSON values ignored by core | Persistent settings/UI; logical VT indices in generated code | Candidate70 compiled slicing and GUI save/reload pass; physical temperatures unverified |
 | Box/external selection | Physical-slot mapping exists | Explicit enable_box; active-tool snapshot; reject missing/malformed mappings | Recording-transport submission order and stop-on-failure pass |
 | External spool monitoring | Generic virtual-tray interface | QIDI external material/color report and exact type resolution | Decoder/partial-update checks and external-spool GUI display pass; hardware pending |
-| Initial filament | Logical tool placeholders and mapping exist | Preserve sparse indices | Candidate70 sparse T2→slot5 submission passes; physical symptom unresolved |
+| Initial filament | Logical tool placeholders and mapping exist | Preserve sparse indices | Candidate70 sparse T2→slot5 submission passes; one physical T2→A1 print completed; original general symptom/comparison unresolved |
 | QIDI saved projects | Unrecognized application marker; incompatible MAX4 names and automatic raft value | Recognize structured metadata; retain object/material assignments; migrate known settings | Candidate70 original sparse and support-first import/slice/preview pass |
 | Load/unload | Native UI lacks QIDI translation | QIDI macros, selected physical slot | Candidate70 expected slot requests recorded; hardware unverified |
 | Eject | Missing | QIDI-only control; hidden for box_v2 identity | Candidate70 physical-slot request and box_v2 hiding pass; hardware unverified |
@@ -56,7 +59,7 @@ documented in the build guide. Source checks alone do not validate GUI behavior.
 | Slot material/color editing | Native editor lacks QIDI translation | RGB/vendor/product command, guarded string literals | Candidate70 material/RGB edits and20 reopens pass; previous failed sizing evidence retained |
 | Box monitoring | Filament sync only | Temperature/humidity/loaded physical slot; modern nested/flat slot sync and live material/presence updates; preserve partial metadata | Nested/flat firmware formats checked in isolation |
 | Start/end/change G-code | MAX4 macros present | Height guards and Box thermal preamble | All21 MAX4 slicing/persistence cases pass, including original embedded machines |
-| LAN printing | Moonraker upload, 3MF selected plate | Ordered Box mode/mapping/options before start | Candidate70 upload/configuration/start ordering and sparse/support-first GUI jobs pass |
+| LAN printing | Moonraker upload, 3MF selected plate | Ordered Box mode/mapping/options before start | Candidate70 fixture jobs pass; physical T2→A1 upload/options/start and completed print verified |
 | Experimental batch/multi-device printing | Separate upstream submission path | QIDI entry point refuses the job because this path lacks per-printer slot/options snapshots | Candidate70 compiled and GUI refusal before dispatch verified |
 | Bed leveling option | QIDI option ineffective/hidden | MAX4 G31/G32 selection | Recording-transport check passes |
 | Timelapse option | UI and frame macros exist | QIDI Moonraker settings request | Candidate70 On/Off request and storage-failure/recovery GUI checks pass; hardware unverified |

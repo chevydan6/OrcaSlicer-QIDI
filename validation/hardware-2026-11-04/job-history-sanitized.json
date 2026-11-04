@@ -1,0 +1,12 @@
+[
+  {
+    "job_id": "000029",
+    "filename": "MAX4-A1-T2-test-20261104.gcode.3mf",
+    "status": "completed",
+    "start_time": 1793778516.509174,
+    "end_time": 1793779298.7023742,
+    "total_duration": 781.5707457899698,
+    "print_duration": 589.2122333649895,
+    "filament_used": 420.6431700035464
+  }
+]

@@ -1,0 +1,47 @@
+[
+  {
+    "message": "// Sub status 'homing' not valid for main status 'print_start'",
+    "time": 1793778516.2989159,
+    "type": "response"
+  },
+  {
+    "message": "// Sub status 'extruder_heating' not valid for main status 'print_start'",
+    "time": 1793778611.359105,
+    "type": "response"
+  },
+  {
+    "message": "// The temperature at the hot end is unstable. Wait for the temperature to stabilize before trying again.",
+    "time": 1793778679.6348774,
+    "type": "response"
+  },
+  {
+    "message": "// Sub status 'extruder_heating' not valid for main status 'print_start'",
+    "time": 1793778717.5658762,
+    "type": "response"
+  },
+  {
+    "message": "// Sub status 'extruder_heating' not valid for main status 'print_start'",
+    "time": 1793778759.1652675,
+    "type": "response"
+  },
+  {
+    "message": "// Sub status 'bed_heating' not valid for main status 'print_start'",
+    "time": 1793778898.3742356,
+    "type": "response"
+  },
+  {
+    "message": "// Sub status 'homing' not valid for main status 'print_start'",
+    "time": 1793778919.130745,
+    "type": "response"
+  },
+  {
+    "message": "// Sub status 'meshing' not valid for main status 'print_start'",
+    "time": 1793778984.1958234,
+    "type": "response"
+  },
+  {
+    "message": "// Sub status 'extruder_heating' not valid for main status 'print_start'",
+    "time": 1793779032.117323,
+    "type": "response"
+  }
+]
