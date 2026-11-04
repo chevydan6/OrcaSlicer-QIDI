@@ -25,6 +25,10 @@ after boot, but later nozzle target222 was observed during that separate operati
 Do not describe the final printer state as heaters off based on the earlier sample.
 
 The isolated QIDI Studio process exited0, and its private display was stopped.
+Dan later reported that PLA had jammed the extruder and then confirmed it fixed.
+Read-only checks after recovery showed an empty toolhead sensor and loaded_slot16,
+A1 absent, both ABS inlets present, and all heater targets0. This user-reported
+jam is recorded separately from the unexercised refill correction.
 This attempt is inconclusive. Required repeat evidence is preservation of logical
 T0 during refill, replacement A3 actually loading, blue deposition, automatic
 continuation without manual Resume, and successful completion.

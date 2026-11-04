@@ -9,5 +9,10 @@
   "post_reboot_fix_enabled": true,
   "post_reboot_heater_targets_zero_observed": true,
   "other_controller_command": "EJECT_FILAMENT_CONTROL SLOT=0 after boot; not sent by agent",
-  "time": 1793790891.3230853
+  "time": 1793790891.3230853,
+  "user_followup": {
+    "report": "PLA jammed the extruder; subsequently fixed",
+    "preflight": "toolhead sensor empty; loaded slot16; A1 inlet absent; A2/A3 present; all heater targets0",
+    "time": 1793792323.7380922
+  }
 }

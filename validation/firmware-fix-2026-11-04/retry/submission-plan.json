@@ -1,0 +1,30 @@
+{
+  "time": 1793792394.0121045,
+  "filename": "MAX4-QIDI-ABS-refill-fixed-retry-20261104.gcode.3mf",
+  "mapping": [
+    1
+  ],
+  "reference_app": "QIDI Studio 02.07.02.73",
+  "model_mm": [
+    30,
+    30,
+    32
+  ],
+  "layer_count": 160,
+  "bed_plate": "Textured PEI",
+  "print_temp": 250,
+  "requested_preparation_temp": 260,
+  "bed_temp": 100,
+  "chamber_temp": 0,
+  "box_temp": 0,
+  "leveling": true,
+  "timelapse": false,
+  "polar_cooler": false,
+  "donor": "A2 physical1 orange ABS software blue",
+  "replacement": "A3 physical2 blue ABS software blue",
+  "firmware_fix_sha256": "4513412930926926dc0d72ae1a0fbcdac3c1eba92e09c7b712171d7db842bd0f",
+  "user_ready_confirmed": true,
+  "memory_start_observation": "Dan reports refill works when starting from MAX4 memory; local-start mapping difference not independently traced yet",
+  "startup_temperature_discrepancy": "Prior stock reference requested260 but firmware targeted280 and sampled286; separate issue retained, monitor actual runtime temperatures",
+  "preflight": "Dan reports jam fixed and instructs proceed after cover observation. Empty toolhead/slot16, A1 absent, A2/A3 present, no warnings, heaters off. Front cover appears removed in camera; user says it is fine and to proceed."
+}

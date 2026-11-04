@@ -17,6 +17,13 @@ was interrupted by a full printer reboot during startup, before deposition;
 **no physical fix acceptance yet**. The reboot initiator is not yet established.
 The fix remained enabled after reboot. A subsequent printer-side eject command
 was observed; do not submit another job while Dan is handling the feed.
+Dan subsequently reported a PLA extruder jam and then confirmed it was fixed.
+Read-only preflight now shows loaded_slot=slot16, an empty toolhead sensor,
+A1 absent, A2/A3 present, and all heater targets0. Dan instructed proceeding after
+the front-cover observation; the camera still showed it removed, so do not claim
+reassembly was visually verified. The [retry](validation/firmware-fix-2026-11-04/retry/README.md)
+was submitted from official QIDI Studio and is in progress. The uploaded G-code
+again matches the failed reference exactly. Physical refill acceptance is pending.
 Its executable G-code is byte-identical to the failed larger reference.
 Dan reports refill works when starting from printer memory. That observation is
 recorded, but the reason for the different behavior has not been independently
