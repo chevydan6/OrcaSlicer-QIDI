@@ -96,7 +96,8 @@ contribute positive evidence to this final acceptance.
 
 An authorized ABS refill comparison is now active. Dan intentionally matched A2/A3
 software colors and already cut the A2 donor. Official QIDI Studio's reference job
-was submitted first; no automatic-refill outcome is established yet. See
+failed during initial loading with QDE_004_006, before layer1. Dan confirmed the
+cut donor was too short and requested a retry; automatic refill remains unverified. See
 [reference session](validation/refill-reference-2026-11-04/README.md), including the
 actual-upload identity and startup/capture differences. Orca comparison is pending.
 

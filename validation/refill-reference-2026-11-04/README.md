@@ -1,4 +1,4 @@
-# QIDI Studio physical ABS refill reference — in progress
+# QIDI Studio physical ABS refill reference — first attempt failed during loading
 
 Dan authorized autonomous execution and reported A2 already cut. A2 is physically
 orange ABS and A3 blue ABS; both intentionally remain blue in software. Firmware
@@ -32,4 +32,12 @@ timestamped command store records mapping/options and SDCARD_PRINT_FILE. An80-po
 capture was added after startup. Do not claim a complete submission packet trace.
 Private captures, settings and camera images are excluded from GitHub.
 
-Current result: job accepted and in startup, no refill outcome established yet.
+Result: initial loading failed before layer1 with QDE_004_006 at1793781906.85.
+A2 was selected, its inlet changed to absent, and the extruder sensor never reported
+filament. No A3 transition occurred. Dan confirmed the cut donor was too short and
+requested a retry. This is not a valid printing-stage automatic refill comparison.
+The GUI cancelled the job (history00002A:cancelled). Bed remained targeted100C in
+the initial cancelled snapshot; the agent's GUI interaction sent explicit bed
+TARGET=0 at1793781976.93. Subsequent standby telemetry confirms all targets0.
+The lamp was turned off and QIDI Studio exited0. Do not claim cancellation alone
+verified heater shutdown. A2 was subsequently restored by Dan for the retry.
