@@ -1,0 +1,7 @@
+# MAX4 startup temperature investigation
+
+Read-only investigation of physical job 000032. The reviewed sliced G-code calls `BOX_PRINT_START EXTRUDER=0 HOTENDTEMP=260`, followed by `EXTRUSION_AND_FLUSH HOTEND=250` and subsequent 250°C commands. Printer telemetry showed the nozzle target at 280°C during startup, with a sampled peak of 287°C, before a later 250°C target. The earlier QIDI Studio reference also requested HOTENDTEMP=260 and targeted 280°C, so the observation is not specific to the Orca port.
+
+The installed `EXTRUSION_AND_FLUSH` macro heats to its supplied HOTEND value (250°C for this job); it does not account for the earlier 280°C target. The startup Box path includes proprietary compiled firmware modules; the exact instruction and reason for overriding 260°C remain unproven. Local firmware configuration uses PID control, but telemetry alone cannot establish why temperature overshot or whether calibration is responsible. The machine's configured heater maximum of 375°C is a hardware protection threshold, not a material temperature recommendation.
+
+No live heating, calibration, firmware change or new print was performed. At inspection, printer was in standby with heater targets zero. Future work should trace the compiled Box startup path with an isolated replay, establish whether 280°C depends on slot/material metadata, and investigate the heating response separately. Avoid changing temperature or PID settings without understanding the loading procedure and validating material compatibility.
