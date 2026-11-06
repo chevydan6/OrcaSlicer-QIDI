@@ -272,6 +272,17 @@ int main() {
  QidiPrinterAgent::append_box_status({{"multi_color_controller",{{"last_load_slot","slot15"}}}},loaded);
  assert(loaded["print"]["ams"]["tray_now"]=="15");
 
+ assert(QidiPrinterAgent::control_script({{"command","qidi_auto_refill"},{"enabled",true}}) == "SET_ENABLE_AUTO_RELOAD ENABLE=1");
+ assert(QidiPrinterAgent::control_script({{"command","qidi_auto_refill"},{"enabled",false}}) == "SET_ENABLE_AUTO_RELOAD ENABLE=0");
+ bool invalid_refill = false;
+ try { QidiPrinterAgent::control_script({{"command","qidi_auto_refill"},{"enabled",2}}); } catch (const std::invalid_argument&) { invalid_refill = true; }
+ assert(invalid_refill);
+ nlohmann::json refill_payload;
+ QidiPrinterAgent::append_accessory_status({{"save_variables",{{"variables",{{"auto_reload_detect",1}}}}}},refill_payload);
+ assert(refill_payload["print"]["qidi_auto_refill"] == true);
+ nlohmann::json invalid_refill_payload;
+ QidiPrinterAgent::append_accessory_status({{"save_variables",{{"variables",{{"auto_reload_detect",2}}}}}},invalid_refill_payload);
+ assert(!invalid_refill_payload.contains("print"));
  assert(QidiPrinterAgent::control_script({{"command","qidi_polar_cooler"},{"enabled",false}}) == "SET_PIN PIN=polar_cooler VALUE=0");
  nlohmann::json detector_payload;
  QidiPrinterAgent::append_accessory_status({{"save_variables",{{"variables",{{"enable_noodle_detection",1},{"enable_pre_print_model_check",false},{"noodle_sensitivity_level","MEDIUM"}}}}},{"output_pin polar_cooler",{{"value",1}}}},detector_payload);

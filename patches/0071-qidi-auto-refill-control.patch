@@ -1,0 +1,152 @@
+diff --git a/src/slic3r/GUI/DeviceManager.cpp b/src/slic3r/GUI/DeviceManager.cpp
+index e48586ec..30014bd3 100644
+--- a/src/slic3r/GUI/DeviceManager.cpp
++++ b/src/slic3r/GUI/DeviceManager.cpp
+@@ -3294,6 +3294,8 @@ int MachineObject::parse_json(std::string tunnel, std::string payload, bool key_
+                     qidi_polar_cooler_available = jj["qidi_polar_cooler_available"].get<bool>();
+                 if (printer_agent_id == "qidi" && jj.contains("qidi_polar_cooler_on") && jj["qidi_polar_cooler_on"].is_boolean())
+                     qidi_polar_cooler_on = jj["qidi_polar_cooler_on"].get<bool>();
++                if (printer_agent_id == "qidi" && jj.contains("qidi_auto_refill") && jj["qidi_auto_refill"].is_boolean())
++                    qidi_auto_refill = jj["qidi_auto_refill"].get<bool>();
+                 if (printer_agent_id == "qidi" && jj.contains("qidi_detection") && jj["qidi_detection"].is_object()) {
+                     const auto& detection = jj["qidi_detection"];
+                     const auto enabled = detection.find("enable_noodle_detection");
+diff --git a/src/slic3r/GUI/DeviceManager.hpp b/src/slic3r/GUI/DeviceManager.hpp
+index e99c8e81..14c2bd8b 100644
+--- a/src/slic3r/GUI/DeviceManager.hpp
++++ b/src/slic3r/GUI/DeviceManager.hpp
+@@ -653,6 +653,7 @@ public:
+     std::vector<std::string> qidi_print_objects;
+     bool qidi_polar_cooler_available { false };
+     std::optional<bool> qidi_polar_cooler_on;
++    std::optional<bool> qidi_auto_refill;
+     bool m_support_mqtt_homing { false };// fun[32]
+     bool is_support_brtc{false};                 // fun[31], support tcp and upload protocol
+     bool is_support_ext_change_assist{false};
+diff --git a/src/slic3r/GUI/PrintOptionsDialog.cpp b/src/slic3r/GUI/PrintOptionsDialog.cpp
+index 059e4b40..a98aec1c 100644
+--- a/src/slic3r/GUI/PrintOptionsDialog.cpp
++++ b/src/slic3r/GUI/PrintOptionsDialog.cpp
+@@ -124,6 +124,20 @@ PrintOptionsDialog::PrintOptionsDialog(wxWindow* parent)
+         });
+     });
+ 
++    m_cb_qidi_auto_refill->Bind(wxEVT_TOGGLEBUTTON, [this](wxCommandEvent& evt) {
++        auto* manager = wxGetApp().getDeviceManager();
++        auto* current = manager ? manager->get_selected_machine() : nullptr;
++        if (current && obj == current && current->printer_agent_id == "qidi" && current->is_info_ready() &&
++            current->qidi_auto_refill.has_value() && !current->is_in_printing() && !current->is_in_printing_pause()) {
++            current->publish_json({{"print", {{"command", "qidi_auto_refill"},
++                {"enabled", m_cb_qidi_auto_refill->GetValue()},
++                {"sequence_id", std::to_string(MachineObject::m_sequence_id++)}}}});
++        }
++        if (current && current->qidi_auto_refill.has_value())
++            m_cb_qidi_auto_refill->SetValue(*current->qidi_auto_refill);
++        evt.Skip();
++    });
++
+     m_cb_qidi_polar_cooler->Bind(wxEVT_TOGGLEBUTTON, [this](wxCommandEvent& evt) {
+         auto* manager = wxGetApp().getDeviceManager();
+         auto* current = manager ? manager->get_selected_machine() : nullptr;
+@@ -428,6 +442,12 @@ void PrintOptionsDialog::update_options(MachineObject* obj_)
+ 
+     m_qidi_skip_objects->Show(obj_->printer_agent_id == "qidi" && !obj_->qidi_print_objects.empty());
+     m_qidi_skip_objects->Enable(obj_->is_in_printing() && !m_qidi_skip_dialog_open);
++    const bool show_refill = obj_->printer_agent_id == "qidi" && obj_->qidi_auto_refill.has_value();
++    m_qidi_auto_refill_sizer->Show(show_refill);
++    if (show_refill) {
++        m_cb_qidi_auto_refill->SetValue(*obj_->qidi_auto_refill);
++        m_cb_qidi_auto_refill->Enable(obj_->is_info_ready() && !obj_->is_in_printing() && !obj_->is_in_printing_pause());
++    }
+     const bool show_cooler = obj_->printer_agent_id == "qidi" && obj_->qidi_polar_cooler_available && obj_->qidi_polar_cooler_on.has_value();
+     m_qidi_polar_cooler_sizer->Show(show_cooler);
+     if (show_cooler)
+@@ -888,6 +908,16 @@ wxBoxSizer* PrintOptionsDialog::create_settings_group(wxWindow* parent)
+     sizer->Add(m_qidi_skip_objects, 0, wxLEFT | wxRIGHT | wxBOTTOM, FromDIP(18));
+     m_qidi_skip_objects->Hide();
+ 
++    m_qidi_auto_refill_sizer = new wxBoxSizer(wxHORIZONTAL);
++    m_cb_qidi_auto_refill = new CheckBox(parent);
++    auto* refill_label = new Label(parent, _L("Auto Refill"));
++    refill_label->SetFont(Label::Body_14);
++    m_cb_qidi_auto_refill->SetToolTip(_L("Automatically switch to matching filament when the current spool runs out."));
++    m_qidi_auto_refill_sizer->Add(m_cb_qidi_auto_refill, 0, wxALL | wxALIGN_CENTER_VERTICAL, FromDIP(5));
++    m_qidi_auto_refill_sizer->Add(refill_label, 1, wxALL | wxALIGN_CENTER_VERTICAL, FromDIP(5));
++    sizer->Add(m_qidi_auto_refill_sizer, 0, wxEXPAND | wxLEFT | wxRIGHT, FromDIP(18));
++    m_qidi_auto_refill_sizer->Show(false);
++
+     m_qidi_polar_cooler_sizer = new wxBoxSizer(wxHORIZONTAL);
+     m_cb_qidi_polar_cooler = new CheckBox(parent);
+     auto* cooler_label = new Label(parent, _L("Polar Cooler"));
+diff --git a/src/slic3r/GUI/PrintOptionsDialog.hpp b/src/slic3r/GUI/PrintOptionsDialog.hpp
+index a621f07a..5dbbea18 100644
+--- a/src/slic3r/GUI/PrintOptionsDialog.hpp
++++ b/src/slic3r/GUI/PrintOptionsDialog.hpp
+@@ -86,6 +86,8 @@ protected:
+     CheckBox* m_cb_first_layer;
+     Button* m_qidi_skip_objects{nullptr};
+     bool m_qidi_skip_dialog_open{false};
++    CheckBox* m_cb_qidi_auto_refill{nullptr};
++    wxBoxSizer* m_qidi_auto_refill_sizer{nullptr};
+     CheckBox* m_cb_qidi_polar_cooler{nullptr};
+     wxBoxSizer* m_qidi_polar_cooler_sizer{nullptr};
+     CheckBox *        m_cb_ai_monitoring;
+diff --git a/src/slic3r/GUI/StatusPanel.cpp b/src/slic3r/GUI/StatusPanel.cpp
+index 82c94085..2d502f93 100644
+--- a/src/slic3r/GUI/StatusPanel.cpp
++++ b/src/slic3r/GUI/StatusPanel.cpp
+@@ -3017,7 +3017,7 @@ void StatusPanel::update(MachineObject *obj)
+         const auto* qidi_fod = obj->GetPrintOptions()->GetDetectionOption(PrintOptionEnum::FOD_Check_Detection);
+         const bool qidi_options = obj->printer_agent_id == "qidi" &&
+             (obj->is_support_spaghetti_detection || (qidi_fod && qidi_fod->is_support_detect) ||
+-             (obj->qidi_polar_cooler_available && obj->qidi_polar_cooler_on.has_value()) || !obj->qidi_print_objects.empty());
++             (obj->qidi_polar_cooler_available && obj->qidi_polar_cooler_on.has_value()) || obj->qidi_auto_refill.has_value() || !obj->qidi_print_objects.empty());
+         if (config->SupportFirstLayerInspect() || config->SupportAIMonitor() || obj->is_support_build_plate_marker_detect || obj->is_support_auto_recovery_step_loss || qidi_options) {
+             m_options_btn->Show();
+             if (print_options_dlg) {
+diff --git a/src/slic3r/Utils/QidiPrinterAgent.cpp b/src/slic3r/Utils/QidiPrinterAgent.cpp
+index 28c18970..941c0b16 100644
+--- a/src/slic3r/Utils/QidiPrinterAgent.cpp
++++ b/src/slic3r/Utils/QidiPrinterAgent.cpp
+@@ -83,6 +83,12 @@ std::optional<std::string> QidiPrinterAgent::control_script(const nlohmann::json
+         }
+         return script;
+     }
++    if (name == "qidi_auto_refill") {
++        const auto enabled = command.find("enabled");
++        if (enabled == command.end() || !enabled->is_boolean())
++            throw std::invalid_argument("Invalid QIDI auto refill setting");
++        return std::string("SET_ENABLE_AUTO_RELOAD ENABLE=") + (enabled->get<bool>() ? "1" : "0");
++    }
+     if (name == "qidi_polar_cooler") {
+         const auto enabled = command.find("enabled");
+         if (enabled == command.end() || !enabled->is_boolean())
+@@ -222,6 +228,18 @@ int QidiPrinterAgent::send_message(std::string dev_id, std::string json_str, int
+                 if (!object_selection_is_current(request[section], status_snapshot()))
+                     return BAMBU_NETWORK_ERR_INVALID_RESULT;
+             }
++            if (request[section].is_object() && request[section].value("command", std::string()) == "qidi_auto_refill") {
++                const auto snapshot = status_snapshot();
++                const nlohmann::json::json_pointer state_path("/print_stats/state");
++                const nlohmann::json::json_pointer setting_path("/save_variables/variables/auto_reload_detect");
++                const auto count = reported_box_count(snapshot);
++                if (!snapshot.contains(state_path) || snapshot[state_path] != "standby" ||
++                    !snapshot.contains(setting_path) || !count || *count < 1)
++                    return BAMBU_NETWORK_ERR_INVALID_RESULT;
++                const auto& setting = snapshot[setting_path];
++                if (!(setting.is_boolean() || (setting.is_number_integer() && (setting == 0 || setting == 1))))
++                    return BAMBU_NETWORK_ERR_INVALID_RESULT;
++            }
+             if (auto script = control_script(request[section])) {
+                 const auto& command = request[section];
+                 const auto name = command["command"].get<std::string>();
+@@ -307,6 +325,9 @@ void QidiPrinterAgent::append_accessory_status(const nlohmann::json& status, nlo
+     if (saved != status.end() && saved->is_object()) {
+         const auto nested = saved->find("variables");
+         const auto& variables = nested != saved->end() && nested->is_object() ? *nested : *saved;
++        const auto refill = variables.find("auto_reload_detect");
++        if (refill != variables.end() && (refill->is_boolean() || (refill->is_number_integer() && (*refill == 0 || *refill == 1))))
++            payload["print"]["qidi_auto_refill"] = refill->is_boolean() ? refill->get<bool>() : refill->get<int>() == 1;
+         for (const char* key : {"enable_noodle_detection", "enable_pre_print_model_check"}) {
+             const auto flag = variables.find(key);
+             if (flag != variables.end() && (flag->is_boolean() || (flag->is_number_integer() && (*flag == 0 || *flag == 1))))

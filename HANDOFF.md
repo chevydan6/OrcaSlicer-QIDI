@@ -1,5 +1,11 @@
 # Project handoff
 
+**2026-11-06 work in progress:** Patch 71 adds QIDI auto-refill status and an idle-only control. Real MAX4 command 0/1 and WebSocket status were verified with the original enabled state restored. Isolated protocol tests pass. This patch is not built, installed or GUI-accepted yet; candidate70 remains the installed baseline.
+
+**2026-11-05 Orca update:** Candidate70 GUI submitted an ABS job that physically refilled A2→A3 and automatically resumed with visible blue deposition. The job was still running when recorded. See [Orca refill test](validation/orca-refill-2026-11-05/README.md). Orca refill settings controls remain unimplemented.
+
+**2026-11-05 update:** The installed firmware fix physically passed an A2→A3 ABS refill: the printer automatically resumed and blue material was visible on the orange block. The test was still printing when recorded. See [retest](validation/refill-retest-2026-11-05/README.md). This was an API submission of the previously reviewed QIDI job, not an Orca refill validation.
+
 Updated 2026-11-04. **Candidate70 is software-accepted and installed for personal
 Linux x86_64 use with the X11 backend (XWayland on GNOME).** The general port is
 not complete: automatic refill and broader physical validation remain unfinished.

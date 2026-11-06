@@ -1,0 +1,30 @@
+{
+  "print_stats": {
+    "filename": "MAX4-refill-retest-20261105.gcode.3mf",
+    "plateindex": "1",
+    "uid": "native",
+    "total_duration": 1778.1438338059997,
+    "print_duration": 1359.7920824809999,
+    "filament_used": 3644.448450000165,
+    "state": "printing",
+    "decompression_progress": 0,
+    "message": "",
+    "info": {
+      "total_layer": 160,
+      "current_layer": 43
+    }
+  },
+  "qidi_refill_tool_identity": {
+    "enabled": true,
+    "version": "1",
+    "active": null,
+    "corrected_count": 1,
+    "last_correction": {
+      "logical": 0,
+      "donor": "slot1",
+      "replacement": "slot2"
+    },
+    "last_error": null
+  },
+  "loaded_slot": "slot2"
+}

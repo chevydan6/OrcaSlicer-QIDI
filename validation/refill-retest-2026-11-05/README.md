@@ -1,0 +1,7 @@
+# MAX4 physical refill retest — 2026-11-05
+
+Dan reported the jam cleared and authorized resuming the test. The previously reviewed QIDI Studio 30×30×32 mm ABS job was submitted through the printer upload API, with T0 mapped to A2 (orange ABS), A3 (blue ABS) as the matching refill, and the installed firmware extension enabled. This was not a fresh Orca submission.
+
+Dan cut A2 on the spool side. A2 inlet went empty while A3 remained present. At layer 37 the printer automatically paused for reload. The extension reported one correction, logical 0, donor slot1, replacement slot2, with no error. The printer reported slot2 loaded and automatically resumed without a manual resume. At layer 43 the camera showed a blue layer on the orange block. This physically validates this A2→A3 case on this installed firmware; it does not establish general support for other mappings or Orca refill controls. The image is retained privately in research/firmware-fix-2026-11-04/refill-success-20261105-private.jpg. status.json records a live snapshot. Printer history job 00002F subsequently reported completed after all 160 layers; nozzle and bed heater targets were both zero in standby.
+
+Startup again targeted 280°C and sampled 286.75°C before settling at 250°C; this remains a separate unresolved discrepancy. SSH was attempted read-only but rejected because the printer host key was absent from this environment's known-hosts; observations came from the printer API and camera.

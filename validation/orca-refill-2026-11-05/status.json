@@ -1,0 +1,30 @@
+{
+  "print_stats": {
+    "filename": "orca-refill-30x30x32.gcode.3mf",
+    "plateindex": "1",
+    "uid": "native",
+    "total_duration": 1732.140522576,
+    "print_duration": 1298.0225328689994,
+    "filament_used": 4402.016320003004,
+    "state": "printing",
+    "decompression_progress": 0,
+    "message": "",
+    "info": {
+      "total_layer": 160,
+      "current_layer": 55
+    }
+  },
+  "qidi_refill_tool_identity": {
+    "enabled": true,
+    "version": "1",
+    "active": null,
+    "corrected_count": 2,
+    "last_correction": {
+      "logical": 0,
+      "donor": "slot1",
+      "replacement": "slot2"
+    },
+    "last_error": null
+  },
+  "loaded_slot": "slot2"
+}
