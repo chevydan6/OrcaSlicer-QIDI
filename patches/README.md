@@ -141,4 +141,4 @@ separately from implementation; a patch's presence does not certify hardware use
 
 | 0071 | QIDI auto-refill status and idle control | Downstream UI and agent; candidate71 validated |
 
-| 0072 | QIDI layer counters and approximate remaining time | Pending full build and GUI verification |
+| 0072 | QIDI layer counters and approximate remaining time | Candidate72 fixture and build validated |

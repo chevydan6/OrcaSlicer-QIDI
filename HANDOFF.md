@@ -1,6 +1,6 @@
 # Project handoff
 
-**Monitoring work in progress:** Patch72 forwards validated QIDI layer counters and estimates remaining time from file progress and elapsed print duration, marking it approximate. Unknown or invalid inputs show N/A. Candidate71 remains installed; build and GUI validation pending. Non-QIDI Moonraker calculation is unchanged.
+**2026-11-06 monitoring update:** Candidate72 is installed and validated with the loopback fixture. It displays QIDI layer counters and an explicitly approximate time based on file progress; unknown input shows N/A. Linux CI and static checks passed. The new binary has not been tested during a real print. Candidate71 remains rollback. See [verification](validation/monitoring-72/README.md).
 
 **2026-11-06 installed update:** Candidate71 adds a QIDI Auto Refill control under Device → Print Options. Linux CI, static checks, fixture GUI checks and real idle MAX4 off/on checks passed; refill was restored on. Installed image SHA256 72b56eef023aced0775a0d56ffc643dec2e2f2d19d52840d066029f7dcb898e1; candidate70 remains rollback. See [verification](validation/gui-71/README.md). The new binary has not run a physical refill print.
 
