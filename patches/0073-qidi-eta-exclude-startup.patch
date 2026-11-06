@@ -1,0 +1,104 @@
+diff --git a/src/slic3r/Utils/QidiPrinterAgent.cpp b/src/slic3r/Utils/QidiPrinterAgent.cpp
+index 6bc92d76..d4ece4eb 100644
+--- a/src/slic3r/Utils/QidiPrinterAgent.cpp
++++ b/src/slic3r/Utils/QidiPrinterAgent.cpp
+@@ -387,36 +387,45 @@ void QidiPrinterAgent::append_accessory_status(const nlohmann::json& status, nlo
+         payload["print"]["fan_gear"] = gear;
+ }
+ 
+-void QidiPrinterAgent::append_monitoring_status(const nlohmann::json& status, nlohmann::json& payload)
++void QidiPrinterAgent::append_monitoring_status(const nlohmann::json& status, nlohmann::json& payload, MonitoringEstimate& estimate)
+ {
+-    // Reset unknown values on every snapshot, including job changes and invalid input.
+     auto& print = payload["print"];
+     print["layer_num"] = 0;
+     print["total_layer_num"] = 0;
+     print["mc_remaining_time"] = -1;
++    const auto reset = [&] { estimate = MonitoringEstimate{}; };
+     const auto stats = status.find("print_stats");
+-    if (stats == status.end() || !stats->is_object()) return;
++    if (stats == status.end() || !stats->is_object()) { reset(); return; }
+     const auto state = stats->find("state"), filename = stats->find("filename");
+     if (state == stats->end() || (*state != "printing" && *state != "paused") ||
+-        filename == stats->end() || !filename->is_string() || filename->get_ref<const std::string&>().empty()) return;
++        filename == stats->end() || !filename->is_string() || filename->get_ref<const std::string&>().empty()) { reset(); return; }
+     const auto info = stats->find("info");
+-    if (info != stats->end() && info->is_object()) {
+-        const auto current = info->find("current_layer"), total = info->find("total_layer");
+-        if (current != info->end() && total != info->end() && current->is_number_integer() && total->is_number_integer() &&
+-            *current >= 0 && *total > 0 && *total <= std::numeric_limits<int>::max() && *current <= *total) {
+-            print["layer_num"] = *current;
+-            print["total_layer_num"] = *total;
+-        }
+-    }
+-    const auto sd = status.find("virtual_sdcard");
+-    const auto elapsed = stats->find("print_duration");
+-    if (sd == status.end() || !sd->is_object() || elapsed == stats->end() || !elapsed->is_number()) return;
++    if (info == stats->end() || !info->is_object()) { reset(); return; }
++    const auto current = info->find("current_layer"), total = info->find("total_layer");
++    if (current == info->end() || total == info->end() || !current->is_number_integer() || !total->is_number_integer() ||
++        *current < 0 || *total <= 0 || *total > std::numeric_limits<int>::max() || *current > *total) { reset(); return; }
++    print["layer_num"] = *current;
++    print["total_layer_num"] = *total;
++    // Preparation and final unload have different timing from the model itself.
++    if (*current == 0 || *current == *total) { reset(); return; }
++    const auto sd = status.find("virtual_sdcard"), elapsed = stats->find("print_duration");
++    if (sd == status.end() || !sd->is_object() || elapsed == stats->end() || !elapsed->is_number()) { reset(); return; }
+     const auto progress = sd->find("progress");
+-    if (progress == sd->end() || !progress->is_number()) return;
++    if (progress == sd->end() || !progress->is_number()) { reset(); return; }
+     const double fraction = progress->get<double>(), seconds = elapsed->get<double>();
+-    if (!std::isfinite(fraction) || !std::isfinite(seconds) || fraction < 0.01 || fraction > 1 || seconds <= 0) return;
+-    // File progress is a rough proxy for time and may vary with layer complexity.
+-    const double minutes = seconds * (1.0 - fraction) / fraction / 60.0;
++    if (!std::isfinite(fraction) || !std::isfinite(seconds) || fraction < 0 || fraction >= 1 || seconds <= 0) { reset(); return; }
++    const std::string job = filename->get<std::string>();
++    if (!estimate.active || estimate.filename != job || seconds < estimate.last_seconds || fraction < estimate.last_progress) {
++        estimate = MonitoringEstimate{job, seconds, fraction, seconds, fraction, true};
++        return;
++    }
++    estimate.last_seconds = seconds;
++    estimate.last_progress = fraction;
++    const double elapsed_since_start = seconds - estimate.start_seconds;
++    const double progress_since_start = fraction - estimate.start_progress;
++    if (elapsed_since_start < 15 || progress_since_start < 0.02) return;
++    // File progress is a rough time proxy; the baseline excludes startup heating and loading.
++    const double minutes = elapsed_since_start * (1.0 - fraction) / progress_since_start / 60.0;
+     if (std::isfinite(minutes) && minutes <= std::numeric_limits<int>::max() / 60)
+         print["mc_remaining_time"] = static_cast<int>(std::ceil(minutes));
+ }
+diff --git a/src/slic3r/Utils/QidiPrinterAgent.hpp b/src/slic3r/Utils/QidiPrinterAgent.hpp
+index e317c8d0..0d458163 100644
+--- a/src/slic3r/Utils/QidiPrinterAgent.hpp
++++ b/src/slic3r/Utils/QidiPrinterAgent.hpp
+@@ -29,7 +29,12 @@ public:
+     static void append_box_status(const nlohmann::json& status, nlohmann::json& payload);
+     static std::optional<int> reported_box_count(const nlohmann::json& status, bool legacy_default = false);
+     static nlohmann::json decoded_box_slot(const nlohmann::json& status, int slot);
+-    static void append_monitoring_status(const nlohmann::json& status, nlohmann::json& payload);
++    struct MonitoringEstimate {
++        std::string filename;
++        double start_seconds = 0, start_progress = 0, last_seconds = 0, last_progress = 0;
++        bool active = false;
++    };
++    static void append_monitoring_status(const nlohmann::json& status, nlohmann::json& payload, MonitoringEstimate& estimate);
+     static void append_accessory_status(const nlohmann::json& status, nlohmann::json& payload);
+     static nlohmann::json configuration_notification(const nlohmann::json& notification);
+     static AgentInfo get_agent_info_static();
+@@ -49,6 +54,7 @@ public:
+     static nlohmann::json print_start_request(const PrintParams& params, const std::string& filename);
+ 
+ protected:
++    mutable MonitoringEstimate monitoring_estimate; // Protected by the Moonraker payload mutex.
+     std::vector<std::string> additional_status_objects() const override
+     { return {"heater_generic chamber", "multi_color_controller", "save_variables", "output_pin caselight",
+               "fan_generic cooling_fan", "fan_generic auxiliary_cooling_fan", "fan_generic chamber_circulation_fan", "gcode_move",
+@@ -56,7 +62,7 @@ protected:
+     bool merge_status_object_recursively(const std::string& name) const override
+     { return name == "multi_color_controller"; }
+     void append_status_payload(const nlohmann::json& status, nlohmann::json& payload) const override
+-    { append_chamber_status(status, payload); append_box_status(status, payload); append_accessory_status(status, payload); append_monitoring_status(status, payload); }
++    { append_chamber_status(status, payload); append_box_status(status, payload); append_accessory_status(status, payload); append_monitoring_status(status, payload, monitoring_estimate); }
+     nlohmann::json additional_notification_status(const nlohmann::json& notification) const override
+     { return configuration_notification(notification); }
+     // Saves the Box slot picked for each filament in the print dialog, then starts the print through Moonraker

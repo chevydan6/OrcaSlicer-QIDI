@@ -56,7 +56,8 @@ struct QidiPrinterAgent {
  static std::string camera_url_for_host(std::string);
  static nlohmann::json configuration_notification(const nlohmann::json&);
  static void append_accessory_status(const nlohmann::json&, nlohmann::json&);
- static void append_monitoring_status(const nlohmann::json&, nlohmann::json&);
+ struct MonitoringEstimate { std::string filename; double start_seconds=0,start_progress=0,last_seconds=0,last_progress=0; bool active=false; };
+ static void append_monitoring_status(const nlohmann::json&, nlohmann::json&, MonitoringEstimate&);
  static std::optional<int> reported_box_count(const nlohmann::json&, bool legacy_default = false);
  static nlohmann::json decoded_box_slot(const nlohmann::json&, int);
  static void append_box_status(const nlohmann::json&, nlohmann::json&);
@@ -275,15 +276,22 @@ int main() {
  assert(loaded["print"]["ams"]["tray_now"]=="15");
 
  nlohmann::json mon;
- QidiPrinterAgent::append_monitoring_status({{"print_stats",{{"state","printing"},{"filename","test.gcode"},{"print_duration",1200},{"info",{{"current_layer",40},{"total_layer",160}}}}},{"virtual_sdcard",{{"progress",0.25}}}},mon);
- assert(mon["print"]["layer_num"] == 40 && mon["print"]["total_layer_num"] == 160);
- assert(mon["print"]["mc_remaining_time"] == 60);
- QidiPrinterAgent::append_monitoring_status({{"print_stats",{{"state","printing"},{"filename","test.gcode"},{"print_duration",0},{"info",{{"current_layer",nullptr},{"total_layer",160}}}}},{"virtual_sdcard",{{"progress",0.0}}}},mon);
+ QidiPrinterAgent::MonitoringEstimate estimate;
+ auto sample = [&](int layer, double elapsed, double progress, const char* job = "test.gcode") {
+   QidiPrinterAgent::append_monitoring_status({{"print_stats",{{"state","printing"},{"filename",job},{"print_duration",elapsed},{"info",{{"current_layer",layer},{"total_layer",20}}}}},{"virtual_sdcard",{{"progress",progress}}}},mon,estimate);
+ };
+ sample(0,600,0.03); assert(mon["print"]["mc_remaining_time"] == -1);
+ sample(1,651,0.065); assert(mon["print"]["layer_num"] == 1 && mon["print"]["total_layer_num"] == 20 && mon["print"]["mc_remaining_time"] == -1);
+ sample(5,681,0.228); assert(mon["print"]["layer_num"] == 5 && mon["print"]["mc_remaining_time"] == 3);
+ sample(10,705,0.383); assert(mon["print"]["mc_remaining_time"] == 2);
+ QidiPrinterAgent::append_monitoring_status({{"print_stats",{{"state","paused"},{"filename","test.gcode"},{"print_duration",705},{"info",{{"current_layer",10},{"total_layer",20}}}}},{"virtual_sdcard",{{"progress",0.383}}}},mon,estimate);
+ assert(mon["print"]["mc_remaining_time"] == 2);
+ sample(20,760,0.725); assert(mon["print"]["layer_num"] == 20 && mon["print"]["mc_remaining_time"] == -1);
+ sample(1,20,0.05,"new.gcode"); assert(mon["print"]["mc_remaining_time"] == -1);
+ sample(4,60,0.20,"new.gcode"); assert(mon["print"]["mc_remaining_time"] == 4);
+ sample(2,30,0.07,"new.gcode"); assert(mon["print"]["mc_remaining_time"] == -1);
+ QidiPrinterAgent::append_monitoring_status({{"print_stats",{{"state","printing"},{"filename","bad"},{"print_duration",1200},{"info",{{"current_layer",161},{"total_layer",160}}}}},{"virtual_sdcard",{{"progress",1.5}}}},mon,estimate);
  assert(mon["print"]["layer_num"] == 0 && mon["print"]["total_layer_num"] == 0 && mon["print"]["mc_remaining_time"] == -1);
- QidiPrinterAgent::append_monitoring_status({{"print_stats",{{"state","printing"},{"filename","test.gcode"},{"print_duration",1200},{"info",{{"current_layer",161},{"total_layer",160}}}}},{"virtual_sdcard",{{"progress",1.5}}}},mon);
- assert(mon["print"]["layer_num"] == 0 && mon["print"]["total_layer_num"] == 0 && mon["print"]["mc_remaining_time"] == -1);
- QidiPrinterAgent::append_monitoring_status({{"print_stats",{{"state","printing"},{"filename","test.gcode"},{"print_duration",1200},{"info",{{"current_layer",160},{"total_layer",160}}}}},{"virtual_sdcard",{{"progress",1.0}}}},mon);
- assert(mon["print"]["layer_num"] == 160 && mon["print"]["mc_remaining_time"] == 0);
  assert(QidiPrinterAgent::control_script({{"command","qidi_auto_refill"},{"enabled",true}}) == "SET_ENABLE_AUTO_RELOAD ENABLE=1");
  assert(QidiPrinterAgent::control_script({{"command","qidi_auto_refill"},{"enabled",false}}) == "SET_ENABLE_AUTO_RELOAD ENABLE=0");
  bool invalid_refill = false;
