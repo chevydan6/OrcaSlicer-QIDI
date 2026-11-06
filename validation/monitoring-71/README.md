@@ -1,0 +1,3 @@
+# Candidate 71 monitoring reproduction
+
+The installed candidate71 AppImage was run against the non-forwarding loopback fixture on 2026-11-06. The fixture supplied print_stats state printing, current_layer 40, total_layer 160, total_duration 1800 seconds and print_duration 1200 seconds, plus virtual_sdcard progress 0.25. The Device panel showed 25%, Layer 0/0 and 10m remaining. The 10 minutes equals the difference between the two elapsed durations, not an independently supplied remaining time. Screenshot: fixture-reproduction.png. The production adapter code does not forward the layer counters and computes remaining time from that difference. This is a deterministic reproduction, not a physical print or a fix.

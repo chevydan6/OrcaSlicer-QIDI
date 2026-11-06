@@ -25,6 +25,7 @@ functions = [
 ]
 code = '''#include <nlohmann/json.hpp>
 #include <optional>
+#include <cmath>
 #include <stdexcept>
 #include <string>
 #include <cassert>
@@ -55,6 +56,7 @@ struct QidiPrinterAgent {
  static std::string camera_url_for_host(std::string);
  static nlohmann::json configuration_notification(const nlohmann::json&);
  static void append_accessory_status(const nlohmann::json&, nlohmann::json&);
+ static void append_monitoring_status(const nlohmann::json&, nlohmann::json&);
  static std::optional<int> reported_box_count(const nlohmann::json&, bool legacy_default = false);
  static nlohmann::json decoded_box_slot(const nlohmann::json&, int);
  static void append_box_status(const nlohmann::json&, nlohmann::json&);
@@ -272,6 +274,16 @@ int main() {
  QidiPrinterAgent::append_box_status({{"multi_color_controller",{{"last_load_slot","slot15"}}}},loaded);
  assert(loaded["print"]["ams"]["tray_now"]=="15");
 
+ nlohmann::json mon;
+ QidiPrinterAgent::append_monitoring_status({{"print_stats",{{"state","printing"},{"filename","test.gcode"},{"print_duration",1200},{"info",{{"current_layer",40},{"total_layer",160}}}}},{"virtual_sdcard",{{"progress",0.25}}}},mon);
+ assert(mon["print"]["layer_num"] == 40 && mon["print"]["total_layer_num"] == 160);
+ assert(mon["print"]["mc_remaining_time"] == 60);
+ QidiPrinterAgent::append_monitoring_status({{"print_stats",{{"state","printing"},{"filename","test.gcode"},{"print_duration",0},{"info",{{"current_layer",nullptr},{"total_layer",160}}}}},{"virtual_sdcard",{{"progress",0.0}}}},mon);
+ assert(mon["print"]["layer_num"] == 0 && mon["print"]["total_layer_num"] == 0 && mon["print"]["mc_remaining_time"] == -1);
+ QidiPrinterAgent::append_monitoring_status({{"print_stats",{{"state","printing"},{"filename","test.gcode"},{"print_duration",1200},{"info",{{"current_layer",161},{"total_layer",160}}}}},{"virtual_sdcard",{{"progress",1.5}}}},mon);
+ assert(mon["print"]["layer_num"] == 0 && mon["print"]["total_layer_num"] == 0 && mon["print"]["mc_remaining_time"] == -1);
+ QidiPrinterAgent::append_monitoring_status({{"print_stats",{{"state","printing"},{"filename","test.gcode"},{"print_duration",1200},{"info",{{"current_layer",160},{"total_layer",160}}}}},{"virtual_sdcard",{{"progress",1.0}}}},mon);
+ assert(mon["print"]["layer_num"] == 160 && mon["print"]["mc_remaining_time"] == 0);
  assert(QidiPrinterAgent::control_script({{"command","qidi_auto_refill"},{"enabled",true}}) == "SET_ENABLE_AUTO_RELOAD ENABLE=1");
  assert(QidiPrinterAgent::control_script({{"command","qidi_auto_refill"},{"enabled",false}}) == "SET_ENABLE_AUTO_RELOAD ENABLE=0");
  bool invalid_refill = false;
