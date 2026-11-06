@@ -1,6 +1,6 @@
 # Project handoff
 
-**2026-11-06 work in progress:** Patch 71 adds QIDI auto-refill status and an idle-only control. Real MAX4 command 0/1 and WebSocket status were verified with the original enabled state restored. Isolated protocol tests pass. This patch is not built, installed or GUI-accepted yet; candidate70 remains the installed baseline.
+**2026-11-06 installed update:** Candidate71 adds a QIDI Auto Refill control under Device → Print Options. Linux CI, static checks, fixture GUI checks and real idle MAX4 off/on checks passed; refill was restored on. Installed image SHA256 72b56eef023aced0775a0d56ffc643dec2e2f2d19d52840d066029f7dcb898e1; candidate70 remains rollback. See [verification](validation/gui-71/README.md). The new binary has not run a physical refill print.
 
 **2026-11-05 Orca update:** Candidate70 GUI submitted an ABS job that physically refilled A2→A3 and automatically resumed with visible blue deposition. The job was still running when recorded. See [Orca refill test](validation/orca-refill-2026-11-05/README.md). Orca refill settings controls remain unimplemented.
 

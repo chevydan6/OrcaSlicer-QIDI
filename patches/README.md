@@ -139,4 +139,4 @@ separately from implementation; a patch's presence does not certify hardware use
 
 70. `0070-qidi-timelapse-ui-capability.patch` enables the QIDI timelapse selector from the machine profile capability while retaining available-storage and sliced-job warning checks. GUI69 found the generic check used a Bambu support flag that QIDI never populates, so On could not be selected. Other printer agents keep their existing checks. Matching timelapse On/Off, storage-unavailable, submission-order and full GUI acceptance are required.
 
-| 0071 | QIDI auto-refill status and idle control | Downstream UI and agent; pending full build and GUI validation |
+| 0071 | QIDI auto-refill status and idle control | Downstream UI and agent; candidate71 validated |
