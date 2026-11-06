@@ -1,6 +1,6 @@
 # Project handoff
 
-**Physical test, 2026-11-06:** Candidate72 printed a 20-layer ABS cube from A3 and Orca showed 20/20. Timelapse captured and rendered; leveling executed. ETA was inflated by startup, so patch73 changes the estimate to use elapsed time and progress measured from the first observed model layer; testing/build pending. Dan says he has no polar cooler; leave it off despite firmware reporting the pin. See [physical test](validation/monitoring-physical-72/README.md).
+**2026-11-06 physical test and installed update:** Candidate72 printed the 20-layer blue ABS cube; layer counters matched, bed leveling executed, and timelapse rendered. Its time estimate failed because preparation time was included. Candidate73 is installed and its revised estimate passed a GUI replay of captured physical readings, Linux CI and static checks, but has not been tested during a new physical print. Dan reports no polar cooler; leave it off despite the advertised pin. See [physical evidence](validation/monitoring-physical-72/README.md) and [candidate73](validation/monitoring-73/README.md).
 
 **2026-11-06 monitoring update:** Candidate72 is installed and validated with the loopback fixture. It displays QIDI layer counters and an explicitly approximate time based on file progress; unknown input shows N/A. Linux CI and static checks passed. The new binary has not been tested during a real print. Candidate71 remains rollback. See [verification](validation/monitoring-72/README.md).
 

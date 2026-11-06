@@ -143,4 +143,4 @@ separately from implementation; a patch's presence does not certify hardware use
 
 | 0072 | QIDI layer counters and approximate remaining time | Candidate72 fixture and build validated |
 
-| 0073 | Exclude QIDI startup from remaining-time estimate | Physical-trace replay passed; build and GUI verification pending |
+| 0073 | Exclude QIDI startup from remaining-time estimate | Candidate73 physical-trace replay and build validated |
