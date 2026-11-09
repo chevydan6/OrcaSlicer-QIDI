@@ -5,6 +5,8 @@ permissions:
   contents: read
 jobs:
   linux:
+    permissions:
+      contents: write
     runs-on: ubuntu-24.04
     timeout-minutes: 360
     env:
@@ -81,12 +83,19 @@ jobs:
           test "${#images[@]}" -eq 1
           test -s "${images[0]}"
       - name: Retain compiled AppImage for GUI validation
+        id: appimage_artifact
+        continue-on-error: true
         uses: actions/upload-artifact@v4
         with:
           name: linux-appimage-${{ github.sha }}
           path: source/build/OrcaSlicer*.AppImage
           if-no-files-found: error
           retention-days: 30
+      - name: Stage AppImage download when Actions artifact storage is unavailable
+        if: ${{ steps.appimage_artifact.outcome == 'failure' }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 scripts/stage-build-download.py source/build/OrcaSlicer*.AppImage
       - name: Unit tests
         working-directory: source
         run: timeout 45m xvfb-run -a ./scripts/run_unit_tests.sh build/tests Release
@@ -102,7 +111,9 @@ jobs:
         if: ${{ !cancelled() && steps.build.outcome == 'success' }}
         run: xvfb-run -a python3 scripts/validate-max4-slicing.py --source source
       - name: Retain build and logs
+        id: logs_artifact
         if: always()
+        continue-on-error: true
         uses: actions/upload-artifact@v4
         with:
           name: linux-integration-${{ github.sha }}
@@ -116,6 +127,22 @@ jobs:
             build/max4-slicing/
           if-no-files-found: warn
           retention-days: 30
+      - name: Stage reports when Actions artifact storage is unavailable
+        if: ${{ !cancelled() && steps.logs_artifact.outcome == 'failure' }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python3 - <<'PYREPORT'
+          import glob, tarfile
+          patterns = ['compile.log', 'dependencies.log', 'source/ctest_results.xml',
+                      'source/build/Testing/Temporary/*.log', 'source/build/tests/Testing/Temporary/*.log',
+                      'source/build/CMakeFiles/CMakeConfigureLog.yaml', 'build/max4-slicing']
+          with tarfile.open('main-build-reports.tar.gz', 'w:gz') as archive:
+              for pattern in patterns:
+                  for path in glob.glob(pattern):
+                      archive.add(path, arcname=path)
+          PYREPORT
+          python3 scripts/stage-build-download.py main-build-reports.tar.gz
       - name: Free completed build intermediates for compiler cache archival
         if: always()
         run: |

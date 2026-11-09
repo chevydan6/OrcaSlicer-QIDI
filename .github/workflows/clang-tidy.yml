@@ -5,6 +5,8 @@ permissions:
   contents: read
 jobs:
   tidy:
+    permissions:
+      contents: write
     runs-on: ubuntu-24.04
     timeout-minutes: 90
     steps:
@@ -42,7 +44,9 @@ jobs:
           set -o pipefail
           ./scripts/run_clang_tidy.sh --base '${{ steps.source.outputs.sha }}' --no-fetch --yes -j 2 2>&1 | tee ../clang-tidy.log
       - name: Retain diagnostics
+        id: diagnostics_artifact
         if: always()
+        continue-on-error: true
         uses: actions/upload-artifact@v4
         with:
           name: clang-tidy-${{ github.sha }}
@@ -50,3 +54,8 @@ jobs:
             clang-tidy.log
             source/build-tidy/configure.log
           retention-days: 30
+      - name: Stage diagnostics when Actions artifact storage is unavailable
+        if: ${{ !cancelled() && steps.diagnostics_artifact.outcome == 'failure' }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 scripts/stage-build-download.py clang-tidy.log source/build-tidy/configure.log

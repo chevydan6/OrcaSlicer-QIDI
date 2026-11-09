@@ -244,3 +244,17 @@ generated names; supplied filenames never select a local path. Inspect those
 captured archives to compare the actual uploaded G-code with the GUI slice.
 The fixture still never executes or forwards a request. Verify it with
 `python3 scripts/check-printer-fixture.py` in the fixture environment first.
+
+## Candidate download fallback
+
+When GitHub Actions artifact storage is full, the build retains its AppImage and
+reports in an unpublished draft release named `qidi-main-build-<commit-prefix>`.
+The static-check workflow uses the same draft for diagnostics. Only artifact
+upload steps can use the fallback; compilation, tests and static diagnostics
+remain required. The workflows need repository contents write permission to stage
+the draft. A published or mismatched release is never overwritten.
+
+Authenticated maintainers can download the candidate with
+`gh release download qidi-main-build-<commit-prefix> --repo chevydan6/OrcaSlicer-QIDI`.
+Inspect the workflow results and embedded source manifest before installation.
+The fallback does not publish a release or change the accepted release tag.
