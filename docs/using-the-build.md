@@ -20,13 +20,15 @@ print-host path does not provide the port's full Box workflow.
 
 With a QIDI printer profile selected, **Device → printer selector → Connect by
 address** accepts a Moonraker endpoint such as `http://printer-address:7125`.
-Use the actual address and port from your printer/network. An API key is optional
+Wi-Fi and Ethernet use the same LAN address field. Use the actual address and port from your printer/network. An API key is optional
 unless the server requires one. The dialog accepts a CA file for HTTP requests,
 but the inherited secure WebSocket path disables certificate verification.
 HTTPS/WSS is not accepted as a verified secure transport for this milestone;
 current acceptance targets a trusted local HTTP connection. Connecting is not
 necessary for offline slicing. No actual printer address was configured by the
 software validation work.
+
+In **Device → Status**, press **Play** beneath the camera preview. The snapshot viewer targets 10 FPS; its in-flight guard prevents a slow connection from queuing image requests. Actual FPS depends on the printer and network response time. The camera idle image is vendor-neutral.
 
 The Device panel adapts to reported Box slots and capabilities. It exposes the
 supported load/unload/eject/RFID, material/color, chamber, fan, light, camera and

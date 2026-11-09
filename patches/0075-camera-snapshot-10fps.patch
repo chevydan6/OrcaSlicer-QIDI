@@ -1,0 +1,13 @@
+diff --git a/src/slic3r/GUI/WebMediaController.cpp b/src/slic3r/GUI/WebMediaController.cpp
+index f9c2e17f..d5d39faa 100644
+--- a/src/slic3r/GUI/WebMediaController.cpp
++++ b/src/slic3r/GUI/WebMediaController.cpp
+@@ -68,7 +68,7 @@ void WebMediaController::Play()
+                 "}"
+                 "}"
+                 "refreshCameraFrame();"
+-                "cameraRefreshInterval = setInterval(refreshCameraFrame,200);"
++                "cameraRefreshInterval = setInterval(refreshCameraFrame,100);"
+                 "</script></body></html>";
+         m_webview->SetPage(html, url);
+     } else {

@@ -1,5 +1,11 @@
 # OrcaSlicer QIDI MAX4 / Box port
 
+The main source includes the QIDI Auto Refill control, layer/progress reporting,
+ETA that excludes preparation, a neutral camera placeholder and a 10 FPS
+snapshot viewer. All 75 patches are applied by the normal Linux build; printer
+addresses remain user settings entered through **Connect by address**.
+
+
 Personal Linux x86_64 build based on pinned official OrcaSlicer, with QIDI Studio's
 MAX4/Box LAN functionality. **Candidate70 is software-accepted and installed using
 X11/XWayland.** Automatic refill and broader physical validation remain unfinished.

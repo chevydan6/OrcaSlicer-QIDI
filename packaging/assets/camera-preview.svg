@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1921" height="1081" viewBox="0 0 1921 1081">
+ <defs><radialGradient id="bg"><stop stop-color="#29353d"/><stop offset="1" stop-color="#10181d"/></radialGradient></defs>
+ <rect width="1921" height="1081" fill="url(#bg)"/>
+ <g fill="none" stroke="#7f98a5" stroke-width="7" stroke-linejoin="round">
+  <rect x="872" y="388" width="136" height="100" rx="14"/>
+  <path d="M1008 416l56-28v100l-56-28z"/>
+  <circle cx="940" cy="438" r="23"/>
+ </g>
+ <g text-anchor="middle" font-family="sans-serif">
+  <text x="960.5" y="570" fill="#e6eef2" font-size="48">Camera preview</text>
+  <text x="960.5" y="627" fill="#9bafba" font-size="28">Connect to your printer, then press Play.</text>
+ </g>
+</svg>

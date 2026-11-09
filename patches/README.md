@@ -144,3 +144,7 @@ separately from implementation; a patch's presence does not certify hardware use
 | 0072 | QIDI layer counters and approximate remaining time | Candidate72 fixture and build validated |
 
 | 0073 | Exclude QIDI startup from remaining-time estimate | Physical-trace replay passed; build and GUI verification pending |
+
+74. `0074-neutral-camera-placeholder.patch` replaces the inherited Bambu camera idle artwork with a neutral camera preview message. The source SVG is in `packaging/assets/camera-preview.svg`.
+
+75. `0075-camera-snapshot-10fps.patch` requests snapshots every 100 ms, targeting 10 FPS. The existing image-in-flight guard skips refresh ticks during slow requests and recovers after image errors.
