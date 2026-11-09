@@ -13,6 +13,11 @@ and native file chooser run here without the old Fedora runtime workaround.
 Builds target Ubuntu 24.04 x86_64 with two compiler/test jobs; adjust parallelism
 to available memory. Do not copy historical host assumptions without checking.
 
+Main builds apply all 75 patches, including the later refill, monitoring and camera
+changes. The candidate70 numbers above describe that retained baseline. Current
+code-build validation is tracked in GitHub Actions; documentation-only follow-up
+commits do not change the recorded application patch hashes.
+
 ## Reproduce
 
 ```sh

@@ -48,8 +48,8 @@ Choose external-spool mode for a single-material external spool job. Mixed
 external/Box jobs and incomplete or invalid mappings are rejected. Experimental
 multi-device QIDI submission is disabled. The software trace is validated. One physical sparse T2→A1 print completed on
 Dan's MAX4; other mappings and support-first behavior still need hardware testing.
-The current Device layer/time readouts are inaccurate; use printer state/history
-for progress and completion until the documented monitoring fixes are accepted.
+The Device tab uses QIDI layer counters and an approximate ETA measured after
+model printing starts. Warmup and insufficient progress data show N/A.
 
 ## Updates and recovery
 
