@@ -15,6 +15,16 @@ jobs:
       CTEST_PARALLEL_LEVEL: 2
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Offline printer-web Box regression checks
+        run: |
+          node firmware-fixes/qidi-fluidd-box-status/test-model.cjs
+          node firmware-fixes/qidi-fluidd-box-status/test-temperature.cjs
+          python3 scripts/check-web-box-package.py
+      - name: Package printer-web Box companion fix
+        run: python3 scripts/package-web-box-fix.py build/qidi-web-box-fix.zip
       - name: Reserve space for native builds and compiler cache
         run: |
           # These preinstalled SDKs are not used by this C++ Linux build.
@@ -95,7 +105,21 @@ jobs:
         if: ${{ steps.appimage_artifact.outcome == 'failure' }}
         env:
           GH_TOKEN: ${{ github.token }}
-        run: python3 scripts/stage-build-download.py source/build/OrcaSlicer*.AppImage
+        run: python3 scripts/stage-build-download.py source/build/OrcaSlicer*.AppImage build/qidi-web-box-fix.zip
+      - name: Retain printer-web Box companion fix
+        id: web_box_artifact
+        continue-on-error: true
+        uses: actions/upload-artifact@v4
+        with:
+          name: qidi-web-box-fix-${{ github.sha }}
+          path: build/qidi-web-box-fix.zip
+          if-no-files-found: error
+          retention-days: 30
+      - name: Stage web companion when Actions artifact storage is unavailable
+        if: ${{ steps.web_box_artifact.outcome == 'failure' }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 scripts/stage-build-download.py build/qidi-web-box-fix.zip
       - name: Unit tests
         working-directory: source
         run: timeout 45m xvfb-run -a ./scripts/run_unit_tests.sh build/tests Release

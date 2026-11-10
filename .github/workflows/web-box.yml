@@ -1,0 +1,43 @@
+name: Printer web Box companion checks
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'firmware-fixes/qidi-fluidd-box-status/**'
+      - 'scripts/*web-box*'
+      - 'scripts/write-build-manifest.py'
+      - '.github/workflows/web-box.yml'
+permissions:
+  contents: read
+jobs:
+  web-box:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Offline regression and package checks
+        run: |
+          node firmware-fixes/qidi-fluidd-box-status/test-model.cjs
+          node firmware-fixes/qidi-fluidd-box-status/test-temperature.cjs
+          python3 scripts/check-web-box-package.py
+      - name: Package printer-web companion
+        run: python3 scripts/package-web-box-fix.py build/qidi-web-box-fix.zip
+      - uses: actions/upload-artifact@v4
+        id: package
+        continue-on-error: true
+        with:
+          name: qidi-web-box-fix-${{ github.sha }}
+          path: build/qidi-web-box-fix.zip
+          if-no-files-found: error
+          retention-days: 30
+      - name: Retain package when Actions artifact storage is unavailable
+        if: ${{ steps.package.outcome == 'failure' }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 scripts/stage-build-download.py build/qidi-web-box-fix.zip

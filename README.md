@@ -5,6 +5,15 @@ ETA that excludes preparation, a neutral camera placeholder and a 10 FPS
 snapshot viewer. All 75 patches are applied by the normal Linux build; printer
 addresses remain user settings entered through **Connect by address**.
 
+Main builds also include the printer-web Box companion kit at
+`resources/qidi-web-box-fix`, with a separate `qidi-web-box-fix.zip` download. It
+fixes modern firmware's filament display and permits manual Box targets of
+0–65°C while respecting lower configured limits. The material profile maximum
+is shown separately. These changes belong to the printer-hosted webpage shown
+in Device (Web); the kit does not install on or heat a printer automatically.
+It contains source, synthetic offline tests and a hash-pinned patch generator;
+vendor web files, printer addresses and credentials are excluded.
+
 
 Personal Linux x86_64 build based on pinned official OrcaSlicer, with QIDI Studio's
 MAX4/Box LAN functionality. Linux builds use X11/XWayland. Candidate70 is the

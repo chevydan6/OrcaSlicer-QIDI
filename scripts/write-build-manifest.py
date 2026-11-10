@@ -18,6 +18,14 @@ manifest = {
     'build_instructions': 'docs/build.md in the integration repository',
     'physical_printer_verification': False,
 }
+companion = source / 'resources/qidi-web-box-fix'
+subprocess.run([sys.executable, str(root / 'scripts/package-web-box-fix.py'),
+                str(companion), '--directory'], check=True)
+manifest['printer_web_companion'] = {
+    'path': 'resources/qidi-web-box-fix',
+    'manifest_sha256': hashlib.sha256((companion / 'manifest.json').read_bytes()).hexdigest(),
+    'installed_automatically': False,
+}
 (source / 'resources/qidi-port-build.json').write_text(json.dumps(manifest, indent=2) + '\n')
 shutil.copyfile(root / 'LICENSE', source / 'resources/LICENSE')
 print('Recorded source pins and', len(manifest['patches']), 'patch checksums in packaged resources.')
